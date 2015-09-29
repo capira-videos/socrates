@@ -1,0 +1,38 @@
+<dom-module id="right-bar-header">
+    <style>
+    :host {
+        display: block;
+        width: 100%;
+        height: 80px;
+        padding-left: 16px;
+        background-color: var(--paper-teal-400);
+        color: white;
+        margin-top: 0;
+        @apply(--paper-font-headline);
+        @apply(--layout);
+        @apply(--layout-center);
+        box-sizing: border-box;
+        position: relative;
+        /*        border-bottom: 1px solid var(--divider-color);
+*/  
+        margin-bottom: 8px;
+    }
+    
+    :host >::content paper-fab {
+        position: absolute;
+        right: 16px;
+        bottom: -24px;
+        z-index: 1;
+    }
+    </style>
+    <template>
+        <content></content>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'right-bar-header'
+    });
+})();
+</script>

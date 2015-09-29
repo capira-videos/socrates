@@ -1,0 +1,85 @@
+<link rel="import" href="../overlays-wizard/overlay-miniature.html">
+<dom-module id="unit-right-bar">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    #list {
+        @apply(--layout-vertical);
+        @apply(--layout-scroll);
+        height: calc(100% - 88px);
+    }
+    
+    .preview {
+        @apply(--layout);
+        @apply(--layout-center-center);
+        width: 100%;
+        box-sizing: border-box;
+        height: 216px;
+        min-height: 216px;
+        padding: 8px;
+        border-bottom: 1px solid var(--divider-color);
+        box-sizing: border-box;
+        padding-bottom: 16px;
+        position: relative;
+    }
+    
+    .preview:hover {
+        background-color: white;
+    }
+    </style>
+    <template>
+        <right-bar-header>Overlays in this Video
+            <div class="flex"></div>
+            <paper-fab icon="editor-icons:add" on-tap="_create"></paper-fab>
+        </right-bar-header>
+        <div id="list">
+            <template is="dom-repeat" items="{{unit.overlays}}" id="overlayList" sort="_compareByTime">
+                <div class="preview" on-tap="select">
+                    <paper-ripple></paper-ripple>
+                    <overlay-miniature overlay="{{item}}" width="300"></overlay-miniature>
+                </div>
+            </template>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'unit-right-bar',
+        behaviors: [Capira.RightBar],
+        properties: {
+            unit: {
+                type: Object,
+                notify: true
+            }
+        },
+        select: function(e) {
+            var overlay = this.$.overlayList.itemForElement(e.target);
+            this.fire('overlay-selected', overlay.id);
+            if (app.player) {
+                if (overlay.events && overlay.events.length) {
+                    EventTimer.seekTo(overlay.events[0].start);
+                }
+                setTimeout(function() {
+                    app.player.pause();
+                }, 200);
+            }
+        },
+        _compareByTime: function(o1, o2) {
+            return this._getOverlayStart(o1) - this._getOverlayStart(o2);
+        },
+        _getOverlayStart: function(o) {
+            return o.events && o.events[0] && o.events[0].start;
+        },
+        _create: function() {
+            this.fire('open-wizard');
+            if (app.player) {
+                app.player.pause();
+            }
+        }
+    });
+})();
+</script>

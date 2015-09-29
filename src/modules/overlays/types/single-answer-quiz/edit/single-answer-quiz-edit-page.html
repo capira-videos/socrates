@@ -1,0 +1,32 @@
+<link rel="import" href="add-single-answer-button.html">
+<link rel="import" href="edit-single-answer-quiz.html">
+<link rel="import" href="single-answer-value-selector.html">
+<link rel="import" href="single-answer-quiz-value-preview.html">
+<dom-module id="single-answer-quiz-edit-page">
+    <template>
+        <edit-page-layout>
+            <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
+            <single-answer-quiz main states="default combination" overlay="{{overlay}}"></single-answer-quiz>
+            <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
+            <answer-editor right states="combination" combination="{{selectedCombination}}">
+                <single-answer-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></single-answer-value-selector>
+            </answer-editor>
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'single-answer-quiz-edit-page',
+        behaviors: [Capira.QuizEditPage],
+        _createAnswer: function() {
+            return {
+                value: 0,
+                grade: 0
+            };
+        }
+
+    });
+})();
+</script>

@@ -1,0 +1,24 @@
+<dom-module id="skip-button">
+    <style>
+    :host {
+        pointer-events: all;
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+    </style>
+    <template>
+        <paper-icon-button icon="player-icons:close" id="close" on-tap="_skip"></paper-icon-button>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'skip-button',
+        _skip: function() {
+            this.fire('skipped');
+        }
+    });
+})();
+</script>

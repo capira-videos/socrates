@@ -1,0 +1,560 @@
+<!--
+// add paper ripple to play-pause-button
+// TODO get rid of css tables
+// TODO only load polyfill if needed
+// TODO not seek ahead
+// TODO haken oder kreuz icon in feedback
+// TODO directly embed the yt video as iframe in the index.html for faster startup
+// TODO code sollte nicht per <script> sondern per html import eingebunden werden ?
+// TODO adapt scaling in plain player
+// TODO destroy timer in destroy method
+// TODO sort quiz
+-->
+
+<dom-module id="video-controls">
+    <style>
+        #video-controls {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            outline: none !important;
+            z-index: 1;
+            /* on top of the overlays */
+            transform: translateZ(0);
+            /* own rendering layer */
+            pointer-events: none;
+            /* pointer events none such that one can click through to the video iframe. Pointer events
+            will be activated when video started playing */
+        }
+
+        #video-controls-bottom {
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            -ms-user-select: none;
+            height: 50px;
+            font-family: 'Lato', sans-serif;
+            display: none;
+            pointer-events: auto;
+        }
+
+        :host-context(.desktop) #video-controls-bottom {
+            height: 40px;
+            display: block;
+            transition: opacity 0.8s;
+        }
+
+        #play-pause-button {
+            height: 50px;
+            width: 50px;
+            left: 10px;
+            background: rgba(40, 40, 40, 0.7);
+            position: absolute;
+            visibility: hidden;
+        }
+
+        :host-context(.desktop) #play-pause-button {
+            height: 40px;
+            width: 40px;
+        }
+
+        #play-pause-button svg {
+            position: absolute;
+            padding: 13%;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            fill: white;
+            box-sizing: border-box;
+        }
+
+        #video-control-bar {
+            position: absolute;
+            top: 0px;
+            height: 100%;
+            left: 70px;
+            right: 10px;
+            overflow: hidden;
+            background: rgba(40, 40, 40, 0.7);
+        }
+
+        :host-context(.desktop) #video-control-bar {
+            top: 20%;
+            height: 60%;
+            left: 60px;
+        }
+
+        #video-control-bar-wrapper {
+            display: table;
+            height: 100%;
+        }
+
+        #video-control-bar-wrapper > * {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        #timeline-container {
+            height: 100%;
+            width: 100%;
+            padding: 5px;
+        }
+
+        #timeline {
+            height: 100%;
+            outline: 2px solid #d3d3d3;
+            padding: 3px;
+            position: relative;
+            box-sizing: padding-box;
+        }
+
+        :host-context(.desktop) #timeline {
+            outline: 1px solid #d3d3d3;
+        }
+
+        #timeline-progress {
+            height: 100%;
+            min-width: 1px;
+            /* width will be set dynamically */
+            background: rgb(255, 187, 63);
+            display: table;
+            /* width of the timeline progress and the time label offset are set in percentage.
+            The rounding of the width on usual block divs an tables seems to be different which leads to off by
+            one errors in the width. Hence we are applying display:table here as well */
+        }
+
+        #timeline-time-label-container {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            pointer-events: none;
+            display: table;
+            /* we use table cells as a nice trick such that the time label does not flow over the
+            right boundary of the timeline */
+        }
+
+        #timeline-time-label-container > * {
+            display: table-cell;
+        }
+
+        #timeline-time-label {
+            color: white;
+            font-size: 25px;
+            line-height: 40px;
+            font-weight: bold;
+            padding-left: 4px;
+        }
+
+        :host-context(.desktop) #timeline-time-label {
+            font-size: 12px;
+            line-height: 13px;
+        }
+
+        .video-control-button {
+            width: 35px;
+            height: 35px;
+            padding-left: 8px;
+            padding-right: 8px;
+            position: relative;
+        }
+
+        :host-context(.desktop) .video-control-button {
+            width: 20px;
+            height: 20px;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .video-control-button svg {
+            height: 100%;
+            fill: white;
+        }
+
+        :host-context(.desktop) .video-control-button svg,
+        :host-context(.desktop) #play-pause-button svg {
+            transition: transform 0.2s, color 0.2s, fill 0.2s;
+        }
+
+        .video-control-button:hover svg,
+        #play-pause-button:hover svg {
+            -webkit-transform: scale(1.2);
+            -moz-transform: scale(1.2);
+            -o-transform: scale(1.2);
+            -ms-transform: scale(1.2);
+            transform: scale(1.2);
+            color: rgb(255, 194, 82);
+            fill: rgb(255, 194, 82);
+        }
+
+        #fullscreen-collapse,
+        #pause-button {
+            display: none;
+        }
+    </style>
+    <template>
+        <div id="video-controls" tabindex="-1">
+            <div id="video-controls-bottom" on-click="_stopPropagation" on-dblclick="_stopPropagation" on-mouseenter="_videoControlsBottomMouseEnter" on-mouseleave="_videoControlsBottomMouseLeave">
+                <div id="play-pause-button" on-click="_togglePlayStatus">
+                    <svg id="pause-button" viewBox="0 0 25 25" preserveAspectRatio="xMidYMid">
+                        <rect class="fill" width="6" height="18" x="4" y="3.5"></rect>
+                        <rect class="fill" width="6" height="18" x="15" y="3.5"></rect>
+                    </svg>
+                    <svg id="play-button" viewBox="0 0 25 25" preserveAspectRatio="xMidYMid">
+                        <polygon class="fill" points="3,2.5 23,12.5 3,22.5"></polygon>
+                    </svg>
+                </div>
+                <div id="video-control-bar">
+                    <div id="video-control-bar-wrapper">
+                        <div id="timeline-container">
+                            <div id="timeline" on-mousedown="_onDragStart" on-touchstart="_onDragStart">
+                                <div id="timeline-progress"></div>
+                                <timeline-overlay-anchors overlays="{{overlays}}"></timeline-overlay-anchors>
+                                <div id="timeline-time-label-container">
+                                    <div id="timeline-time-label-offset"></div>
+                                    <div id="timeline-time-label">0:00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="fullscreen-button" class="video-control-button" on-click="toggleFullScreen">
+                            <svg id="fullscreen-expand" viewBox="0 0 1792 1792">
+                                <path d="M883 1056q0 13-10 23l-332 332 144 144q19 19 19 45t-19 45-45 19h-448q-26 0-45-19t-19-45v-448q0-26 19-45t45-19 45 19l144 144 332-332q10-10 23-10t23 10l114 114q10 10 10 23zm781-864v448q0 26-19 45t-45 19-45-19l-144-144-332 332q-10 10-23 10t-23-10l-114-114q-10-10-10-23t10-23l332-332-144-144q-19-19-19-45t19-45 45-19h448q26 0 45 19t19 45z"/>
+                            </svg>
+                            <svg id="fullscreen-collapse" viewBox="0 0 1792 1792">
+                                <path d="M896 960v448q0 26-19 45t-45 19-45-19l-144-144-332 332q-10 10-23 10t-23-10l-114-114q-10-10-10-23t10-23l332-332-144-144q-19-19-19-45t19-45 45-19h448q26 0 45 19t19 45zm755-672q0 13-10 23l-332 332 144 144q19 19 19 45t-19 45-45 19h-448q-26 0-45-19t-19-45v-448q0-26 19-45t45-19 45 19l144 144 332-332q10-10 23-10t23 10l114 114q10 10 10 23z"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'video-controls',
+        properties: {
+            // overlays are only required for forwarding to timeline-overlay-anchors
+            overlays: {
+                type: Array
+            },
+            duration: {
+                type: Number
+            },
+            position: {
+                type: Number,
+                value: 0,
+                observer: '_updateTimelinePosition'
+            },
+            state: {
+                type: String,
+                value: 'pause',
+                observer: '_stateChange'
+            },
+            _videoControlsVisible: {
+                value: true
+            },
+            videoStarted: {
+                value: false,
+                observer: '_onVideoStart'
+            },
+            _videoControlsDisabled: {
+                value: false
+            },
+            _timeLineDragInProcess: {
+                value: false
+            },
+            _controlsBarHovered: {
+                value: false
+            },
+            _timelinePosition: {
+                value: 0 // between 0 and 1
+            },
+            _time: {
+                value: 0 // time in seconds
+            },
+            _fullscreen: {
+                value: false
+            },
+            _timelineWidth : {
+                value: 0
+            },
+            _timelineOffsetLeft : {
+                value: 0
+            },
+            _hideControlsTimer : {
+                value: null
+            },
+            _displayNoneTimer : {
+                value: null
+            }
+        },
+        listeners: {
+            'video-controls.click': '_videoControlsClicked',
+            'video-controls.keydown': '_handleKeyDown',
+            'video-controls.mousemove': '_videoControlsMouseMove',
+            'video-controls.dblclick': 'toggleFullScreen'
+        },
+
+        attached: function() {
+            this._onDragMove = function(event) {
+                event.preventDefault(); // prevent Scrolling on mobile
+                this._setTimelinePosition(event);
+            }.bind(this);
+
+            this._onDragStop = function(event) {
+                event.preventDefault(); // prevent Scrolling on mobile
+                document.removeEventListener('mousemove', this._onDragMove);
+                document.removeEventListener('touchmove', this._onDragMove);
+                document.removeEventListener('mouseup', this._onDragStop);
+                document.removeEventListener('touchend', this._onDragStop);
+                document.removeEventListener('touchcancel', this._onDragStop);
+                this._timeLineDragInProcess = false;
+                this.hideVideoControls(1000);
+                this.$['video-controls'].focus(); // refocus the container for receiving keydown events
+                // We do not call this._setTimelinePosition in _onDragStop by purpose. This way the video can play
+                // while the user till holds the mousebutton and this played time will not be resettet by
+                // mouseup. This is useful while seeking
+            }.bind(this);
+
+            if (!window.inIFrame) { // hack to disable auto-scrolling when unit is embedded as an iframe
+                this.$['video-controls'].focus(); // for receiving keydown events
+            }
+
+            var timerReenableVideoControls;
+            function disableVideoControls() {
+                clearTimeout(timerReenableVideoControls);
+                this._videoControlsDisabled = true;
+                this.hideVideoControls(0);
+                this.$['video-controls'].style.zIndex = 0; // put video controls behind overlays
+            }
+
+            function enableVideoControls() {
+                timerReenableVideoControls = setTimeout(function() {
+                    this._videoControlsDisabled = false;
+                    this.$['video-controls'].style.zIndex = 1; // put video controls in front of overlays
+                }.bind(this), 100);
+            }
+
+            document.getElementById('app').addEventListener('showoverlay', function(event) {
+                var overlay = event.detail;
+                var isHideafterAnnotation = overlay.type.indexOf('annotation')!==-1
+                    && overlay.events && overlay.events.reduce(function(intermediateValue, event) {
+                        return intermediateValue || event.type === 'HIDEAFTER';
+                    }, false);
+                if (!isHideafterAnnotation) {
+                    disableVideoControls.call(this);
+                } else { // for hideafter annotations the controls should stay activated / be reactivated
+                    enableVideoControls.call(this);
+                }
+            }.bind(this));
+
+            document.getElementById('app').addEventListener('hideoverlay', function() {
+                enableVideoControls.call(this);
+            }.bind(this));
+
+            if (window.isPlayer) {
+                document.getElementById('loading-animation').addEventListener('animationfinished', function() {
+                    this.$['play-pause-button'].style.visibility = 'visible';
+                }.bind(this));
+            } else {
+                this.$['play-pause-button'].style.visibility = 'visible';
+            }
+
+            if (this.videoStarted) {
+                this._onVideoStart();
+            }
+        },
+
+        _onVideoStart: function(started) {
+            if (started) {
+                this.$['video-controls'].style.pointerEvents = 'auto';
+                this.hideVideoControls();
+            }
+        },
+
+        hideVideoControls: function(time) { // time is optional
+            if (!this.videoStarted) {
+                return; // force the video controls to stay visible when video did not start yet
+            }
+            clearTimeout(this._hideControlsTimer);
+            clearTimeout(this._displayNoneTimer);
+            this._hideControlsTimer = setTimeout(function () {
+                if (this._videoControlsVisible && !this._timeLineDragInProcess && !this._controlsBarHovered) {
+                    requestAnimationFrame(function() {
+                        this._videoControlsVisible = false;
+                        if (window.isMobile) {
+                            this.$['video-controls-bottom'].style.display = 'none';
+                        } else {
+                            this.$['video-controls-bottom'].style.opacity = 0;
+                            this._displayNoneTimer = setTimeout(function() {
+                                this.$['video-controls-bottom'].style.display = 'none';
+                            }.bind(this), 800);
+                        }
+                    }.bind(this));
+                }
+            }.bind(this), typeof(time) === 'number' ? time : (window.isMobile ? 3000 : 1000));
+        },
+
+        showVideoControls: function(time) { // time is optional. it's the time when to hide again
+            if (this._videoControlsDisabled) {
+                return;
+            }
+            if (!this._videoControlsVisible) {
+                requestAnimationFrame(function() {
+                    this._videoControlsVisible = true;
+                    this.$['video-controls-bottom'].style.display = 'block';
+                    this.$['video-controls-bottom'].offsetWidth; // force a rerender
+                    this.$['video-controls-bottom'].style.opacity = 1;
+                }.bind(this));
+            }
+            this.hideVideoControls(time);
+        },
+
+        getPlayPauseButtonBoundingRect: function() {
+            return this.$['play-pause-button'].getBoundingClientRect();
+        },
+
+        toggleFullScreen: function() {
+            if (!this._fullscreen) {
+                var requestFullScreen = document.documentElement.requestFullscreen
+                    || document.documentElement.msRequestFullscreen
+                    || document.documentElement.mozRequestFullScreen
+                    || document.documentElement.webkitRequestFullscreen;
+                requestFullScreen.call(document.documentElement, Element.ALLOW_KEYBOARD_INPUT);
+                this.$['fullscreen-expand'].style.display = 'none';
+                this.$['fullscreen-collapse'].style.display = 'block';
+            } else {
+                var exitFullFullScreen = document.exitFullscreen || document.msExitFullscreen
+                    || document.mozCancelFullScreen || document.webkitExitFullscreen;
+                exitFullFullScreen.call(document);
+                this.$['fullscreen-expand'].style.display = 'block';
+                this.$['fullscreen-collapse'].style.display = 'none';
+            }
+            this._fullscreen = !this._fullscreen;
+        },
+
+        _togglePlayStatus : function() {
+            player.toggle();
+        },
+
+        _renderTimeline: function() {
+            requestAnimationFrame(function() {
+                var widthString = (this._timelinePosition*100) + "%";
+                this.$['timeline-progress'].style.width = widthString;
+                this.$['timeline-time-label-offset'].style.width = widthString;
+                var minutes = Math.floor(this._time / 60);
+                var seconds = Math.floor(this._time % 60);
+                this.$['timeline-time-label'].firstChild.nodeValue = minutes + ':' + (seconds<10? '0' : '') + seconds;
+            }.bind(this));
+        },
+
+        _updateTimelinePosition: function(givenTime) {
+            this._time = Math.round(givenTime);
+            this._timelinePosition = givenTime / this.duration;
+            this._renderTimeline();
+        },
+
+        _setTimelinePosition: function(event) {
+            if (this._videoControlsDisabled)
+                return;
+            var pageX = event.pageX !== undefined ? event.pageX : event.originalEvent.changedTouches[0].pageX;
+            this._timelinePosition = Math.max(0, Math.min((pageX - this._timelineOffsetLeft) / this._timelineWidth, 1)); // in 0..1
+            this._time = this._timelinePosition * this.duration;
+            window.EventTimer.seekTo(this._time);
+        },
+
+        _onDragStart: function(event) {
+            event.preventDefault(); // prevent Scrolling on mobile
+            var timelineBoundingRect = this.$['timeline'].getBoundingClientRect();
+            var timelinePadding = parseInt(window.getComputedStyle(this.$['timeline']).padding);
+            this._timelineWidth = timelineBoundingRect.width - 2*timelinePadding;
+            this._timelineOffsetLeft = timelineBoundingRect.left + timelinePadding;
+            this._timeLineDragInProcess = true;
+            this._setTimelinePosition(event);
+            document.addEventListener('mousemove', this._onDragMove);
+            document.addEventListener('touchmove', this._onDragMove);
+            document.addEventListener('mouseup', this._onDragStop);
+            document.addEventListener('touchend', this._onDragStop);
+            document.addEventListener('touchcancel', this._onDragStop);
+        },
+
+        _videoControlsClicked: function() {
+            if (window.isMobile) { // on mobile toggle video controls visibility
+                if (this._videoControlsVisible) {
+                    this.hideVideoControls(0);
+                } else {
+                    this.showVideoControls();
+                }
+            } else { // on desktop toggle play status
+                this._togglePlayStatus();
+            }
+        },
+
+        _handleKeyDown: function(event) {
+            if (this._videoControlsDisabled)
+                return;
+            if (event.keyCode == 32) // space
+                this._togglePlayStatus();
+            else if (event.keyCode == 37 || event.keyCode == 39) { // left and right arrows
+                var offset = event.keyCode == 37 ? -10 : 10;
+                EventTimer.seekTo(player.getCurrentTime() + offset);
+            } else {
+                return;
+            }
+            event.preventDefault();
+        },
+
+        _containsElement: function(container, element) {
+            while (element && element!==container) {
+                element = element.parentNode;
+            }
+            return container===element;
+        },
+
+        _videoControlsMouseMove: function(event) {
+            if (window.isMobile || this._timeLineDragInProcess || this._containsElement(this.$['video-controls-bottom'], event.target))
+                return; // avoid showing the header bar while moving the mouse on the controlbar
+            this.showVideoControls();
+        },
+
+        _stopPropagation: function(event) {
+            event.stopPropagation();
+        },
+
+        _videoControlsBottomMouseEnter: function() {
+            this._controlsBarHovered = true;
+            this.showVideoControls();
+        },
+
+        _videoControlsBottomMouseLeave: function() {
+            this._controlsBarHovered = false;
+            this.hideVideoControls(100);
+        },
+
+        _stateChange: function(state){
+            if(state==='play'){
+                this.showVideoControls();
+                requestAnimationFrame(function() {
+                    this.$['pause-button'].style.display = 'block';
+                    this.$['play-button'].style.display = 'none';
+                }.bind(this));
+            } else {
+                this.showVideoControls();
+                requestAnimationFrame(function() {
+                    this.$['pause-button'].style.display = 'none';
+                    this.$['play-button'].style.display = 'block';
+                }.bind(this));
+            }
+        }
+    });
+})();
+</script>

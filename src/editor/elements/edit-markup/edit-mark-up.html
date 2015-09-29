@@ -1,0 +1,40 @@
+<script>
+'use strict';
+window.Capira.EditableMarkup = {
+    properties: {
+        uneditable: {
+            value: false
+        }
+    },
+    listeners: {
+        'focus': '_enterEditMode',
+        'blur': '_leaveEditMode'
+    },
+    attached: function() {
+        if (!this.uneditable) {
+            Polymer.dom(this).setAttribute('contenteditable', true);
+            this.style.zIndex = 99; // put the mark-up on top of for example paper-ripple
+            this.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+            this.addEventListener('keydown', function(event) {
+                event.stopPropagation();
+                if (event.keyCode === 13) { // enter
+                    // finish the edit mode
+                    this.blur();
+                    event.preventDefault();
+                }
+            });
+        }
+    },
+    _enterEditMode: function() {
+        this.inEditMode = true;
+        Polymer.dom(this).textContent = this.content;
+    },
+    _leaveEditMode: function() {
+        this.inEditMode = false;
+        this.set('content', Polymer.dom(this).textContent);
+        //this._parseText(this.content);
+    }
+};
+</script>

@@ -1,0 +1,15 @@
+<dom-module id="overlay-top-bar">
+    <template>
+	    <timestamp-input overlay="{{overlay}}"></timestamp-input>
+        <span class="flex"></span>
+        <home-button></home-button>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'overlay-top-bar',
+        behaviors: [Capira.TopBar]
+    });
+})();
+</script>

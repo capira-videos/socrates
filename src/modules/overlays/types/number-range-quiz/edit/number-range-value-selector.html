@@ -1,0 +1,18 @@
+<dom-module id="number-range-value-selector">
+    <template>
+        <paper-input value="{{selected}}"></paper-input>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'number-range-value-selector',
+        properties: {
+            selected: {
+                notify: true
+            }
+        }
+    });
+})();
+</script>

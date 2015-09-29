@@ -1,0 +1,54 @@
+<dom-module id="mathslang-item-view">
+    <style>
+    :host {
+        cursor: pointer;
+        background: white;
+        width: 40px;
+        border-radius: 4px;
+        border: 1px solid lightgrey;
+        display: inline-block;
+        text-align: center;
+    }
+    
+    :host:hover {
+        border-color: green;
+    }
+    
+    #item {
+        @apply(--paper-font-body1);
+        cursor: pointer;
+    }
+    </style>
+    <template>
+        <span id="item">{{caption}}</span>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mathslang-item-view',
+        properties: {
+            index: Number,
+            item: Object,
+            caption: {
+                computed: '_compute(index)'
+            }
+        },
+        _compute: function() {
+            return 'x' + this.index;
+        },
+        attached: function() {
+            this.addEventListener('mouseenter', function() {
+                this.fire('highlight-item', this.item);
+            }.bind(this));
+            this.addEventListener('mouseleave', function() {
+                this.fire('unhighlight-item', this.item);
+            }.bind(this));
+            this.addEventListener('click',function(){
+                this.fire('add-item',this.caption);
+            }.bind(this));
+        }
+    });
+})();
+</script>

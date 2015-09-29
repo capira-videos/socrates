@@ -1,0 +1,27 @@
+<script>
+window.Capira = window.Capira || {};
+window.Capira.EditSingleAnswer = {
+    listeners: {
+        'create-item': '_createItem'
+    },
+
+    //FIXME Why doesn't this work with attached???
+    ready: function() {
+        var addButton = app.create('add-single-answer-button');
+        Polymer.dom(this.$.items).appendChild(addButton);
+    },
+    _createItem: function() {
+        this.overlay.options = this.overlay.options ? this.overlay.options : [];
+        this.push('overlay.options', 'Type an answer');
+    }
+};
+
+window.Capira.CanNotShuffle = {
+    _shuffle: function(a, b) {
+        return -1;
+    },
+    _findOriginalIndex: function(option) {
+        return this.overlay.options.indexOf(option);
+    }
+};
+</script>

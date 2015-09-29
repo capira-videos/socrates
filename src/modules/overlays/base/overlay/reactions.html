@@ -1,0 +1,47 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.Reactions = {
+    exec: function(reaction) {
+        switch(reaction.type) {
+            case 'play':
+                this._play();
+                break;
+            case 'hideOverlay':
+                this._hideOverlay(reaction.target);
+                break;
+            case 'showOverlay':
+                this._showOverlay(reaction.target);
+                break;
+            case 'seekTo':
+                this._seekTo(reaction.target);
+                break;
+            case 'stop':
+                this._stop();
+        }
+    },
+    _showOverlay: function(target) {
+        app.overlays.show(target);
+    },
+    _seekTo: function(target) {
+        app.overlays.hide();
+        app.player.seekTo(target);
+        app.player.play();
+    },
+    _stop: function() {
+        app.player.pause();
+    },
+    _play: function() {
+        this._hideOverlay();
+        if (app.player) {
+            app.player.play();
+        }
+    },
+    _repeat: function() {
+        return;
+    },
+    _hideOverlay: function() {
+        app.overlays.hide();
+    },
+};
+</script>

@@ -1,0 +1,126 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+
+window.Capira.AnimatableOverlayImpl = {
+    properties: {
+        animationConfig: {
+            value: function() {
+                return {
+                    'entry': [{
+                        name: 'transform-animation',
+                        node: this,
+                        transformFrom: 'translateY(50vh) scale(0.8,1)',
+                        timing: {
+                            delay: 100,
+                            duration: 700,
+                            easing: 'cubic-bezier(0.465, 0.183, 0.153, 0.946)'
+                        }
+                    }, {
+                        name: 'fade-in-animation',
+                        node: this,
+                        timing: {
+                            delay: 150,
+                            duration: 700,
+                        }
+                    }],
+                    'entry-back': [{
+                        name: 'transform-animation',
+                        node: this,
+                        transformFrom: 'translateY(-50vh) scale(0.8,1)',
+                        timing: {
+                            delay: 100,
+                            duration: 700,
+                            easing: 'cubic-bezier(0.465, 0.183, 0.153, 0.946)'
+                        }
+                    }, {
+                        name: 'fade-in-animation',
+                        node: this,
+                        timing: {
+                            duration: 600,
+                            delay: 100
+                        }
+                    }],
+                    'exit': [{
+                        name: 'transform-animation',
+                        node: this,
+                        transformTo: 'translateY(-100vh) scale(0.8,1)',
+                        timing: {
+                            duration: 700,
+                            easing: 'cubic-bezier(0.465, 0.183, 0.153, 0.946)'
+                        }
+                    }, {
+                        name: 'fade-out-animation',
+                        node: this,
+                        timing: {
+                            duration: 600,
+                            delay: 100
+                        }
+                    }],
+                    'exit-back': [{
+                        name: 'transform-animation',
+                        node: this,
+                        transformTo: 'translateY(100vh) scale(0.8,1)',
+                        timing: {
+                            duration: 700,
+                            easing: 'cubic-bezier(0.465, 0.183, 0.153, 0.946)'
+                        }
+                    }, {
+                        name: 'fade-out-animation',
+                        node: this,
+                        timing: {
+                            duration: 600,
+                            delay: 100
+                        }
+                    }]
+                };
+            }
+        }
+    },
+    listeners: {
+        'neon-animation-finish': '_onNeonAnimationFinish',
+    },
+    attached: function() {
+        this.style.transform = 'translate3d(0,0,0)';
+    },
+
+    _show: function() {
+        if (!this.backPressed) {
+            this.playAnimation('entry');
+        } else {
+            this.playAnimation('entry-back');
+            this.backPressed = false;
+        }
+    },
+
+    showBack: function() {
+        this.backPressed = true;
+        this.show();
+    },
+
+    hideBack: function() {
+        this.backPressed = true;
+        this.hide();
+    },
+
+    _hide: function() {
+        if (!this.backPressed) {
+            this.playAnimation('exit');
+        } else {
+            this.playAnimation('exit-back');
+            this.backPressed = false;
+        }
+    },
+
+    _onNeonAnimationFinish: function(e) {
+        console.log('animatable-overlay.html, _onNeonAnimationFinish');
+        if (!this.opened) {
+            this.style.display = 'none';
+        } else {
+            this.shown();
+        }
+    }
+};
+
+Capira.AnimatableOverlay = [Capira.AnimatableOverlayImpl, Polymer.NeonAnimationRunnerBehavior];
+</script>

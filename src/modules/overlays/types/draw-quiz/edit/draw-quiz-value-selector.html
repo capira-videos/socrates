@@ -1,0 +1,41 @@
+<link rel="import" href="../../../../../../bower_components/iron-image/iron-image.html">
+<dom-module id="draw-quiz-value-selector">
+    <style>
+    :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+    }
+    
+    #options {
+        display: inline-block;
+    }
+    
+    paper-checkbox {
+        display: block;
+    }
+    </style>
+    <template>
+        <iron-image style="width:200px; height:112.5px;" sizing="cover" preload src="{{combination.value.src}}"></iron-image>
+        <span id="options">
+            <paper-input value="{{combination.value.threshold}}" type="Number" step="0.01" min="0" max="1" label="Threshold"></paper-input>
+            <paper-checkbox checked="{{combination.value.scale}}">Scale</paper-checkbox>
+            <paper-checkbox checked="{{combination.value.translateX}}">Translate X</paper-checkbox>
+            <paper-checkbox checked="{{combination.value.translateY}}">Translate Y</paper-checkbox>
+        </span>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'draw-quiz-value-selector',
+        properties: {
+            combination: {
+                type: Object,
+                notify: true
+            }
+        },
+
+    });
+})();
+</script>

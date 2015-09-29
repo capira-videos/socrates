@@ -1,0 +1,27 @@
+<dom-module id="draw-quiz-top-bar">
+    <style>
+    :host {
+    }
+    #toolbox{
+        box-shadow: none;
+    }
+    </style>
+    <template>
+        <tool-box id="toolbox">
+            <toolbox-icon icon="brush" name="pen"></toolbox-icon>
+            <toolbox-icon icon="line" name="line"></toolbox-icon>
+            <toolbox-icon icon="eraser" name="eraser"></toolbox-icon>
+            <toolbox-icon icon="undo" name="undo" unselectable></toolbox-icon>
+            <toolbox-icon icon="delete" name="clear" unselectable></toolbox-icon>
+        </tool-box>
+        <div class="flex"></div>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'draw-quiz-top-bar',
+        behaviors: [Capira.TopBar]
+    });
+})();
+</script>

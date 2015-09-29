@@ -1,0 +1,32 @@
+<!--TODO: fix XSS vulnerability! -->
+<dom-module id="mark-up">
+    <style>
+    :host {
+        width: 100%;
+    }
+    </style>
+    <template>
+        <content></content>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mark-up',
+        behaviors: Capira.combineBehaviors(Capira.MarkupImpl, [], Capira.EditableMarkup),
+        properties: {
+            content: {
+                type: String,
+                notify: true,
+                observer: '_parseText'
+            }
+        },
+        _parseText: function(text) {
+            if (text) {
+                Polymer.dom(this).innerHTML = text;
+            }
+        }
+    });
+})();
+</script>

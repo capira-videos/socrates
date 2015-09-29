@@ -1,0 +1,102 @@
+<link rel="import" href="../../../base/draw-canvas/draw-canvas.html">
+<link rel="import" href="../hotspot-quiz.html">
+<dom-module id="hotspot-quiz-editor">
+    <style>
+    #mask {
+        border: 1px solid black;
+    }
+    
+    #mask {
+        opacity: 0.5;
+    }
+    </style>
+    <template>
+        <draw-canvas id="mask"></draw-canvas>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'hotspot-quiz-editor',
+        behaviors: [Capira.Overlay,Capira.HasTools],
+        properties: {
+            colorIndex: {
+                type: Number,
+                value: 0,
+                observer: '_updateColor'
+            },
+            color: {
+                type: String,
+                notify: true,
+                observer: '_setColor'
+            },
+            overlay: {
+                type: Object,
+                notfiy: true,
+                observer: '_updateOverlay'
+            }
+        },
+
+        _updateOverlay: function() {
+            var mask = this.$.mask;
+            if (this.overlay && this.overlay.mask) {
+                //mask.paintDataUrl(this.overlay.mask);
+                mask.set('paths',this.overlay.mask);
+            }
+        },
+
+        _updateColor: function(colorIndex) {
+            var max = 'FF';
+            var min = '00';
+            if (colorIndex > 11) {
+                min = 'AA';
+            } else if (colorIndex > 5) {
+                max = '99';
+            }
+
+            if (colorIndex % 2 === 0) {
+                var tmp = max;
+                max = min;
+                min = tmp;
+            }
+
+            var color;
+
+            switch (colorIndex % 3) {
+                case 0:
+                    color = max + max + min;
+                    break;
+                case 1:
+                    color = max + min + max;
+                    break;
+                case 2:
+                    color = min + max + max;
+            }
+
+            this.$.mask.history = [];
+            color = '#' + color;
+            this.color = color;
+            this._setColor(color);
+        },
+
+        _setColor: function() {
+            this.$.mask.color = this.color;
+        },
+
+        setPenSize: function(size) {
+            this.$.mask.penSize = size;
+        },
+
+        _save: function() {
+            //return this.$.mask.toDataURL();
+            this.overlay.mask = this.$.mask.paths;
+        },
+        attached: function() {
+            this.setPenSize(15);
+            this.$.mask.smoothing = false;
+        },
+
+    });
+})();
+</script>

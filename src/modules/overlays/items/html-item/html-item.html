@@ -1,0 +1,26 @@
+<link rel="import" href="../item.html">
+<dom-module id="html-item">
+    <style>
+    #caption {
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+    <template>
+        <mark-up id="caption"></mark-up>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'html-item',
+        behaviors: [Capira.Item],
+        attached: function() {
+            //TODO: Fix XSS Vulnerability!
+            this.$.caption.content = this.item.caption;
+        }
+
+    });
+})();
+</script>

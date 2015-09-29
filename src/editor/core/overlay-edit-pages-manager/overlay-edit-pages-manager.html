@@ -1,0 +1,108 @@
+<link rel="import" href="../../../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../elements/empty-page/empty-page.html">
+<dom-module id="overlay-edit-pages-manager">
+    <style>
+    :host {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+    </style>
+    <template>
+        <neon-animated-pages selected="{{openedPage}}" attr-for-selected="id" animate-initial-selection>
+            <single-answer-quiz-edit-page id="single-answer-quiz-edit-page"></single-answer-quiz-edit-page>
+            <custom-quiz-edit-page id="custom-quiz-edit-page"></custom-quiz-edit-page>
+            <standard-annotation-edit-page id="standard-annotation-edit-page"></standard-annotation-edit-page>
+            <hotspot-quiz-edit-page id="hotspot-quiz-edit-page"></hotspot-quiz-edit-page>
+            <draw-quiz-edit-page id="draw-quiz-edit-page"></draw-quiz-edit-page>
+            <multi-answer-quiz-edit-page id="multi-answer-quiz-edit-page"></multi-answer-quiz-edit-page>
+            <math-quiz-edit-page id="math-quiz-edit-page"></math-quiz-edit-page>
+            <short-answer-quiz-edit-page id="short-answer-quiz-edit-page"></short-answer-quiz-edit-page>
+            <empty-page id="empty"></empty-page>
+        </neon-animated-pages>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'overlay-edit-pages-manager',
+        properties: {
+            unit: {
+                type: Object,
+                notify: true
+            },
+            openedPage: {
+                type: String,
+                notify: true
+            },
+            _openedOverlay: {
+                type: Object,
+                notify: true
+            },
+            _openedOverlayId: {
+                type: Object, // might be a String or Number
+                value: null
+            }
+        },
+        listeners: {
+            'home-state': 'hide'
+        },
+        attached: function() {
+            this.fire('pages-ready');
+            window.dispatchEvent(new Event('resize'));
+        },
+        show: function(overlayId) {
+            if (overlayId !== this._openedOverlayId) {
+
+                this.hide(true);
+                var overlayIndex = this._getOverlayIndexById(overlayId);
+                var overlay = this.unit.overlays[overlayIndex];
+                this._openedOverlayId = overlayId;
+                this._openedOverlay = overlay;
+                this.openedPage = overlay.type + '-edit-page';
+                this.openedPageElem = this.$[this.openedPage];
+                this.openedPageElem.addEventListener('overlay-changed', this._changeListener.bind(this));
+                this.openedPageElem.set('overlay', this._openedOverlay);
+
+
+                this.openedPageElem.show();
+                app.fire('showoverlay', overlay);
+            }
+        },
+        hide: function(keepOpen) {
+            var overlayId = this._openedOverlayId;
+            if (overlayId !== null) {
+                this.openedPageElem.removeEventListener(this._changeListener);
+                this._openedOverlayId = null;
+                this._openedOverlay = null;
+                app.fire('hideoverlay', null);
+                this.openedPage = 'empty';
+            }
+            if (!keepOpen) {
+                this.fire('home-state');
+            }
+        },
+        _getOverlayIndexById: function(id) {
+            for (var i = 0; i < this.unit.overlays.length; ++i) {
+                var overlay = this.unit.overlays[i];
+                if (overlay.id === id) {
+                    return i;
+                }
+            }
+            return -1;
+        },
+        _changeListener: function(e) {
+            if (e.detail.path) {
+                var path = 'unit.overlays.' + this._getOverlayIndexById(this._openedOverlayId) + e.detail.path.replace('overlay', '');
+                var value = e.detail.value;
+                this.notifyPath(path, value);
+            }
+        }
+    });
+})();
+</script>

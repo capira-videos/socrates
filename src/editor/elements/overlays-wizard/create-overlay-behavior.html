@@ -1,0 +1,26 @@
+<script>
+Capira.CreateOverlayBehavior = {
+    _createOverlay: function(overlayPath) {
+        var overlay = this.get(overlayPath);
+        //TODO: Fix XSS Vulnerability!
+        var overlayEl = app.create(overlay.type, {
+            id: 'overlay' + overlay.id,
+            overlay: overlay
+        });
+        // establish data binding to the dynamically created element
+        overlayEl.addEventListener('overlay-changed', function(event) {
+            var detail = event.detail;
+            var path;
+            if (detail.path) {
+                // changed a deep path of the overlay
+                path = detail.path.replace('overlay', overlayPath);
+            } else {
+                // changed the overlay itself
+                path = overlayPath;
+            }
+            this.notifyPath(path, detail.value);
+        }.bind(this));
+        return overlayEl;
+    }
+};
+</script>

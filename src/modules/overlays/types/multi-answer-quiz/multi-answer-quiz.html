@@ -1,0 +1,63 @@
+<link rel="import" href="../../base/quiz/quiz-base.html">
+<link rel="import" href="../../base/quiz/quiz-card.html">
+<link rel="import" href="../../base/quiz/can-shuffle.html">
+<link rel="import" href="../../base/quiz/slang.html">
+<dom-module id="multi-answer-quiz">
+    <style>
+    :host paper-checkbox {
+        padding: 16px 28px;
+        width: 100%;
+        box-sizing: border-box;
+        @apply(--paper-font-subhead);
+        position: relative;
+        cursor: pointer;
+    }
+    
+    #items {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+    </style>
+    <template>
+        <quiz-card id="card" question="{{overlay.question}}">
+            <div id="items">
+                <iron-selector selected-values="{{selected}}" multi="true" attr-for-selected="dataIndex" selected-attribute="checked">
+                    <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle">
+                        <paper-checkbox data-index="[[_findOriginalIndex(item)]]" on-click="_selectionChanged">
+                            <mark-up content="{{item}}">placeholder</mark-up>
+                        </paper-checkbox>
+                    </template>
+                </iron-selector>
+            </div>
+        </quiz-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'multi-answer-quiz',
+        behaviors: [Capira.Quiz, Capira.CanShuffle, Capira.Slang],
+        _show: function() {
+            this.selected = null;
+        },
+        _compare: function(expected, given) {
+            expected = JSON.parse(expected).sort();
+            return JSON.stringify(expected) === JSON.stringify(given);
+        },
+        _valueEquals: function(expected, given) {
+            return this.logicslang.compare(expected, given, this._compare);
+        },
+        _selectionChanged: function() {
+            this.value = this.selected.map(function(e) {
+                return e || 0;
+            });
+            this.value.sort();
+            this.fire('answer-changed');
+        },
+        enterPressed: function() {
+            return;
+        }
+    });
+})();
+</script>

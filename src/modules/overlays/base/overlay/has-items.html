@@ -1,0 +1,41 @@
+<link rel="import" href="resizable-overlay.html">
+<link rel="import" href="../../items/html-item/html-item.html">
+<link rel="import" href="../../items/input-item/input-item.html">
+<link rel="import" href="../../items/image-item/image-item.html">
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+Capira.HasItemsImpl = {
+    attached: function() {
+        this.resizingElem = this.$.content;
+    },
+    _show: function() {
+        this.resizingElem.style.width = '800px';
+        this.resizingElem.style.height = '450px';
+    },
+    _overlayChanged: function() {
+        this._initItems();
+    },
+    _initItems: function() {
+        var that = this;
+        this._clear();
+        if (this.overlay.items) {
+            this.overlay.items.forEach(function(item) {
+                var type = item.type;
+                var elem = app.create(type, {
+                    id: 'item' + item.id,
+                    item: item,
+                });
+                Polymer.dom(that.$.content).appendChild(elem);
+            });
+        }
+    },
+    _clear: function() {
+        var content = Polymer.dom(this.$.content);
+        while (content.firstChild) {
+            content.removeChild(content.firstChild);
+        }
+    }
+};
+Capira.HasItems = [Capira.HasItemsImpl, Capira.ResizableOverlay];
+</script>

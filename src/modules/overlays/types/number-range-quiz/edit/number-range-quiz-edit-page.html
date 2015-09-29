@@ -1,0 +1,23 @@
+<link rel="import" href="number-range-value-selector.html">
+<dom-module id="number-range-quiz-edit-page">
+    <template>
+        <edit-page-layout>
+            <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
+            <number-range-quiz main states="default combination" overlay="{{overlay}}"></number-range-quiz>
+            <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
+            <answer-editor right states="combination" combination="{{selectedCombination}}">
+                <number-range-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></number-range-value-selector>
+            </answer-editor>
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'number-range-quiz-edit-page',
+        behaviors: [Capira.QuizEditPage],
+
+    });
+})();
+</script>

@@ -1,0 +1,19 @@
+<dom-module id="empty-right-bar">
+    <style>
+    :host {
+        display: block;
+        background-color: rgb(215, 215, 215);
+    }
+    </style>
+    <template>
+        <div></div>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'empty-right-bar',
+        behaviors:[Capira.RightBar]
+    });
+})();
+</script>

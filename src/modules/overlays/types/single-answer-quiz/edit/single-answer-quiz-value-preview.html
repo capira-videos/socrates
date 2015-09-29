@@ -1,0 +1,25 @@
+<dom-module id="single-answer-quiz-value-preview">
+    <template>
+        <span>{{displayedValue(value)}}</span>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'single-answer-quiz-value-preview',
+        properties: {
+            value: {
+                type: Number
+            }
+        },
+        displayedValue: function(value) {
+            if (value.indexOf) {
+                return value;
+            } else {
+                return String.fromCharCode(65 + value);
+            }
+        }
+    });
+})();
+</script>

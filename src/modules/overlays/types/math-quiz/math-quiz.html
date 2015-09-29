@@ -1,0 +1,37 @@
+<link rel="import" href="../../base/quiz/quiz-base.html">
+<link rel="import" href="../../base/quiz/quiz-card.html">
+<link rel="import" href="../../base/quiz/slang.html">
+
+<dom-module id="math-quiz">
+    <style>
+    paper-input {
+        width: 304px;
+        margin: 0 auto;
+        padding: 64px 0 64px 0;
+    }
+    </style>
+    <template>
+        <quiz-card id="card" question="{{overlay.question}}">
+            <paper-input value="{{value}}" label="Input math answer" id="input"></paper-input>
+        </quiz-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'math-quiz',
+        behaviors: [Capira.Quiz, Capira.Slang],
+        _valueEquals: function(expected, given) {
+            if(typeof expected === 'string') {
+                return Slang.mathslang.compare(expected, given);
+            } else {
+                return Slang.mathslang.compare(expected.expr, given, expected.units);
+            }
+        },
+        _shown: function() {
+            this.$.input.$.input.focus();
+        }
+    });
+})();
+</script>

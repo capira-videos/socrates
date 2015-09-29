@@ -1,0 +1,37 @@
+<script>
+(function(window) {
+    'use strict';
+
+    // static private variable:
+    var overlaysManager = document.getElementById('overlays');
+    var userPerformance = {}; // map quizId -> performance
+    var listeners = []; // list of methods eventListener(overlay,progress)
+
+    overlaysManager.addEventListener('quizcorrectlyanswered', function(event) {
+        var quiz = event.detail;
+        userPerformance[quiz.id] = 1;
+        _triggerListeners(quiz, userPerformance[quiz.id]);
+    });
+
+    overlaysManager.addEventListener('quizskipped', function(event) {
+        var quiz = event.detail;
+        userPerformance[quiz.id] = -1;
+        _triggerListeners(quiz, userPerformance[quiz.id]);
+    });
+
+    function _triggerListeners(quiz, performance) {
+        for (var i=0; i<listeners.length; ++i) {
+            listeners[i](quiz, performance);
+        }
+    }
+
+    window.Capira.UserPerformance = {
+        getUserPerformance: function() {
+            return userPerformance;
+        },
+        addListener: function(listener) {
+            listeners.push(listener);
+        }
+    }
+})(window);
+</script>

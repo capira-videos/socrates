@@ -1,0 +1,23 @@
+<link rel="import" href="multi-answer-value-selector.html">
+<dom-module id="multi-answer-quiz-edit-page">
+    <template>
+        <edit-page-layout>
+            <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
+            <multi-answer-quiz main states="default combination" overlay="{{overlay}}"></multi-answer-quiz>
+            <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
+            <answer-editor right states="combination" combination="{{selectedCombination}}">
+                <multi-answer-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></multi-answer-value-selector>
+            </answer-editor>
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'multi-answer-quiz-edit-page',
+        behaviors: [Capira.QuizEditPage],
+
+    });
+})();
+</script>

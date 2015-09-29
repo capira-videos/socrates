@@ -1,0 +1,31 @@
+<link rel="import" href="../../base/overlay/has-items.html">
+<link rel="import" href="../../base/overlay/overlay-base.html">
+<link rel="import" href="../../base/overlay/animatable-fab.html">
+<dom-module id="custom-annotation">
+    <style>
+    #fab {
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+    }
+    </style>
+    <template>
+        <div id="content"></div>
+        <animatable-fab on-tap="_goOn" icon="player-icons:play-arrow" id="fab"></animatable-fab>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'custom-annotation',
+        behaviors: [Capira.Overlay, Capira.HasItems],
+        _show: function() {
+            this.$.fab.showWithDelay();
+        },
+        _goOn:function(){
+            this.fire('skipped',this.overlay.reaction);
+        }
+    });
+})();
+</script>

@@ -1,0 +1,30 @@
+<dom-module id="toolbox-icon">
+    <style>    
+    :host {
+        display: inline-block;
+        --paper-icon-button-ink-color: #00bcd4;
+    }
+    </style>
+    <template>
+        <paper-icon-button icon="{{icon}}" id="my-button" on-tap="_iconClicked"></paper-icon-button>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'toolbox-icon',
+        properties: {
+            icon: String,
+            name: String,
+            unselectable: Boolean
+        },
+        ready: function() {
+            this.icon = 'player-icons:' + this.icon;
+        },
+        _iconClicked: function() {
+            this.fire('toolbox-clicked', this.name);
+        }
+    });
+})();
+</script>

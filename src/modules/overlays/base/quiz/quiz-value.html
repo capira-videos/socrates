@@ -1,0 +1,47 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+Capira.QuizValue = {
+    properties: {
+        value: {
+            observer: '_valueChanged',
+            notify: true
+        },
+    },
+    _valueChanged: function(value) {
+        this.fire('answer-changed', value);
+    },
+    _getCombinationByValue: function(value) {
+        //TODO: remove the serialize/deserialize overhead! 
+        var arr = this.overlay.combinations.slice();
+        arr.sort(this.sortFn);
+        for (var i = 0; i < arr.length; i++) {
+            var v = arr[i].value;
+            if (v === undefined || this._valueEquals(v, value)) {
+                return arr[i];
+            }
+        }
+        return undefined;
+    },
+    _valueEquals: function(expected, given) {
+        return a === b;
+    },
+    evaluate: function() {
+        return this._getCombinationByValue(this.value);
+    },
+    sortFn: function(a, b) {
+        if (a.value === undefined) {
+            return 1;
+        }
+        if (b.value === undefined) {
+            return -1;
+        }
+        if (a.grade === Capira.Grade.CORRECT) {
+            return -1;
+        }
+        if (a.grade === Capira.Grade.INCORRECT) {
+            return 1;
+        }
+    }
+};
+</script>

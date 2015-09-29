@@ -1,0 +1,19 @@
+<link rel="import" href="../../../../../../bower_components/iron-image/iron-image.html">
+<dom-module id="draw-quiz-value-preview">
+    <template>
+        <iron-image style="width:200px; height:112.5px;" sizing="cover" preload src="{{value.src}}" hidden$="{{!value.src}}"></iron-image>
+        <span hidden$="{{value.src}}">(default)</span>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'draw-quiz-value-preview',
+        properties: {
+            value: Object,
+            notify: true
+        },
+    });
+})();
+</script>

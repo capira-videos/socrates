@@ -1,0 +1,89 @@
+<link rel="import" href="../../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="overlay-miniature-card.html">
+<script type="text/javascript" src="overlays-palette.js"></script>
+<dom-module id="overlays-wizard">
+    <style>
+    :host {
+        display: block;
+        position: relative;
+    }
+    
+    paper-dialog {
+        width: calc(100% - 64px);
+        background-color: white;
+        height: calc(100vh - 64px);
+        padding-top: 56px;
+        box-sizing: border-box;
+    }
+    
+    #header {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 64px;
+        background-color: var(--paper-teal-400);
+        color: white;
+        margin-top: 0;
+        @apply(--paper-font-headline);
+        @apply(--layout);
+        @apply(--layout-center);
+    }
+    
+    .category-title {
+        @apply(--paper-font-title);
+        padding-top: 24px;
+    }
+    
+    paper-dialog-scrollable /deep/ #scrollable {
+        max-height: calc(100vh - 200px) !important;
+    }
+    </style>
+    <template>
+        <paper-dialog id="wizard" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <div id="header">Select an Overlay to create</div>
+            <paper-dialog-scrollable>
+                <template is="dom-repeat" items="{{overlaysPalette}}">
+                    <div class="category-title">{{item.category}}</div>
+                    <template is="dom-repeat" items="{{item.overlays}}">
+                        <overlay-miniature-card overlay="{{item}}" on-tap="_selected"></overlay-miniature-card>
+                    </template>
+                </template>
+            </paper-dialog-scrollable>
+        </paper-dialog>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'overlays-wizard',
+        properties: {
+            overlaysPalette: {
+                value: Capira.OverlaysPalette()
+            }
+        },
+        show: function() {
+            this.$.wizard.open();
+        },
+        _selected: function(e) {
+            console.log(e);
+            var overlay = e.target.overlay;
+            if (overlay) {
+                console.log('selected', overlay);
+                this.$.wizard.close();
+                var overlayTemplate = JSON.parse(JSON.stringify(overlay.template));
+                var currentTime = app.player && app.player.getCurrentTime ? app.player.getCurrentTime() : 0;
+                overlayTemplate.id = Date.now() + '';
+                overlayTemplate.events = [{
+                    type: 'STOP',
+                    start: currentTime,
+                }];
+                this.fire('overlay-created', overlayTemplate);
+            }
+
+        }
+    });
+})();
+</script>

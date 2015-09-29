@@ -1,0 +1,21 @@
+<script>
+Polymer({
+    is: 'route-manager',
+    properties: {
+        unitId: {
+            notify: true,
+        }
+    },
+    attached: function() {
+        var that = this;
+
+        function changeHandler() {
+            that.set('unitId', parseInt(window.location.hash.substr(1) || 5));
+            console.log('route changed to:', that.unitId);
+        }
+
+        window.addEventListener('hashchange', changeHandler, false);
+        changeHandler();
+    }
+});
+</script>

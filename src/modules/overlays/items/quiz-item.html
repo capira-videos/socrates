@@ -1,0 +1,20 @@
+<link rel="import" href="item.html">
+<script>
+'use strict';
+window.Capira.QuizItemImpl = {
+    properties: {
+        value: {
+            observer: '_valueChange',
+        }
+    },
+    _valueChange: function(value) {
+        if (value) {
+            this.fire('item-value-changed', {
+                id: this.item.id,
+                value: value
+            });
+        }
+    }
+};
+window.Capira.QuizItem = [Capira.Item, Capira.QuizItemImpl];
+</script>

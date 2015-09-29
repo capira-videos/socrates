@@ -1,0 +1,62 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+
+Capira.OverlayLifecycleImpl = {
+    attached: function() {
+        this.opened = false;
+        this.style.display = 'none';
+    },
+
+    show: function() {
+        var that = this;
+        this.opened = true;
+        this.style.display = 'block';
+        this.behaviors.forEach(function(behavior) {
+            if (behavior._show) {
+                behavior._show.call(that);
+            }
+        });
+        if (this._show) {
+            this._show();
+        }
+    },
+
+    shown: function() {
+        var that = this;
+        this.behaviors.forEach(function(behavior) {
+            if (behavior._shown) {
+                behavior._shown.call(that);
+            }
+        });
+        if (this._shown) {
+            this._shown();
+        }
+    },
+
+    hide: function() {
+        if (this.opened) {
+            this.opened = false;
+            var that = this;
+            this.behaviors.forEach(function(behavior) {
+                if (behavior._hide) {
+                    behavior._hide.call(that);
+                }
+            });
+            if (this._hide) {
+                //this._hide(); //TODO: trigger this only if it belongs to an element not a behavior
+            }
+        } else {
+            this.opened = false;
+            this.style.display = 'none';
+        }
+    }
+};
+Capira.OverlayLifecycleEditor = {
+    attached: function() {
+        this.opened = true;
+        this.style.display = 'block';
+    }
+};
+Capira.OverlayLifecycle=Capira.combineBehaviors(Capira.OverlayLifecycleImpl,[],Capira.OverlayLifecycleEditor);
+</script>

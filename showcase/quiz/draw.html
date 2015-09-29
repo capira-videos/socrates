@@ -1,0 +1,32 @@
+<script>
+addShowcase( [
+	{
+            id: 'draw-intro',
+            type: 'standard-annotation',
+            heading: 'Draw Quiz',
+            body: window.introMarkup('', ['Students can draw any shape on top of a video or image']),
+            reaction: {
+                type: 'showOverlay',
+                target: 'draw'
+            }
+        },
+
+        {
+            id: 'draw',
+            question: 'Draw a circle with diameter 1 and center at (3, 0).',
+            type: 'draw-quiz',
+            backgroundImage: '/static/img/user-quiz-images/coordinate-system.png',
+            combinations: [{
+                value: 'data:image/gif;base64,R0lGODdhIAPCAbMAAAAAAACA/wCqqgCq1QC1zQC10gC12wC60gC7zgC/3wDGxgDMzAD//////wAAAAAAACH5BAkAAA4ALAAAAAAgA8IBAAT/0MlJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvter/gsHhMLpvP6LR6zW673/C4fE6v2+/4vH7P7/v/gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZ2tvc3d7f4OHi4+Tl5ufo6err7O3u7/Dx8vP09fb3+Pn6+/z9/v8AAwocSLCgwYMIEypcyLChw4cQI0qcSLGixYsYM2rcyLGjx48g/0OKHEmypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLNq3cq1q9evYMOKHUu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOLH0++vPnz6NOrX8++vfv38OPLn0+/vv37+PPr38+/v///AAYo4P+ABBZo4IEIJqjgggw26OCDEEYo4YQUVmjhhRhmqOGGHHbo4YcghijiiCSWaOKJKKao4oostujiizDGKOOMNNZo44045qjjjjz26OOPQAYp5JBEFmnkkUgmqeSSTDbp5JNQRinllFRWaeWVWGap5ZZcdunll2CGKeaYZJZp5plopqnmmmy26eabcMYp55x01jncAXjaWQyefB6gZzB9Bsrnn7oIamifhNJy6KKBJvrKohMwOqijqUB6gaR+UlrKoR1IqqkohorA6KedcEqCpaRiEioKpqZayaoqwOpqJLKuIOistN4Kg664MlKrC7z2ikiwMjQqbCLEFovosYYkq+z/pMwO4uwMxkYbSLU4YGttH9pmC+223C67Q7fg4iHuuOeWm0e6OrCrbh3kepvnu+u6K2+m9N4R7w375utGvzUA7O8aAlNr78BtHMyvwgirwXDADzd8RsQGfyvxvxajm/HFBFMcg8cci1Hws/iGnDDIL6Bs8hcqt9DyylyMnPLLMGshM7A015zFzSzwrHPMPqeQ889YBM3qxkRPPLSoSyddxbS7Nu00FVDjjPTUZVTd89VYk/Gr1fN23bHRH5AtdtGtbs312VmjKrTUbD+N6chux33y3HiPanccefdt9t4s+4034HoI/jXhiCeu+OKMN+7445BHLvnklFdu+eWYZ675xeacd+7556CHLvropJdu+umop6766qy37vrrsMcu++y012777bjnrvvuvPfu++/ABy/88MQXb/zxyCev/PLMN+/889BHL/301Fdv/fXYZ6/99tx37/334Icv/vjkl2/++einr/767Lfv/vvwxy///PTXb//9+Oev//789+///wAMoAAHSMACGvCACEygAhfIwAY68IEQjKAEJ0jBClrwghjMoAY3yMEOevCDIAyhCEdIwhKa8IQoTKEKV8jCFrrwhTBcRwQAADs=',
+                correct: true,
+                threshold: 0.94,
+                feedback: {
+                    caption: 'Well done!',
+                    reaction: {
+                        type: 'showOverlay',
+                        target: 0
+                    }
+                },
+            }]
+        }]);
+</script>

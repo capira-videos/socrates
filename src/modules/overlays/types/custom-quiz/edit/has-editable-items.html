@@ -1,0 +1,25 @@
+<script>
+'use strict';
+Capira.HasEditableItems = {
+
+    properties: {
+        selected: {
+            type: Object,
+            notify: true
+        }
+    },
+
+    attached: function() {
+        var selector = app.create('array-selector', {
+            id: 'selector',
+            selected: this.selected
+        });
+
+        Polymer.dom(this).appendChild(selector);
+    },
+
+    getItemById: function(id) {
+        return Polymer.dom(this.root).querySelector('#item'+id);
+    }
+};
+</script>

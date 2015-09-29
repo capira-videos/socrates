@@ -1,0 +1,41 @@
+<link rel="import" href="overlay-edit-page.html">
+<link rel="import" href="../../elements/answer-editor/answer-editor.html">
+<link rel="import" href="../../elements/answers-selector/answers-selector.html">
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.QuizEditPageImpl = {
+    listeners: {
+        'skipped': '_done',
+    },
+    selectedCombination: {
+        type: Object,
+        notify: true
+    },
+    _createAnswer: function() {
+        if (this.overlay.combinations && this.overlay.combinations.length < 2) {
+            return this._createCorrectAnswer();
+        } else {
+            return this._createIncorrectAnswer();
+        }
+    },
+    _createCorrectAnswer: function() {
+        return {
+            value: '',
+            grade: 0,
+            feedback: 'Correct!'
+        };
+    },
+    _createIncorrectAnswer: function() {
+        return {
+            value: '',
+            grade: 2
+        };
+    },
+    addAnswer: function() {
+        this.$$('answers-selector').addAnswer(this._createAnswer());
+    }
+};
+
+window.Capira.QuizEditPage = [Capira.OverlayEditPage, Capira.QuizEditPageImpl];
+</script>

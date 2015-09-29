@@ -1,0 +1,21 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+Capira.HasTools = {
+    listeners: {
+        'update-drawing': '_save'
+    },
+    _updateTool: function(e) {
+        if (e.detail === 'clear') {
+            this.$.mask.clear();
+        } else if (e.detail === 'undo') {
+            this.$.mask.undo();
+        } else {
+            this.$.mask.tool = e.detail;
+        }
+    },
+    _save: function() {
+        //abstract
+    }
+};
+</script>

@@ -1,0 +1,38 @@
+<dom-module id="draw-quiz-editor">
+    <style>
+    :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+        pointer-events: all;
+    }
+    </style>
+    <template>
+        <draw-canvas id="mask"></draw-canvas>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'draw-quiz-editor',
+        behaviors: [Capira.Overlay, Capira.HasTools],
+        properties: {
+            combination: {
+                notify: true,
+                observer: '_combinationChanged'
+            }
+        },
+
+        _combinationChanged: function() {
+            if (this.combination) {
+                this.$.mask.paintDataUrl(this.combination.value.src);
+            }
+        },
+
+        _save: function() {
+            this.set('combination.value.src', this.$.mask.toDataURL());
+        }
+    });
+})();
+</script>

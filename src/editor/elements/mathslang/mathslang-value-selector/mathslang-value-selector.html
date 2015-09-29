@@ -1,0 +1,39 @@
+<dom-module id="mathslang-value-selector">
+    <style>
+    :host {
+        cursor: pointer;
+    }
+    
+    div {
+        @apply(--paper-font-body1);
+        cursor: pointer;
+    }
+    </style>
+    <template>
+        <mathslang-value value="{{computedValue}}" overlay="{{overlay}}"></mathslang-value>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mathslang-value-selector',
+        listeners: {
+            'tap': '_editValue'
+        },
+        properties: {
+            value: String,
+            computedValue: {
+                computed: '_compute(value)'
+            },
+            overlay: Object
+        },
+        _editValue: function() {
+            this.fire('edit-state', 'mathslang');
+        },
+        _compute: function(value) {
+            return value ? value : 'Click here to define an expression.';
+        }
+    });
+})();
+</script>

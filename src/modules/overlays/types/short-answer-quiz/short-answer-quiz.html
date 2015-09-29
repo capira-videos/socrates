@@ -1,0 +1,33 @@
+<link rel="import" href="../../base/quiz/quiz-base.html">
+<link rel="import" href="../../base/quiz/quiz-card.html">
+<link rel="import" href="../../base/quiz/slang.html">
+
+<dom-module id="short-answer-quiz">
+    <style>
+    paper-input {
+        width: 304px;
+        margin: 0 auto;
+        padding: 64px 0 64px 0;
+    }
+    </style>
+    <template>
+        <quiz-card id="card" question="{{overlay.question}}">
+            <paper-input value="{{value}}" label="Input Answer" id="input" tab-index="0"></paper-input>
+        </quiz-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'short-answer-quiz',
+        behaviors: [Capira.Quiz, Capira.Slang],
+        _valueEquals: function(expected, given) {
+            return this.langslang.compare(expected, given);
+        },
+        _shown: function() {
+            this.$.input.$.input.focus();
+        }
+    });
+})();
+</script>

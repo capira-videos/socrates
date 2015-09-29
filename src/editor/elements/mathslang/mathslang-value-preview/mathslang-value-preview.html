@@ -1,0 +1,16 @@
+<dom-module id="mathslang-value-preview">
+    <template>
+        <mathslang-value value="{{value}}" overlay="{{overlay}}"></mathslang-value>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mathslang-value-preview',
+        properties: {
+            value: String
+        }
+    });
+})();
+</script>

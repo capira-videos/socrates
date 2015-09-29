@@ -1,0 +1,27 @@
+<dom-module id="add-single-answer-button">
+    <style>
+    paper-item {
+        padding: 3px 28px;
+        cursor: pointer;
+        margin: 3px 0;
+        position: relative;
+    }
+    </style>
+    <template>
+        <paper-item name="{{item}}" on-click="_createItem">
+            <paper-ripple></paper-ripple>
+            <span class="letter">+ Add Item</span>
+        </paper-item>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'add-single-answer-button',
+        _createItem:function(){
+            this.fire('create-item');
+        }
+    });
+})();
+</script>

@@ -1,0 +1,56 @@
+<link rel="import" href="hotspot-quiz-top-bar.html">
+<link rel="import" href="hotspot-quiz-tools-top-bar.html">
+<link rel="import" href="hotspot-quiz-editor.html">
+<link rel="import" href="hotspot-quiz-value-preview.html">
+<link rel="import" href="hotspot-value-selector.html">
+<dom-module id="hotspot-quiz-edit-page">
+    <template>
+        <edit-page-layout>
+            <hotspot-quiz-top-bar top overlay="{{overlay}}"></hotspot-quiz-top-bar>
+            <hotspot-quiz-tools-top-bar top states="combination"></hotspot-quiz-tools-top-bar>
+            <hotspot-quiz-editor main states="combination" overlay="{{overlay}}" id="editor" color="[[selectedCombination.value]]"></hotspot-quiz-editor>
+            <hotspot-quiz main overlay="{{overlay}}" id="quiz"></hotspot-quiz>
+            <answers-selector right states="default" overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
+            <answer-editor right states="combination" combination="{{selectedCombination}}">
+                <hotspot-value-selector value="[[selectedCombination.value]]"></hotspot-value-selector>
+            </answer-editor>
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'hotspot-quiz-edit-page',
+        behaviors: [Capira.QuizEditPage],
+        listeners: {
+            'toolbox-clicked': '_updateTool',
+            'draw': '_updateOverlay'
+        },
+        _updateTool: function(e) {
+            this.$.editor._updateTool(e);
+        },
+        _getNextColor: function() {
+            this.$.editor.colorIndex = this.overlay.combinations.length;
+            return JSON.parse(JSON.stringify(this.$.editor.color));
+        },
+        _createCorrectAnswer: function() {
+            return {
+                value: this._getNextColor(),
+                feedback: '',
+                grade: 0
+            };
+        },
+        _createIncorrectAnswer: function() {
+            return {
+                value: this._getNextColor(),
+                feedback: '',
+                grade: 2
+            };
+        },
+        _updateOverlay: function() {
+            this.$.quiz._overlayChanged();
+        }
+    });
+})();
+</script>

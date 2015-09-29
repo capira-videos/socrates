@@ -1,0 +1,24 @@
+
+<dom-module id="math-quiz-edit-page">
+    <template>
+        <edit-page-layout>
+            <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
+            <math-quiz main states="default combination" overlay="{{overlay}}"></math-quiz>
+            <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" value-type="mathslang"></answers-selector>
+            <answer-editor right states="combination" combination="{{selectedCombination}}">
+                <mathslang-value-selector value="{{selectedCombination.value}}"></mathslang-value-selector>
+            </answer-editor>
+            <mathslang-editor right states="mathslang" overlay="{{overlay}}" combination="{{selectedCombination}}"></mathslang-editor>
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'math-quiz-edit-page',
+        behaviors: [Capira.QuizEditPage],
+
+    });
+})();
+</script>

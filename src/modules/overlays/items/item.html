@@ -1,0 +1,25 @@
+<script>
+'use strict';
+Capira.ItemImpl = {
+    properties: {
+        item: Object
+    },
+    observers: ['itemChanged(item.*)'],
+    attached: function() {
+        this.absoluteVideoWidth = 800;
+        this.absoluteVideoHeight = 450;
+        this.itemChanged();
+    },
+    itemChanged: function(item) {
+        var s = this.style;
+        var item = this.item;
+        s.position = 'absolute';
+        s.left = (item.x * this.absoluteVideoWidth) + 'px';
+        s.top = (item.y * this.absoluteVideoHeight) + 'px';
+        s.width = (item.w * this.absoluteVideoWidth) + 'px';
+        s.height = (item.h * this.absoluteVideoHeight) + 'px';
+        s.zIndex = item.z;
+    }
+};
+Capira.Item = Capira.combineBehaviors(Capira.ItemImpl, [], Capira.EditableItem);
+</script>

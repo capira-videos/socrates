@@ -1,0 +1,297 @@
+<dom-module id="timestamp-input">
+    <style>
+        :host {
+            display: inline-block;
+        }
+
+        #minutes {
+            width: 35px;
+            text-align: right !important;
+        }
+
+        #seconds {
+            width: 35px;
+        }
+
+        #milliseconds {
+            width: 45px;
+        }
+
+        input {
+            font: inherit;
+            outline: none;
+            box-shadow: none;
+            border: none;
+        }
+
+        paper-input-container:hover input[type=number]::-webkit-inner-spin-button, 
+        paper-input-container:hover input[type=number]::-webkit-outer-spin-button {  
+           opacity: 1;
+        }
+
+        input:focus {
+            background-color: lightblue !important;
+        }
+
+        .double-colon {
+            margin-left: -7px;
+            margin-right: 7px;
+            font-weight: bold;
+        }
+
+        paper-input-container:hover .double-colon,
+        input[type=number]:focus + .double-colon {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+    </style>
+    <template>
+        <paper-input-container always-float-label attr-for-value="timestamp">
+            <label>Timestamp</label>
+            <input id="minutes" on-keydown="_handleKeydown" on-change="_handleChange" on-keyup="_handleKeyup" type="number">
+            <span class="double-colon">:</span>
+            <input id="seconds" on-keydown="_handleKeydown" on-change="_handleChange" on-keyup="_handleKeyup" type="number">
+            <span class="double-colon">:</span>
+            <input id="milliseconds" on-keydown="_handleKeydown" on-change="_handleChange" on-keyup="_handleKeyup" type="number" step="100">
+        </paper-input-container>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'timestamp-input',
+        properties: {
+            // data binding is currently done via the overlay. This should change in the long term such that
+            // data binding is done over timestamp and a wrapper element handles the overlay
+            overlay: { 
+                type: Object
+            },
+            timestamp: {
+                type: Number,
+                observer: '_timestampChanged',
+                notify: true
+            }
+        },
+        observers: ['_getTimestampFromOverlay(overlay.events.*)'],
+
+        _timestampChanged: function(timestamp) {
+            this.set('overlay.events.0.start', timestamp); // data binding by hand, as linkPaths
+            // does not seem to work for primitive data types.
+            this._renderTimestamp(timestamp);
+            if (typeof timestamp==='number') {
+                window.EventTimer.seekTo(this.timestamp);
+            }
+        },
+
+        _renderTimestamp: function(timestamp) {
+            var types = ['milliseconds', 'seconds', 'minutes'];
+            timestamp = timestamp * 1000;
+
+            function stringForValue(value, type) {
+                value = String(value);
+                var maxLength = {
+                    'minutes': false,
+                    'seconds': 2,
+                    'milliseconds': 3
+                }[type];
+                if (maxLength) {
+                    while (value.length < maxLength) {
+                        value = '0' + value;
+                    }
+                }
+                return value;
+            }
+
+            for (var i=0; i<types.length; ++i) {
+                var type = types[i];
+                var modulo = {
+                    'minutes': 9999,
+                    'seconds': 60,
+                    'milliseconds': 1000
+                }[type];
+                var value = Math.round(timestamp % modulo);
+                timestamp = Math.floor(timestamp / modulo);
+                var valueString = stringForValue(value, type);
+                this.$[type].value = valueString;
+            }
+        },
+
+        _handleChange: function(event) {
+            var input = event.path[0];
+            var type = input.getAttribute('id');
+            var value = parseInt(input.value);
+            var maxValue = {
+                'minutes': 9999,
+                'seconds': 59,
+                'milliseconds': 999
+            }[type];
+            var overflow = {
+                'minutes': 0,
+                'seconds': 60,
+                'milliseconds': 1
+            }[type];
+            if (value>maxValue) {
+                input.value = 0;
+                this._updateTimestamp();
+                this.timestamp += overflow;
+            } else if (value<0) {
+                input.value = maxValue;
+                this._updateTimestamp();
+                this.timestamp = Math.max(0, this.timestamp-overflow);
+            } else {
+                this._updateTimestamp();
+            }
+        },
+
+        _handleKeyup: function(event) {
+            if (event.keyCode==8 || event.keyCode==46) { // backspace and delete
+                this._updateTimestamp();
+            }
+        },
+
+        _handleKeydown: function(event) {
+            var input = event.path[0];
+            var type = input.getAttribute('id');
+            var keyCode = event.keyCode;
+            if (keyCode>=48 && keyCode<=57) { // number key
+                this._handleNumberKey(event, input, type);
+            } else if (keyCode>=37 && keyCode<=40) { // arrowKey
+                this._handleArrowKey(event, input, keyCode, type);
+            } else if (keyCode==8 || keyCode==46) { // backspace and delete
+                // will be handled in key up after default behaviour
+            } else {
+                event.preventDefault();
+            }
+        },
+
+        _handleNumberKey: function(event, input, type) {
+            event.preventDefault();
+            var maxLength = {
+                'minutes': false,
+                'seconds': 2,
+                'milliseconds': 3
+            }[type];
+            // type="number" doesnt support selection unfortunately. For this reason we change the type
+            // to "text" and delay the tasks as microtasks with setTimeout such that the brwoser can
+            // update
+            input.setAttribute('type', 'text');
+            setTimeout(function() {
+                var selectionStart = input.selectionStart;
+                var selectionEnd = input.selectionEnd;
+                var newValue;
+                if (selectionStart===selectionEnd && selectionEnd===maxLength && input.value.charAt(0)==='0') {
+                    // kick out leading 0 to the left if the cursor is at te very right
+                    newValue = input.value.substr(1,selectionStart) + String.fromCharCode(event.keyCode);
+                } else {
+                    var overwritePosition = maxLength && selectionStart===selectionEnd;
+                    var newValue = input.value.substr(0,selectionStart)
+                        + String.fromCharCode(event.keyCode)
+                        + input.value.substr(selectionEnd+(overwritePosition? 1:0), input.value.length);
+                }
+                if (maxLength) {
+                    newValue = newValue.substr(0, maxLength);
+                }
+                var maxValue = {
+                    'minutes': 9999,
+                    'seconds': 59,
+                    'milliseconds': 999
+                }[type];
+                if (parseInt(newValue) <= maxValue) {
+                    input.value = newValue;
+                    this._updateTimestamp();
+                    // set cursor behind new typed number
+                    var newCaretPosition = maxLength? Math.min(maxLength, selectionEnd + 1) : selectionEnd+1;
+                    input.selectionStart = newCaretPosition;
+                    input.selectionEnd = newCaretPosition;
+                }
+                input.setAttribute('type', 'number');
+            }.bind(this), 0);
+        },
+
+        _handleArrowKey: function(event, input, keyCode, type) {
+            var stepSizeForType = {
+                'minutes': 60,
+                'seconds': 1,
+                'milliseconds': 0.1
+            }[type];
+            if (keyCode===38 || keyCode===40) { // up or down
+                event.preventDefault();
+                var offset = (keyCode===38)? stepSizeForType : -stepSizeForType;
+                // round to 3 digits after the comma
+                this.timestamp = Math.max(0, Math.round(1000 * (this.timestamp+offset)) / 1000);
+            } else { // left or right
+                this._moveCarret(event, input, type, keyCode===37? 'left' : 'right');
+            }
+        },
+
+        _moveCarret: function(event, input, type, direction) {
+            // type="number" doesnt support selection unfortunately. For this reason we change the type
+            // to "text" and delay the tasks as microtasks with setTimeout such that the brwoser can
+            // update
+            setTimeout(function() {
+                input.setAttribute('type', 'text');
+                setTimeout(function() {
+                    if (input.selectionStart === input.selectionEnd) {
+                        if (direction === 'left' && input.selectionStart===0) {
+                            var leftSiblingInput = {
+                                'minutes': null,
+                                'seconds': this.$.minutes,
+                                'milliseconds': this.$.seconds
+                            }[type];
+                            if (leftSiblingInput) {
+                                event.preventDefault();
+                                leftSiblingInput.setAttribute('type', 'text');
+                                leftSiblingInput.focus();
+                                setTimeout(function() {
+                                    leftSiblingInput.selectionStart = leftSiblingInput.value.length;
+                                    leftSiblingInput.selectionEnd = leftSiblingInput.value.length;
+                                    leftSiblingInput.setAttribute('type', 'number');
+                                }, 0);
+                            }
+                        } else if (direction==='right' && input.selectionEnd===input.value.length) {
+                            var rightSiblingInput = {
+                                'minutes': this.$.seconds,
+                                'seconds': this.$.milliseconds,
+                                'milliseconds': null
+                            }[type];
+                            if (rightSiblingInput) {
+                                event.preventDefault();
+                                rightSiblingInput.setAttribute('type', 'text');
+                                rightSiblingInput.focus();
+                                setTimeout(function() {
+                                    rightSiblingInput.selectionStart = 0;
+                                    rightSiblingInput.selectionEnd = 0;
+                                    rightSiblingInput.setAttribute('type', 'number');
+                                }, 0);
+                            }
+                        }
+                    }
+                    input.setAttribute('type', 'number');
+                }.bind(this), 0);
+            }.bind(this), 0);
+        },
+
+        _updateTimestamp: function() {
+            var minutes = parseInt(this.$['minutes'].value) || 0;
+            var seconds = parseInt(this.$['seconds'].value) || 0;
+            var milliseconds = parseInt(this.$['milliseconds'].value) || 0;
+            this.timestamp = minutes*60 + seconds + milliseconds/1000;
+        },
+
+        _getTimestampFromOverlay: function(eventsChangeRecord) {
+            var overlay = this.overlay;
+            if (overlay && overlay.events && overlay.events.length>0) {
+                for (var i=0; i<overlay.events.length; ++i) {
+                    var eventType = overlay.events[i].type;
+                    if (eventType === 'STOP' || eventType === 'PLAYAFTER' || eventType === 'HIDEAFTER') {
+                        this.set('timestamp', overlay.events[i].start);
+                        return;
+                    }
+                }
+            }
+            this.timestamp = 0;
+        }
+    });
+})();
+</script>

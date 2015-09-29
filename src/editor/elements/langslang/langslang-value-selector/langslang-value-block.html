@@ -1,0 +1,63 @@
+<dom-module id="langslang-value-block">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    .def-block {
+        cursor: pointer;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--paper-font-body1);
+    }
+    
+    paper-input {
+        width: 200px;
+        margin-right: 16px;
+    }
+    
+    .options {
+        width: 128px;
+        @apply(--layout-vertical);
+    }
+    </style>
+    <template>
+        <div class="def-block">
+            <paper-input value="{{computedValue}}" label="Answer"></paper-input>
+            <span class="options">
+                <paper-checkbox checked="{{isCaseSensitive}}">Case Sensitive</paper-checkbox>
+                <paper-checkbox checked="{{allowTypos}}" hidden$="{{!isCaseSensitive}}">Accept Typos</paper-checkbox>
+            </span>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'langslang-value-block',
+        properties: {
+            value: String,
+            computedValue: {
+                computed: '_computeValue(value)'
+            },
+            isCaseSensitive: {
+                computed: '_computeIsCaseSensitive(value)'
+            },
+            allowTypos: {
+                computed: '_computeAllowTypos(value)'
+            }
+        },
+        _computeValue: function(value) {
+            return value.replace('#typo', '').replace('#nocase', '').trim();
+        },
+        _computeIsCaseSensitive: function(value) {
+            return value.indexOf('#nocase') === -1;
+        },
+        _computeAllowTypos: function(value) {
+            return value.indexOf('#typo') !== -1;
+        }
+
+    });
+})();
+</script>

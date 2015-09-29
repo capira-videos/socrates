@@ -1,0 +1,146 @@
+<link rel="import" href="../../../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="editor-service">
+    <template>
+        <iron-ajax id="service" handle-as="json" verbose="true" loading="{{loading}}"></iron-ajax>
+    </template>
+    <script>
+    'use strict';
+    (function() {
+        Polymer({
+            is: 'editor-service',
+            properties: {
+                loading: {
+                    notify: true
+                },
+                unitId: {
+                    observer: '_loadUnit',
+                    notify: true
+                },
+                unit: {
+                    type: Object,
+                    notify: true
+                }
+            },
+
+            _loadUnit: function(unitId) {
+                this.set('unit', window.unit);
+                this.fire('unit-loaded');
+                this.fetchUnit(unitId).then(function(req) {
+                    var unit = req.response;
+                    this.set('unit', unit);
+                    console.log('Service loaded: ', this.unit);
+                    this.fire('unit-loaded');
+                }.bind(this));
+            },
+
+            _generateRequest: function(method, url, data) {
+                var service = this.$.service;
+                service.body = JSON.stringify(data);
+                service.method = method;
+                service.url = '../api' + url;
+                //service.url = '/build/socrates/api' + url;
+                // service.url = 'http://localhost:8888/api' + url;
+                service.contentType = 'application/json';
+                return service.generateRequest().completes;
+            },
+
+            signup: function(name, password, email) {
+                return this._generateRequest('POST', '/signup', {
+                    name: name,
+                    password: password,
+                    email: email
+                });
+            },
+
+            login: function(name, password) {
+                return this._generateRequest('POST', '/login', {
+                    name: name,
+                    password: password
+                });
+            },
+            logout: function() {
+                return this._generateRequest('POST', '/logout');
+            },
+
+            fetchMe: function() {
+                return this._generateRequest('GET', '/me');
+            },
+
+
+            fetchChannel: function(id) {
+                return this._generateRequest('GET', '/channel/editor/' + id);
+            },
+
+            createChannel: function(channel) {
+                return this._generateRequest('POST', '/channel', channel);
+            },
+
+            updateChannel: function(channel) {
+                return this._generateRequest('PUT', '/channel', channel);
+            },
+
+            updateChannelParent: function(channel) {
+                return this._generateRequest('PUT', '/channel/parent', {
+                    id: channel.id,
+                    parent: channel.parent
+                });
+            },
+
+            updateOrder: function(channel) {
+                return this._generateRequest('PUT', '/channel/sorting', channel);
+            },
+
+            deleteChannel: function(id) {
+                return this._generateRequest('DELETE', '/channel', {
+                    id: id
+                });
+            },
+
+            fetchUnit: function(id) {
+                return this._generateRequest('GET', '/unit/' + id);
+            },
+
+            createUnit: function(unit) {
+                return this._generateRequest('POST', '/unit', unit);
+            },
+
+            updateUnit: function(unit) {
+                return this._generateRequest('PUT', '/unit', unit);
+            },
+
+            deleteUnitFromChannel: function(unitId, channelId) {
+                return this._generateRequest('DELETE', '/channel/' + channelId + '/unit/' + unitId);
+            },
+
+            deleteUnit: function(unitId) {
+                return this._generateRequest('DELETE', '/unit/' + unitId);
+            },
+
+            updateUnitParent: function(unit, oldParent) {
+                return this._generateRequest('PUT', '/unit/parent', {
+                    id: unit.id,
+                    parent: unit.parent,
+                    oldParent: oldParent
+                });
+            },
+
+            fetchPermissions: function(id) {
+                return this._generateRequest('GET', '/permissions/channel/' + id);
+            },
+
+            setChannelPermissions: function(channelId, userId, isAdmin) {
+                return this._generateRequest('POST', '/permissions/channel/' + channelId + (isAdmin ? '/admin/' : '/author/') + userId);
+            },
+
+            deleteChannelPermissions: function(channelId, userId) {
+                return this._generateRequest('DELETE', '/permissions/channel/' + channelId + '/author/' + userId);
+            },
+
+            queryForUsers: function(query) {
+                return this._generateRequest('GET', '/users/' + query);
+            }
+
+        });
+    })();
+    </script>
+</dom-module>

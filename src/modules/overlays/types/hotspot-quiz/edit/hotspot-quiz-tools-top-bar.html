@@ -1,0 +1,33 @@
+<dom-module id="hotspot-quiz-tools-top-bar">
+    <style>
+    :host {
+        @apply(--paper-font-body1);
+    }
+    
+    #toolbox {
+        box-shadow: none;
+    }
+    </style>
+    <template>
+        <tool-box id="toolbox">
+            <toolbox-icon icon="brush" name="pen"></toolbox-icon>
+            <toolbox-icon icon="eraser" name="eraser"></toolbox-icon>
+            <toolbox-icon icon="undo" name="undo" unselectable></toolbox-icon>
+            <toolbox-icon icon="delete" name="clear" unselectable></toolbox-icon>
+        </tool-box>
+        <div class="flex"></div>
+        <paper-icon-button icon="editor-icons:add" on-tap="_try"></paper-icon-button>
+        <home-button></home-button>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'hotspot-quiz-tools-top-bar',
+        behaviors: [Capira.TopBar],
+        _try: function() {
+            this.fire('edit-state', 'tryout');
+        }
+    });
+})();
+</script>

@@ -1,0 +1,15 @@
+<link rel="import" href="item.html">
+
+<dom-module id="droppable-item">
+    <template>
+        <mark-up>{{item.caption}}</mark-up>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'droppable-item',
+        behaviors: [Capira.Item],
+    });
+})();
+</script>

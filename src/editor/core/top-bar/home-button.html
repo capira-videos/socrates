@@ -1,0 +1,21 @@
+<dom-module id="home-button">
+    <style>
+    :host {
+        display: block;
+    }
+    </style>
+    <template>
+    
+        <paper-icon-button on-tap="_home" icon="editor-icons:home"></paper-icon-button>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'home-button',
+        _home:function(){
+            this.fire('home-state');
+        }
+    });
+})();
+</script>

@@ -1,0 +1,61 @@
+<link rel="import" href="../item.html">
+<dom-module id="image-item">
+    <style>
+    :host {
+        transition: top 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96), left 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96), width 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96), height 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96);
+        @apply(--layout);
+        @apply(--layout-center-center);
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    img {
+        position: relative;
+        width: 100%;
+        cursor: pointer;
+    }
+    
+    :host.full img {
+        width: auto;
+    }
+    </style>
+    <template>
+        <img src="{{item.src}}">
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'image-item',
+        behaviors: [Capira.Item],
+        listeners: {
+            'tap': 'switchState'
+        },
+        viewFull: function() {
+            this.opened = true;
+            this.classList.add('full');
+            var s = this.style;
+            s.left = 0;
+            s.top = 0;
+            s.width = (1 * this.absoluteVideoWidth) + 'px';
+            s.height = (1 * this.absoluteVideoHeight) + 'px';
+            s.zIndex = 3;
+        },
+        viewThumbnail: function() {
+            this.opened = false;
+            this._setDimensions();
+            var that = this;
+            setTimeout(function() {
+                that.classList.remove('full');
+            }, 150);
+        },
+        switchState: function() {
+            if (this.opened) {
+                this.viewThumbnail();
+            } else {
+                this.viewFull();
+            }
+        }
+    });
+})();
+</script>

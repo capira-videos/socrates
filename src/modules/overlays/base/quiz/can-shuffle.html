@@ -1,0 +1,13 @@
+<script>
+'use strict';
+window.Capira = Capira || {};
+
+Capira.CanShuffle = {
+    _shuffle: function(a, b) {
+        return Math.random() - 0.5;
+    },
+    _findOriginalIndex: function(option) {
+        return this.overlay.options.indexOf(option);
+    }
+};
+</script>

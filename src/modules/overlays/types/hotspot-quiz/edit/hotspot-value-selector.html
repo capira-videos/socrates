@@ -1,0 +1,40 @@
+<dom-module id="hotspot-value-selector">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    #color {
+        height: 24px;
+        width: 64px;
+        display: inline-block;
+        border-radius: 8px;
+    }
+    </style>
+    <template>
+        <span id="color"></span>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'hotspot-value-selector',
+        properties: {
+            value: {
+                observer: '_changed',
+                notify: true
+            }
+        },
+        _changed: function() {
+            if (this.value) {
+                if (this.value.indexOf('#') === -1) {
+                    this.$.color.innerText = '(default)';
+                } else {
+                    this.$.color.innerText = '';
+                    this.$.color.style.backgroundColor = this.value;
+                }
+            }
+        }
+    });
+})();
+</script>

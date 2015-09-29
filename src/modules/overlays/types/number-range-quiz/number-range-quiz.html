@@ -1,0 +1,77 @@
+
+<link rel="import" href="../../base/quiz/quiz-base.html">
+<link rel="import" href="../../base/quiz/quiz-card.html">
+<link rel="import" href="../../base/quiz/slang.html">
+
+<dom-module id="number-range-quiz">
+    <style>
+    .content {
+        padding: 40px;
+    }
+    
+    .content {
+        width: 304px;
+        margin: 0 auto;
+    }
+    
+    .picker-value {
+        padding-left: 16px;
+        color: var(--quiz-input-color);
+        @apply(--paper-font-display4);
+    }
+
+    paper-slider {
+        width: 100%;
+    }
+    
+    :host {
+        --paper-slider-active-color: var(--quiz-input-color);
+        --paper-slider-knob-color: var(--quiz-input-color);
+    }
+    </style>
+    <template>
+        <quiz-card id="card" question="{{overlay.question}}">
+            <div class="content">
+                <div class="picker-value font-light">{{value}}</div>
+                <paper-slider id="slider" min="{{overlay.min}}" max="{{overlay.max}}" step="{{step}}" on-value-changed="_sliderValueChanged"></paper-slider>
+            </div>
+        </quiz-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'number-range-quiz',
+        behaviors: [Capira.Quiz, Capira.Slang],
+        listeners: {
+            'immediate-value-change': '_sliderValueChanged',
+        },
+        properties: {
+            step: {
+                type: Number,
+                computed: '_computeStep(overlay)'
+            }
+        },
+        _computeStep: function(overlay) {
+            return overlay.step || 1;
+        },
+        _show: function() {
+            this.value = this.$.slider.value;
+        },
+        _sliderValueChanged: function() {
+            this.value = this.$.slider.immediateValue;
+        },
+        _valueEquals: function(expected, given) {
+            return this.mathslang.compare(expected, given);
+        },
+		arrowPressed: function(direction) {
+			if (direction == 'right') {
+				this.$.slider.increment();
+			} else {
+				this.$.slider.decrement();
+			}
+		}
+    });
+})();
+</script>

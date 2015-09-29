@@ -1,0 +1,121 @@
+<!--TODO: custom pen size -->
+<link rel="import" href="../../base/quiz/quiz-base.html">
+<link rel="import" href="../../base/overlay/resizable-overlay.html">
+<link rel="import" href="../../base/quiz/question-feedback-card.html">
+<link rel="import" href="../../base/quiz/slang.html">
+<link rel="import" href="../../base/draw-canvas/draw-canvas.html">
+<dom-module id="draw-quiz">
+    <style>
+    :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+        pointer-events: all;
+    }
+    
+    #card {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 64px;
+    }
+    
+    #toolbox {
+        position: absolute;
+        bottom: 80px;
+        left: 16px;
+        width:40px;
+    }
+    
+    #solution {
+        display: hidden;
+    }
+    
+    @media all and (max-width: 600px) {
+        #card {
+            bottom: -64px;
+        }
+    }
+    </style>
+    <template>
+        <draw-canvas id="solution" hidden></draw-canvas>
+        <draw-canvas on-draw="_answered" id="canvas"></draw-canvas>
+        <tool-box id="toolbox">
+            <toolbox-icon icon="brush" name="pen"></toolbox-icon>
+            <toolbox-icon icon="line" name="line"></toolbox-icon>
+            <toolbox-icon icon="eraser" name="eraser"></toolbox-icon>
+            <toolbox-icon icon="undo" name="undo" unselectable></toolbox-icon>
+            <toolbox-icon icon="delete" name="clear" unselectable></toolbox-icon>
+        </tool-box>
+        <question-feedback-card id="card" question="{{overlay.question}}" is-top="true" enable-wrong-answer-animation icon="player-icons:brush">
+        </question-feedback-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'draw-quiz',
+        behaviors: [Capira.Quiz, Capira.Slang],
+        observers: ['_updateCombinations(overlay.combinations.*)'],
+
+        _answered: function() {
+            var answer = this.$.canvas.getPixels();
+            this.value = answer;
+        },
+
+        listeners: {
+            'toolbox-clicked': '_updateTool'
+        },
+
+        _valueEquals: function(expected, given) {
+            var similarity = this.hausdorffslang.compare(expected.pixels, given,
+                expected.translateX, expected.translateY, expected.scale);
+            return (similarity >= expected.threshold);
+        },
+
+        _show: function() {
+            this.$.canvas.clear();
+        },
+
+        _updateTool: function(e) {
+            if (e.detail === 'clear') {
+                this.$.canvas.clear();
+            } else if (e.detail === 'undo') {
+                this.$.canvas.undo();
+            } else {
+                this.$.canvas.tool = e.detail;
+            }
+        },
+
+        attached: function() {
+            if (this.overlay && this.overlay.combinations) {
+                this.overlay.combinations.forEach(function(combination) {
+                    this._initSolution(combination);
+                }.bind(this));
+            }
+        },
+        _initSolution: function(combination) {
+            var solution = this.$.solution;
+
+            if (combination.value) {
+                solution._clearAll();
+                solution.paintDataUrl(combination.value.src, function() {
+                    // TODO: update the general scoring function/data model so that this isn't necessary
+                    combination.value.pixels = solution.getPixels();
+                    solution.clear();
+                });
+            }
+        },
+        _updateCombinations: function(e) {
+            if (e.path.indexOf('value.src') > 0) {
+                var index = e.path.replace('overlay.combinations.', '').replace('.value.src');
+                index = parseInt(index);
+                console.log(index);
+                this._initSolution(this.overlay.combinations[index]);
+            }
+        }
+    });
+})();
+</script>

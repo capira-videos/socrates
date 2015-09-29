@@ -1,0 +1,23 @@
+<dom-module id="short-answer-quiz-edit-page">
+    <template>
+        <edit-page-layout>
+            <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
+            <short-answer-quiz main states="default combination" overlay="{{overlay}}"></short-answer-quiz>
+            <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" value-type="langslang">
+            </answers-selector>
+            <answer-editor right states="combination" combination="{{selectedCombination}}">
+                <langslang-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></langslang-value-selector>
+            </answer-editor>
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'short-answer-quiz-edit-page',
+        behaviors: [Capira.QuizEditPage],
+
+    });
+})();
+</script>

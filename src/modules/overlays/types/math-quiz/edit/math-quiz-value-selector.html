@@ -1,0 +1,18 @@
+<dom-module id="math-value-selector">
+    <template>
+        <paper-input value="{{selected}}"></paper-input>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'math-value-selector',
+        properties: {
+            selected: {
+                notify: true
+            }
+        }
+    });
+})();
+</script>

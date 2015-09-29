@@ -1,0 +1,32 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.ResizableOverlay = {
+    properties: {
+        scalingFactor: {
+            value: 1
+        }
+    },
+    attached: function() {
+        window.addEventListener('resize', this.resize.bind(this), true);
+    },
+    _shown: function() {
+        window.dispatchEvent(new Event('resize'));
+    },
+    resize: function() {
+        //console.log('resizable-overlay.html');
+        var factor = window.scalingFactor || 1;
+        factor *= this.scalingFactor;
+        var s = this.resizingElem.style;
+        s.setProperty('transform', 'scale(' + factor + ')', '');
+        s.setProperty('-webkit-transform', 'scale(' + factor + ')', '');
+        s.setProperty('-moz-transform', 'scale(' + factor + ')', '');
+        s.setProperty('-o-transform', 'scale(' + factor + ')', '');
+        s.setProperty('transform-origin', 'top left', '');
+        s.setProperty('-webkit-transform-origin', 'top left', '');
+        s.setProperty('-moz-transform-origin', 'top left', '');
+        s.setProperty('-o-transform-origin', 'top left', '');
+    }
+
+};
+</script>

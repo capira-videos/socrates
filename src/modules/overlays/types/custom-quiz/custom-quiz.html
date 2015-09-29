@@ -1,0 +1,48 @@
+<link rel="import" href="../../base/overlay/has-items.html">
+<link rel="import" href="../../base/quiz/quiz-base.html">
+<link rel="import" href="../../base/quiz/question-feedback-card.html">
+<link rel="import" href="../../base/quiz/slang.html">
+<dom-module id="custom-quiz">
+    <style>
+    #card {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 64px;
+    }
+    </style>
+    <template>
+        <div id="content"></div>
+        <content></content>
+        <question-feedback-card id="card" is-top question="{{overlay.question}}"></question-feedback-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'custom-quiz',
+        behaviors: Capira.combineBehaviors([Capira.Quiz, Capira.HasItems, Capira.Slang], [], [Capira.HasEditableItems]),
+        listeners: {
+            'item-value-changed': '_itemValueChanged'
+        },
+        _itemValueChanged: function(event) {
+            if (event && event.detail) {
+                var target = event.detail;
+                this.value = this.value || {};
+                this.value[target.id] = target.value;
+                this._valueChanged(this.value);
+            }
+        },
+        _valueEquals: function(expected, given) {
+            // TODO: support non-mathslang answers
+            if(typeof expected === 'string') {
+                return this.mathslang.compare(expected, given);
+            } else {
+                return this.mathslang.compare(expected.expr, given, expected.units);
+            }
+        }
+    });
+})();
+</script>

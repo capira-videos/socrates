@@ -1,0 +1,16 @@
+<dom-module id="empty-page">
+    <style>
+    :host {
+        pointer-events: none;
+    }
+    </style>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'empty-page',
+        behaviors: [Capira.EditPage]
+    });
+})();
+</script>

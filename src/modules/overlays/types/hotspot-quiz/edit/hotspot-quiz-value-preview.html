@@ -1,0 +1,33 @@
+<dom-module id="hotspot-quiz-value-preview">
+    <style>
+    #color {
+        height: 16px;
+        width: 32px;
+        display: inline-block;
+        border-radius: 8px;
+    }
+    </style>
+    <template>
+        <span id="color"></span>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'hotspot-quiz-value-preview',
+        properties: {
+            value: {
+                observer: '_changed'
+            }
+        },
+        _changed: function() {
+            if (this.value.indexOf('#') === -1) {
+                this.$.color.innerText = '(default)';
+            } else {
+                this.$.color.innerText = '';
+                this.$.color.style.backgroundColor = this.value;
+            }
+        }
+    });
+})();
+</script>

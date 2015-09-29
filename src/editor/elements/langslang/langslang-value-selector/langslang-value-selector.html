@@ -1,0 +1,51 @@
+<dom-module id="langslang-value-selector">
+    <style>
+    :host {
+        display: block;
+        padding-bottom: 16px;
+    }
+    
+    .block-divider {
+        text-align: center;
+        padding-top: 8px;
+        @apply(paper-font-subhead);
+    }
+    </style>
+    <template>
+        <template is="dom-repeat" items="{{computedValue}}">
+            <langslang-value-block value="{{item}}"></langslang-value-block>
+            <div class="block-divider" hidden$="{{_hideDivider(index)}}">or</div>
+        </template>
+        <paper-button on-tap="_add">Add Alternative</paper-button>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'langslang-value-selector',
+        properties: {
+            selected: {
+                type: String,
+                notify: true
+            },
+            computedValue: {
+                computed: '_compute(selected)'
+            },
+        },
+        _compute: function(selected) {
+            if (!selected) {
+                return [''];
+            } else {
+                return selected.split('#or');
+            }
+        },
+        _hideDivider: function(index) {
+            return index === this.computedValue.length - 1;
+        },
+        _add: function() {
+            this.set('selected', this.selected + '#or');
+        }
+    });
+})();
+</script>

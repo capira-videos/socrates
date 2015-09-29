@@ -1,0 +1,26 @@
+<link rel="import" href="toolbox-icon.html">
+<dom-module id="tool-box">
+    <style>
+    :host {
+        z-index: 2;
+        background-color:#FFF;
+        @apply(--shadow-elevation-2dp);
+    }
+    :host .iron-selected {
+        background-color:#b2ebf2;
+    }
+    </style>
+    <template>
+        <iron-selector selected="0" selectable="toolbox-icon:not([unselectable])">
+            <content></content>
+        </iron-selector>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'tool-box'
+    });
+})();
+</script>

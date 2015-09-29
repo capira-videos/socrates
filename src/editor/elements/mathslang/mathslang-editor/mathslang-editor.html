@@ -1,0 +1,383 @@
+<!--TODO: Add intervals to functions-->
+<dom-module id="mathslang-editor">
+    <style>
+    :host {
+        display: block;
+        position: relative;
+        @apply(--paper-font-body1);
+    }
+    
+    #items-exp {
+        width: 80px;
+        display: inline-block;
+    }
+    
+    #function {
+        width: 56px;
+        padding-top: 0;
+        margin-top: -8px;
+    }
+    
+    #expr {
+        display: inline-block;
+        width: 180px;
+    }
+    
+    .approx #expr {
+        width: 104px;
+    }
+    
+    .simple #expr {
+        width: 200px;
+    }
+    
+    .simple.approx #expr {
+        width: 160px;
+    }
+    
+    #epsilon {
+        display: inline-block;
+        width: 64px;
+    }
+    
+    #test-custom paper-input {
+        display: inline-block;
+        width: 300px;
+    }
+    
+    #content {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    #unitToast {
+        z-index: 2;
+    }
+    
+    .heading {
+        @apply(--paper-font-subhead);
+    }
+    
+    .items {
+        margin-top: 16px;
+        margin-bottom: 8px;
+    }
+    
+    .items .heading {
+        margin-bottom: 8px;
+    }
+    
+    .exp-def {
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+    
+    .buttons {
+        float: right;
+    }
+    
+    .buttons paper-button:hover {
+        color: var(--accent-color);
+    }
+    
+    #remove-unit {
+        color: var(--paper-red-500);
+        cursor: pointer;
+    }
+    </style>
+    <template>
+        <right-bar-header>Mathslang Editor</right-bar-header>
+        <div id="content">
+            <div class="items" hidden="{{!isComplex}}">
+                <div class="heading">Inputs in this Quiz:</div>
+                <template is="dom-repeat" items="{{overlay.items}}">
+                    <mathslang-item-view item="{{item}}" index="{{index}}"></mathslang-item-view on-tap="_addItem">
+                </template>
+            </div>
+            <div class="exp-def">
+                <div class="heading">Expression:</div>
+                <paper-input label="Inputs" id="items-exp" value="{{inputExp}}" hidden="{{!isComplex}}"></paper-input>
+                <paper-dropdown-menu id="function">
+                    <paper-menu class="dropdown-content" selected="{{func}}">
+                        <paper-item>=</paper-item>
+                        <paper-item>&equiv;</paper-item>
+                        <paper-item>&asymp;</paper-item>
+                        <paper-item>&lt;</paper-item>
+                        <paper-item>&gt;</paper-item>
+                        <paper-item>&le;</paper-item>
+                        <paper-item>&ge;</paper-item>
+                        <!--  <paper-item>&isin;</paper-item> -->
+                    </paper-menu>
+                </paper-dropdown-menu>
+                <paper-input id="expr" value="{{expr}}" on-keyup="_findUnit" label="expression"></paper-input>
+                <span id="approx" hidden="true">
+                    &plusmn;
+                    <paper-input id="epsilon" value="{{epsilon}}" label="error"></paper-input>
+                </span>
+                <div id="unit" hidden$="{{!unit}}">
+                    Unit: <span>{{unit}}</span>
+                    <span on-tap="_removeUnit" id="remove-unit">X</span>
+                </div>
+            </div>
+            <div class="buttons">
+                <paper-button on-tap="_cancel">Cancel</paper-button>
+                <paper-button on-tap="_save">Save</paper-button>
+            </div>
+        </div>
+        <paper-toast id="unitToast" duration="7000"></paper-toast>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mathslang-editor',
+        behaviors: [Capira.RightBar],
+        properties: {
+            expr: {
+                type: String,
+                observer: '_updateValue',
+                value: ''
+            },
+            epsilon: {
+                type: String,
+                observer: '_updateValue',
+                value: '0'
+            },
+            unit: {
+                type: String,
+                value: null,
+                observer: '_unitChanged'
+            },
+            func: {
+                type: Number,
+                value: 0,
+                observer: '_functionChanged'
+            },
+            overlay: {
+                type: Object,
+            },
+            isCustom: {
+                type: Boolean,
+                value: false
+            },
+            customValue: {
+                type: String,
+                value: '',
+                observer: '_updateValue'
+            },
+            value: {
+                type: String
+            },
+            combination: {
+                type: Object,
+                observer: '_parseCombination'
+            },
+            inputExp: {
+                type: String,
+                value: '',
+                observer: '_parseInputExp'
+            },
+            isComplex: {
+                type: Boolean,
+                value: false
+            }
+        },
+
+        observers: ['_itemsChanged(overlay.items.length)'],
+
+        listeners: {
+            'add-item': '_addItem'
+        },
+
+        _addItem: function(e) {
+            var exp = this.inputExp;
+            var input = e.detail;
+            //if empty, just add
+            if (exp === '') {
+                this.inputExp += input;
+                return;
+            }
+            //is a vector?
+            var i = exp.indexOf(']');
+            if (i > -1) {
+                this.inputExp = [exp.slice(0, i), ',' + input, exp.slice(i)].join('');
+                return;
+            }
+            //else we guess the user wants to add 
+            this.inputExp += '+' + input;
+        },
+
+        _functionChanged: function(f) {
+            if (f === 2) {
+                this.$.approx.hidden = false;
+                this.$.content.classList.add('approx');
+            } else {
+                this.$.approx.hidden = true;
+                this.$.content.classList.remove('approx');
+            }
+            this._updateValue();
+        },
+
+        _parseInputExp: function() {
+            var exp = this.inputExp;
+            if (this.overlay && this.overlay.items) {
+                this.overlay.items.forEach(function(item, index) {
+                    exp = exp.replace(new RegExp('x' + index, 'g'), '@' + item.id);
+                });
+            }
+            this.parsedInputExp = exp;
+            this._updateValue();
+        },
+
+        _updateValue: function() {
+            if (!this.overlay) {
+                return;
+            }
+            this.value = '';
+            switch (this.func) {
+                case 1:
+                    this.value += '#identic';
+                    break;
+                case 2:
+                    this.value += '#approx';
+                    break;
+                case 3:
+                    this.value += '#lt';
+                    break;
+                case 4:
+                    this.value += '#gt';
+                    break;
+                case 5:
+                    this.value += '#leq';
+                    break;
+                case 6:
+                    this.value += '#geq';
+                    break;
+                default:
+                    this.value += '#equals';
+            }
+            this.value += ' ' + this.expr;
+            if (this.func === 2) {
+                this.value += ' #epsilon ' + this.epsilon;
+            }
+
+            if (this.expr.indexOf('[') > -1) {
+                this.value = this.value.replace('#equals', '#vecEquals');
+            }
+
+
+            this.value = '<& ' + this.parsedInputExp + ' & ' + this.value + '>';
+        },
+
+        // TODO: this feels hacky, fix it somehow
+        _parseCombination: function(combination) {
+            if (!combination) {
+                return;
+            }
+
+            if (!combination.value) {
+                this.expr = '';
+                this.inputExp = '';
+                this.func = 0;
+            }
+            this._itemsChanged();
+
+
+
+            var expr = this.combination.value;
+
+            if (typeof this.combination.value !== 'string') {
+                expr = this.combination.value.expr;
+                this.unit = this.combination.value.unit;
+            }
+
+            if (this.overlay.type === 'custom-quiz') {
+                // remove the <& and & and >
+                var str = expr.substr(2, expr.length - 3);
+                var variables = str.substr(0, str.indexOf('&'));
+                expr = str.substr(str.indexOf('&') + 1).trim();
+                if (this.overlay.items.length > 1) {
+                    this.customValue = variables.trim();
+                }
+            }
+            // select the correct function
+            var func = expr.substr(0, expr.indexOf(' '));
+            var value = expr.substr(expr.indexOf(' ') + 1);
+            switch (func) {
+                case '#equals':
+                    this.func = 0;
+                    break;
+                case '#identic':
+                    this.func = 1;
+                    break;
+                case '#approx':
+                    this.func = 2;
+                    break;
+                case '#lt':
+                    this.func = 3;
+                    break;
+                case '#gt':
+                    this.func = 4;
+                    break;
+                case '#leq':
+                    this.func = 5;
+                    break;
+                case '#geq':
+                    this.func = 6;
+                    break;
+            }
+            // set the expression and approx fields
+            if (func === 2) {
+                this.epsilon = value.substr(value.indexOf('#approx') + 7);
+                value = value.substr(0, value.indexOf('#approx'));
+            }
+            this.expr = value;
+        },
+
+        _findUnit: function() {
+            this.unit = Slang.mathslang.extractUnit(this.expr);
+        },
+
+        _unitChanged: function(newUnit, oldUnit) {
+            if (newUnit && oldUnit !== newUnit) {
+                this.$.unitToast.text = 'Detected unit: ' + newUnit;
+                this.$.unitToast.show();
+            }
+        },
+
+        _removeUnit: function() {
+            this.unit = null;
+        },
+
+        _save: function() {
+            if (this.unit) {
+                this.set('combination.value', {
+                    expr: this.value,
+                    units: this.unit
+                });
+            } else {
+                this.set('combination.value', this.value);
+            }
+            this.fire('edit-state', 'combination');
+        },
+
+        _cancel: function() {
+            this.fire('edit-state', 'combination');
+        },
+
+        _itemsChanged: function() {
+            if (this.overlay && this.overlay.items) {
+                if (this.overlay.items.length > 1) {
+                    this.isComplex = true;
+                    this.$.content.classList.remove('simple');
+                } else {
+                    this.$.content.classList.add('simple');
+                    this.isComplex = false;
+                    this.inputExp = 'x0';
+                }
+            }
+        }
+    });
+})();
+</script>

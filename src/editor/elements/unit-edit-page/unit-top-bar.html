@@ -1,0 +1,29 @@
+<dom-module id="unit-top-bar">
+    <style>
+    paper-input {
+        width: 360px;
+    }
+    </style>
+    <template>
+        <paper-input value="{{unit.title}}" label="Video Title"></paper-input>
+        <span class="flex"></span>
+        <paper-icon-button icon="editor-icons:save" on-click="_save"></paper-icon-button>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'unit-top-bar',
+        behaviors: [Capira.TopBar],
+        properties: {
+            unit: {
+                type: Object,
+                notify: true
+            }
+        },
+        _save: function() {
+            this.fire('save-unit');
+        }
+    });
+})();
+</script>

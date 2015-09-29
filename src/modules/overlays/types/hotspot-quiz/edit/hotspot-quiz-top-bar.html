@@ -1,0 +1,15 @@
+<dom-module id="hotspot-quiz-top-bar">
+    <template>
+    	<timestamp-input overlay="{{overlay}}"></timestamp-input>
+        <div class="flex"></div>
+        <home-button></home-button>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'hotspot-quiz-top-bar',
+        behaviors: [Capira.TopBar]
+    });
+})();
+</script>

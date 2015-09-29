@@ -1,0 +1,59 @@
+<dom-module id="answer-value-preview">
+    <style>
+    :host {
+        @apply(--paper-font-body1);
+        position: relative;
+    }
+    </style>
+    <template>
+        <content></content>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'answer-value-preview',
+        properties: {
+            valueType: String,
+            value: {
+                type: Object,
+                observer: '_setValue'
+            },
+            overlay: Object
+        },
+        observers: ['_setValue(value.*)'],
+        getValue: function(value) {
+            if (typeof value === 'undefined') {
+                return '(default)';
+            } else if (value === null) {
+                return '(new)';
+            } else {
+                return value;
+            }
+        },
+
+        attached: function() {
+            var elemName = this.valueType + '-value-preview';
+            var elem = app.create(elemName, {
+                id: 'preview',
+                value: this.getValue(this.value),
+                overlay: this.overlay
+            });
+            Polymer.dom(this).appendChild(elem);
+        },
+        _setValue: function(changeRecord) {
+            var preview = Polymer.dom(this).querySelector('#preview');
+            if (preview && preview.set) {
+
+                if (changeRecord && changeRecord.path && changeRecord.path !== 'value') {
+                    //we need this for value types that are objects instead of strings
+                    preview.set(changeRecord.path, changeRecord.value);
+                } else {
+                    preview.set('value', this.value);
+                }
+            }
+        }
+    });
+})();
+</script>

@@ -1,0 +1,72 @@
+<dom-module id="mathslang-value">
+    <template>
+        <mark-up content="{{markup}}" uneditable="1"></mark-up>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mathslang-value',
+        properties: {
+            value: String,
+            overlay: Object,
+            markup: {
+                computed: 'computeMarkup(value,overlay)',
+                type: String
+            },
+            items: {
+                type: Array,
+                value: []
+            }
+        },
+        computeMarkup: function(value, overlay) {
+            if (typeof value === 'object') {
+                value = value.expr;
+            }
+            if (value[0] !== '<') {
+                return value;
+            }
+            value = value.replace(new RegExp('<&', 'g'), '');
+            value = value.replace(new RegExp('>', 'g'), '');
+            value = value.replace(new RegExp('&', 'g'), '');
+            value = value.replace(new RegExp('#equals', 'g'), ' = ');
+            value = value.replace(new RegExp('#vecEquals', 'g'), ' = ');
+            value = value.replace(new RegExp('#identic', 'g'), '\\equiv ');
+            value = value.replace(new RegExp('#approx', 'g'), '\\approx');
+            value = value.replace(new RegExp('#epsilon', 'g'), '\\pm');
+            value = value.replace(new RegExp('#leq', 'g'), '\\leq');
+            value = value.replace(new RegExp('#geq', 'g'), '\\geq');
+            value = value.replace(new RegExp('#lt', 'g'), '<');
+            value = value.replace(new RegExp('#gt', 'g'), '>');
+            value = value.replace(new RegExp('\\(', 'g'), '{(');
+            value = value.replace(new RegExp('\\)', 'g'), ')}');
+            value = value.replace(new RegExp('\\[', 'g'), '(');
+            value = value.replace(new RegExp('\\]', 'g'), ')');
+            this.items = [];
+            if (overlay.items) {
+                overlay.items.forEach(function(item, index) {
+                    if (value.indexOf('@' + item.id) > -1) {
+                        this.items.push(item);
+                    }
+                    value = value.replace(new RegExp('@' + item.id, 'g'), 'x_' + index);
+                }.bind(this));
+            }
+
+            return '<latex-formula>' + value + '</latex-formula>';
+        },
+        attached: function() {
+            this.addEventListener('mouseenter', function() {
+                this.items.forEach(function(item) {
+                    this.fire('highlight-item', item);
+                }.bind(this));
+            }.bind(this));
+            this.addEventListener('mouseleave', function() {
+                this.items.forEach(function(item) {
+                    this.fire('unhighlight-item', item);
+                }.bind(this));
+            }.bind(this));
+        }
+    });
+})();
+</script>

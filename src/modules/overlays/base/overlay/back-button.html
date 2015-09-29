@@ -1,0 +1,29 @@
+<dom-module id="back-button">
+    <style>
+    :host {
+        pointer-events: all;
+        display: none;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 4;
+    }
+    </style>
+    <template>
+        <paper-icon-button icon="player-icons:arrow-back" id="back"></paper-icon-button>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'back-button',
+        hide: function() {
+            this.style.display = 'none';
+        },
+        show: function() {
+            this.style.display = 'block';
+        }
+    });
+})();
+</script>

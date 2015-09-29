@@ -1,0 +1,15 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.OverlayEditPageImpl = {
+    properties: {
+        overlay: {
+            type: Object,
+            notify: true
+        }
+    }
+
+};
+
+window.Capira.OverlayEditPage = [Capira.EditPage, Capira.OverlayEditPageImpl];
+</script>

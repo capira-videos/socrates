@@ -1,0 +1,129 @@
+<dom-module id="latex-formula">
+    <style>
+        :host {
+            display: inline-block;
+        }
+    </style>
+    <template>
+        <span id="formula"></span>
+    </template>
+</dom-module>
+<script>
+(function() {
+    'use strict';
+    
+    // private static stuff:
+    var ownerDocument = document.currentScript.ownerDocument;
+    var katexCallbacks = [];
+    var alreadyCreatedElements = [];
+
+    function __loadKatex() {
+        var jsLoaded = false;
+        var cssLoaded = false;
+
+        function performCallbacks() {
+            katexCallbacks.forEach(function(callback) {
+                callback();
+            });
+            katexCallbacks = null; // free up the memory
+            alreadyCreatedElements = null;
+        }
+
+        // load JS
+        var script = document.createElement('script');
+        script.setAttribute('type', 'text/javascript');
+        script.setAttribute('src', '/bower_components/katex/dist/katex.min.js');
+        script.onload = function() {
+            jsLoaded = true;
+            if (cssLoaded) {
+                performCallbacks();
+            }
+        }
+        document.body.appendChild(script);
+
+        // load CSS
+        if (Polymer.Settings.useNativeShadow) {
+            // <link> elements are not allowed in shadow dom, so we download the CSS via Ajax instead of
+            // <link rel="stylesheet" type="text/css" href="/bower_components/katex/dist/katex.min.css">
+            var cssRequest = new XMLHttpRequest();
+            cssRequest.open('GET', '/bower_components/katex/dist/katex.min.css');
+            cssRequest.onload = function() {
+                if (cssRequest.status === 200) {
+                    var cssText = cssRequest.response;
+                    // Loading fonts in shadow dom is not supported by any browser yet
+                    // (see https://github.com/mathiasbynens/math-tex/issues/2). Thus we split out the
+                    // rules for the fonts from the css and apply them to the main document.
+                    // In the katex.min.css all the rules for font are included before the first style rule
+                    // which starts with .katex
+                    var styleIndex = cssText.indexOf('.katex');
+                    var fontsRules = cssText.substring(0, styleIndex);
+                    var styleRules = cssText.substring(styleIndex, cssText.length);
+                    // rebase the links of the fonts to get found from the main document
+                    fontsRules = fontsRules.replace(/url\(fonts/g, 'url(../bower_components/katex/dist/fonts');
+
+                    // Add the fonts to the main document:
+                    var pageStyle = document.createElement('style');
+                    pageStyle.innerHTML = fontsRules;
+                    document.body.appendChild(pageStyle);
+
+                    // Add the style rules to the formulas:
+                    // change the style tag withing the template, such that new latex-formula elements get stamped
+                    // out with the new style. Mind that the structure of the actual template in the DOM is
+                    // from the markup in this file as Polymer modifies it.
+                    var templateStyle = ownerDocument.querySelector('template').content.querySelector('style');
+                    templateStyle.innerHTML = templateStyle.innerHTML + styleRules;
+                    // change the style within the already created elements
+                    alreadyCreatedElements.forEach(function(element) {
+                        var elementStyle = element.root.querySelector('style');
+                        elementStyle.innerHTML = elementStyle.innerHTML + styleRules;
+                    });
+                    
+                    cssLoaded = true;
+                    if (jsLoaded) {
+                        performCallbacks();
+                    }
+                }
+            };
+            cssRequest.send();
+        } else {
+            var css_elem = document.createElement('link');
+            css_elem.setAttribute('rel', 'stylesheet');
+            css_elem.setAttribute('type', 'text/css');
+            css_elem.setAttribute('href', '/bower_components/katex/dist/katex.min.css');
+            document.body.appendChild(css_elem);
+            cssLoaded = true;
+            if (jsLoaded) {
+                performCallbacks();
+            }
+        }
+    }
+
+    Polymer({
+        is: 'latex-formula',
+        attached: function() {
+            this.render();
+        },
+        render: function(texString) {
+            var that = this;
+            this._executeWhenKatexReady(function() {
+                var formulaEl = that.$.formula;
+                texString = texString || Polymer.dom(that).innerHTML;
+                window.katex.render(texString, formulaEl);
+            });
+        },
+        _executeWhenKatexReady: function(callback) {
+            if (!window.katex) {
+                window.katex = 'loading';
+                katexCallbacks.push(callback);
+                alreadyCreatedElements.push(this);
+                __loadKatex();
+            } else if (window.katex === 'loading') {
+                katexCallbacks.push(callback);
+                alreadyCreatedElements.push(this);
+            } else {
+                callback();
+            }
+        }
+    });
+})();
+</script>

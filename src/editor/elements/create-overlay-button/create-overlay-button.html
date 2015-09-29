@@ -1,0 +1,47 @@
+<dom-module id="create-overlay-button">
+    <style>
+    :host {
+        display: block;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        height: calc(100% - 40px);
+        pointer-events: none;
+        @apply(--layout);
+        @apply(--layout-center-center);
+        cursor: pointer;
+    }
+    
+    #caption:hover {
+        opacity: 1;
+    }
+
+    #caption {
+        opacity: 0;
+        @apply(--paper-font-display1);
+        color: white;
+        padding: 16px;
+        background-color: #f09300;
+    }
+    </style>
+    <template>
+        <div id="caption">Click here to create an Overlay.</div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'create-overlay-button',
+        listeners: {
+            'tap': '_openWizard'
+        },
+        show: function() {
+            this.style.pointerEvents = 'all';
+        },
+        _openWizard: function() {
+            this.fire('open-wizard');
+        }
+    });
+})();
+</script>

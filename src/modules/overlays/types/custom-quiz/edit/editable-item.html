@@ -1,0 +1,18 @@
+<script>
+'use strict';
+Capira.EditableItem = {
+    listeners: {
+        'tap': '_itemClicked'
+    },
+    _itemClicked: function(e) {
+        e.stopPropagation();
+        this.fire('item-selected', this.item);
+    },
+    highlight: function() {
+        this.style.border = '3px solid green';
+    },
+    unhighlight: function() {
+        this.style.border = '3px solid transparent';
+    }
+};
+</script>

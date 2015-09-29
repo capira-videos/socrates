@@ -1,0 +1,16 @@
+body,
+html {
+    margin: 0;
+    height: 100%;
+    background-color: rgb(191, 198, 207);
+    overflow: hidden;
+}
+
+
+#loadingIndicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 12 !important;
+}

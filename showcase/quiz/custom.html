@@ -1,0 +1,61 @@
+<script>
+addShowcase([{
+    id: 'custom-intro',
+    type: 'standard-annotation',
+    heading: 'Custom Quiz',
+    body: window.introMarkup('', ['Quiz questions can be placed directly on an image or video'], []),
+    reaction: {
+        type: 'showOverlay',
+        target: 'custom'
+    }
+}, {
+    id: 'custom',
+    question: 'What is the sum of the two fractions?',
+    type: 'custom-quiz',
+    backgroundImage: '/static/img/user-quiz-images/fractions.png',
+    items: [{
+        id: 'numerator',
+        type: 'input-item',
+        x: 0.75,
+        y: 0.1,
+        z: 1,
+        w: 0.15,
+        fontSize: 5,
+    }, {
+        id: 'denominator',
+        type: 'input-item',
+        x: 0.75,
+        y: 0.4,
+        z: 1,
+        w: 0.15,
+        fontSize: 5,
+    }],
+    combinations: [{
+        value: {
+            'numerator': '13',
+            'denominator': '15'
+        },
+        correct: true,
+        feedback: {
+            reaction: {
+                type: 'showOverlay',
+                target: '0'
+            }
+        }
+    }, {
+        value: {
+            'denominator': '8',
+        },
+        feedback: {
+            caption: 'Instead of adding the denominators, try to find a common denominator.'
+        }
+    }, {
+        value: {
+            'denominator': '15',
+        },
+        feedback: {
+            caption: 'The denominator is correct, but check the numerator again...'
+        }
+    }]
+}]);
+</script>

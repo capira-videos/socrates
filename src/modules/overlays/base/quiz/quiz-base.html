@@ -1,0 +1,61 @@
+<link rel="import" href="quiz-value.html">
+<link rel="import" href="../overlay/overlay-base.html">
+<link rel="import" href="../overlay/skip-button.html">
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+Capira.Grade = {
+    CORRECT: 0,
+    INCORRECT: 2,
+    NEUTRAL: 1
+}
+Capira.QuizImpl = {
+    listeners: {
+        'quiz-answered': '_quizAnswered',
+        'quiz-done': '_done',
+        'skipped': '_quizSkipped',
+        'answer-changed': '_answerChanged'
+    },
+
+    _show: function() {
+        this.value = null;
+        if (this.$.card && this.$.card.show) {
+            this.$.card.show();
+        }
+
+    },
+
+    _answerChanged: function(value) {
+        if (value !== undefined && value !== null && value !== '' && this.$.card) {
+            this.$.card.wasAnswered();
+        }
+    },
+
+    _quizAnswered: function() {
+        var result = this.evaluate();
+
+        if (result == null || result.grade == Capira.Grade.INCORRECT) {
+            app.sounds.playWrong();
+        } else if (result.grade == Capira.Grade.CORRECT) {
+            app.sounds.playCorrect();
+        }
+
+        this.$.card.showFeedback(result);
+    },
+
+    _quizSkipped: function(e) {
+        e.stopPropagation();
+        app.sounds.playWrong();
+        this._done();
+    },
+
+    enterPressed: function() {
+        if (this.$.card.ui) {
+            this.$.card.ui._nextAction();
+        } else {
+            this.$.card._nextAction();
+        }
+    }
+};
+Capira.Quiz = [Capira.Overlay, Capira.QuizValue, Capira.QuizImpl];
+</script>

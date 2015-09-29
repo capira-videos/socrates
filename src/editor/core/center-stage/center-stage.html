@@ -1,0 +1,34 @@
+<link rel="import" href="../../../../bower_components/neon-animation/neon-animatable-behavior.html">
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.CenterStageImpl = {
+
+    properties: {
+        animationConfig: {
+            type: Object,
+            value: function() {
+                return {
+                    'entry': [{
+                        name: 'fade-in-animation',
+                        node: this
+                    }],
+
+                    'exit': [{
+                        name: 'fade-out-animation',
+                        node: this
+                    }, {
+                        name: 'scale-down-animation',
+                        node: this,
+                        transformOrigin: '50% 50%',
+                        axis: 'y'
+                    }]
+
+                }
+            }
+        }
+    }
+};
+
+window.Capira.CenterStage = [Polymer.NeonAnimatableBehavior, Capira.CenterStageImpl];
+</script>
