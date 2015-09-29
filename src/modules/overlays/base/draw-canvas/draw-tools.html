@@ -1,0 +1,94 @@
+<script>
+'use strict';
+Capira.DrawTools = {
+
+    tools: function(name) {
+        var that = this;
+        switch (name) {
+            case 'pen':
+                return {
+                    mouseDown: function(event) {
+                        console.log(that);
+                        that.points = [];
+                        that.points.push(that._getPos(event));
+                        that.addPath(that.points);
+                    },
+                    mouseUp: function(event) {
+                        that.history.push({
+                            action: 'line'
+                        });
+                    },
+                    mouseMove: function(event) {
+                        var p = that._getPos(event);
+                        var last = that.points[that.points.length - 1];
+                        if (that._dist(p, last) > that.minDist) {
+                            that.points.push(p);
+                            that._smoothingFn(that.points);
+                            that._drawLines();
+                        }
+                    }
+                };
+            case 'line':
+                return {
+                    mouseDown: function(event) {
+                        var startPoint = that._getPos(event);
+                        that.points = [startPoint, startPoint];
+                        that.addPath(that.points);
+                    },
+                    mouseUp: function(event) {
+                        that.history.push({
+                            action: 'line'
+                        });
+                    },
+                    mouseMove: function(event) {
+                        that.points[1] = that._getPos(event);
+                        that._drawLines();
+                    }
+                };
+            case 'eraser':
+                return {
+                    mouseDown: function(event) {},
+                    mouseUp: function(event) {},
+                    mouseMove: function(event) {
+                        var eps = 4;
+                        var scalingFactor = 10;
+
+                        var q = that._getPos(event);
+
+                        // iterate over each line backwards, and delete the first line
+                        // where the clicked point intersects
+
+                        for (var i = that.paths.length - 1; i >= 0; i--) {
+                            if (that.paths[i].color !== that.color) {
+                                continue;
+                            }
+                            var points = that.paths[i].points;
+                            var p0 = points[0];
+                            var p1 = null;
+
+                            for (var j = 1; j < points.length; j++) {
+                                p1 = points[j];
+                                var crossprod = ((p1.x - p0.x) * (q.y - p0.y)) - ((q.x - p0.x) * (p1.y - p0.y));
+                                var withinX = Math.min(p0.x, p1.x) - eps <= q.x && Math.max(p0.x, p1.x) + eps >= q.x;
+                                var withinY = Math.min(p0.y, p1.y) - eps <= q.y && Math.max(p0.y, p1.y) + eps >= q.y;
+
+                                var threshold = that._dist(p0, p1) / scalingFactor;
+
+                                if (crossprod < threshold && withinX && withinY) {
+                                    var removed = that.paths.splice(i, 1);
+                                    that.history.push({
+                                        action: 'remove',
+                                        removed: removed
+                                    });
+                                    that._drawLines();
+                                    return;
+                                }
+                                p0 = p1;
+                            }
+                        }
+                    }
+                };
+        }
+    }
+};
+</script>

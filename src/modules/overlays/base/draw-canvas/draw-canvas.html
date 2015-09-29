@@ -1,6 +1,6 @@
 <link rel="import" href="../overlay/resizable-overlay.html">
 <link rel="import" href="has-tools.html">
-<script src="draw-tools.js"></script>
+<link rel="import" href="draw-tools.html">
 <dom-module id="draw-canvas">
     <style>
     :host {
@@ -31,7 +31,7 @@
 (function() {
     Polymer({
         is: 'draw-canvas',
-        behaviors: [Capira.ResizableOverlay],
+        behaviors: [Capira.ResizableOverlay,Capira.DrawTools],
 
         properties: {
             color: {
@@ -85,18 +85,18 @@
             function _handleMouseUp(event) {
                 that.canvas.removeEventListener('mousemove', _handleMouseMove, false);
                 that.canvas.removeEventListener('touchmove', _handleMouseMove, false);
-                Capira.DrawTools[that.tool].mouseUp(event, that);
+                that.tools(that.tool).mouseUp(event, that);
                 that.fire('draw');
             }
 
             function _handleMouseMove(event) {
                 event.preventDefault();
-                Capira.DrawTools[that.tool].mouseMove(event, that);
+                that.tools(that.tool).mouseMove(event, that);
             }
 
             function _handleMouseDown(event) {
                 event.preventDefault();
-                Capira.DrawTools[that.tool].mouseDown(event, that);
+                that.tools(that.tool).mouseDown(event, that);
                 that.canvas.addEventListener('mousemove', _handleMouseMove, false);
                 that.canvas.addEventListener('touchmove', _handleMouseMove, false);
             }

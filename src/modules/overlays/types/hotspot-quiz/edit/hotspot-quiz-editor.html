@@ -40,8 +40,10 @@
 
         _updateOverlay: function() {
             var mask = this.$.mask;
+            console.log('update overlay!');
             if (this.overlay && this.overlay.mask) {
                 //mask.paintDataUrl(this.overlay.mask);
+                mask.set('points',[]);
                 mask.set('paths',this.overlay.mask);
             }
         },

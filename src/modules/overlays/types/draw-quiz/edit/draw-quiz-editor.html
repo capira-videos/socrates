@@ -26,6 +26,8 @@
 
         _combinationChanged: function() {
             if (this.combination) {
+                this.$.mask.paths = [];
+                this.$.mask.points = [];
                 this.$.mask.paintDataUrl(this.combination.value.src);
             }
         },

@@ -159,7 +159,7 @@ var unit = {
         }],
         "question": "Wo wäre ungefähr der Mond?",
         "type": "hotspot-quiz",
-        "mask": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAADhCAMAAADRaBMuAAAAGXRFW…AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwBv9EWAAWGU2J9vlyjUAAAAASUVORK5CYII=",
+        "mask": [],
         "combinations": [{
             "value": "#ff0003",
             "grade": 0,

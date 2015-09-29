@@ -40,7 +40,7 @@ echo "Pulling and installing the capira project to ~/capira."
 command -v git >/dev/null 2>&1 || { echo >&2 "I require git but it's not installed. Please install git first! Aborting."; exit 1; }
 
 mkdir ~/capira && cd ~/capira
-git clone https://github.com/capira12/capira-socrates.git
-cd capira-socrates
+git clone https://github.com/capira12/capira.git
+cd capira
 npm install
 bower update

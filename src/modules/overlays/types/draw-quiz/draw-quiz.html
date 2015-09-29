@@ -25,7 +25,7 @@
         position: absolute;
         bottom: 80px;
         left: 16px;
-        width:40px;
+        width: 40px;
     }
     
     #solution {
@@ -75,10 +75,6 @@
             return (similarity >= expected.threshold);
         },
 
-        _show: function() {
-            this.$.canvas.clear();
-        },
-
         _updateTool: function(e) {
             if (e.detail === 'clear') {
                 this.$.canvas.clear();
@@ -109,12 +105,21 @@
             }
         },
         _updateCombinations: function(e) {
-            if (e.path.indexOf('value.src') > 0) {
-                var index = e.path.replace('overlay.combinations.', '').replace('.value.src');
-                index = parseInt(index);
-                console.log(index);
-                this._initSolution(this.overlay.combinations[index]);
+            function update() {
+                if (e.path.indexOf('value.src') > 0) {
+                    var index = e.path.replace('overlay.combinations.', '').replace('.value.src');
+                    index = parseInt(index);
+                    console.log(index);
+                    this._initSolution(this.overlay.combinations[index]);
+                }
             }
+            if (this.timeout) {
+                clearTimeout(this.timeout);
+            }
+            this.timeout = setTimeout(update.bind(this), 400);
+        },
+        reset: function() {
+            this.$.canvas.set('paths', []);
         }
     });
 })();

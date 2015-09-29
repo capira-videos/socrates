@@ -1,4 +1,4 @@
-# capira-socrates
+# capira
 
 
 
@@ -17,8 +17,8 @@ If you encounter an `EACCES` error, please consult this site: https://docs.npmjs
 ## Clone Project:
 ```
  mkdir capira && cd capira
- git clone https://github.com/capira12/capira-socrates.git
- cd capira-socrates
+ git clone https://github.com/capira12/capira.git
+ cd capira
 ```
 
 ## Install Project:

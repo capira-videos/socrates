@@ -5,10 +5,14 @@ window.Capira.OverlayEditPageImpl = {
     properties: {
         overlay: {
             type: Object,
-            notify: true
+            notify: true,
+            observer: 'overlayChanged'
         }
-    }
+    },
 
+    overlayChanged: function() {
+    	//abstract
+    }
 };
 
 window.Capira.OverlayEditPage = [Capira.EditPage, Capira.OverlayEditPageImpl];
