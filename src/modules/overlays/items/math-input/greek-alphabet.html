@@ -1,0 +1,209 @@
+<script>
+'use strict';
+Capira._greekAlphabet = [{
+    'greek': 'α',
+    'latex': '\\alpha',
+    'latin': 'a'
+}, {
+    'greek': 'β',
+    'latex': '\\beta',
+    'latin': 'b'
+}, {
+    'greek': 'γ',
+    'latex': '\\gamma',
+    'latin': 'c'
+}, {
+    'greek': 'δ',
+    'latex': '\\delta',
+    'latin': 'd'
+}, {
+    'greek': 'ε',
+    'latex': '\\varepsilon',
+    'latin': 'e'
+}, {
+    'greek': 'ζ',
+    'latex': '\\zeta',
+    'latin': ''
+}, {
+    'greek': 'η',
+    'latex': '\\eta',
+    'latin': ''
+}, {
+    'greek': 'θ',
+    'latex': '\\vartheta',
+    'latin': ''
+}, {
+    'greek': 'ι',
+    'latex': '\\gamma',
+    'latin': 'g'
+}, {
+    'greek': 'κ',
+    'latex': '\\kappa',
+    'latin': 'k'
+}, {
+    'greek': 'λ',
+    'latex': '\\lambda',
+    'latin': 'l'
+}, {
+    'greek': 'μ',
+    'latex': '\\mu',
+    'latin': 'm'
+}, {
+    'greek': 'ν',
+    'latex': '\\nu',
+    'latin': 'n'
+}, {
+    'greek': 'ξ',
+    'latex': '\\xi',
+    'latin': ''
+}, {
+    'greek': 'ο',
+    'latex': 'o',
+    'latin': 'o'
+}, {
+    'greek': 'π',
+    'latex': '\\pi',
+    'latin': 'p'
+}, {
+    'greek': 'ρ',
+    'latex': '\\rho',
+    'latin': 'r'
+}, {
+    'greek': 'σ',
+    'latex': '\\sigma',
+    'latin': 's'
+}, {
+    'greek': 'τ',
+    'latex': '\\tau',
+    'latin': 't'
+}, {
+    'greek': 'υ',
+    'latex': '\\upsilon',
+    'latin': 'u'
+}, {
+    'greek': 'φ',
+    'latex': '\\phi',
+    'latin': 'f'
+}, {
+    'greek': 'χ',
+    'latex': '\\chi',
+    'latin': 'x'
+}, {
+    'greek': 'ψ',
+    'latex': '\\psi',
+    'latin': 'y'
+}, {
+    'greek': 'ω',
+    'latex': '\\omega',
+    'latin': 'z'
+}, {
+    'greek': 'Α',
+    'latex': 'A',
+    'latin': 'A'
+}, {
+    'greek': 'Β',
+    'latex': 'B',
+    'latin': 'B'
+}, {
+    'greek': 'Γ',
+    'latex': '\\Gamma',
+    'latin': 'C'
+}, {
+    'greek': 'Δ',
+    'latex': '\\Delta',
+    'latin': 'D'
+}, {
+    'greek': 'Ε',
+    'latex': 'E',
+    'latin': 'E'
+}, {
+    'greek': 'Ζ',
+    'latex': '\\Zeta',
+    'latin': ''
+}, {
+    'greek': 'Η',
+    'latex': '\\Eta',
+    'latin': ''
+}, {
+    'greek': 'Θ',
+    'latex': '\\Theta',
+    'latin': ''
+}, {
+    'greek': 'Ι',
+    'latex': 'I',
+    'latin': 'I'
+}, {
+    'greek': 'Κ',
+    'latex': 'K',
+    'latin': 'K'
+}, {
+    'greek': 'Λ',
+    'latex': '\\Lambda',
+    'latin': 'L'
+}, {
+    'greek': 'Μ',
+    'latex': 'M',
+    'latin': 'M'
+}, {
+    'greek': 'Ν',
+    'latex': 'N',
+    'latin': 'N'
+}, {
+    'greek': 'Ξ',
+    'latex': '\\Xi',
+    'latin': ''
+}, {
+    'greek': 'Ο',
+    'latex': 'O',
+    'latin': 'O'
+}, {
+    'greek': 'Π',
+    'latex': '\\Pi',
+    'latin': ''
+}, {
+    'greek': 'Ρ',
+    'latex': 'P',
+    'latin': 'P'
+}, {
+    'greek': 'Σ',
+    'latex': '\\Sigma',
+    'latin': ''
+}, {
+    'greek': 'Τ',
+    'latex': 'T',
+    'latin': 'T'
+}, {
+    'greek': 'Υ',
+    'latex': 'Y',
+    'latin': 'Y'
+}, {
+    'greek': 'Φ',
+    'latex': '\\Phi',
+    'latin': 'F'
+}, {
+    'greek': 'Χ',
+    'latex': 'X',
+    'latin': 'X'
+}, {
+    'greek': 'Ψ',
+    'latex': '\\Psi',
+    'latin': ''
+}, {
+    'greek': 'Ω',
+    'latex': '\\Omega',
+    'latin': 'Z'
+}];
+Capira.greekAlphabet = {
+    latinToGreek: function(letter) {
+        var abc = Capira._greekAlphabet;
+        for (var i = 0; i < abc.length; i++) {
+            if (letter === abc[i].latin) {
+            	return abc[i].greek;
+            }
+        }
+    },
+    latinKeyToGreek:function(letter){
+    	return this.latinToGreek(String.fromCharCode(letter));
+    }
+}
+</script>

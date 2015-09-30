@@ -7,11 +7,23 @@
         padding: 8px;
         box-sizing: border-box;
     }
+    
+    paper-button {
+        height: 40px;
+        --paper-button-flat-focus-color: var(--paper-orange-50);
+        margin: 0 16px;
+    }
+    
+    paper-button:hover {
+        background: var(--paper-orange-50);
+    }
     </style>
     <template>
         <timestamp-input overlay="{{overlay}}"></timestamp-input>
-        <paper-icon-button icon="add" on-click="_add"></paper-icon-button>
         <span class="flex"></span>
+        <paper-button on-click="_add">
+            Add Input
+        </paper-button>
         <home-button></home-button>
     </template>
 </dom-module>

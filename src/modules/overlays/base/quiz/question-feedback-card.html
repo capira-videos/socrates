@@ -141,7 +141,7 @@
                 type: Boolean,
                 value: false
             },
-            enableWrongAnswerAnimation: {
+            animateWrong: {
                 type: Boolean,
                 value: false
             },
@@ -166,6 +166,7 @@
                 value: true
             }
         },
+  
 
         attached: function() {
             if (this.isTop) {
@@ -188,7 +189,7 @@
                         this.$.container.classList.add('wrong');
                         //document.body.style.backgroundColor = '#ff9e80';
 
-                        if (this.enableWrongAnswerAnimation) {
+                        if (this.animateWrong) {
                             this.cancelAnimation();
                             this.playAnimation('wrong-answer');
                         }
@@ -230,7 +231,9 @@
                     break;
             }
         },
-        _nextAction: function() {
+        _nextAction: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             if (this._state === 'question') {
                 this.fire('quiz-answered');
                 return;

@@ -32,7 +32,7 @@
             'highlight-item': '_highlightItem',
             'unhighlight-item': '_unhighlightItem'
         },
-        _overlayState: function() {
+        _overlayState: function(e) {
             if (this.selectedItemElem) {
                 this.selectedItemElem.unhighlight();
             }
@@ -63,11 +63,15 @@
         },
         _highlightItem: function(e) {
             var item = e.detail;
-            this.$.quiz.getItemById(item.id).highlight();
+            if (item.id) {
+                this.$.quiz.getItemById(item.id).highlight();
+            }
         },
         _unhighlightItem: function(e) {
             var item = e.detail;
-            this.$.quiz.getItemById(item.id).unhighlight();
+            if (item.id) {
+                this.$.quiz.getItemById(item.id).unhighlight();
+            }
         }
     });
 })();

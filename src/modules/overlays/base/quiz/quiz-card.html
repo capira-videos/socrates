@@ -9,7 +9,7 @@
         padding-top: 64px;
         @apply(--layout-scroll);
         padding-bottom: 64px;
-        box-sizing:border-box;
+        box-sizing: border-box;
     }
     
     #quiz {
@@ -62,7 +62,7 @@
         properties: {
             question: {
                 type: String,
-                notify:true
+                notify: true
             },
             animationConfig: {
                 value: function() {
@@ -76,7 +76,13 @@
                 }
             },
         },
-
+        listeners: {
+            'neon-animation-finish': '_onNeonAnimationFinish',
+        },
+        _onNeonAnimationFinish: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        },
         show: function() {
             this.$.questionFeedback.show();
         },

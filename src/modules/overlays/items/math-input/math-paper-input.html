@@ -1,0 +1,20 @@
+<link rel="import" href="math-input.html">
+<dom-module id="math-paper-input">
+	<style>
+		:host{
+			position: relative;
+		};
+	</style>
+    <template>
+        <content></content>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'math-paper-input',
+        behaviors :[Capira.MathInput] 
+    });
+})();
+</script>

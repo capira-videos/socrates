@@ -1,0 +1,70 @@
+<link rel="import" href="../../../../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="math-input-indicator.html">
+<link rel="import" href="greek-alphabet.html">
+<script>
+'use strict';
+var KEYCODE_ESC = 27;
+
+
+Capira.MathInput = {
+    properties: {
+        greekMode: {
+            type: Boolean,
+            value: false
+        }
+    },
+    attached: function() {
+        var input = this.$$('input') || Polymer.dom(this).querySelector('paper-input');
+        this._input = input;
+        if (input) {
+            var keys = app.create('iron-a11y-keys', {
+                target: input,
+                keys: 'esc',
+            });
+            Polymer.dom(this.root).appendChild(keys);
+
+            var indicator = app.create('math-input-indicator', {
+                hidden: true
+            });
+            Polymer.dom(this.root).appendChild(indicator);
+
+
+            keys.addEventListener('keys-pressed', function() {
+                this.greekMode = !this.greekMode;
+                indicator.hidden = !this.greekMode;
+            }.bind(this));
+
+            input.addEventListener('keydown', function(e) {
+                if (this.greekMode) {
+                    var key = e.keyCode;
+                    var isUpper = e.shiftKey;
+                    if (key > 64 && key < 91 && !e.ctrlKey && !e.metaKey) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        key = String.fromCharCode(key);
+                        if (!isUpper) {
+                            key = key.toLowerCase();
+                        }
+                        this._insertAt(Capira.greekAlphabet.latinToGreek(key));
+                    }
+                }
+            }.bind(this), false);
+
+            input.addEventListener('blur', function() {
+                this.greekMode = false;
+                indicator.hidden = true;
+            }.bind(this), false);
+
+        } else {
+            console.error('couldn\'t find any inputs!');
+        }
+    },
+    _insertAt: function(character) {
+        var a = JSON.parse(JSON.stringify(this._input.value));
+        var position = this._input.selectionStart;
+        position = position === undefined ? this._input.inputElement.selectionStart : position;
+        this._input.value = [a.slice(0, position), character, a.slice(position)].join('');
+        this.set('value', this._input.value);
+    }
+};
+</script>

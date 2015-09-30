@@ -1,4 +1,5 @@
 <link rel="import" href="../quiz-item.html">
+<link rel="import" href="../math-input/math-input.html">
 <dom-module id="input-item">
     <style>
     input {
@@ -27,6 +28,7 @@
         background: rgba(248, 148, 6, .4);
         margin: 0!important;
         font-family: 'Roboto', 'Noto', sans-serif;
+        border: 1px solid transparent;
     }
     </style>
     <template>
@@ -38,7 +40,7 @@
 (function() {
     Polymer({
         is: 'input-item',
-        behaviors: [Capira.QuizItem],
+        behaviors: [Capira.QuizItem, Capira.MathInput],
         observers: ['_setFontSize(item.fontSize)'],
         _setFontSize: function() {
             this.$.input.style.fontSize = this._calcFontSize() + 'px';

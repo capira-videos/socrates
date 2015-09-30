@@ -1,0 +1,25 @@
+<link rel="import" href="math-input.html">
+<dom-module id="math-input-indicator">
+    <style>
+    :host {
+        display: block;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        top: -16px;
+        right: -16px;
+        color: var(--accent-color);
+    }
+    </style>
+    <template>
+        Σ
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'math-input-indicator'
+    });
+})();
+</script>

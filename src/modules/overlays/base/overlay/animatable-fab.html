@@ -43,6 +43,10 @@
         listeners: {
             'neon-animation-finish': '_onNeonAnimationFinish',
         },
+        _onNeonAnimationFinish: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        },
         show: function() {
             this.style.display = 'block';
             if (!this._visible) {
@@ -58,10 +62,7 @@
         showWithDelay: function() {
             this.show();
         },
-        _onNeonAnimationFinish: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+
     });
 })();
 </script>
