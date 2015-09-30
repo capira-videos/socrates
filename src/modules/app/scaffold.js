@@ -3,6 +3,52 @@
     window.Polymer = {
         dom: 'shadow'
     };
+    window.requestAnimationFrame =
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        function(callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+
+    window.inIFrame = (function() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    })();
+
+    window.Capira = window.Capira || {};
+    window.debug = window.debug || {};
+    window.isPlayer = /^\/(video-)?quiz\//.test(window.location.pathname);
+    window.isEditor = window.location.pathname.indexOf('/editor/') > -1;
+
+    window.Capira.combineBehaviors = function(coreBehaviours, playerBehaviours, editorBehaviours) {
+        if (typeof coreBehaviours === 'undefined') {
+            coreBehaviours = [];
+        }
+        if (typeof playerBehaviours === 'undefined') {
+            playerBehaviours = [];
+        }
+        if (typeof editorBehaviours === 'undefined') {
+            editorBehaviours = [];
+        }
+        if (coreBehaviours.constructor !== Array) {
+            coreBehaviours = [coreBehaviours];
+        }
+        if (playerBehaviours.constructor !== Array) {
+            playerBehaviours = [playerBehaviours];
+        }
+        if (editorBehaviours.constructor !== Array) {
+            editorBehaviours = [editorBehaviours];
+        }
+        if (window.isPlayer) {
+            return coreBehaviours.concat(playerBehaviours);
+        } else if (window.isEditor) {
+            return coreBehaviours.concat(editorBehaviours);
+        }
+    };
 
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
     window.isMobile = (function(a) {

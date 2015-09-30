@@ -1,0 +1,81 @@
+<dom-module id="account-dialog">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    paper-dialog {
+        width: 400px;
+        background-color: white !important;
+    }
+    </style>
+    <template>
+        <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
+        <paper-dialog id="login" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <h2>Capira Login</h2>
+            <p>
+                <paper-input label="Enter your Username" value="{{username}}" autofocus></paper-input>
+                <paper-input label="Enter your Password" value="{{password}}" type="password"></paper-input>
+            </p>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button on-click="_confirm">Login</paper-button>
+            </div>
+        </paper-dialog>
+        <paper-dialog id="logout" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <h2>Profile</h2>
+            <paper-item>
+                <paper-item-body two-line>
+                    <div>{{user.name}}</div>
+                    <div secondary>{{user.email}}</div>
+                </paper-item-body>
+                <iron-icon icon="player-icons:account-circle"></iron-icon>
+            </paper-item>
+            <div class="buttons">
+                <paper-button on-click="_confirmLogout">Logout</paper-button>
+                <paper-button dialog-dismiss>Close</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+<script>
+(function() {
+    'use strict';
+    Polymer({
+        is: 'account-dialog',
+
+        open: function() {
+            this.username = '';
+            this.password = '';
+            if (!this.user.name) {
+                this.$.login.open();
+            } else {
+                this.$.logout.open();
+            }
+        },
+        _confirm: function() {
+            app.service.login(this.username, this.password).then(function(req) {
+                var resp = req.response;
+                console.log(resp);
+                switch (resp) {
+                    case 42:
+                        this.$.login.close();
+                        this.fire('logged-in');
+                        break;
+                    case -42:
+                        console.log('Wrong username or Password!');
+                        break;
+                    default:
+                        console.log('Sth went terribly wrong!');
+                }
+            }.bind(this));
+        },
+        _confirmLogout: function() {
+            app.service.logout().then(function() {
+                this.$.logout.close();
+                this.fire('logged-out');
+            }.bind(this));
+        }
+    });
+})();
+</script>

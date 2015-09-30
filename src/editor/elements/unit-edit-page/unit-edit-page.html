@@ -4,7 +4,7 @@
     <template>
         <edit-page-layout>
             <template is="dom-if" if="[[unit.video]]">
-                <video-player main video="[[unit.video]]" overlays="[[unit.overlays]]"></video-player>
+                <video-player main video="[[unit.video]]"></video-player>
             </template>
             <unit-top-bar top states="default" unit="{{unit}}"></unit-top-bar>
             <unit-right-bar right states="default" unit="{{unit}}"></unit-right-bar>

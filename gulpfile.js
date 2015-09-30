@@ -189,7 +189,7 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 // Watch Files For Changes & Reload
 gulp.task('serve', [], function() {
     var proxy = httpProxy.createProxyServer({
-        target: 'http://192.168.178.83:8888'
+        target: 'http://capira.de/build/socratic'
     });
     browserSync({
         notify: false,
@@ -209,7 +209,7 @@ gulp.task('serve', [], function() {
         server: {
             baseDir: 'src',
             directory: true,
-            /*
+            
             middleware: [function(req, res, next) {
                 var url = req.url;
                 try {
@@ -224,7 +224,7 @@ gulp.task('serve', [], function() {
                     next();
                 }
 
-            }],*/
+            }],
             routes: {
                 '/bower_components': 'bower_components',
                 '/showcase': 'showcase',

@@ -36,6 +36,10 @@
                     break;
             }
         });
+        app.player.play();
+        setTimeout(function() {
+            app.player.pause();
+        }, 1000);
     });
 
 })(document);

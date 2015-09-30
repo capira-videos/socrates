@@ -1,0 +1,62 @@
+<dom-module id="account-preview">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    #content {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        cursor: pointer;
+    }
+    
+    #user {
+        margin-right: 16px;
+    }
+    </style>
+    <template>
+        <account-dialog id="account" user="{{user}}"></account-dialog>
+        <div on-click="_account" id="content">
+            <paper-icon-button icon="player-icons:account-circle"></paper-icon-button>
+            <span hidden$="{{!user.name}}" id="user">{{user.name}}</span>
+        </div>
+    </template>
+</dom-module>
+<script>
+(function() {
+    'use strict';
+    Polymer({
+        is: 'account-preview',
+        properties: {
+            user: {
+                type: Object,
+                notify: true,
+                value: {}
+            }
+        },
+        listeners: {
+            'logged-in': '_loggedIn',
+            'logged-out': '_loggedOut'
+        },
+        attached: function() {
+            setTimeout(function() {
+                this._fetchUser();
+            }.bind(this), 500);
+        },
+        _account: function() {
+            this.$.account.open();
+        },
+        _loggedIn: function() {
+            this._fetchUser();
+        },
+        _loggedOut: function() {
+            this.set('user', {});
+        },
+        _fetchUser: function() {
+            app.service.fetchMe().then(function(req) {
+                this.user = req.response;
+            }.bind(this));
+        }
+    });
+})();
+</script>

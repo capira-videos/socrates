@@ -1,54 +1,8 @@
 'use strict';
 
-window.requestAnimationFrame =
-    window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    function(callback) {
-        window.setTimeout(callback, 1000 / 60);
-    };
-
-window.inIFrame = (function() {
-    try {
-        return window.self !== window.top;
-    } catch (e) {
-        return true;
-    }
-})();
-
-window.Capira = window.Capira || {};
-window.debug = window.debug || {};
-window.isPlayer = /^\/(video-)?quiz\//.test(window.location.pathname);
-window.isEditor = window.location.pathname.indexOf('/editor/') > -1;
-
-window.Capira.combineBehaviors = function(coreBehaviours, playerBehaviours, editorBehaviours) {
-    if (typeof coreBehaviours === 'undefined') {
-        coreBehaviours = [];
-    }
-    if (typeof playerBehaviours === 'undefined') {
-        playerBehaviours = [];
-    }
-    if (typeof editorBehaviours === 'undefined') {
-        editorBehaviours = [];
-    }
-    if (coreBehaviours.constructor !== Array) {
-        coreBehaviours = [coreBehaviours];
-    }
-    if (playerBehaviours.constructor !== Array) {
-        playerBehaviours = [playerBehaviours];
-    }
-    if (editorBehaviours.constructor !== Array) {
-        editorBehaviours = [editorBehaviours];
-    }
-    if (window.isPlayer) {
-        return coreBehaviours.concat(playerBehaviours);
-    } else if (window.isEditor) {
-        return coreBehaviours.concat(editorBehaviours);
-    }
-};
-
 function App(elemId) {
     var element = document.querySelector('#app');
+
 
     function resize() {
         // although the aspect ratio is also set via css style via viewport units, we also set it 
@@ -86,18 +40,51 @@ function App(elemId) {
         window.dispatchEvent(new Event('resize'));
     };
 
+    element.addEventListener('unit-loaded', function() {
+        app.set('unit', window.unit);
+        console.log('Unit loaded!', app.unit);
+    });
+
+    (function loadUnit() {
+        var unitId = window.location.hash.substr(1) || 6;
+        var xmlhttp = new XMLHttpRequest();
+        var url = '/api/unit/' + unitId;
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                try {
+                    window.unit = JSON.parse(xmlhttp.responseText);
+                    element.dispatchEvent(new Event('unit-loaded'));
+                } catch (e) {
+                    console.warn(e);
+                }
+            }
+        };
+        xmlhttp.open('GET', url, true);
+        xmlhttp.send();
+    })();
 
 
     // Listen for template bound event to know when bindings
     // have resolved and content has been stamped to the page
     element.addEventListener('dom-change', function() {
-        console.log("we are ready to rock!");
-        element.overlays = document.getElementById('overlays');
-        element.sounds = document.getElementById('sounds');
-        element.resizeNow();
-        element.fire('ready-to-rock');
+        window.app = document.querySelector('#app');
+
+        console.log('we are ready to rock!');
+        app.overlays = document.querySelector('overlays-manager');
+        app.sounds = document.querySelector('quiz-sounds');
+        app.resizeNow();
+        app.fire('ready-to-rock');
+
+
+
+
+
+
     });
 
 
-    return element;
+
+
+
+    return app;
 }

@@ -23,7 +23,7 @@
             },
 
             _loadUnit: function(unitId) {
-                this.set('unit', window.unit);
+                //this.set('unit', window.unit);
                 this.fire('unit-loaded');
                 this.fetchUnit(unitId).then(function(req) {
                     var unit = req.response;

@@ -1,6 +1,6 @@
 var unit = {
     "title": "Capira Socrates Showcase",
-    video: {
+    "video": {
         "type": "youtube",
         "source": "3qKkhgLhJuk"
     },
@@ -304,9 +304,5 @@ var unit = {
             "feedback": "Nein..."
         }]
     }],
-    "authorId": 0,
-    "videoId": "",
-    "id": "5",
-    "next": null,
-    "admin": false
+    "id": "6",
 }
