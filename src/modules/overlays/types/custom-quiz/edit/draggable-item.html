@@ -1,0 +1,54 @@
+<script>
+'use strict';
+Capira.DraggableItem = {
+    properties: {
+        x: {
+            type: Number
+        },
+        y: {
+            type: Number
+        },
+        state: {
+            type: String,
+            value: 'mouse-up'
+        },
+        threshold: {
+            type: Number,
+            value: 5
+        }
+    },
+
+    listeners: {
+        'mousedown': '_setStartCoordinates',
+        'mouseup' : '_stopDragging',
+        'mouseout' : '_stopDragging',
+        'mousemove' : '_mouseMove'
+    },
+
+    _setStartCoordinates: function(e) {
+        console.log("set start coordinates");
+        this.x = e.clientX;
+        this.y = e.clientY;
+        this.state = 'mouse-down';
+    },
+
+    _stopDragging: function(e) {
+        this.state = 'mouse-up';
+    },
+
+    _mouseMove: function(e) {
+        // if the mouse is down but we haven't started dragging yet, check if we've moved enough to drag
+        if(this.state == 'mouse-down') {
+            if(Math.abs(e.clientX - this.x) > this.threshold || Math.abs(e.clientY - this.y) > this.threshold) {
+                this.state = 'dragging'
+            }
+        }
+        // if we are in the dragging state, then just drag the object
+        else if (this.state == 'dragging') {
+            // TODO: proper coordinates
+            this.set('item.x', 0.5);
+            this.set('item.y', 0.6);
+        }
+    }
+};
+</script>
