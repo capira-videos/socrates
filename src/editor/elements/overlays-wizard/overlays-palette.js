@@ -21,6 +21,7 @@ Capira.OverlaysPalette = function() {
                 }]
             }
         }, {
+            notYet: true,
             title: 'Multi Answer Quiz',
             description: 'Select multiple answers from multiple choices.',
             preview: {
@@ -125,6 +126,7 @@ Capira.OverlaysPalette = function() {
                 }]
             }
         }, {
+            notYet: true,
             title: 'Number Range Quiz',
             description: 'Select a numerical value from a range.',
             preview: {
@@ -144,8 +146,14 @@ Capira.OverlaysPalette = function() {
                 type: 'standard-annotation',
                 heading: 'Capira Socrates Quiz Showcase',
                 body: '<h3>Welcome to the first preview of Capira Socrates!</h3>We made this preview to demonstrate the basic functionality.<br/><br/>We would appreciate feedback, to make sure that we are building what instructors need and students love.<br/><br/>Click the play button to go on!',
-            }
+            },
+            template: {
+                type: 'standard-annotation',
+                heading: 'Heading',
+                body: '<h3>Body</h3>...',
+            },
         }, {
+            notYet: true,
             title: 'Switch Annotation',
             description: 'Select from multiple options to continue.',
             preview: {
@@ -155,6 +163,7 @@ Capira.OverlaysPalette = function() {
 
             }
         }, {
+            notYet: true,
             title: 'In-context Annotation',
             description: 'Further information and explanations within the visual context.',
             preview: {

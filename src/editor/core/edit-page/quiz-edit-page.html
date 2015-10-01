@@ -23,7 +23,10 @@ window.Capira.QuizEditPageImpl = {
         return {
             value: '',
             grade: 0,
-            feedback: 'Correct!'
+            feedback: 'Correct!',
+            reaction: {
+                type: 'play'
+            }
         };
     },
     _createIncorrectAnswer: function() {

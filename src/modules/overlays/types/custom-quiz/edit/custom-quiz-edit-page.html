@@ -39,6 +39,9 @@
             this.fire('edit-state', 'default');
         },
         _itemSelected: function(e) {
+            if(this.selectedItemElem){
+                this.selectedItemElem.unhighlight();
+            }
             this.selectedItemElem = e.path[0];
             this.selectedItemElem.highlight();
             this.set('selectedItem', e.detail);

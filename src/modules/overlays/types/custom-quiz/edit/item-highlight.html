@@ -1,0 +1,30 @@
+<dom-module id="item-highlight">
+    <style>
+    :host {
+        position: absolute;
+        top: -32px;
+        left: 50%;
+        margin-left: -12px;
+    }
+    
+    iron-icon {
+        color: var(--accent-color);
+    }
+    </style>
+    <template>
+        <iron-icon icon="player-icons:place" hidden$="{{!visible}}"></iron-icon>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'item-highlight',
+        properties: {
+            visible: {
+                type: Boolean,
+                value: false
+            }
+        }
+    });
+})();
+</script>

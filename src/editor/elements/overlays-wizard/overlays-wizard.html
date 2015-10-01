@@ -15,6 +15,7 @@
         height: calc(100vh - 64px);
         padding-top: 56px;
         box-sizing: border-box;
+        z-index: 100 !important;
     }
     
     #header {
@@ -46,7 +47,7 @@
             <paper-dialog-scrollable>
                 <template is="dom-repeat" items="{{overlaysPalette}}">
                     <div class="category-title">{{item.category}}</div>
-                    <template is="dom-repeat" items="{{item.overlays}}">
+                    <template is="dom-repeat" items="{{item.overlays}}" filter="_filter">
                         <overlay-miniature-card overlay="{{item}}" on-tap="_selected"></overlay-miniature-card>
                     </template>
                 </template>
@@ -69,7 +70,14 @@
         },
         _selected: function(e) {
             console.log(e);
-            var overlay = e.target.overlay;
+            var overlay = null;
+            var path = e.path;
+            for (var i = 0; i < path.length; i++) {
+                if (path[i].nodeName === 'OVERLAY-MINIATURE-CARD') {
+                    overlay = path[i].overlay;
+                    break;
+                }
+            }
             if (overlay) {
                 console.log('selected', overlay);
                 this.$.wizard.close();
@@ -82,7 +90,9 @@
                 }];
                 this.fire('overlay-created', overlayTemplate);
             }
-
+        },
+        _filter: function(o) {
+            return !o.notYet;
         }
     });
 })();

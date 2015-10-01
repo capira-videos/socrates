@@ -45,7 +45,7 @@
             value = value.replace(new RegExp('\\]', 'g'), ')');
 
             Capira._greekAlphabet.forEach(function(letter){
-                value=value.replace(new RegExp(letter.greek,'g'),letter.latex);
+                value=value.replace(new RegExp(letter.greek,'g'),letter.latex+' ');
             });
 
             this.items = [];

@@ -1,7 +1,7 @@
 'use strict';
 (function() {
     window.Polymer = {
-        dom: 'shadow'
+        dom: 'shady'
     };
     window.requestAnimationFrame =
         window.requestAnimationFrame ||

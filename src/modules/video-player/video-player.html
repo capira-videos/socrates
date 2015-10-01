@@ -32,6 +32,9 @@
         },
         attached: function() {
             app.player = this.$.player;
+            app.player.getCurrentTime=function(){
+                return app.player.currenttime;
+            }
         },
 
     });

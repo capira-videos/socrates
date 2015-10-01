@@ -38,7 +38,10 @@
             return {
                 value: this._getNextColor(),
                 feedback: '',
-                grade: 0
+                grade: 0,
+                reaction: {
+                    type: 'play'
+                }
             };
         },
         _createIncorrectAnswer: function() {
