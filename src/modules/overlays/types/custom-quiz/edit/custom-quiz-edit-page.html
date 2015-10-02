@@ -65,15 +65,15 @@
             }
         },
         _highlightItem: function(e) {
-            var item = e.detail;
-            if (item.id) {
-                this.$.quiz.getItemById(item.id).highlight();
+            var item = this.$.quiz.getItemById(e.detail.id);
+            if (item) {
+                item.highlight();
             }
         },
         _unhighlightItem: function(e) {
-            var item = e.detail;
-            if (item.id) {
-                this.$.quiz.getItemById(item.id).unhighlight();
+            var item = this.$.quiz.getItemById(e.detail.id);
+            if (item) {
+                item.unhighlight();
             }
         }
     });

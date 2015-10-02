@@ -13,7 +13,8 @@
     }
     </style>
     <template>
-        <mathslang-value value="{{computedValue}}" overlay="{{overlay}}"></mathslang-value>
+        <mathslang-value value="{{value}}" overlay="{{overlay}}" hidden$="{{!valueExists}}"></mathslang-value>
+        <span hidden$="{{valueExists}}">Click here to define an expression.</span>
     </template>
 </dom-module>
 <script>
@@ -26,16 +27,16 @@
         },
         properties: {
             value: String,
-            computedValue: {
-                computed: '_compute(value)'
-            },
-            overlay: Object
+            overlay: Object,
+            valueExists: {
+                computed: '_computeState(value)'
+            }
         },
         _editValue: function() {
             this.fire('edit-state', 'mathslang');
         },
-        _compute: function(value) {
-            return value ? value : 'Click here to define an expression.';
+        _computeState: function(value) {
+            return value !== '';
         }
     });
 })();

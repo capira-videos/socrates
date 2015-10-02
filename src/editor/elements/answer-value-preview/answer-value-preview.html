@@ -20,9 +20,12 @@
                 type: Object,
                 observer: '_setValue'
             },
-            overlay: Object
+            overlay: {
+                type: Object,
+                notify: true
+            }
         },
-        observers: ['_setValue(value.*)'],
+        observers: ['_setValue(value.*)', '_setValue(overlay)'],
         getValue: function(value) {
             if (typeof value === 'undefined') {
                 return '(default)';
@@ -44,13 +47,14 @@
         },
         _setValue: function(changeRecord) {
             var preview = Polymer.dom(this).querySelector('#preview');
-            if (preview && preview.set) {
 
+            if (preview && preview.set) {
+                preview.set('overlay', this.overlay);
                 if (changeRecord && changeRecord.path && changeRecord.path !== 'value') {
                     //we need this for value types that are objects instead of strings
                     preview.set(changeRecord.path, changeRecord.value);
                 } else {
-                    preview.set('value', this.value);
+                    preview.set('value', this.getValue(this.value));
                 }
             }
         }
