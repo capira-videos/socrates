@@ -4,7 +4,7 @@
     <template>
         <edit-page-layout>
             <template is="dom-if" if="[[unit.video]]">
-                <video-player main video="[[unit.video]]" autoplay="1"></video-player>
+                <video-player main unit="[[unit]]" autoplay="1"></video-player>
             </template>
             <unit-top-bar top states="default" unit="{{unit}}"></unit-top-bar>
             <unit-right-bar right states="default" unit="{{unit}}"></unit-right-bar>
@@ -50,6 +50,7 @@
             id = id.detail ? id.detail : id;
             this.fire('edit-state', 'overlay');
             app.overlays.show(id);
+            app.player.pause();
         }
     });
 })();

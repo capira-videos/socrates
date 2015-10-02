@@ -1,5 +1,6 @@
 <script src="event-timer.js"></script>
 <link rel="import" href="../../../bower_components/google-youtube/google-youtube.html">
+<link rel="import" href="overlays-timeline.html">
 <dom-module id="video-player">
     <style>
     :host {
@@ -12,8 +13,9 @@
     }
     </style>
     <template>
-        <google-youtube main video-id="[[video.source]]" height="100%" width="100%" rel="0" autoplay="{{autoplay}}" theme="light" controls="1" showinfo="0" fs="0" id="player">
+        <google-youtube main video-id="[[unit.video.source]]" height="100%" width="100%" rel="0" autoplay="{{autoplay}}" theme="light" controls="1" showinfo="0" fs="0" id="player" duration="{{duration}}">
         </google-youtube>
+        <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}"></overlays-timeline>
     </template>
 </dom-module>
 <script>
@@ -28,13 +30,14 @@
             },
             autoplay: {
                 value: 0
-            }
+            },
+            unit:Object
         },
         attached: function() {
             app.player = this.$.player;
             app.player.getCurrentTime=function(){
                 return app.player.currenttime;
-            }
+            };
         },
 
     });

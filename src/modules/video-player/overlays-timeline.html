@@ -1,0 +1,65 @@
+<dom-module id="overlays-timeline">
+    <style>
+    :host {
+        display: block;
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 35px;
+        /*border: 1px solid green;*/
+        height: 8px;
+    }
+    
+    .timeline-overlay-anchor {
+        display: block;
+        background-color: darkorange;
+        transition: opacity 0.1s, background-color 0.1s;
+        position: absolute;
+        width: 4px;
+        height: 100%;
+        margin-left: -2px;
+        opacity: 0.6;
+    }
+    
+    .timeline-overlay-anchor:hover {
+        opacity: 1;
+    }
+    </style>
+    <template>
+        <template is="dom-repeat" items="{{overlays}}">
+            <div class="timeline-overlay-anchor" style$="{{_anchorStyle(item.events.*,duration)}}" on-click="_jumpToOverlay"></div>
+        </template>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'overlays-timeline',
+        properties: {
+            overlays: {
+                type: Array
+            },
+            duration: {
+                value: 0
+            }
+        },
+        _anchorStyle: function(overlayEventsChangeRecord, duration) {
+            var events = overlayEventsChangeRecord.base;
+            if (!events) {
+                return ''; // overlay that isn't triggert by timer
+            }
+            var styleString = '';
+            for (var i = 0; i < events.length; ++i) {
+                styleString += 'left:' + (100 * events[i].start / duration) + '%;';
+            }
+            return styleString;
+        },
+
+        _jumpToOverlay: function(event) {
+            event.stopPropagation();
+            this.fire('overlay-selected', event.model.item.id);
+        }
+    });
+})();
+</script>
