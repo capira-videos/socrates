@@ -11,6 +11,7 @@
             <create-overlay-button main id="create"></create-overlay-button>
         </edit-page-layout>
         <overlays-wizard id="wizard"></overlays-wizard>
+        <paper-toast id="toast" duration="5000">Unit stored!</paper-toast>
     </template>
 </dom-module>
 <script>
@@ -34,7 +35,9 @@
 
         _save: function() {
             console.log('save!');
-            app.service.updateUnit(app.unit);
+            app.service.updateUnit(app.unit).then(function() {
+                this.$.toast.show();
+            }.bind(this));
         },
         openWizard: function() {
             this.$.wizard.show();

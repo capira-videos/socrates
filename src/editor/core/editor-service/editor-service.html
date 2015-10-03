@@ -23,8 +23,8 @@
             },
 
             _loadUnit: function(unitId) {
-                this.set('unit', window.unit);
-                this.fire('unit-loaded');
+                //this.set('unit', window.unit);
+                //this.fire('unit-loaded');
                 this.fetchUnit(unitId).then(function(req) {
                     var unit = req.response;
                     unit.overlays = unit.overlays ? unit.overlays : [];
@@ -38,9 +38,7 @@
                 var service = this.$.service;
                 service.body = JSON.stringify(data);
                 service.method = method;
-                //service.url = '../api' + url;
-                service.url = '/build/socratic/api' + url;
-                // service.url = 'http://localhost:8888/api' + url;
+                service.url = '/api' + url;
                 service.contentType = 'application/json';
                 return service.generateRequest().completes;
             },

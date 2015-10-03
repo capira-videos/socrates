@@ -296,8 +296,8 @@ var clean = require('gulp-clean');
  *   
  */
 gulp.task('vulcan', function() {
-    var DEST_DIR = 'dist/quiz';
-    return gulp.src('src/quiz/elements.html')
+    var DEST_DIR = '../dist/player';
+    return gulp.src('src/video-quiz/elements.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
@@ -311,45 +311,18 @@ gulp.task('vulcan', function() {
         }));
 });
 
-gulp.task('vulcanize-showcase', function() {
-    var DEST_DIR = 'dist/quiz';
-    return gulp.src('showcase/quiz/showcase.html')
-        .pipe($.vulcanize({
-            stripComments: true,
-            inlineCss: true,
-            inlineScripts: true
-        }))
-        .pipe(minifyHTML())
-        .pipe(minifyInline())
-        .pipe(gulp.dest(DEST_DIR))
-        .pipe($.size({
-            title: 'vulcanize'
-        }));
-});
+
 
 gulp.task('inline-scripts', function() {
-    return gulp.src('src/quiz/index.html')
+    return gulp.src('src/video-quiz/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
-        .pipe($.if('*.html', $.replace('/showcase/quiz/showcase.html', 'showcase.html')))
-        .pipe($.if('*.html', $.replace('<link rel="import" href="showcase.html">', '<script src="showcase.js" inline></script>')))
-        .pipe(gulp.dest('dist/quiz/'));
+        .pipe(gulp.dest('../dist/player/'));
 });
 
-gulp.task('clean-showcase', function() {
-    return gulp.src('dist/quiz/showcase.html')
-        .pipe(inlinesource())
-        .pipe($.if('*.html', $.replace('<script>', '')))
-        .pipe($.if('*.html', $.replace('</script>', '')))
-        .pipe($.if('*.html', $.replace('<script type="text/javascript">', '')))
-        .pipe($.if('*.html', $.replace('<html><head><meta charset="UTF-8">', '')))
-        .pipe($.if('*.html', $.replace('</head><body></body></html>', '')))
-        .pipe($.rename('dist/quiz/showcase.js'))
-        .pipe(gulp.dest(''));
-});
 
 gulp.task('clean-index', function() {
-    return gulp.src('dist/quiz/index.html')
+    return gulp.src('../dist/player/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -357,33 +330,15 @@ gulp.task('clean-index', function() {
             spare: true,
         })))
         .pipe(minifyInline())
-        //.pipe($.if('*.html', $.replace('</body></html>', '<script>function bugfix(){setTimeout(function(){if(!document.getElementById("overlay1")){bugfix();}else{document.getElementById("overlay1").opened||app.openedOverlay=0;app.showOverlay(1)}},300)};bugfix();</script></body></html>')))
-        .pipe(gulp.dest('dist/quiz/'));
+        .pipe(gulp.dest('../dist/player/'));
 });
 
-gulp.task('copy-quiz-dependencies', function() {
-    return gulp.src([
-        'bower_components/katex/dist/**/*',
-    ]).pipe(gulp.dest('../dist/bower_components/katex/dist/'));
-});
 
-gulp.task('copy-static', function() {
-    return gulp.src([
-        'static/**/*',
-        'static/**/*'
-    ]).pipe(gulp.dest('../dist/static'));
-});
 
-gulp.task('cleanup', function() {
-    return gulp.src(['dist/quiz/showcase.html', 'dist/quiz/showcase.js'], {
-            read: false
-        })
-        .pipe(clean());
-});
 
-gulp.task('build-quiz', function(cb) {
+gulp.task('build-player', function(cb) {
     runSequence(
-        ['vulcan', 'vulcanize-showcase', 'copy-quiz-dependencies', 'copy-static'], ['inline-scripts', 'clean-showcase'], ['clean-index'], ['cleanup'],
+        ['vulcan'], ['inline-scripts'], ['clean-index'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
@@ -439,12 +394,6 @@ gulp.task('editor-inline-scripts', function() {
         .pipe(gulp.dest('../dist/editor/'));
 });
 
-gulp.task('copy-player-bullshit', function() {
-    return gulp.src([
-        'src/modules/video/**/*',
-    ]).pipe(gulp.dest('../dist/modules/video'));
-});
-
 
 gulp.task('editor-clean-index', function() {
     return gulp.src('dist/editor/index.html')
@@ -462,7 +411,7 @@ gulp.task('editor-clean-index', function() {
 
 gulp.task('build-editor', function(cb) {
     runSequence(
-        ['editor-vulcan', 'editor-inline-scripts', 'copy-quiz-dependencies', 'copy-static', 'copy-player-bullshit'],
+        ['editor-vulcan', 'editor-inline-scripts', 'copy-quiz-dependencies', 'copy-static'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

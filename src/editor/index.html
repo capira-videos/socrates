@@ -15,10 +15,10 @@
     <template is="dom-bind" id="app">
         <route-manager unit-id="{{unitId}}"></route-manager>
         <editor-service unit-id="{{unitId}}" unit="{{unit}}" loading="{{loading}}"></editor-service>
+        <paper-progress indeterminate="true" id="loadingIndicator" hidden$="{{!loading}}"></paper-progress>
         <unit-edit-page unit="{{unit}}"></unit-edit-page>
         <overlay-edit-pages-manager unit="{{unit}}"></overlay-edit-pages-manager>
         <quiz-sounds id="sounds"></quiz-sounds>
-        <paper-progress indeterminate="true" id="loadingIndicator" hidden$="{{!loading}}"></paper-progress>
     </template>
     <script src="../../bower_components/webcomponentsjs/webcomponents-lite.min.js" inline></script>
     <script type="text/javascript" src="scripts/app.js" inline></script>

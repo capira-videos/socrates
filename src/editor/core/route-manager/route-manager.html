@@ -10,7 +10,7 @@ Polymer({
     attached: function() {
         function changeHandler() {
             var hash = window.location.hash.replace('#','').replace('/','');
-            this.set('unitId', parseInt(hash) || 6);
+            this.set('unitId', parseInt(hash) || 1);
             console.log('route changed to:', this.unitId);
         }
 

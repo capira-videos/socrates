@@ -22,11 +22,5 @@
         app.overlays.addEventListener('home-state', function() {
             app.unitEditor.fire('edit-state', 'default');
         });
-
-        
-        
-
     });
-
-
 })(document);

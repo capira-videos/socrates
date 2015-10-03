@@ -1,8 +1,9 @@
 <script>
+'use strict';
 Capira.CreateOverlayBehavior = {
     _createOverlay: function(overlayPath) {
         var overlay = this.get(overlayPath);
-        //TODO: Fix XSS Vulnerability!
+        //TODO: Fix XSS Vulnerability in overlay.type!
         var overlayEl = app.create(overlay.type, {
             id: 'overlay' + overlay.id,
             overlay: overlay
