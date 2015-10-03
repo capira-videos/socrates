@@ -23,13 +23,14 @@
     <span id="browser-sync-binding"></span>
     <div id="main">
         <template is="dom-bind" id="app">
-            <video-player main video="[[unit.video]]"></video-player>
+            <route-manager unit-id="{{unitId}}"></route-manager>
+            <editor-service unit-id="{{unitId}}" unit="{{unit}}" loading="{{loading}}"></editor-service>
+            <video-player main unit="[[unit]]"></video-player>
             <overlays-manager overlays="{{unit.overlays}}"></overlays-manager>
             <quiz-sounds id="sounds"></quiz-sounds>
         </template>
     </div>
     <script type="text/javascript" src="../modules/app/scaffold.js" inline></script>
-    <script src="../modules/app/app.js"></script>
     <script src="app.js"></script>
     <!-- endbuild-->
     <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
@@ -38,6 +39,9 @@
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements.html">
     <!-- endreplace-->
+        <!-- Offline testing -->
+    <script type="text/javascript" src="../../showcase/showcase5.js"></script>
+    <!-- -->
 </body>
 
 </html>

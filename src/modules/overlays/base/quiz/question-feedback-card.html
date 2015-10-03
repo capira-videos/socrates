@@ -166,7 +166,7 @@
                 value: true
             }
         },
-  
+
 
         attached: function() {
             if (this.isTop) {
@@ -232,8 +232,10 @@
             }
         },
         _nextAction: function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             if (this._state === 'question') {
                 this.fire('quiz-answered');
                 return;

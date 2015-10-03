@@ -9,8 +9,10 @@ window.EventTimer = (function() {
     var timerAssignDelay = null;
     var onlyTriggerHideafterAnnotations = false; // will be set to true while seeking in the video. Quizzes and
     // stop-annotations should then not be triggered
+    var videoPlayer = null;
+
     var timerStep = function() {
-        var newTime = app.player.getCurrentTime() + delay;
+        var newTime = videoPlayer.getCurrentTime() + delay;
         if (newTime === oldTime) { // the timerStep gets called quite often to be able to react to timer events asap.
             return; // However the player.getCurrentTime method does not update as often so we get newTime==oldTime
         } // fairly often. Obviously in this case we do not need to do any computations.
@@ -26,15 +28,15 @@ window.EventTimer = (function() {
                     // conditions:
                     // old < a <= new
                     if (oldTime < a && a <= newTime) {
-                        app.player.pause();
-                        app.player.seekTo(a);
+                        videoPlayer.pause();
+                        videoPlayer.seekTo(a);
                         callback('show', overlay);
                         var newDelay = newTime - a; // TODO delay exakter berechnen nachdem Video pausiert ist
                         // TODO seek to correct position if delay is to big
                         // calc new delay by midpoint
                         var assignDelay = (delay + newDelay) / 2.0;
                         console.log('delay:' + parseInt(delay * 1000) + '->' + parseInt(newDelay * 1000));
-                        var time = app.player.getCurrentTime();
+                        var time = videoPlayer.getCurrentTime();
                         // assign or install new delay
                         if (delay > assignDelay) { // if the new delay is smaller than the old delay, we assign it in a
                             timerAssignDelay = { // later timerStep to avoid that the current overlay gets shown again
@@ -109,6 +111,7 @@ window.EventTimer = (function() {
     };
 
     var timerReEnableAllOverlayTypes = null;
+
     function reEnableAllOverlayTypes() {
         if (onlyTriggerHideafterAnnotations && !timerReEnableAllOverlayTypes) {
             timerReEnableAllOverlayTypes = setTimeout(function() {
@@ -118,16 +121,14 @@ window.EventTimer = (function() {
     }
 
     var eventTimerMethods = {
-        init: function() {
-            // reset the onlyTriggerHideafterAnnotations flag to false after a while after the video started playing
-            // after seeking.
-            app.player.on('play', reEnableAllOverlayTypes);
-        },
         start: function() {
+            videoPlayer = app.player;
+            onlyTriggerHideafterAnnotations = false;
+
             // clear timer
             clearInterval(eventTimer);
             // start timer
-            oldTime = app.player.getCurrentTime();
+            oldTime = videoPlayer.getCurrentTime();
             eventTimer = setInterval(timerStep, refreshRate);
         },
         setCallback: function(newCallback) {
@@ -141,7 +142,7 @@ window.EventTimer = (function() {
             clearTimeout(timerReEnableAllOverlayTypes);
             onlyTriggerHideafterAnnotations = true; // avoid Quizzes and stop-annotations while seeking
             if (typeof(seekTarget) === 'number') { // a time in seconds
-                app.player.seekTo(seekTarget, true);
+                videoPlayer.seekTo(seekTarget, true);
             } else {
                 var pause;
                 var overlay = seekTarget;
@@ -154,14 +155,14 @@ window.EventTimer = (function() {
                     default:
                         pause = false;
                 }
-                app.player.seekTo(overlay.events[0].start, true);
+                videoPlayer.seekTo(overlay.events[0].start, true);
                 if (pause) {
-                    if (app.player.hasStarted && !app.player.hasStarted()) {
+                    if (videoPlayer.hasStarted && !videoPlayer.hasStarted()) {
                         // let the player play the video at the seeked position for a very short time before
                         // pausing such that a frame gets displayed and not just a black frame
-                        app.player.once('start', app.player.pause.bind(app.player));
+                        videoPlayer.once('start', videoPlayer.pause.bind(app.player));
                     } else {
-                        app.player.pause();
+                        videoPlayer.pause();
                     }
                 }
                 callback('show', overlay);
@@ -171,7 +172,7 @@ window.EventTimer = (function() {
             // by getCurrentTime(). So when we start the reset-timer when the video is playing it is ensured
             // that the quizzes we want to ignore after seeking will already be "handled" (meaning: ignored)
             // before resetting the flag.
-            if (app.player.isPlaying && app.player.isPlaying()) {
+            if (videoPlayer.isPlaying && videoPlayer.isPlaying()) {
                 timerReEnableAllOverlayTypes = setTimeout(function() {
                     onlyTriggerHideafterAnnotations = false;
                 }, 700);

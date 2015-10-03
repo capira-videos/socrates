@@ -4,7 +4,7 @@ html {
     height: 100%;
     background-color: rgb(191, 198, 207);
     overflow: hidden;
-	font-family: 'Roboto','Nato';
+	font-family: 'Roboto','Nato', Sans-serif;
 }
 
 

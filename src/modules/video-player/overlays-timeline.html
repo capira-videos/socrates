@@ -1,28 +1,32 @@
 <dom-module id="overlays-timeline">
     <style>
     :host {
-        display: block;
         position: absolute;
         left: 12px;
         right: 12px;
         bottom: 35px;
         /*border: 1px solid green;*/
-        height: 8px;
+        height: 12px;
+        pointer-events:none;
+        display: none;
     }
     
     .timeline-overlay-anchor {
-        display: block;
+        display: none;
         background-color: darkorange;
         transition: opacity 0.1s, background-color 0.1s;
         position: absolute;
         width: 4px;
         height: 100%;
         margin-left: -2px;
-        opacity: 0.6;
+        opacity: 0.4;
+        border-radius: 2px;
+        pointer-events:all;
     }
     
     .timeline-overlay-anchor:hover {
         opacity: 1;
+        translate:scale(1.2);
     }
     </style>
     <template>
@@ -47,9 +51,9 @@
         _anchorStyle: function(overlayEventsChangeRecord, duration) {
             var events = overlayEventsChangeRecord.base;
             if (!events) {
-                return ''; // overlay that isn't triggert by timer
+                return 'display:none'; // overlay that isn't triggert by timer
             }
-            var styleString = '';
+            var styleString = 'display:block; ';
             for (var i = 0; i < events.length; ++i) {
                 styleString += 'left:' + (100 * events[i].start / duration) + '%;';
             }
@@ -58,7 +62,13 @@
 
         _jumpToOverlay: function(event) {
             event.stopPropagation();
-            this.fire('overlay-selected', event.model.item.id);
+            this.fire('overlay-selected', event.model.item);
+        },
+        show:function(){
+            this.style.display='block';
+        },
+        hide:function(){
+             this.style.display='none';
         }
     });
 })();

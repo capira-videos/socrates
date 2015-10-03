@@ -23,23 +23,10 @@
             app.unitEditor.fire('edit-state', 'default');
         });
 
+        
+        
+
     });
 
-    document.addEventListener('eventtimer-ready', function() {
-        app.player.setEventTimerCallback(function(type, overlay) {
-            switch (type) {
-                case 'show':
-                    app.overlays.show(overlay.id);
-                    break;
-                case 'hide':
-                    app.overlays.hide(overlay.id);
-                    break;
-            }
-        });
-        app.player.play();
-        setTimeout(function() {
-            app.player.pause();
-        }, 1000);
-    });
 
 })(document);

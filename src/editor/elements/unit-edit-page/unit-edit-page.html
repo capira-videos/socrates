@@ -4,7 +4,7 @@
     <template>
         <edit-page-layout>
             <template is="dom-if" if="[[unit.video]]">
-                <video-player main unit="[[unit]]" autoplay="1"></video-player>
+                <video-player main unit="[[unit]]" autoplay="1" id="video"></video-player>
             </template>
             <unit-top-bar top states="default" unit="{{unit}}"></unit-top-bar>
             <unit-right-bar right states="default" unit="{{unit}}"></unit-right-bar>
@@ -31,6 +31,7 @@
             'overlay-created': 'overlayCreated',
             'overlay-selected': 'overlaySelected'
         },
+
         _save: function() {
             console.log('save!');
             app.service.updateUnit(app.unit);
@@ -43,11 +44,12 @@
             console.log('created', overlay);
             this.push('unit.overlays', overlay);
             setTimeout(function() {
-                this.overlaySelected(overlay.id);
+                this.overlaySelected(overlay);
             }.bind(this), 300);
         },
-        overlaySelected: function(id) {
-            id = id.detail ? id.detail : id;
+        overlaySelected: function(e) {
+            var id = e.detail ? e.detail : e;
+            id = id.id ? id.id : id;
             this.fire('edit-state', 'overlay');
             app.overlays.show(id);
             app.player.pause();

@@ -209,7 +209,7 @@ gulp.task('serve', [], function() {
         server: {
             baseDir: 'src',
             directory: true,
-            
+
             middleware: [function(req, res, next) {
                 var url = req.url;
                 try {
@@ -416,13 +416,16 @@ gulp.task('todo', function() {
 gulp.task('editor-vulcan', function() {
     var DEST_DIR = '../dist/editor';
     return gulp.src('src/editor/core/core-elements.html')
+        .pipe($.if('*.html', $.replace('/*deploy', '')))
+        .pipe($.if('*.html', $.replace('/*dev*/', '/*')))
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
             inlineScripts: true
         }))
         .pipe(minifyHTML())
-        .pipe(gulp.dest(DEST_DIR))
+
+    .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
             title: 'vulcanize'
         }));
@@ -459,7 +462,7 @@ gulp.task('editor-clean-index', function() {
 
 gulp.task('build-editor', function(cb) {
     runSequence(
-        ['editor-vulcan','editor-inline-scripts', 'copy-quiz-dependencies', 'copy-static','copy-player-bullshit'],
+        ['editor-vulcan', 'editor-inline-scripts', 'copy-quiz-dependencies', 'copy-static', 'copy-player-bullshit'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

@@ -28,7 +28,7 @@
                 this.fetchUnit(unitId).then(function(req) {
                     var unit = req.response;
                     unit.overlays = unit.overlays ? unit.overlays : [];
-                    //this.set('unit', unit);
+                    this.set('unit', unit);
                     console.log('Service loaded: ', this.unit);
                     this.fire('unit-loaded');
                 }.bind(this));

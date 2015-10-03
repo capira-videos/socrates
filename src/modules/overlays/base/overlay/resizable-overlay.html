@@ -10,6 +10,9 @@ window.Capira.ResizableOverlay = {
     attached: function() {
         window.addEventListener('resize', this.resize.bind(this), true);
     },
+    _show: function() {
+        window.dispatchEvent(new Event('resize'));
+    },
     _shown: function() {
         window.dispatchEvent(new Event('resize'));
     },

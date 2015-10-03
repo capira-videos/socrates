@@ -58,7 +58,7 @@
         },
         select: function(e) {
             var overlay = this.$.overlayList.itemForElement(e.target);
-            this.fire('overlay-selected', overlay.id);
+            this.fire('overlay-selected', overlay);
             if (app.player) {
                 if (overlay.events && overlay.events.length) {
                     EventTimer.seekTo(overlay.events[0].start);

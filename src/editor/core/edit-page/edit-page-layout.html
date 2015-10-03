@@ -117,34 +117,7 @@
         },
 
         resize: function() {
-            // although the aspect ratio is also set via css style via viewport units, we also set it 
-            // with fixed pixel values, as viewport units have issues on older browsers or are not supported.
-            var container = this.$.stage;
-
-            var w = container.offsetWidth;
-            var h = container.offsetHeight;
-
-            w = w || window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            h = h || window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            if (h < 190) {
-                w = window.screen.width;
-                h = window.screen.height;
-            }
-            var width = w;
-            var height = h;
-            var bottomOffset = 0;
-            height = height - bottomOffset;
-
-            if (height * 16.0 / 9 > width) {
-                height = width * 9.0 / 16;
-            } else {
-                width = height * 16.0 / 9;
-            }
-            window.scalingFactor = width / 800;
-
-            var s = this.$.main.style;
-            s.height = (height + bottomOffset) + 'px';
-            s.width = (width) + 'px';
+            window.resizer(this.$.stage,this.$.main);
         },
 
 

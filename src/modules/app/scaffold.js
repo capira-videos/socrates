@@ -2,6 +2,7 @@
 (function() {
     window.Polymer = {
         dom: 'shady'
+        //dom: 'shadow'
     };
     window.requestAnimationFrame =
         window.requestAnimationFrame ||
@@ -63,4 +64,32 @@
     if (!window.isMobile) {
         document.documentElement.classList.add('desktop');
     }
+
+    window.resizer = function(container,main) {
+
+        var w = container ? container.offsetWidth :0;
+        var h = container ? container.offsetHeight :0;
+
+        w = w || window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        h = h || window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        if (h < 190) {
+            w = window.screen.width;
+            h = window.screen.height;
+        }
+        var width = w;
+        var height = h;
+        var bottomOffset = 0;
+        height = height - bottomOffset;
+
+        if (height * 16.0 / 9 > width) {
+            height = width * 9.0 / 16;
+        } else {
+            width = height * 16.0 / 9;
+        }
+        window.scalingFactor = width / 800;
+
+        var s = main.style;
+        s.height = (height + bottomOffset) + 'px';
+        s.width = (width) + 'px';
+    };
 })();
