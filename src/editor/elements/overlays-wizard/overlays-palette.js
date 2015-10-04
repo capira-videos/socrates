@@ -33,7 +33,10 @@ Capira.OverlaysPalette = function() {
                 type: 'multi-answer-quiz',
                 question: 'Type a Question',
                 options: [],
-                combinations: []
+                combinations: [{
+                    feedback: 'Not quite...',
+                    grade: 2
+                }]
             }
         }, {
             title: 'Short Answer Quiz',
@@ -45,7 +48,10 @@ Capira.OverlaysPalette = function() {
             template: {
                 type: 'short-answer-quiz',
                 question: 'Type a Question',
-                combinations: []
+                combinations: [{
+                    feedback: 'Not quite...',
+                    grade: 2
+                }]
             }
         }, {
             title: 'Math Quiz',
@@ -57,7 +63,10 @@ Capira.OverlaysPalette = function() {
             template: {
                 type: 'math-quiz',
                 question: 'Type a Question',
-                combinations: []
+                combinations: [{
+                    feedback: 'Not quite...',
+                    grade: 2
+                }]
             }
         }, {
             title: 'Hotspot Quiz',
@@ -89,7 +98,10 @@ Capira.OverlaysPalette = function() {
             template: {
                 type: 'draw-quiz',
                 question: 'Type a Question',
-                combinations: []
+                combinations: [{
+                    feedback: 'Not quite...',
+                    grade: 2
+                }]
             }
         }, {
             title: 'In-context Quiz',
@@ -109,10 +121,10 @@ Capira.OverlaysPalette = function() {
                 }, {
                     id: 'denominator',
                     type: 'input-item',
-                    x: .75,
-                    y: .4,
+                    x: 0.75,
+                    y: 0.4,
                     z: 1,
-                    w: .15,
+                    w: 0.15,
                     fontSize: 5
                 }]
             },
@@ -135,7 +147,11 @@ Capira.OverlaysPalette = function() {
                 min: 3,
                 max: 3.4,
                 step: 0.01
-            }
+            },
+            combinations: [{
+                feedback: 'Not quite...',
+                grade: 2
+            }]
         }]
     }, {
         category: 'Annotations',

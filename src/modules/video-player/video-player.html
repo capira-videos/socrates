@@ -13,7 +13,7 @@
     }
     </style>
     <template>
-        <google-youtube main video-id="[[unit.video.source]]" height="100%" width="100%" rel="0" autoplay="{{autoplay}}" controls="1" showinfo="0" fs="0" id="player" duration="{{duration}}" playbackstarted="{{playbackstarted}}" state="{{state}}">
+        <google-youtube main video-id="[[unit.video.source]]" height="100%" width="100%" rel="0" autoplay="[[autoplay]]" controls="1" showinfo="0" fs="0" id="player" duration="{{duration}}" playbackstarted="{{playbackstarted}}" state="{{state}}">
         </google-youtube>
         <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}" id="timeline"></overlays-timeline>
     </template>
@@ -36,7 +36,8 @@
                 observer: '_playerReady'
             },
             state: {
-                type: Number
+                type: Number,
+                notify: true
             }
         },
         attached: function() {
@@ -48,32 +49,33 @@
         },
 
         _playerReady: function() {
-            window.app.player = this.$.player;
-            app.player.getCurrentTime = function() {
-                return app.player.currenttime;
-            };
+            if (this.playbackstarted) {
+                window.app.player = this.$.player;
+                app.player.getCurrentTime = function() {
+                    return app.player._player.getCurrentTime();
+                };
 
+                var et = window.EventTimer;
+                et.setCallback(function(type, overlay) {
+                    switch (type) {
+                        case 'show':
+                            app.overlays.show(overlay.id);
+                            break;
+                        case 'hide':
+                            app.overlays.hide(overlay.id);
+                            break;
+                    }
+                });
 
-            var et = window.EventTimer;
-            et.setCallback(function(type, overlay) {
-                switch (type) {
-                    case 'show':
-                        app.overlays.show(overlay.id);
-                        break;
-                    case 'hide':
-                        app.overlays.hide(overlay.id);
-                        break;
-                }
-            });
+                this.addEventListener('overlay-selected', function(e) {
+                    et.seekTo(e.detail);
+                });
 
-            this.addEventListener('overlay-selected', function(e) {
-                et.seekTo(e.detail);
-            });
+                window.dispatchEvent(new Event('resize'));
+                et.start();
 
-            window.dispatchEvent(new Event('resize'));
-            et.start();
-
-            this.fire('video-ready');
+                this.fire('video-ready');
+            }
         },
 
         _showTimeline: function() {

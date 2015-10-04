@@ -25,9 +25,9 @@
         <template is="dom-bind" id="app">
             <route-manager unit-id="{{unitId}}"></route-manager>
             <editor-service unit-id="{{unitId}}" unit="{{unit}}" loading="{{loading}}"></editor-service>
-            <tempate is="dom-if" if="{{unit.video}}">
-            <video-player main unit="[[unit]]"></video-player>
-            </tempate>
+            <template is="dom-if" if="[[unit.video]]">
+                <video-player unit="[[unit]]" autoplay="0" id="video"></video-player>
+            </template>
             <overlays-manager overlays="{{unit.overlays}}"></overlays-manager>
             <quiz-sounds id="sounds"></quiz-sounds>
         </template>
@@ -41,7 +41,7 @@
     <!-- will be replaced with elements/elements.vulcanized.html -->
     <link rel="import" href="elements.html">
     <!-- endreplace-->
-        <!-- Offline testing ->
+    <!-- Offline testing -->
     <script type="text/javascript" src="../../showcase/showcase5.js"></script>
     <!-- -->
 </body>

@@ -1,5 +1,6 @@
 'use strict';
 (function(document) {
+    window.isEditor = true;
     window.standardReaction = {
         type: 'play'
     };

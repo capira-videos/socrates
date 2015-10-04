@@ -62,7 +62,10 @@
 
         _answered: function() {
             var answer = this.$.canvas.getPixels();
-            this.value = answer;
+            //update value only if answer actually changed
+            if (!this.value || answer.length !== this.value.length) {
+                this.value = answer;
+            }
         },
 
         listeners: {

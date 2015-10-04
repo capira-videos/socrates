@@ -31,9 +31,9 @@
                 <paper-radio-button name="2">Incorrect</paper-radio-button>
             </paper-radio-group>
             <label for="feedback">Feedback:</label>
-            <paper-input id="feedback" value="{{combination.feedback}}" placeholder="Feedback for this answer."></paper-input>
+            <paper-textarea id="feedback" value="{{combination.feedback}}" placeholder="Feedback for this answer."></paper-textarea>
             <br/>
-            <label for="action">Action:</label>
+            <label for="action">Reaction:</label>
             <paper-dropdown-menu>
                 <paper-menu class="dropdown-content" selected="{{action}}" id="action">
                     <paper-item>Play video</paper-item>
@@ -95,7 +95,7 @@
                 this.updateGrade = false;
                 this.grade = c.grade + '';
                 this.updateGrade = true;
-                switch (c.reaction) {
+                switch (c.reaction.type) {
                     case 'showOverlay':
                         this.action = 2;
                         break;
@@ -106,7 +106,7 @@
                         this.action = 0;
                         break;
                     default:
-                        if (c.correct) {
+                        if (c.grade) {
                             this.action = 0;
                         } else {
                             this.action = 3;

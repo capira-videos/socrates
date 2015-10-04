@@ -188,9 +188,7 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 // Watch Files For Changes & Reload
 gulp.task('serve', [], function() {
-    var proxy = httpProxy.createProxyServer({
-        target: 'http://capira.de/build/socratic'
-    });
+    var proxy = httpProxy.createProxyServer();
     browserSync({
         notify: false,
         logPrefix: 'CAPIRA',
@@ -209,22 +207,13 @@ gulp.task('serve', [], function() {
         server: {
             baseDir: 'src',
             directory: true,
-
-            middleware: [function(req, res, next) {
-                var url = req.url;
-                try {
-                    if (url.match(/^\/(api)\//)) {
-                        proxy.web(req, res, {
-                            //target: 'http://capira.de/build/socrates'
-                        });
-                    } else {
-                        next();
-                    }
-                } catch (e) {
+            proxy: {
+                target: 'http://capira.io',
+                middleware: function(req, res, next) {
+                    console.log(req.url);
                     next();
                 }
-
-            }],
+            },
             routes: {
                 '/bower_components': 'bower_components',
                 '/showcase': 'showcase',
@@ -316,7 +305,6 @@ gulp.task('vulcan', function() {
 gulp.task('inline-scripts', function() {
     return gulp.src('src/video-quiz/index.html')
         .pipe(inlinesource())
-        .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
         .pipe(gulp.dest('../dist/player/'));
 });
 
@@ -332,8 +320,6 @@ gulp.task('clean-index', function() {
         .pipe(minifyInline())
         .pipe(gulp.dest('../dist/player/'));
 });
-
-
 
 
 gulp.task('build-player', function(cb) {
@@ -411,7 +397,7 @@ gulp.task('editor-clean-index', function() {
 
 gulp.task('build-editor', function(cb) {
     runSequence(
-        ['editor-vulcan', 'editor-inline-scripts', 'copy-quiz-dependencies', 'copy-static'],
+        ['editor-vulcan', 'editor-inline-scripts'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

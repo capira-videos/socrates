@@ -44,8 +44,8 @@
             value = value.replace(new RegExp('\\[', 'g'), '(');
             value = value.replace(new RegExp('\\]', 'g'), ')');
 
-            Capira._greekAlphabet.forEach(function(letter){
-                value=value.replace(new RegExp(letter.greek,'g'),letter.latex+' ');
+            Capira._greekAlphabet.forEach(function(letter) {
+                value = value.replace(new RegExp(letter.greek, 'g'), letter.latex + ' ');
             });
 
             this.items = [];
@@ -56,6 +56,12 @@
                     }
                     value = value.replace(new RegExp('@' + item.id, 'g'), 'x_' + index);
                 }.bind(this));
+            }
+
+            try {
+                window.katex.renderToString(value);
+            } catch (e) {
+                value = 'LaTeX Syntax Error';
             }
 
             return '<latex-formula>' + value + '</latex-formula>';

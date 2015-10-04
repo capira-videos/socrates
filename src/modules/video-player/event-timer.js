@@ -1,5 +1,4 @@
 'use strict';
-
 window.EventTimer = (function() {
     var callback = function() {};
     var eventTimer = null;
@@ -7,7 +6,6 @@ window.EventTimer = (function() {
     var refreshRate = 25; //ms (50s^-1)
     var delay = 0.2; //s `default delay 0.13' // TODO read from local storage
     var timerAssignDelay = null;
-    var onlyTriggerHideafterAnnotations = false; // will be set to true while seeking in the video. Quizzes and
     // stop-annotations should then not be triggered
     var videoPlayer = null;
 
@@ -17,6 +15,12 @@ window.EventTimer = (function() {
             return; // However the player.getCurrentTime method does not update as often so we get newTime==oldTime
         } // fairly often. Obviously in this case we do not need to do any computations.
 
+        if (newTime > oldTime + 1) {
+            //seek occured 
+            //TODO solve this more robust
+            oldTime = newTime;
+            return;
+        }
         // show transcended overlays
         // conditions:
         selectOverlays(oldTime, newTime).forEach(function(overlay) {
@@ -86,10 +90,6 @@ window.EventTimer = (function() {
             return [];
         }
         return app.unit.overlays.filter(function(overlay) {
-            if (onlyTriggerHideafterAnnotations && (overlay.interaction !== 'BASIC' || overlay.type !== 'HIDEAFTER')) {
-                // do only include hideafter annotations while onlyTriggerHideafterAnnotations
-                return false;
-            }
             if (!overlay.events) {
                 return false;
             }
@@ -110,21 +110,9 @@ window.EventTimer = (function() {
         });
     };
 
-    var timerReEnableAllOverlayTypes = null;
-
-    function reEnableAllOverlayTypes() {
-        if (onlyTriggerHideafterAnnotations && !timerReEnableAllOverlayTypes) {
-            timerReEnableAllOverlayTypes = setTimeout(function() {
-                onlyTriggerHideafterAnnotations = false;
-            }, 700);
-        }
-    }
-
     var eventTimerMethods = {
         start: function() {
             videoPlayer = app.player;
-            onlyTriggerHideafterAnnotations = false;
-
             // clear timer
             clearInterval(eventTimer);
             // start timer
@@ -139,8 +127,6 @@ window.EventTimer = (function() {
             clearInterval(eventTimer);
         },
         seekTo: function(seekTarget) { // seekTarget may be a time in seconds or an overlay
-            clearTimeout(timerReEnableAllOverlayTypes);
-            onlyTriggerHideafterAnnotations = true; // avoid Quizzes and stop-annotations while seeking
             if (typeof(seekTarget) === 'number') { // a time in seconds
                 videoPlayer.seekTo(seekTarget, true);
             } else {
@@ -156,29 +142,7 @@ window.EventTimer = (function() {
                         pause = false;
                 }
                 videoPlayer.seekTo(overlay.events[0].start, true);
-                if (pause) {
-                    if (videoPlayer.hasStarted && !videoPlayer.hasStarted()) {
-                        // let the player play the video at the seeked position for a very short time before
-                        // pausing such that a frame gets displayed and not just a black frame
-                        videoPlayer.once('start', videoPlayer.pause.bind(app.player));
-                    } else {
-                        videoPlayer.pause();
-                    }
-                }
                 callback('show', overlay);
-            }
-            // for the resetting of the flag we care for the play status of the video as when the video is
-            // playing it is ensured that the timerStep function does already get served with the new seek position
-            // by getCurrentTime(). So when we start the reset-timer when the video is playing it is ensured
-            // that the quizzes we want to ignore after seeking will already be "handled" (meaning: ignored)
-            // before resetting the flag.
-            if (videoPlayer.isPlaying && videoPlayer.isPlaying()) {
-                timerReEnableAllOverlayTypes = setTimeout(function() {
-                    onlyTriggerHideafterAnnotations = false;
-                }, 700);
-            } else {
-                timerReEnableAllOverlayTypes = null; // timer will be set by the stateChangeHandler above when
-                // video starts playing
             }
         }
     };

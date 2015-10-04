@@ -22,16 +22,15 @@
     })();
 
     window.Capira = window.Capira || {};
-    window.isEditor = window.location.pathname.indexOf('/editor/') > -1;
 
     window.Capira.combineBehaviors = function(coreBehaviours, playerBehaviours, editorBehaviours) {
-        if (typeof coreBehaviours === 'undefined') {
+        if (!coreBehaviours) {
             coreBehaviours = [];
         }
-        if (typeof playerBehaviours === 'undefined') {
+        if (!playerBehaviours) {
             playerBehaviours = [];
         }
-        if (typeof editorBehaviours === 'undefined') {
+        if (!editorBehaviours) {
             editorBehaviours = [];
         }
         if (coreBehaviours.constructor !== Array) {
@@ -61,7 +60,7 @@
             width = window.screen.width;
             height = window.screen.height;
         }
-   
+
         if (height * 16.0 / 9 > width) {
             height = width * 9.0 / 16;
         } else {
