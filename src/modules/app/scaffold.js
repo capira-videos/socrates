@@ -23,29 +23,21 @@
 
     window.Capira = window.Capira || {};
 
-    window.Capira.combineBehaviors = function(coreBehaviours, playerBehaviours, editorBehaviours) {
-        if (!coreBehaviours) {
-            coreBehaviours = [];
+    function preprocess(behavior) {
+        if (!behavior) {
+            return [];
         }
-        if (!playerBehaviours) {
-            playerBehaviours = [];
+        if (behavior.constructor !== Array) {
+            return [behavior];
         }
-        if (!editorBehaviours) {
-            editorBehaviours = [];
-        }
-        if (coreBehaviours.constructor !== Array) {
-            coreBehaviours = [coreBehaviours];
-        }
-        if (playerBehaviours.constructor !== Array) {
-            playerBehaviours = [playerBehaviours];
-        }
-        if (editorBehaviours.constructor !== Array) {
-            editorBehaviours = [editorBehaviours];
-        }
-        if (window.isPlayer) {
-            return coreBehaviours.concat(playerBehaviours);
-        } else if (window.isEditor) {
-            return coreBehaviours.concat(editorBehaviours);
+        return behavior;
+    }
+
+    window.Capira.selectBehaviors = function(coreBehaviors, playerBehaviors, editorBehaviors) {
+        if (window.isEditor) {
+            return preprocess(coreBehaviors).concat(preprocess(editorBehaviors));
+        } else {
+            return preprocess(coreBehaviors).concat(preprocess(playerBehaviors));
         }
     };
 

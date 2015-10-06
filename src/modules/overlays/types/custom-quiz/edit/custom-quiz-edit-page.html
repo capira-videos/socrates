@@ -5,7 +5,7 @@
 <dom-module id="custom-quiz-edit-page">
     <template>
         <edit-page-layout>
-            <custom-quiz-top-bar top states="default" overlay="{{overlay}}"></custom-quiz-top-bar>
+            <custom-quiz-top-bar top overlay="{{overlay}}"></custom-quiz-top-bar>
             <item-top-bar top states="item" item="{{selectedItem}}"></item-top-bar>
             <custom-quiz main states="default combination item" overlay="{{overlay}}" on-tap="_overlayState" id="quiz"></custom-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" states="default item" value-type="mathslang"></answers-selector>
@@ -22,24 +22,27 @@
     Polymer({
         is: 'custom-quiz-edit-page',
         properties: {
-            selectedItem: Object,
-            notify: true
+            selectedItem: {
+                type: Object,
+                notify: true
+            },
         },
         observers: ['_itemChanged(selectedItem.*)', '_itemAdded(overlay.items.*)'],
         behaviors: [Capira.QuizEditPage],
         listeners: {
             'item-selected': '_itemSelected',
             'highlight-item': '_highlightItem',
-            'unhighlight-item': '_unhighlightItem'
+            'unhighlight-item': '_unhighlightItem',
+            'add-item': '_addItem'
         },
-        _overlayState: function(e) {
+        _overlayState: function() {
+            this.fire('edit-state', 'default');
             if (this.selectedItemElem) {
                 this.selectedItemElem.unhighlight();
             }
-            this.fire('edit-state', 'default');
         },
         _itemSelected: function(e) {
-            if(this.selectedItemElem){
+            if (this.selectedItemElem) {
                 this.selectedItemElem.unhighlight();
             }
             this.selectedItemElem = e.path[0];
@@ -75,6 +78,25 @@
             if (item) {
                 item.unhighlight();
             }
+        },
+        overlayChanged: function() {
+            if (!this.overlay.items.length) {
+                setTimeout(function() {
+                    this._addItem();
+                }.bind(this), 500);
+            }
+        },
+        _addItem: function() {
+            var itemTemplate = {
+                'id': Date.now(),
+                'type': 'input-item',
+                'x': 0.46,
+                'y': 0.45,
+                'z': 1,
+                'w': 0.06,
+                'fontSize': 2
+            };
+            this.push('overlay.items', itemTemplate);
         }
     });
 })();

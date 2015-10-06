@@ -6,9 +6,9 @@
             <math-quiz main states="default combination" overlay="{{overlay}}"></math-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" value-type="mathslang"></answers-selector>
             <answer-editor right states="combination" combination="{{selectedCombination}}">
-                <mathslang-value-selector value="{{selectedCombination.value}}"></mathslang-value-selector>
+                <mathslang-value-selector value="{{selectedCombination.value}}" overlay="{{overlay}}" ></mathslang-value-selector>
             </answer-editor>
-            <mathslang-editor right states="mathslang" overlay="{{overlay}}" combination="{{selectedCombination}}"></mathslang-editor>
+            <mathslang-editor right states="mathslang" overlay="{{overlay}}" combination="{{selectedCombination}}" is-math-quiz="1"></mathslang-editor>
         </edit-page-layout>
     </template>
 </dom-module>

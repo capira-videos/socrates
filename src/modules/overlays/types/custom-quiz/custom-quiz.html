@@ -23,7 +23,7 @@
 (function() {
     Polymer({
         is: 'custom-quiz',
-        behaviors: Capira.combineBehaviors([Capira.Quiz, Capira.HasItems, Capira.Slang], [], [Capira.HasEditableItems]),
+        behaviors: Capira.selectBehaviors([Capira.Quiz, Capira.HasItems, Capira.Slang], [], [Capira.HasEditableItems]),
         listeners: {
             'item-value-changed': '_itemValueChanged'
         },

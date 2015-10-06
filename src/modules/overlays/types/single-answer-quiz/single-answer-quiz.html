@@ -51,7 +51,7 @@
 (function() {
     Polymer({
         is: 'single-answer-quiz',
-        behaviors: Capira.combineBehaviors(Capira.Quiz,Capira.CanShuffle,[Capira.EditSingleAnswer,Capira.CanNotShuffle]),
+        behaviors: Capira.selectBehaviors(Capira.Quiz,Capira.CanShuffle,[Capira.EditSingleAnswer,Capira.CanNotShuffle]),
         _valueEquals: function(expected, given) {
             return expected === this._findOriginalIndex(this.value);
         },

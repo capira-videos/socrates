@@ -126,7 +126,7 @@
             _feedback: String,
             _state: {
                 type: String,
-                value: null, // possible states: question, wrong, correct
+                value: null, 
                 observer: '_onStateChange'
             },
             _fabIcon: {
@@ -153,11 +153,10 @@
                 type: Object,
                 value: function() {
                     return {
-                        'wrong-answer': {
+                        'incorrect-answer': {
                             name: 'was-incorrect-animation',
                             node: this,
                             duration: 900
-
                         }
                     };
                 }
@@ -191,7 +190,7 @@
 
                         if (this.animateWrong) {
                             this.cancelAnimation();
-                            this.playAnimation('wrong-answer');
+                            this.playAnimation('incorrect-answer');
                         }
                         return;
                     case 'neutral':

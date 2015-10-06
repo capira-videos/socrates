@@ -24,7 +24,8 @@
             if (typeof value === 'object') {
                 value = value.expr;
             }
-            if (value[0] !== '<') {
+            if (value[0] !== '<' && value[0] !== '#') {
+                //not initialized yet. nothing to do.
                 return value;
             }
             value = value.replace(new RegExp('<&', 'g'), '');
@@ -56,6 +57,8 @@
                     }
                     value = value.replace(new RegExp('@' + item.id, 'g'), 'x_' + index);
                 }.bind(this));
+            } else {
+                value = 'x_0 ' + value;
             }
 
             try {

@@ -85,32 +85,29 @@
         // since the polymer elements require integer indices
         _loadCombination: function(c) {
             if (c) {
-                // switch (c.grade) {
-                //     case true:
-                //         this.correct = '0';
-                //         break;
-                //     default:
-                //         this.correct = '2';
-                // }
                 this.updateGrade = false;
                 this.grade = c.grade + '';
                 this.updateGrade = true;
-                switch (c.reaction.type) {
-                    case 'showOverlay':
-                        this.action = 2;
-                        break;
-                    case 'seekTo':
-                        this.action = 1;
-                        break;
-                    case 'play':
-                        this.action = 0;
-                        break;
-                    default:
-                        if (c.grade) {
+                if (c.reaction) {
+                    switch (c.reaction.type) {
+                        case 'showOverlay':
+                            this.action = 2;
+                            break;
+                        case 'seekTo':
+                            this.action = 1;
+                            break;
+                        case 'play':
                             this.action = 0;
-                        } else {
-                            this.action = 3;
-                        }
+                            break;
+                        default:
+                            if (c.grade) {
+                                this.action = 0;
+                            } else {
+                                this.action = 3;
+                            }
+                    }
+                } else {
+                    this.action=3;
                 }
             }
         },

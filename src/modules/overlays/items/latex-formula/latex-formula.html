@@ -1138,6 +1138,7 @@
             this._whenReady(function() {
                 var formulaEl = this.$.formula;
                 texString = texString || Polymer.dom(this).innerHTML;
+                texString = texString.replace('&lt;','<').replace('&gt;','>');
                 window.katex.render(texString, formulaEl);
             }.bind(this));
         },

@@ -27,8 +27,9 @@
         behaviors: [Polymer.NeonAnimationRunnerBehavior],
         properties: {
             animationConfig: {
+                type: Object,
                 value: function() {
-                    return this.extend(this.behaviors[0], {
+                    return {
                         'setMarker': {
                             name: 'scale-up-animation',
                             node: this.$.marker,
@@ -36,9 +37,9 @@
                                 duration: 400
                             }
                         }
-                    });
+                    };
                 }
-            },
+            }
         },
         setPosition: function(x, y) {
             var s = this.style;

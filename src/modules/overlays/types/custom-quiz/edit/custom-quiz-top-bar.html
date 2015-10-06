@@ -19,7 +19,6 @@
     }
     </style>
     <template>
-        <timestamp-input overlay="{{overlay}}"></timestamp-input>
         <span class="flex"></span>
         <paper-button on-click="_add">
             Add Input
@@ -39,16 +38,7 @@
             }
         },
         _add: function() {
-            var itemTemplate = {
-                'id': Date.now(),
-                'type': 'input-item',
-                'x': 0.46,
-                'y': 0.45,
-                'z': 1,
-                'w': 0.06,
-                'fontSize': 2
-            };
-            this.push('overlay.items', itemTemplate);
+            this.fire('add-item');
         }
     });
 })();

@@ -97,7 +97,7 @@
             <div class="exp-def">
                 <div class="heading">Expression:</div>
                 <math-paper-input hidden="{{!isComplex}}">
-                    <paper-input label="Inputs" id="items-exp" value="{{inputExp}}" ></paper-input>
+                    <paper-input label="Inputs" id="items-exp" value="{{inputExp}}"></paper-input>
                 </math-paper-input>
                 <paper-dropdown-menu id="function">
                     <paper-menu class="dropdown-content" selected="{{func}}">
@@ -161,7 +161,7 @@
             overlay: {
                 type: Object,
             },
-            isCustom: {
+            isMathQuiz: {
                 type: Boolean,
                 value: false
             },
@@ -203,8 +203,8 @@
                 return;
             }
             //if an operation is already defined, add
-            var lastChar = exp[exp.length-1];
-            if(/[+\-*/^.]/.test(lastChar)){
+            var lastChar = exp[exp.length - 1];
+            if (/[+\-*/^.]/.test(lastChar)) {
                 this.inputExp += input;
                 return;
             }
@@ -245,40 +245,44 @@
             if (!this.overlay) {
                 return;
             }
-            this.value = '';
+            var value = '';
             switch (this.func) {
                 case 1:
-                    this.value += '#identic';
+                    value += '#identic';
                     break;
                 case 2:
-                    this.value += '#approx';
+                    value += '#approx';
                     break;
                 case 3:
-                    this.value += '#lt';
+                    value += '#lt';
                     break;
                 case 4:
-                    this.value += '#gt';
+                    value += '#gt';
                     break;
                 case 5:
-                    this.value += '#leq';
+                    value += '#leq';
                     break;
                 case 6:
-                    this.value += '#geq';
+                    value += '#geq';
                     break;
                 default:
-                    this.value += '#equals';
+                    value += '#equals';
             }
-            this.value += ' ' + this.expr;
+            value += ' ' + this.expr;
             if (this.func === 2) {
-                this.value += ' #epsilon ' + this.epsilon;
+                value += ' #epsilon ' + this.epsilon;
             }
 
             if (this.expr.indexOf('[') > -1) {
-                this.value = this.value.replace('#equals', '#vecEquals');
+                value = value.replace('#equals', '#vecEquals');
             }
 
+            if (this.isMathQuiz) {
+                this.value = value;
+            } else {
+                this.value = '<& ' + this.parsedInputExp + ' & ' + value + '>';
+            }
 
-            this.value = '<& ' + this.parsedInputExp + ' & ' + this.value + '>';
         },
 
         // TODO: this feels hacky, fix it somehow
@@ -287,7 +291,7 @@
                 return;
             }
 
-            if (combination.value==='') {
+            if (combination.value === '') {
                 this.expr = '';
                 this.inputExp = '';
                 this.func = 0;
