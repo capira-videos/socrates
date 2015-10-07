@@ -7,34 +7,30 @@ window.Capira.EditableMarkup = {
         }
     },
     listeners: {
-        'focus': '_enterEditMode',
-        'blur': '_leaveEditMode'
+        'focus': '_edit',
+        'blur': '_done'
+    },
+    _edit: function() {
+        Polymer.dom(this).textContent = this.content;
+    },
+    _done: function() {
+        this.set('content', Polymer.dom(this).textContent);
     },
     attached: function() {
         if (!this.uneditable) {
-            Polymer.dom(this).setAttribute('contenteditable', true);
-            this.style.zIndex = 99; // put the mark-up on top of for example paper-ripple
-            this.addEventListener('click', function(event) {
-                event.stopPropagation();
+            this.addEventListener('click', function(e) {
+                e.stopPropagation();
             });
-            this.addEventListener('keydown', function(event) {
-                event.stopPropagation();
-                if (event.keyCode === 13) { // enter
-                    // finish the edit mode
+            this.addEventListener('keypress', function(e) {
+                e.stopPropagation();
+                if (e.keyCode === 13) { // enter
                     this.blur();
-                    event.preventDefault();
+                    e.preventDefault();
                 }
             });
+            Polymer.dom(this).setAttribute('contenteditable', true);
+            this.style.zIndex = 100;
         }
-    },
-    _enterEditMode: function() {
-        this.inEditMode = true;
-        Polymer.dom(this).textContent = this.content;
-    },
-    _leaveEditMode: function() {
-        this.inEditMode = false;
-        this.set('content', Polymer.dom(this).textContent);
-        //this._parseText(this.content);
     }
 };
 </script>

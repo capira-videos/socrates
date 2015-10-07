@@ -10,6 +10,9 @@
         padding-top: 8px;
         @apply(paper-font-subhead);
     }
+    paper-button{
+        margin-top: 8px;
+    }
     </style>
     <template>
         <template is="dom-repeat" items="{{computedValue}}">
@@ -33,6 +36,7 @@
                 computed: '_compute(selected)'
             },
         },
+        observers: ['_concatValues(computedValue.*)'],
         _compute: function(selected) {
             if (!selected) {
                 return [''];
@@ -41,10 +45,16 @@
             }
         },
         _hideDivider: function(index) {
-            return index === this.computedValue.length - 1;
+            return true; //index === this.computedValue.length - 1;
         },
         _add: function() {
-            this.set('selected', this.selected + '#or');
+            this.selected += ' #or ';
+        },
+        _concatValues: function(changeRecord) {
+            //update only if the values itself have changed. not if a value was added.
+            if (changeRecord.path !== 'computedValue') {
+                this.selected = this.computedValue.join(' #or ');
+            }
         }
     });
 })();

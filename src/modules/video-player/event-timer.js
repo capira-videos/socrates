@@ -24,11 +24,11 @@ window.EventTimer = (function() {
         // show transcended overlays
         // conditions:
         selectOverlays(oldTime, newTime).forEach(function(overlay) {
-            switch (overlay.events[0].type) {
+            switch (overlay.event.type) {
                 case 'STOP':
                 case 'PLAYAFTER':
                     // pause player & show overlay
-                    var a = overlay.events[0].start;
+                    var a = overlay.event.start;
                     // conditions:
                     // old < a <= new
                     if (oldTime < a && a <= newTime) {
@@ -54,8 +54,8 @@ window.EventTimer = (function() {
                     }
                     return;
                 case 'HIDEAFTER':
-                    var a = overlay.events[0].start;
-                    var b = overlay.events[0].duration;
+                    var a = overlay.event.start;
+                    var b = overlay.event.duration;
                     // show overlay
                     // conditions:
                     // either   old < a <= new <= b
@@ -72,7 +72,7 @@ window.EventTimer = (function() {
                     }
                     break;
                 default:
-                    console.error('overlay.type=`' + overlay.events[0].type + '` not yet implemented.');
+                    console.error('overlay.type=`' + overlay.event.type + '` not yet implemented.');
             }
         });
         if (timerAssignDelay && newTime > timerAssignDelay.time) {
@@ -90,21 +90,21 @@ window.EventTimer = (function() {
             return [];
         }
         return app.unit.overlays.filter(function(overlay) {
-            if (!overlay.events) {
+            if (!overlay.event) {
                 return false;
             }
-            switch (overlay.events[0].type) {
+            switch (overlay.event.type) {
                 case 'STOP':
                 case 'PLAYAFTER':
                     // `A < s < D'
-                    return a <= overlay.events[0].start && overlay.events[0].start <= b;
+                    return a <= overlay.event.start && overlay.event.start <= b;
                 case 'HIDEAFTER':
                     // `S < a < D' or `S < b < D'
-                    return overlay.events[0].start <= a && a <= overlay.events[0].duration || overlay.events[0].start <= b && b <= overlay.events[0].duration;
+                    return overlay.event.start <= a && a <= overlay.event.duration || overlay.event.start <= b && b <= overlay.event.duration;
                 case 'NO-TIMER':
                     return false;
                 default:
-                    console.error('overlay.type=`' + overlay.events[0].type + '` not yet implemented.');
+                    console.error('overlay.type=`' + overlay.event.type + '` not yet implemented.');
                     return false;
             }
         });
@@ -132,7 +132,7 @@ window.EventTimer = (function() {
             } else {
                 var pause;
                 var overlay = seekTarget;
-                switch (overlay.events[0].type) {
+                switch (overlay.event.type) {
                     case 'STOP':
                     case 'PLAYAFTER':
                         pause = true;
@@ -141,7 +141,7 @@ window.EventTimer = (function() {
                     default:
                         pause = false;
                 }
-                videoPlayer.seekTo(overlay.events[0].start, true);
+                videoPlayer.seekTo(overlay.event.start, true);
                 callback('show', overlay);
             }
         }

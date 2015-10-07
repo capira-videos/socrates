@@ -20,10 +20,10 @@
             content: {
                 type: String,
                 notify: true,
-                observer: '_parseText'
+                observer: '_parseContent'
             }
         },
-        _parseText: function(text) {
+        _parseContent: function(text) {
             if (text) {
                 Polymer.dom(this).innerHTML = text;
             }

@@ -1,0 +1,108 @@
+<link rel="import" href="../../../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../../../bower_components/paper-input/paper-input-container.html">
+<dom-module id="timestamp-input">
+    <template>
+        <style>
+        :host {
+            width: 160px;
+        }
+        input[is="iron-input"] {
+            outline: none;
+            box-shadow: none;
+            border: none;
+            text-align: center;
+            width: 48px !important;
+        }
+        </style>
+        <paper-input-container always-float-label attr-for-value="value">
+            <label>Timestamp</label>
+            <input id="minutes" is="iron-input" type="Number" min="0" max="100" step="1" bind-value="{{_minutes}}">
+            <span>:</span>
+            <input id="seconds" is="iron-input" type="Number" min="-1" max="60" step="1" bind-value="{{_seconds}}">
+            <span>:</span>
+            <input id="millis" is="iron-input" min="-1" max="1000" step="1" bind-value="{{_millis}}" type="Number">
+        </paper-input-container>
+    </template>
+</dom-module>
+<script>
+'use strict';
+Polymer({
+    is: 'timestamp-input',
+    properties: {
+        value: {
+            notify: true,
+            type: Number,
+            observer: '_computeValues'
+        },
+        _minutes: {
+            type: Number,
+            value: 0
+        },
+        _seconds: {
+            type: Number,
+            value: 0
+        },
+        _millis: {
+            type: Number,
+            value: 0
+        },
+    },
+    observers: [
+        '_computeValue(_minutes,_seconds,_millis)'
+    ],
+    _computeValue: function(minutes, seconds, millis) {
+        if (!this._dontCompute) {
+            minutes = parseInt(minutes) || 0;
+            seconds = parseInt(seconds) || 0;
+            millis = parseInt(millis) || 0;
+            var s, m, ms = 0;
+            if (seconds > 59) {
+                s = seconds % 60;
+                m = minutes + Math.floor(seconds / 60);
+                this._seconds = s;
+                this._minutes = m;
+                return;
+            }
+            if (seconds < 0) {
+                if (minutes) {
+                    s = 59;
+                    m = minutes - 1;
+                    this._seconds = s;
+                    this._minutes = m;
+                    return;
+                } else {
+                    this._seconds = 0;
+                    return;
+                }
+            }
+            if (millis > 999) {
+                ms = millis % 1000;
+                s = seconds + Math.floor(millis / 1000);
+                this._millis = ms;
+                this._seconds = s;
+                return;
+            }
+            if (millis < 0) {
+                if (seconds || minutes) {
+                    ms = 999;
+                    s = seconds - 1;
+                    this._millis = ms;
+                    this._seconds = s;
+                    return;
+                } else {
+                    this._millis = 0;
+                    return;
+                }
+            }
+            this.value = minutes * 60 + seconds + millis / 1000;
+        }
+    },
+    _computeValues: function(value) {
+        this._dontCompute = true;
+        this._millis = Math.floor((value - Math.floor(value)) * 1000);
+        this._seconds = Math.floor(value % 60);
+        this._minutes = Math.floor(value / 60);
+        this._dontCompute = false;
+    }
+});
+</script>

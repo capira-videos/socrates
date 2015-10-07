@@ -82,12 +82,12 @@
                 console.log('selected', overlay);
                 this.$.wizard.close();
                 var overlayTemplate = JSON.parse(JSON.stringify(overlay.template));
-                var currentTime = app.player && app.player.getCurrentTime ? app.player.getCurrentTime() : 0;
+                var currentTime = app.player ? app.player.getCurrentTime() : 0;
                 overlayTemplate.id = Date.now() + '';
-                overlayTemplate.events = [{
+                overlayTemplate.event = {
                     type: 'STOP',
                     start: currentTime,
-                }];
+                };
                 this.fire('overlay-created', overlayTemplate);
             }
         },

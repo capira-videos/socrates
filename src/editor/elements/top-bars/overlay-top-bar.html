@@ -1,5 +1,6 @@
 <dom-module id="overlay-top-bar">
     <template>
+        <timestamp-input value="{{overlay.event.start}}"></timestamp-input>
         <span class="flex"></span>
         <home-button></home-button>
     </template>
@@ -8,7 +9,13 @@
 (function() {
     Polymer({
         is: 'overlay-top-bar',
-        behaviors: [Capira.TopBar]
+        behaviors: [Capira.TopBar],
+        properties: {
+            overlay: {
+                type: Object,
+                notify: true
+            }
+        }
     });
 })();
 </script>

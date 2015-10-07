@@ -5,9 +5,8 @@
         left: 12px;
         right: 12px;
         bottom: 35px;
-        /*border: 1px solid green;*/
         height: 12px;
-        pointer-events:none;
+        pointer-events: none;
         display: none;
     }
     
@@ -21,17 +20,17 @@
         margin-left: -2px;
         opacity: 0.4;
         border-radius: 2px;
-        pointer-events:all;
+        pointer-events: all;
     }
     
     .timeline-overlay-anchor:hover {
         opacity: 1;
-        translate:scale(1.2);
+        transform: scale(1.2);
     }
     </style>
     <template>
         <template is="dom-repeat" items="{{overlays}}">
-            <div class="timeline-overlay-anchor" style$="{{_anchorStyle(item.events.*,duration)}}" on-click="_jumpToOverlay"></div>
+            <div class="timeline-overlay-anchor" style$="{{_anchorStyle(item.*,duration)}}" on-click="_jumpToOverlay"></div>
         </template>
     </template>
 </dom-module>
@@ -48,27 +47,23 @@
                 value: 0
             }
         },
-        _anchorStyle: function(overlayEventsChangeRecord, duration) {
-            var events = overlayEventsChangeRecord.base;
-            if (!events) {
-                return 'display:none'; // overlay that isn't triggert by timer
+        _anchorStyle: function(changeRecord, duration) {
+            var event = changeRecord.base.event;
+            if (!event) {
+                return; // overlay that isn't triggert by timer
             }
-            var styleString = 'display:block; ';
-            for (var i = 0; i < events.length; ++i) {
-                styleString += 'left:' + (100 * events[i].start / duration) + '%;';
-            }
-            return styleString;
+            return 'display:block; left:' + (100 * event.start / duration) + '%;';
         },
 
         _jumpToOverlay: function(event) {
             event.stopPropagation();
             this.fire('overlay-selected', event.model.item);
         },
-        show:function(){
-            this.style.display='block';
+        show: function() {
+            this.style.display = 'block';
         },
-        hide:function(){
-             this.style.display='none';
+        hide: function() {
+            this.style.display = 'none';
         }
     });
 })();

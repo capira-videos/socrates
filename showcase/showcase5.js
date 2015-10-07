@@ -6,10 +6,10 @@ var unit = {
     },
     "overlays": [{
         "id": "intro",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 7
-        }],
+        },
         "question": "Schätzfrage: Wie oft muss man ein Blatt Papier falten, damit der Papierstapel, der dabei entsteht, bis zum Mond reicht?",
         "type": "short-answer-quiz",
         "combinations": [{
@@ -28,10 +28,10 @@ var unit = {
         }]
     }, {
         "id": "hotspot1",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 41
-        }],
+        },
         "question": "Wie sieht das Papier nach der zweiten Faltung aus?",
         "type": "hotspot-quiz",
         "combinations": [{
@@ -56,10 +56,10 @@ var unit = {
         }]
     }, {
         "id": "quiz1",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 100.73
-        }],
+        },
         "question": "Wie hoch ist ungefähr eine Packung Druckerpapier?",
         "type": "short-answer-quiz",
         "combinations": [{
@@ -87,10 +87,10 @@ var unit = {
         }
     }, {
         "id": "quiz2",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 137.8
-        }],
+        },
         "question": "Wie oft muss man ein Blatt Papier falten, damit seine Höhe 5cm beträgt?",
         "type": "custom-quiz",
         "items": [{
@@ -119,10 +119,10 @@ var unit = {
         }]
     }, {
         "id": "quiz3",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 210.9
-        }],
+        },
         "question": "Wie würde die Kurve aussehen, die das Wachstum beschreibt?",
         "type": "draw-quiz",
         "combinations": [{
@@ -153,10 +153,10 @@ var unit = {
         }]
     }, {
         "id": "quiz4",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 265.1
-        }],
+        },
         "question": "Wo wäre ungefähr der Mond?",
         "type": "hotspot-quiz",
         "mask": [],
@@ -185,10 +185,10 @@ var unit = {
         }]
     }, {
         "id": "quiz5",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 331.5
-        }],
+        },
         "question": "Wie oft muss man also falten?",
         "type": "custom-quiz",
         "items": [{
@@ -217,10 +217,10 @@ var unit = {
         }]
     }, {
         "id": "quiz6",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 405
-        }],
+        },
         "question": "Wie teilt man durch <latex-formula>\\frac{1}{20}</latex-formula>?",
         "type": "single-answer-quiz",
         "options": [
@@ -246,10 +246,10 @@ var unit = {
         }]
     }, {
         "id": "quiz7",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 516.8
-        }],
+        },
         "question": "Also wie oft müsste man ein Blatt Papier falten, damit der Stapel, der dabei entsteht, bis zum Mond reicht?",
         "type": "custom-quiz",
         "items": [{
@@ -274,10 +274,10 @@ var unit = {
         }]
     }, {
         "id": "quiz28",
-        "events": [{
+        "event": {
             "type": "STOP",
             "start": 608
-        }],
+        },
         "question": "Wie nennt man diese Art von Funktionen?",
         "type": "short-answer-quiz",
         "combinations": [{
@@ -304,5 +304,5 @@ var unit = {
             "feedback": "Nein..."
         }]
     }],
-    "id": "6",
+    "id": "6"
 }

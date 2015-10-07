@@ -26,7 +26,7 @@
             <paper-input value="{{computedValue}}" label="Answer"></paper-input>
             <span class="options">
                 <paper-checkbox checked="{{isCaseSensitive}}">Case Sensitive</paper-checkbox>
-                <paper-checkbox checked="{{allowTypos}}" hidden$="{{!isCaseSensitive}}">Accept Typos</paper-checkbox>
+                <paper-checkbox checked="{{allowTypos}}" hidden$="{{isCaseSensitive}}">Accept Typos</paper-checkbox>
             </span>
         </div>
     </template>
@@ -37,25 +37,40 @@
     Polymer({
         is: 'langslang-value-block',
         properties: {
-            value: String,
+            value: {
+                type: String,
+                observer: '_computeValue',
+                notify: true
+            },
             computedValue: {
-                computed: '_computeValue(value)'
+                observer: '_valueChanged'
             },
             isCaseSensitive: {
-                computed: '_computeIsCaseSensitive(value)'
+                observer: '_valueChanged'
             },
             allowTypos: {
-                computed: '_computeAllowTypos(value)'
+                observer: '_valueChanged'
             }
         },
         _computeValue: function(value) {
-            return value.replace('#typo', '').replace('#nocase', '').trim();
+            if (!this.dontCompute) {
+                this.computedValue = value.replace('#typo', '').replace('#nocase', '').trim();
+                this.allowTypos = (value.indexOf('#typo') > -1);
+                this.isCaseSensitive = (value.indexOf('#nocase') === -1 && !this.allowTypos);
+            }
         },
-        _computeIsCaseSensitive: function(value) {
-            return value.indexOf('#nocase') === -1;
-        },
-        _computeAllowTypos: function(value) {
-            return value.indexOf('#typo') !== -1;
+        _valueChanged: function() {
+            this.dontCompute = true;
+            if (this.isCaseSensitive) {
+                this.value = this.computedValue;
+            } else {
+                if (this.allowTypos) {
+                    this.value = '#typo ' + this.computedValue;
+                } else {
+                    this.value = '#nocase ' + this.computedValue;
+                }
+            }
+            this.dontCompute = false;
         }
 
     });
