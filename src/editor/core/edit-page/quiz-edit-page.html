@@ -7,6 +7,7 @@ window.Capira = window.Capira || {};
 window.Capira.QuizEditPageImpl = {
     listeners: {
         'skipped': '_done',
+        'delete-combination': '_deleteCombination',
     },
     selectedCombination: {
         type: Object,
@@ -33,11 +34,17 @@ window.Capira.QuizEditPageImpl = {
         return {
             value: '',
             grade: 2,
-            feedback : 'Not quite...'
+            feedback: 'Not quite...'
         };
     },
     addAnswer: function() {
         this.$$('answers-selector').addAnswer(this._createAnswer());
+    },
+    _deleteCombination: function(e) {
+        var combination = e.detail;
+        var index = this.overlay.combinations.indexOf(combination);
+        this.splice('overlay.combinations', index, 1);
+        this.fire('edit-state', 'default');
     }
 };
 

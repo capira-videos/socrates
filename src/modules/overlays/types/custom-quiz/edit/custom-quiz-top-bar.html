@@ -19,11 +19,12 @@
     }
     </style>
     <template>
-        <timestamp-input></timestamp-input>
+        <timestamp-input value="{{overlay.event.start}}"></timestamp-input>
         <span class="flex"></span>
         <paper-button on-click="_add">
             Add Input
         </paper-button>
+        <paper-icon-button icon="editor-icons:delete" on-tap="_delete"></paper-icon-button>
         <home-button></home-button>
     </template>
 </dom-module>
@@ -40,6 +41,9 @@
         },
         _add: function() {
             this.fire('add-item');
+        },
+        _delete: function() {
+            this.fire('delete-overlay', this.overlay);
         }
     });
 })();

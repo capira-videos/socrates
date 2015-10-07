@@ -2,6 +2,7 @@
     <template>
         <edit-page-layout>
             <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
+            <answer-top-bar top states="combination" combination="{{selectedCombination}}"></answer-top-bar>
             <short-answer-quiz main states="default combination" overlay="{{overlay}}"></short-answer-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" value-type="langslang">
             </answers-selector>

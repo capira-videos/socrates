@@ -12,7 +12,12 @@
         <paper-input type="Number" step="0.01" min="0" max="1" value="{{item.y}}" label="top"></paper-input>
         <paper-input type="Number" step="0.01" min="0.02" max="1" value="{{item.w}}" label="width"></paper-input>
         <paper-input type="Number" step="1" min="1" max="5" value="{{item.fontSize}}" label="height"></paper-input>
-        
+        <span class="flex"></span>
+        <div style="display:inline-block">
+            <paper-icon-button icon="editor-icons:delete" on-tap="_delete">
+            </paper-icon-button>
+            <paper-tooltip>Delete Item</paper-tooltip>
+        </div>
     </template>
 </dom-module>
 <script>
@@ -20,8 +25,8 @@
     Polymer({
         is: 'item-top-bar',
         behaviors: [Capira.TopBar],
-        _add: function() {
-            this.fire('add-item');
+        _delete: function() {
+            this.fire('delete-item', this.item);
         }
     });
 })();

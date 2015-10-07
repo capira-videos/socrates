@@ -50,7 +50,8 @@
             }
         },
         listeners: {
-            'home-state': 'hide'
+            'home-state': 'hide',
+            'delete-overlay': '_deleteOverlay'
         },
         attached: function() {
             this.fire('pages-ready');
@@ -102,6 +103,12 @@
                 var value = e.detail.value;
                 this.notifyPath(path, value);
             }
+        },
+        _deleteOverlay: function(e) {
+            this.hide();
+            var overlay = e.detail;
+            var index = this.unit.overlays.indexOf(overlay);
+            this.splice('unit.overlays', index, 1);
         }
     });
 })();

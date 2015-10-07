@@ -9,9 +9,12 @@ window.Capira.OverlayEditPageImpl = {
             observer: 'overlayChanged'
         }
     },
-
+    observers: ['_timestampChanged(overlay.event.*)'],
     overlayChanged: function() {
-    	//abstract
+        //abstract
+    },
+    _timestampChanged: function() {
+        app.player.seekTo(this.overlay.event.start);
     }
 };
 

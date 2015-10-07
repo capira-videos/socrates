@@ -6,7 +6,7 @@
     <template>
         <edit-page-layout>
             <overlay-top-bar top overlay="{{overlay}}" states="default"></overlay-top-bar>
-            <draw-quiz-top-bar top overlay="{{overlay}}" states="combination"></draw-quiz-top-bar>
+            <draw-quiz-top-bar top overlay="{{overlay}}" states="combination" combination="{{selectedCombination}}"></draw-quiz-top-bar>
             <draw-quiz-editor main states="combination" combination="{{selectedCombination}}" id="editor"></draw-quiz-editor>
             <draw-quiz main states="default" overlay="{{overlay}}" id="quiz"></draw-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" states="default"></answers-selector>

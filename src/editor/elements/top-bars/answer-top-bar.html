@@ -1,24 +1,22 @@
-<dom-module id="overlay-top-bar">
+<dom-module id="answer-top-bar">
     <template>
-        <timestamp-input value="{{overlay.event.start}}"></timestamp-input>
         <span class="flex"></span>
         <paper-icon-button icon="editor-icons:delete" on-tap="_delete"></paper-icon-button>
-        <home-button></home-button>
     </template>
 </dom-module>
 <script>
 (function() {
     Polymer({
-        is: 'overlay-top-bar',
-        behaviors: [Capira.TopBar],
+        is: 'answer-top-bar',
+        behaviors: [Capira.AnswerTopBar],
         properties: {
-            overlay: {
+            combination: {
                 type: Object,
                 notify: true
             }
         },
         _delete: function() {
-            this.fire('delete-overlay', this.overlay);
+            this.fire('delete-combination', this.combination);
         }
     });
 })();

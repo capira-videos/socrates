@@ -1,8 +1,8 @@
 <dom-module id="draw-quiz-top-bar">
     <style>
-    :host {
-    }
-    #toolbox{
+    :host {}
+    
+    #toolbox {
         box-shadow: none;
     }
     </style>
@@ -15,13 +15,14 @@
             <toolbox-icon icon="delete" name="clear" unselectable></toolbox-icon>
         </tool-box>
         <div class="flex"></div>
+        <paper-icon-button icon="editor-icons:delete" on-tap="_delete"></paper-icon-button>
     </template>
 </dom-module>
 <script>
 (function() {
     Polymer({
         is: 'draw-quiz-top-bar',
-        behaviors: [Capira.TopBar]
+        behaviors: [Capira.AnswerTopBar]
     });
 })();
 </script>
