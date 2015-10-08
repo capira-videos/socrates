@@ -4,6 +4,9 @@ window.Capira.EditableMarkup = {
     properties: {
         uneditable: {
             value: false
+        },
+        pointerEvents: {
+            value: false
         }
     },
     listeners: {
@@ -18,7 +21,16 @@ window.Capira.EditableMarkup = {
     },
     attached: function() {
         if (!this.uneditable) {
+            if (this.pointerEvents) {
+                this.style.pointerEvents = 'all';
+            }
             this.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            this.addEventListener('keydown', function(e) {
+                e.stopPropagation();
+            });
+            this.addEventListener('keydown', function(e) {
                 e.stopPropagation();
             });
             this.addEventListener('keypress', function(e) {

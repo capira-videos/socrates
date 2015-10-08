@@ -1,23 +1,16 @@
 <dom-module id="answer-top-bar">
     <template>
         <span class="flex"></span>
-        <paper-icon-button icon="editor-icons:delete" on-tap="_delete"></paper-icon-button>
+        <delete-button type="answer"></delete-button>
+		<done-button></done-button>
     </template>
 </dom-module>
 <script>
 (function() {
     Polymer({
         is: 'answer-top-bar',
-        behaviors: [Capira.AnswerTopBar],
-        properties: {
-            combination: {
-                type: Object,
-                notify: true
-            }
-        },
-        _delete: function() {
-            this.fire('delete-combination', this.combination);
-        }
+        behaviors: [Capira.TopBar],
+
     });
 })();
 </script>

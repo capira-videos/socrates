@@ -354,19 +354,19 @@ gulp.task('todo', function() {
  *  Editor
  *   
  */
+
+
+
 gulp.task('editor-vulcan', function() {
     var DEST_DIR = '../dist/editor';
     return gulp.src('src/editor/core/core-elements.html')
-        .pipe($.if('*.html', $.replace('/*deploy', '')))
-        .pipe($.if('*.html', $.replace('/*dev*/', '/*')))
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
-            inlineScripts: true
+            inlineScripts: true,
+            excludes:['bower_components/iron-icons/iron-icons.html']
         }))
-        .pipe(minifyHTML())
-
-    .pipe(gulp.dest(DEST_DIR))
+        .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
             title: 'vulcanize'
         }));
@@ -382,7 +382,7 @@ gulp.task('editor-inline-scripts', function() {
 
 
 gulp.task('editor-clean-index', function() {
-    return gulp.src('dist/editor/index.html')
+    return gulp.src('../dist/editor/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -394,10 +394,25 @@ gulp.task('editor-clean-index', function() {
         .pipe(gulp.dest('dist/editor/'));
 });
 
+gulp.task('editor-clean-vulcanized', function() {
+    return gulp.src('../dist/editor/core-elements.html')
+        .pipe(inlinesource())
+        .pipe($.if('*.html', $.minifyHtml({
+            quotes: true,
+            empty: true,
+            spare: true,
+        })))
+        .pipe(minifyInline())
+        .pipe(gulp.dest('../dist/editor/'))
+        .pipe($.size({
+            title: 'minified elements'
+        }));
+});
+
 
 gulp.task('build-editor', function(cb) {
     runSequence(
-        ['editor-vulcan', 'editor-inline-scripts'],
+        ['editor-vulcan', 'editor-inline-scripts'],['editor-clean-vulcanized'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

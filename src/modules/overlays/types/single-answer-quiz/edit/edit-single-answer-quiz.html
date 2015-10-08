@@ -1,4 +1,5 @@
 <script>
+'use strict';
 window.Capira = window.Capira || {};
 window.Capira.EditSingleAnswer = {
     listeners: {
@@ -11,8 +12,10 @@ window.Capira.EditSingleAnswer = {
         Polymer.dom(this.$.items).appendChild(addButton);
     },
     _createItem: function() {
-        this.overlay.options = this.overlay.options ? this.overlay.options : [];
-        this.push('overlay.options', 'Type an answer');
+        if (!this.overlay.options) {
+            this.set('overlay.options', []);
+        }
+        this.push('overlay.options', 'Type answer ' + (this.overlay.options.length + 1));
     }
 };
 

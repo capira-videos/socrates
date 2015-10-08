@@ -56,10 +56,16 @@
         },
         _itemAdded: function(changeRecord) {
             if (changeRecord.path === 'overlay.items.splices') {
-                console.log('item added:', changeRecord);
+                console.log('items changed:', changeRecord);
                 this.$.quiz._initItems();
-                var item = changeRecord.base[changeRecord.base.length - 1];
-                this.$.quiz.getItemById(item.id).click();
+                //if operation was no deletion
+                if (!changeRecord.base.splices.keySplices[0].removed.length) {
+                    console.log('items added');
+                    var item = changeRecord.base[changeRecord.base.length - 1];
+                    this.$.quiz.getItemById(item.id).click();
+                } else {
+                    console.log('item deleted');
+                }
             }
         },
         _itemChanged: function(changeRecord) {
@@ -83,6 +89,7 @@
         },
         overlayChanged: function() {
             if (!this.overlay.items.length) {
+                //wait until top-bar antimation is finished
                 setTimeout(function() {
                     this._addItem();
                 }.bind(this), 500);
@@ -100,10 +107,9 @@
             };
             this.push('overlay.items', itemTemplate);
         },
-        _deleteItem: function(e) {
-            this._unhighlightItem(e);
+        _deleteItem: function() {
+            var item = this.selectedItem;
             this.fire('edit-state', 'default');
-            var item = e.detail;
             var index = this.overlay.items.indexOf(item);
             this.splice('overlay.items', index, 1);
         }

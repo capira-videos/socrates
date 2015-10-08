@@ -16,15 +16,15 @@
             <toolbox-icon icon="delete" name="clear" unselectable></toolbox-icon>
         </tool-box>
         <div class="flex"></div>
-        <paper-icon-button icon="editor-icons:delete" on-tap="_delete"></paper-icon-button>
-        <home-button></home-button>
+        <delete-button type="answer"></delete-button>
+        <done-button></done-button>
     </template>
 </dom-module>
 <script>
 (function() {
     Polymer({
         is: 'hotspot-quiz-tools-top-bar',
-        behaviors: [Capira.AnswerTopBar]
+        behaviors: [Capira.TopBar]
     });
 })();
 </script>

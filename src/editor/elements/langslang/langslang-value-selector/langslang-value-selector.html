@@ -24,6 +24,15 @@
 </dom-module>
 <script>
 'use strict';
+function cleanArray(actual){
+  var newArray = new Array();
+  for(var i = 0; i<actual.length; i++){
+      if (actual[i]){
+        newArray.push(actual[i]);
+    }
+  }
+  return newArray;
+}
 (function() {
     Polymer({
         is: 'langslang-value-selector',
@@ -53,7 +62,7 @@
         _concatValues: function(changeRecord) {
             //update only if the values itself have changed. not if a value was added.
             if (changeRecord.path !== 'computedValue') {
-                this.selected = this.computedValue.join(' #or ');
+                this.selected = cleanArray(this.computedValue).join(' #or ');
             }
         }
     });

@@ -22,6 +22,7 @@
             <multi-answer-quiz-edit-page id="multi-answer-quiz-edit-page"></multi-answer-quiz-edit-page>
             <math-quiz-edit-page id="math-quiz-edit-page"></math-quiz-edit-page>
             <short-answer-quiz-edit-page id="short-answer-quiz-edit-page"></short-answer-quiz-edit-page>
+            <short-annotation-edit-page id="short-annotation-edit-page"></short-annotation-edit-page>
             <empty-page id="empty"></empty-page>
         </neon-animated-pages>
     </template>
@@ -70,9 +71,8 @@
                 this.openedPageElem.addEventListener('overlay-changed', this._changeListener.bind(this));
                 this.openedPageElem.set('overlay', this._openedOverlay);
 
-
                 this.openedPageElem.show();
-                app.fire('showoverlay', overlay);
+            
             }
         },
         hide: function(keepOpen) {
@@ -105,8 +105,8 @@
             }
         },
         _deleteOverlay: function(e) {
+            var overlay = this._openedOverlay;
             this.hide();
-            var overlay = e.detail;
             var index = this.unit.overlays.indexOf(overlay);
             this.splice('unit.overlays', index, 1);
         }

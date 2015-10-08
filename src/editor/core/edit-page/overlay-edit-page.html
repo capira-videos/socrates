@@ -14,7 +14,9 @@ window.Capira.OverlayEditPageImpl = {
         //abstract
     },
     _timestampChanged: function() {
-        app.player.seekTo(this.overlay.event.start);
+        if (this.overlay.event && this.overlay.event.start) {
+            app.player.seekTo(this.overlay.event.start);
+        }
     }
 };
 

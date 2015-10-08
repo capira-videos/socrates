@@ -31,6 +31,9 @@
         observers: ['_overlayChanged(overlay.*)'],
         behaviors: [Capira.CreateOverlayBehavior],
         attached: function() {
+            this._render();
+        },
+        _render: function() {
             var overlayElem = this._createOverlay('overlay');
             overlayElem.id = 'overlay';
             Polymer.dom(this).appendChild(overlayElem);
@@ -66,7 +69,8 @@
         _overlayChanged: function(changeRecord) {
             if (this.overlayElem) {
                 if (changeRecord.path === 'overlay') {
-                    // overlay object itself changed
+                    this.removeChild(this.childNodes[0]);
+                    this._render();
                 } else {
                     // sub-property of overlay changed
                     this.overlayElem.set(changeRecord.path, changeRecord.value);

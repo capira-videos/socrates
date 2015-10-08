@@ -7,7 +7,7 @@ window.Capira = window.Capira || {};
 window.Capira.QuizEditPageImpl = {
     listeners: {
         'skipped': '_done',
-        'delete-combination': '_deleteCombination',
+        'delete-answer': '_deleteCombination',
     },
     selectedCombination: {
         type: Object,
@@ -41,7 +41,7 @@ window.Capira.QuizEditPageImpl = {
         this.$$('answers-selector').addAnswer(this._createAnswer());
     },
     _deleteCombination: function(e) {
-        var combination = e.detail;
+        var combination = this.selectedCombination;
         var index = this.overlay.combinations.indexOf(combination);
         this.splice('overlay.combinations', index, 1);
         this.fire('edit-state', 'default');

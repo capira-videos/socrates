@@ -1,0 +1,20 @@
+<link rel="import" href="../../../../../editor/core/edit-page/overlay-edit-page.html">
+
+<dom-module id="short-annotation-edit-page">
+    <template>
+        <edit-page-layout>
+			<overlay-top-bar top overlay="{{overlay}}" overlay="{{overlay}}"></overlay-top-bar>
+			<short-annotation main overlay="{{overlay}}"></short-annotation>
+
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'short-annotation-edit-page',
+        behaviors: [Capira.OverlayEditPage]
+    });
+})();
+</script>

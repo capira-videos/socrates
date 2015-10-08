@@ -35,7 +35,7 @@
             <paper-fab icon="editor-icons:add" on-tap="_create"></paper-fab>
         </right-bar-header>
         <div id="list">
-            <template is="dom-repeat" items="{{unit.overlays}}" id="overlayList" sort="_compareByTime">
+            <template is="dom-repeat" items="{{unit.overlays}}" id="overlayList" sort="_compareByTime" observe="event event.start" delay="300">
                 <div class="preview" on-tap="select">
                     <paper-ripple></paper-ripple>
                     <overlay-miniature overlay="{{item}}" width="300"></overlay-miniature>
@@ -60,25 +60,24 @@
             var overlay = this.$.overlayList.itemForElement(e.target);
             this.fire('overlay-selected', overlay);
             if (app.player) {
+                app.player.pause();
                 if (overlay.event) {
                     EventTimer.seekTo(overlay.event.start);
                 }
-                setTimeout(function() {
-                    app.player.pause();
-                }, 200);
+
             }
         },
         _compareByTime: function(o1, o2) {
             return this._getOverlayStart(o1) - this._getOverlayStart(o2);
         },
         _getOverlayStart: function(o) {
-            return o.event && o.event.start;
+            return (o.event && o.event.start) ? o.event.start : 1000;
         },
         _create: function() {
-            this.fire('open-wizard');
             if (app.player) {
                 app.player.pause();
             }
+            this.fire('open-wizard');
         }
     });
 })();

@@ -21,13 +21,11 @@
     <template>
         <quiz-card id="card" question="{{overlay.question}}">
             <div id="items">
-                <iron-selector selected-values="{{selected}}" multi="true" attr-for-selected="dataIndex" selected-attribute="checked">
-                    <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle">
-                        <paper-checkbox data-index="[[_findOriginalIndex(item)]]" on-click="_selectionChanged">
-                            <mark-up content="{{item}}">placeholder</mark-up>
-                        </paper-checkbox>
-                    </template>
-                </iron-selector>
+                <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle" id="list">
+                    <paper-checkbox on-tap="_selectionChanged">
+                        <mark-up content="{{item}}" pointer-events="1">placeholder</mark-up>
+                    </paper-checkbox>
+                </template>
             </div>
         </quiz-card>
     </template>
@@ -37,10 +35,7 @@
 (function() {
     Polymer({
         is: 'multi-answer-quiz',
-        behaviors: [Capira.Quiz, Capira.CanShuffle, Capira.Slang],
-        _show: function() {
-            this.selected = null;
-        },
+        behaviors: Capira.selectBehaviors([Capira.Quiz, Capira.Slang], Capira.CanShuffle, [Capira.EditSingleAnswer, Capira.CanNotShuffle]),
         _compare: function(expected, given) {
             expected = JSON.parse(expected).sort();
             return JSON.stringify(expected) === JSON.stringify(given);
@@ -49,10 +44,16 @@
             return this.logicslang.compare(expected, given, this._compare);
         },
         _selectionChanged: function() {
-            this.value = this.selected.map(function(e) {
-                return e || 0;
-            });
+            var items = this.$.items.childNodes;
+            this.value = [];
+            for (var i = 0; i < items.length; i++) {
+                var e = items[i];
+                if (e.nodeName === 'PAPER-CHECKBOX' && e.checked) {
+                    this.value.push(this._findOriginalIndex(e.innerText.trim()));
+                }
+            }
             this.value.sort();
+            console.log('given answer: ', this.value);
             this.fire('answer-changed');
         },
         enterPressed: function() {

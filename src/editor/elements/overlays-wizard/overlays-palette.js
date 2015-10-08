@@ -21,7 +21,6 @@ Capira.OverlaysPalette = function() {
                 }]
             }
         }, {
-            notYet: true,
             title: 'Multi Answer Quiz',
             description: 'Select multiple answers from multiple choices.',
             preview: {
@@ -167,6 +166,18 @@ Capira.OverlaysPalette = function() {
                 type: 'standard-annotation',
                 heading: 'Heading',
                 body: '<h3>Body</h3>...',
+            },
+        }, {
+            title: 'Short Annotation',
+            description: 'Short information and explanations, within the video.',
+            preview: {
+                type: 'short-annotation',
+                backgroundImage: '/static/img/user-quiz-images/coordinate-system.png',
+                body: 'Welcome to the first preview of Capira Socrates!',
+            },
+            template: {
+                type: 'short-annotation',
+                body: 'Type an annotation...',
             },
         }, {
             notYet: true,

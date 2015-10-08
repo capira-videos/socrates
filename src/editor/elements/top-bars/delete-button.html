@@ -1,0 +1,51 @@
+<dom-module id="delete-button">
+    <style>
+    #confirm {
+        background-color: white !important;
+    }
+    </style>
+    <template>
+        <div style="display:inline-block">
+            <paper-icon-button icon="editor-icons:delete" on-tap="_confirm"></paper-icon-button>
+            <paper-tooltip>Delete <span>{{_computedType}}</span></paper-tooltip>
+        </div>
+        <paper-dialog id="confirm" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <h2>Delete <span>{{_computedType}}</span></h2>
+            <paper-dialog-scrollable>
+                Do you really want to delete this <span>{{_computedType}}</span>?
+                <br/> This can not be undone!
+            </paper-dialog-scrollable>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button dialog-confirm on-tap="_delete" autofocus>Delete</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'delete-button',
+        properties: {
+            type: {
+                type: String
+            },
+            _computedType: {
+                computed: '_computeType(type)'
+            }
+        },
+        _confirm: function() {
+            this.$.confirm.open();
+        },
+        _computeType: function(type) {
+            return type.replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        },
+        _delete: function() {
+            this.fire('delete-' + this.type);
+        }
+    });
+})();
+</script>

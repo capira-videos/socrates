@@ -1,8 +1,8 @@
 <dom-module id="overlay-top-bar">
     <template>
-        <timestamp-input value="{{overlay.event.start}}"></timestamp-input>
+        <timestamp-input value="{{overlay.event.start}}" hidden$="{{!overlay.event}}"></timestamp-input>
         <span class="flex"></span>
-        <paper-icon-button icon="editor-icons:delete" on-tap="_delete"></paper-icon-button>
+        <delete-button type="overlay"></delete-button>
         <home-button></home-button>
     </template>
 </dom-module>
@@ -16,9 +16,6 @@
                 type: Object,
                 notify: true
             }
-        },
-        _delete: function() {
-            this.fire('delete-overlay', this.overlay);
         }
     });
 })();

@@ -1,0 +1,19 @@
+<dom-module id="done-button">
+    <template>
+        <div style="display:inline-block">
+            <paper-icon-button on-tap="_done" icon="editor-icons:done"></paper-icon-button>
+            <paper-tooltip>Save and back.</paper-tooltip>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'done-button',
+        _done: function() {
+            this.fire('edit-state', 'default');
+        }
+    });
+})();
+</script>
