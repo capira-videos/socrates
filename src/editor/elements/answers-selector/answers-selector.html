@@ -57,7 +57,7 @@
         </right-bar-header>
         <div id="list">
             <template is="dom-repeat" items="{{overlay.combinations}}" id="combinationsList" sort="_sortFn" observe="grade">
-                <paper-icon-item on-click="toggleSelection">
+                <paper-icon-item on-tap="toggleSelection">
                     <paper-ripple></paper-ripple>
                     <iron-icon icon="{{_icon(item.grade)}}" item-icon class$="{{class(item.grade)}}"></iron-icon>
                     <paper-item-body two-line>

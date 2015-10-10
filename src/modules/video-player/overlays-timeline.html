@@ -30,7 +30,7 @@
     </style>
     <template>
         <template is="dom-repeat" items="{{overlays}}">
-            <div class="timeline-overlay-anchor" style$="{{_anchorStyle(item.*,duration)}}" on-click="_jumpToOverlay"></div>
+            <div class="timeline-overlay-anchor" style$="{{_anchorStyle(item.*,duration)}}" on-tap="_jumpToOverlay"></div>
         </template>
     </template>
 </dom-module>
