@@ -293,7 +293,11 @@ gulp.task('vulcan', function() {
             inlineScripts: true
         }))
         .pipe(minifyHTML())
-        .pipe(minifyInline())
+        .pipe(minifyInline({
+            css: {
+                advanced: false
+            }
+        }))
         .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
             title: 'vulcanize'
@@ -364,7 +368,7 @@ gulp.task('editor-vulcan', function() {
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
-            excludes:['bower_components/iron-icons/iron-icons.html']
+            stripExcludes: ['bower_components/iron-icons/iron-icons.html']
         }))
         .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
@@ -402,7 +406,11 @@ gulp.task('editor-clean-vulcanized', function() {
             empty: true,
             spare: true,
         })))
-        .pipe(minifyInline())
+        .pipe(minifyInline({
+            css: {
+                advanced: false
+            }
+        }))
         .pipe(gulp.dest('../dist/editor/'))
         .pipe($.size({
             title: 'minified elements'
@@ -412,7 +420,17 @@ gulp.task('editor-clean-vulcanized', function() {
 
 gulp.task('build-editor', function(cb) {
     runSequence(
-        ['editor-vulcan', 'editor-inline-scripts'],['editor-clean-vulcanized'],
+        ['editor-vulcan', 'editor-inline-scripts'], ['editor-clean-vulcanized'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
+
+
+
+var polybuild = require('polybuild');
+
+gulp.task('build-1', function() {
+    return gulp.src('src/editor/index.html')
+        .pipe(polybuild())
+        .pipe(gulp.dest('../dist/editor/2'));
+})

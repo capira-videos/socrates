@@ -1,6 +1,5 @@
 'use strict';
-window.EventTimer = (function() {
-    var callback = function() {};
+window.EventTimer = function(callback) {
     var eventTimer = null;
     var oldTime = 0;
     var refreshRate = 25; //ms (50s^-1)
@@ -119,9 +118,6 @@ window.EventTimer = (function() {
             oldTime = videoPlayer.getCurrentTime();
             eventTimer = setInterval(timerStep, refreshRate);
         },
-        setCallback: function(newCallback) {
-            callback = newCallback;
-        },
         pause: function() {
             // clear timer
             clearInterval(eventTimer);
@@ -130,16 +126,12 @@ window.EventTimer = (function() {
             if (typeof(seekTarget) === 'number') { // a time in seconds
                 videoPlayer.seekTo(seekTarget, true);
             } else {
-                var pause;
                 var overlay = seekTarget;
                 switch (overlay.event.type) {
                     case 'STOP':
                     case 'PLAYAFTER':
-                        pause = true;
+                        app.player.pause();
                         break;
-                    case 'HIDEAFTER':
-                    default:
-                        pause = false;
                 }
                 videoPlayer.seekTo(overlay.event.start, true);
                 callback('show', overlay);
@@ -147,4 +139,4 @@ window.EventTimer = (function() {
         }
     };
     return eventTimerMethods;
-})();
+};

@@ -8,6 +8,7 @@ window.Capira.QuizEditPageImpl = {
     listeners: {
         'skipped': '_done',
         'delete-answer': '_deleteCombination',
+        'edit-state' : '_reset'
     },
     selectedCombination: {
         type: Object,
@@ -45,6 +46,13 @@ window.Capira.QuizEditPageImpl = {
         var index = this.overlay.combinations.indexOf(combination);
         this.splice('overlay.combinations', index, 1);
         this.fire('edit-state', 'default');
+    },
+    _reset:function(e){
+        if(this.$.quiz){
+            this.$.quiz.fire('answer-changed');
+        } else {
+            console.err('no quiz-id set! in ',this);
+        }
     }
 };
 

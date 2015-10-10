@@ -37,6 +37,7 @@
             console.log('save!');
             app.service.updateUnit(app.unit).then(function() {
                 this.$.toast.show();
+                this.fire('unit-saved');
             }.bind(this));
         },
         openWizard: function() {
@@ -57,6 +58,7 @@
             app.overlays.show(id);
             app.player.pause();
         }
+
     });
 })();
 </script>

@@ -73,7 +73,7 @@
         },
 
         _valueEquals: function(expected, given) {
-            var similarity = this.hausdorffslang.compare(expected.pixels, given,
+            var similarity = this.hausdorffslang.compare(this.combinations[expected.hash], given,
                 expected.translateX, expected.translateY, expected.scale);
             return (similarity >= expected.threshold);
         },
@@ -89,7 +89,11 @@
         },
 
         attached: function() {
+            this._initSolutions();
+        },
+        _initSolutions: function() {
             if (this.overlay && this.overlay.combinations) {
+                this.combinations = [];
                 this.overlay.combinations.forEach(function(combination) {
                     this._initSolution(combination);
                 }.bind(this));
@@ -102,12 +106,18 @@
                 solution._clearAll();
                 solution.paintDataUrl(combination.value.src, function() {
                     // TODO: update the general scoring function/data model so that this isn't necessary
-                    combination.value.pixels = solution.getPixels();
+                    var hash = combination.value.src.hashCode();
+                    this.combinations[hash] = solution.getPixels();
+                    combination.value.hash = hash;
                     solution.clear();
-                });
+                }.bind(this));
             }
         },
+        _overlayChanged: function() {
+            this._initSolutions();
+        },
         _updateCombinations: function(e) {
+
             function update() {
                 if (e.path.indexOf('value.src') > 0) {
                     var index = e.path.replace('overlay.combinations.', '').replace('.value.src');
@@ -116,6 +126,7 @@
                     this._initSolution(this.overlay.combinations[index]);
                 }
             }
+            //Don't update immediatly - wait until user didn't draw 
             if (this.timeout) {
                 clearTimeout(this.timeout);
             }

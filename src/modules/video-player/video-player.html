@@ -55,8 +55,7 @@
                     return app.player._player.getCurrentTime();
                 };
 
-                var et = window.EventTimer;
-                et.setCallback(function(type, overlay) {
+                var et = window.EventTimer(function(type, overlay) {
                     switch (type) {
                         case 'show':
                             app.overlays.show(overlay.id);

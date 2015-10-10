@@ -5,20 +5,12 @@ body {
     width: 100%;
 }
 
+[aria-hidden] {
+    display: none !important;
+}
+
 #main {
-    position: relative;
     margin: auto;
-    width: 100vw;
-    height: 56.25vw;
+    position: relative;
 }
 
-@media (min-aspect-ratio: 16/9) {
-    #main {
-        height: 100vh;
-        width: 177.7777vh;
-    }
-}
-
-#player {
-    height: 100%;
-}

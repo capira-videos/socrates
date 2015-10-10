@@ -15,7 +15,7 @@
 (function() {
     Polymer({
         is: 'mark-up',
-        behaviors: Capira.selectBehaviors(Capira.MarkupImpl, [], Capira.EditableMarkup),
+        behaviors: Capira.selectBehaviors([], [], Capira.EditableMarkup),
         properties: {
             content: {
                 type: String,
@@ -23,9 +23,10 @@
                 observer: '_parseContent'
             }
         },
-        _parseContent: function(text) {
-            if (text) {
-                Polymer.dom(this).innerHTML = text;
+        _parseContent: function(content) {
+            if (content) {
+                //TODO: Fix XSS vulnerability
+                Polymer.dom(this).innerHTML = content;
             }
         }
     });

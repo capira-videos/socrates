@@ -30,12 +30,9 @@ window.Capira.EditableMarkup = {
             this.addEventListener('keydown', function(e) {
                 e.stopPropagation();
             });
-            this.addEventListener('keydown', function(e) {
-                e.stopPropagation();
-            });
             this.addEventListener('keypress', function(e) {
                 e.stopPropagation();
-                if (e.keyCode === 13) { // enter
+                if (e.keyCode === 13 || e.which === 13) {
                     this.blur();
                     e.preventDefault();
                 }

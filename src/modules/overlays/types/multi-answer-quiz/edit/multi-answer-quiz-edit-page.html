@@ -3,7 +3,7 @@
     <template>
         <edit-page-layout>
             <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
-            <multi-answer-quiz main states="default combination" overlay="{{overlay}}"></multi-answer-quiz>
+            <multi-answer-quiz id="quiz" main states="default combination" overlay="{{overlay}}"></multi-answer-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
             <answer-editor right states="combination" combination="{{selectedCombination}}">
                 <multi-answer-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></multi-answer-value-selector>

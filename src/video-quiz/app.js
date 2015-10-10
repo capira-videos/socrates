@@ -8,7 +8,10 @@
         correct: 'Gut gemacht!',
         wrong: 'Nicht ganz, versuch\'s nochmal!'
     };
-
+    window.addEventListener('resize', function() {
+        window.resizer(null, document.getElementById('main'));
+    });
+    window.resizer(null, document.getElementById('main'));
     app.addEventListener('dom-change', function() {
         window.app = document.querySelector('#app');
         app.service = document.querySelector('editor-service');
@@ -18,10 +21,6 @@
 
         app.service.addEventListener('unit-loaded', function() {
             console.log('loaded', app.unit);
-        });
-        
-        window.addEventListener('resize', function() {
-            window.resizer(null, document.getElementById('main'));
         });
     });
 })(document);

@@ -4,9 +4,8 @@ html {
     height: 100%;
     background-color: rgb(191, 198, 207);
     overflow: hidden;
-	font-family: 'Roboto','Nato', Sans-serif;
+    font-family: 'Roboto', 'Nato', Sans-serif;
 }
-
 
 #loadingIndicator {
     position: fixed;
@@ -14,4 +13,58 @@ html {
     left: 0;
     width: 100%;
     z-index: 12 !important;
+}
+
+#top-sp,
+#right-sp {
+    background-color: #f6f6f6;
+    z-index: 0;
+    position: absolute;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12), 0 3px 3px -2px rgba(0, 0, 0, 0.4);
+}
+
+#top-sp {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+}
+
+#right-sp {
+    top: 64px;
+    right: 0;
+    bottom: 0;
+    width: 360px;
+}
+
+#loader {
+    margin: 60px auto;
+    font-size: 10px;
+    position: absolute;
+    right: calc(50% + 144px);
+    top: calc(50% - 80px);
+    text-indent: -9999em;
+    border: 1.1em solid rgba(255, 255, 255, 0.2);
+    border-left: 1.1em solid #ffffff;
+    transform: translateZ(0);
+    animation: load8 1.1s infinite linear;
+}
+
+#loader,
+#loader:after {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}
+
+
+@keyframes load8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }

@@ -1,0 +1,34 @@
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'changes-protector',
+        properties: {
+            unit: {
+                type: Object,
+                observer: 'reset'
+            }
+        },
+        attached: function() {
+            window.addEventListener('beforeunload', function(e) {
+                if (this._unitHasChanged()) {
+                    var confirmationMessage = 'It looks like you have been editing something.' + 'If you leave before saving, your changes will be lost.';
+
+                    (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+                    return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+                } else {
+                    return;
+                }
+            }.bind(this));
+
+        },
+        reset: function() {
+            this.unitHash = JSON.stringify(app.unit).hashCode();
+        },
+        _unitHasChanged: function() {
+            return this.unitHash !== JSON.stringify(app.unit).hashCode();
+        }
+
+    });
+})();
+</script>
