@@ -2,25 +2,23 @@
 <dom-module id="latex-formula">
     <style include="latex-styles"></style>
     <template>
-        <span id="formula"></span>
+        <span id="tex"></span>
     </template>
 </dom-module>
 <script>
+'use strict';
 (function() {
-    'use strict';
-    var _katexCallbacks = [];
+    var _callbacks = [];
 
     function _loadKatex() {
-        // load katex
         var script = document.createElement('script');
-        script.setAttribute('type', 'text/javascript');
         script.setAttribute('src', '/bower_components/katex/dist/katex.min.js');
+        script.setAttribute('type', 'text/javascript');
         script.onload = function() {
-            //exec callbacks
-            _katexCallbacks.forEach(function(callback) {
-                callback();
+            _callbacks.forEach(function(cb) {
+                cb();
             });
-            _katexCallbacks = null; // free up the memory
+            _callbacks = null;
         };
         document.body.appendChild(script);
     }
@@ -29,20 +27,19 @@
         is: 'latex-formula',
         attached: function() {
             this._execOnReady(function() {
-                var formulaEl = this.$.formula;
-                var texString = Polymer.dom(this).innerHTML;
+                var latexExp = Polymer.dom(this).innerHTML;
                 //replace html entities
-                texString = texString.replace('&lt;', '<').replace('&gt;', '>');
-                window.katex.render(texString, formulaEl);
+                latexExp = latexExp.replace('&lt;', '<').replace('&gt;', '>');
+                window.katex.render(latexExp, this.$.tex);
             }.bind(this));
         },
         _execOnReady: function(callback) {
             if (!window.katex) {
-                window.katex = 'loading';
-                _katexCallbacks.push(callback);
+                window.katex = 'pending';
+                _callbacks.push(callback);
                 _loadKatex();
-            } else if (window.katex === 'loading') {
-                _katexCallbacks.push(callback);
+            } else if (window.katex === 'pending') {
+                _callbacks.push(callback);
             } else {
                 callback();
             }
