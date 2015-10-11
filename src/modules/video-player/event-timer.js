@@ -1,12 +1,10 @@
 'use strict';
-window.EventTimer = function(callback) {
+window.EventTimer = function(videoPlayer,callback) {
     var eventTimer = null;
     var oldTime = 0;
     var refreshRate = 25; //ms (50s^-1)
-    var delay = 0.2; //s `default delay 0.13' // TODO read from local storage
+    var delay = 0.2; //s 
     var timerAssignDelay = null;
-    // stop-annotations should then not be triggered
-    var videoPlayer = null;
 
     var timerStep = function() {
         var newTime = videoPlayer.getCurrentTime() + delay;
@@ -111,15 +109,11 @@ window.EventTimer = function(callback) {
 
     var eventTimerMethods = {
         start: function() {
-            videoPlayer = app.player;
-            // clear timer
             clearInterval(eventTimer);
-            // start timer
             oldTime = videoPlayer.getCurrentTime();
             eventTimer = setInterval(timerStep, refreshRate);
         },
         pause: function() {
-            // clear timer
             clearInterval(eventTimer);
         },
         seekTo: function(seekTarget) { // seekTarget may be a time in seconds or an overlay

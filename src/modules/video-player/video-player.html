@@ -55,7 +55,7 @@
                     return app.player._player.getCurrentTime();
                 };
 
-                var et = window.EventTimer(function(type, overlay) {
+                var et = window.EventTimer(app.player,function(type, overlay) {
                     switch (type) {
                         case 'show':
                             app.overlays.show(overlay.id);
@@ -86,7 +86,7 @@
         },
         _hideTimeline: function() {
             if (this.state !== 2) {
-                // this.$.timeline.hide();
+                 this.$.timeline.hide();
             }
         }
 
