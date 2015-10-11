@@ -8,22 +8,19 @@
 <script>
 (function() {
     'use strict';
-    var __katexCallbacks = [];
+    var _katexCallbacks = [];
 
-    function __loadKatex() {
-        function performCallbacks() {
-            __katexCallbacks.forEach(function(callback) {
-                callback();
-            });
-            __katexCallbacks = null; // free up the memory
-        }
-
+    function _loadKatex() {
         // load katex
         var script = document.createElement('script');
         script.setAttribute('type', 'text/javascript');
         script.setAttribute('src', '/bower_components/katex/dist/katex.min.js');
         script.onload = function() {
-            performCallbacks();
+            //exec callbacks
+            _katexCallbacks.forEach(function(callback) {
+                callback();
+            });
+            _katexCallbacks = null; // free up the memory
         };
         document.body.appendChild(script);
     }
@@ -34,7 +31,7 @@
             this._execOnReady(function() {
                 var formulaEl = this.$.formula;
                 var texString = Polymer.dom(this).innerHTML;
-                //clean string from 
+                //replace html entities
                 texString = texString.replace('&lt;', '<').replace('&gt;', '>');
                 window.katex.render(texString, formulaEl);
             }.bind(this));
@@ -42,10 +39,10 @@
         _execOnReady: function(callback) {
             if (!window.katex) {
                 window.katex = 'loading';
-                __katexCallbacks.push(callback);
-                __loadKatex();
+                _katexCallbacks.push(callback);
+                _loadKatex();
             } else if (window.katex === 'loading') {
-                __katexCallbacks.push(callback);
+                _katexCallbacks.push(callback);
             } else {
                 callback();
             }
