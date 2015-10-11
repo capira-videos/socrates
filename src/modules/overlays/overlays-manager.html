@@ -3,11 +3,7 @@
     <style>
     :host {
         display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        @apply(--layout-fit);
         pointer-events: none;
         z-index: 1;
     }
@@ -51,7 +47,6 @@
             },
 
         },
-        behaviors: [Capira.CreateOverlayBehavior],
         attached: function() {
             this._initKeys();
             this.id = 'overlays';
@@ -59,17 +54,18 @@
         _initOverlays: function() {
             this._previousOverlays = [];
             this._openedOverlayId = null;
-            for (var i = 0; i < this.overlays.length; ++i) {
-                this._appendOverlay('overlays.' + i);
-            }
+            this.overlays.forEach(function(overlay) {
+                this._appendOverlay(overlay);
+            }.bind(this));
         },
 
-        _appendOverlay: function(overlayPath) {
-            Polymer.dom(this).appendChild(this._createOverlay(overlayPath));
-        },
-        addOverlay: function(overlay) {
-            this.push('overlays', overlay);
-            this._appendOverlay('overlays.' + (this.overlays.length - 1));
+        _appendOverlay: function(overlay) {
+            var overlayEl = app.create(overlay.type, {
+                id: 'overlay' + overlay.id,
+                overlay: overlay
+            });
+
+            Polymer.dom(this).appendChild(overlayEl);
         },
         show: function(overlayId, noHistory) {
             if (overlayId !== this._openedOverlayId) {

@@ -29,13 +29,14 @@
             }
         },
         observers: ['_overlayChanged(overlay.*)'],
-        behaviors: [Capira.CreateOverlayBehavior],
         attached: function() {
             this._render();
         },
         _render: function() {
-            var overlayElem = this._createOverlay('overlay');
-            overlayElem.id = 'overlay';
+            var overlayElem = app.create(this.overlay.type, {
+                id: 'overlay',
+                overlay: this.overlay
+            });
             Polymer.dom(this).appendChild(overlayElem);
             setTimeout(this._calcDimensions.bind(this), 200);
         },
