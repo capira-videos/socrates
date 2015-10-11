@@ -1,8 +1,6 @@
-<!--TODO: fix XSS vulnerability! -->
 <dom-module id="mark-up">
     <style>
     :host {
-        width: 100%;
         display: block;
     }
     </style>
@@ -20,10 +18,10 @@
             content: {
                 type: String,
                 notify: true,
-                observer: '_parseContent'
+                observer: '_renderContent'
             }
         },
-        _parseContent: function(content) {
+        _renderContent: function(content) {
             if (content) {
                 //TODO: Fix XSS vulnerability
                 Polymer.dom(this).innerHTML = content;
