@@ -9,23 +9,23 @@ window.Capira.EditableMarkup = {
             value: false
         }
     },
-    listeners: {
-        'focus': '_edit',
-        'blur': '_done'
-    },
     _edit: function() {
         Polymer.dom(this).textContent = this.content;
     },
     _done: function() {
-        if (this.textContent === '') {
-            // prevent empty markup
+        if (this.textContent === '' || this.textContent === this.content) {
+            // prevent empty markup or rerender if nothing changed
             this._renderContent(this.content);
         } else {
-            this.set('content', Polymer.dom(this).textContent);
+            this.set('content', this.textContent);
         }
     },
     attached: function() {
         if (!this.uneditable) {
+            this.contentEditable=true;
+            this.style.zIndex = 10;
+            this.addEventListener('focus', this._edit.bind(this));
+            this.addEventListener('blur', this._done.bind(this));
             if (this.pointerEvents) {
                 this.style.pointerEvents = 'all';
             }
@@ -42,8 +42,7 @@ window.Capira.EditableMarkup = {
                     e.preventDefault();
                 }
             });
-            Polymer.dom(this).setAttribute('contenteditable', true);
-            this.style.zIndex = 10;
+
         }
     }
 };
