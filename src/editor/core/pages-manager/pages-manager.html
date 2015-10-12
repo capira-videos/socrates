@@ -55,13 +55,14 @@
             }
         },
         hide: function(keepOpen) {
-            if (this._openOverlayId) {
-                this._openPageElem.removeEventListener('overlay-changed', this._changeListener, false);
-                this._openOverlayId = null;
-                this.selected = 'empty';
+            if (this._openPageElem) {
+                this._openPageElem.removeEventListener('overlay-changed', this._changeListener.bind(this), false);
             }
-            if (!keepOpen) {
-                this.fire('home-state');
+            if (this._openOverlayId) {
+                if (keepOpen !== true) {
+                    this._openOverlayId = null;
+                    this.selected = 'empty';
+                }
             }
         },
         _getOverlayIndexById: function(id) {
