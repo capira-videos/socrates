@@ -3,10 +3,10 @@
 <dom-module id="unit-edit-page">
     <template>
         <edit-page-layout>
+            <unit-top-bar top states="default" unit="{{unit}}"></unit-top-bar>
             <template is="dom-if" if="[[unit.video]]">
                 <video-player main unit="[[unit]]" autoplay="1" id="video"></video-player>
             </template>
-            <unit-top-bar top states="default" unit="{{unit}}"></unit-top-bar>
             <unit-right-bar right states="default" unit="{{unit}}"></unit-right-bar>
             <create-overlay-button main id="create"></create-overlay-button>
         </edit-page-layout>
