@@ -12,7 +12,7 @@
         attached: function() {
             window.addEventListener('beforeunload', function(e) {
                 if (this._unitHasChanged()) {
-                    var confirmationMessage = 'It looks like you have been editing something.' + 'If you leave before saving, your changes will be lost.';
+                    var confirmationMessage = 'It looks like you have been editing something.\n' + 'If you leave before saving, your changes will be lost.';
 
                     (e || window.event).returnValue = confirmationMessage; //Gecko + IE
                     return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
@@ -22,11 +22,14 @@
             }.bind(this));
 
         },
+        _computeCurrentHash:function(){
+            return JSON.stringify(app.unit).hashCode();
+        },
         reset: function() {
-            this.unitHash = JSON.stringify(app.unit).hashCode();
+            this.unitHash = this._computeCurrentHash();
         },
         _unitHasChanged: function() {
-            return this.unitHash !== JSON.stringify(app.unit).hashCode();
+            return this.unitHash !== this._computeCurrentHash();
         }
 
     });
