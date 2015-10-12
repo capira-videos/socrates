@@ -55,7 +55,7 @@
                     return app.player._player.getCurrentTime();
                 };
 
-                var et = window.EventTimer(app.player,function(type, overlay) {
+                app.eventTimer = window.EventTimer(app.player,function(type, overlay) {
                     switch (type) {
                         case 'show':
                             app.overlays.show(overlay.id);
@@ -67,11 +67,11 @@
                 });
 
                 this.addEventListener('overlay-selected', function(e) {
-                    et.seekTo(e.detail);
+                    app.eventTimer.seekTo(e.detail);
                 });
 
                 window.dispatchEvent(new Event('resize'));
-                et.start();
+                app.eventTimer.start();
 
                 this.fire('video-ready');
             }
