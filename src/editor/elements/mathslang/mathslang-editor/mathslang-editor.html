@@ -343,9 +343,10 @@
                     break;
             }
             // set the expression and approx fields
-            if (func === 2) {
-                this.epsilon = value.substr(value.indexOf('#approx') + 7);
-                value = value.substr(0, value.indexOf('#approx'));
+            if (this.func === 2) {
+                var split = value.split('#epsilon');
+                this.epsilon = split[1];
+                value = split[0];
             }
             this.expr = value;
         },
