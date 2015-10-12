@@ -62,7 +62,7 @@
             if (app.player) {
                 app.player.pause();
                 if (overlay.event) {
-                    EventTimer.seekTo(overlay.event.start);
+                    app.eventTimer.seekTo(overlay.event.start);
                 }
 
             }
