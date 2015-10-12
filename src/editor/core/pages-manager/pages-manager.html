@@ -43,7 +43,7 @@
         show: function(overlayId) {
             if (overlayId !== this._openOverlayId) {
 
-                this.hide(true);
+                this._unbind();
                 var overlayIndex = this._getOverlayIndexById(overlayId);
                 var overlay = this.unit.overlays[overlayIndex];
                 this._openOverlayId = overlayId;
@@ -54,15 +54,15 @@
                 this._openPageElem.show();
             }
         },
-        hide: function(keepOpen) {
-            if (this._openPageElem) {
-                this._openPageElem.removeEventListener('overlay-changed', this._changeListener.bind(this), false);
-            }
-            if (this._openOverlayId) {
-                if (keepOpen !== true) {
-                    this._openOverlayId = null;
-                    this.selected = 'empty';
-                }
+        hide: function(e) {
+            if (e === undefined) {
+                // hide was not called by home-state event but by an reaction
+                this.fire('home-state');
+            } else {
+                // hide was called by home-state event
+                this._unbind();
+                this._openOverlayId = null;
+                this.selected = 'empty';
             }
         },
         _getOverlayIndexById: function(id) {
@@ -78,6 +78,11 @@
                 var path = 'unit.overlays.' + this._getOverlayIndexById(this._openOverlayId) + e.detail.path.replace('overlay', '');
                 var value = e.detail.value;
                 this.notifyPath(path, value);
+            }
+        },
+        _unbind: function() {
+            if (this._openPageElem) {
+                this._openPageElem.removeEventListener('overlay-changed', this._changeListener.bind(this), false);
             }
         },
         _deleteOverlay: function(e) {
