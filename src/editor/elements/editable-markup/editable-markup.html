@@ -17,7 +17,12 @@ window.Capira.EditableMarkup = {
         Polymer.dom(this).textContent = this.content;
     },
     _done: function() {
-        this.set('content', Polymer.dom(this).textContent);
+        if (this.textContent === '') {
+            // prevent empty markup
+            this._renderContent(this.content);
+        } else {
+            this.set('content', Polymer.dom(this).textContent);
+        }
     },
     attached: function() {
         if (!this.uneditable) {
