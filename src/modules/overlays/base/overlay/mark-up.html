@@ -2,10 +2,11 @@
     <style>
     :host {
         display: block;
+        width: 100%;
     }
     </style>
     <template>
-        <content></content>
+        <div id="content"></div>
     </template>
 </dom-module>
 <script>
@@ -24,7 +25,7 @@
         _renderContent: function(content) {
             if (content) {
                 //TODO: Fix XSS vulnerability
-                Polymer.dom(this).innerHTML = content;
+                this.$.content.innerHTML = content;
             }
         }
     });

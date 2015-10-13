@@ -1,0 +1,13 @@
+<script>
+'use strict';
+
+window.Capira.EditableLatex = {
+    listeners: {
+        'dblclick': '_editLatex'
+    },
+    _editLatex: function() {
+        var editor = document.querySelector('latex-editor');
+        editor.open(this.latexExp, this.render.bind(this));
+    }
+};
+</script>

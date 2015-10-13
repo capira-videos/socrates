@@ -1,0 +1,53 @@
+<dom-module id="latex-editor">
+    <style>
+    :host {
+        display: block;
+    }
+    
+    paper-dialog {
+        width: 400px;
+        background-color: white !important;
+    }
+    </style>
+    <template>
+        <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
+        <paper-dialog id="editor" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <h2>LaTex Editor</h2>
+            <p>
+                <paper-input id="input" label="Latex Expression" value="{{exp}}" autofocus></paper-input>
+            </p>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button on-tap="_confirm">Create</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'latex-editor',
+        properties: {
+            exp: {
+                type: String,
+                value: '',
+            }
+        },
+        _confirm: function() {
+            this.$.editor.close();
+            this.callback(this.exp);
+        },
+        open: function(exp, cb) {
+            this.exp = exp;
+            this.callback = cb;
+            this.$.editor.open();
+
+            setTimeout(function() {
+                Polymer.dom(this.root).querySelector('paper-input').$.input.focus();
+            }.bind(this), 500);
+
+        }
+    });
+})();
+</script>

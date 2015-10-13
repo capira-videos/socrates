@@ -1,5 +1,25 @@
 <script>
 'use strict';
+
+function getCaretCharacterOffsetWithin(element) {
+    var caretOffset = 0;
+    var win = element.parentNode;
+    var sel = win.getSelection();
+    if (sel.rangeCount > 0) {
+        var range = win.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    }
+    return caretOffset;
+}
+
+String.prototype.regexIndexOf = function(regex, startpos) {
+    var indexOf = this.substring(startpos || 0).search(regex);
+    return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
+};
+
 window.Capira.EditableMarkup = {
     properties: {
         uneditable: {
@@ -9,23 +29,26 @@ window.Capira.EditableMarkup = {
             value: false
         }
     },
-    _edit: function() {
-        Polymer.dom(this).textContent = this.content;
+    listeners: {
+        'edit-latex': '_openLatexEditor',
+        'set-latex': '_insertLatex'
     },
+    _edit: function() {},
     _done: function() {
-        if (this.textContent === '' || this.textContent === this.content) {
+        if (this.el.textContent === '' || this.el.innerHTML === this.el.content) {
             // prevent empty markup or rerender if nothing changed
             this._renderContent(this.content);
         } else {
-            this.set('content', this.textContent);
+            this.set('content', this.el.innerHTML);
         }
     },
     attached: function() {
+        this.el = this.$.content;
         if (!this.uneditable) {
-            this.contentEditable=true;
-            this.style.zIndex = 10;
-            this.addEventListener('focus', this._edit.bind(this));
-            this.addEventListener('blur', this._done.bind(this));
+            this.el.addEventListener('focus', this._edit.bind(this));
+            this.el.addEventListener('blur', this._done.bind(this));
+            this.el.contentEditable = true;
+            this.style.zIndex = 5;
             if (this.pointerEvents) {
                 this.style.pointerEvents = 'all';
             }
@@ -38,12 +61,45 @@ window.Capira.EditableMarkup = {
             this.addEventListener('keypress', function(e) {
                 e.stopPropagation();
                 if (e.keyCode === 13 || e.which === 13) {
-                    this.blur();
+                    this.el.blur();
                     e.preventDefault();
                 }
-            });
+                if (e.keyCode === 172 && e.altKey) {
+                    this.set('position', getCaretCharacterOffsetWithin(this.el));
+                    this.fire('edit-latex', '');
+                    e.preventDefault();
+                }
+            }.bind(this));
 
         }
+    },
+    _openLatexEditor: function(e) {
+        var editor = document.querySelector('latex-editor');
+        editor.open(e.detail, this._insertLatex.bind(this));
+    },
+    _insertLatex: function(latex) {
+        var pos = this.position;
+        console.log(pos);
+        var c = this.el.innerHTML;
+
+        var temp = c;
+        var i = 0; // to count the chars in the formula 
+        var regex = new RegExp('<latex-formula>(.*?)</latex-formula>');
+        //compute how many latex-formulas are in front of the caret
+        while (temp.regexIndexOf(regex) > -1 && temp.regexIndexOf(regex) < pos) {
+            i += temp.match(regex)[1].length; //latex-exp length
+            temp = temp.replace(regex, '');
+        }
+        // compute the actual caret position
+        var offset = c.length - temp.length - i;
+        pos += offset;
+
+        latex = '<latex-formula>' + latex + '</latex-formula> ';
+        //insert new formula at caret position
+        c = [c.slice(0, pos), latex, c.slice(pos)].join('');
+        this.set('content', c);
+
+        //TODO: compute how many <i> and <b> are in front of the caret 
     }
 };
 </script>
