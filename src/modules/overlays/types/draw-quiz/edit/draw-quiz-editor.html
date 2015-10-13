@@ -6,9 +6,18 @@
         height: 100%;
         pointer-events: all;
     }
+    
+    #card {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 64px;
+    }
     </style>
     <template>
         <draw-canvas id="mask"></draw-canvas>
+        <question-feedback-card id="card" question="{{overlay.question}}" is-top="true" animate-wrong icon="player-icons:brush" combination="{{combination}}"></question-feedback-card>
     </template>
 </dom-module>
 <script>

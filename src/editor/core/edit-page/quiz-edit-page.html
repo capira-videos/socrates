@@ -8,12 +8,13 @@ window.Capira.QuizEditPageImpl = {
     listeners: {
         'skipped': '_done',
         'delete-answer': '_deleteCombination',
-        'edit-state' : '_reset'
+        'edit-state': '_reset'
     },
     selectedCombination: {
         type: Object,
         notify: true
     },
+
     _createAnswer: function() {
         if (this.overlay.combinations && this.overlay.combinations.length < 2) {
             return this._createCorrectAnswer();
@@ -47,11 +48,11 @@ window.Capira.QuizEditPageImpl = {
         this.splice('overlay.combinations', index, 1);
         this.fire('edit-state', 'default');
     },
-    _reset:function(e){
-        if(this.$.quiz){
-            this.$.quiz.fire('answer-changed');
-        } else {
-            console.err('no quiz-id set! in ',this);
+    _reset: function(e) {
+        if (e.detail === 'default') {
+            setTimeout(function() {
+                this.$.quiz.fire('answer-changed');
+            }.bind(this), 500);
         }
     }
 };

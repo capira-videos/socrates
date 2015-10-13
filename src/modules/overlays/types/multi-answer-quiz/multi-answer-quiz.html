@@ -19,7 +19,7 @@
     }
     </style>
     <template>
-        <quiz-card id="card" question="{{overlay.question}}">
+        <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <div id="items">
                 <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle" id="list">
                     <paper-checkbox on-tap="_selectionChanged">

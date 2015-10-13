@@ -31,7 +31,7 @@
     }
     </style>
     <template>
-        <quiz-card id="card" question="{{overlay.question}}">
+        <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <div id="items">
                 <iron-selector selected="{{value}}" attr-for-selected="name">
                     <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle">

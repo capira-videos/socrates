@@ -44,7 +44,7 @@
     </style>
     <template>
         <paper-material id="quiz" elevation="3">
-            <question-feedback-card id="questionFeedback" question="{{question}}">
+            <question-feedback-card id="questionFeedback" question="{{question}}" combination="{{combination}}">
             </question-feedback-card>
             <content>
             </content>
@@ -61,6 +61,10 @@
         ],
         properties: {
             question: {
+                type: String,
+                notify: true
+            },
+            combination: {
                 type: String,
                 notify: true
             },

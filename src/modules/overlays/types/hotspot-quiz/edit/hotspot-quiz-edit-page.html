@@ -8,7 +8,7 @@
         <edit-page-layout>
             <overlay-top-bar top overlay="{{overlay}}"></overlay-top-bar>
             <hotspot-quiz-tools-top-bar top states="combination" combination="{{selectedCombination}}"></hotspot-quiz-tools-top-bar>
-            <hotspot-quiz-editor main states="combination" overlay="{{overlay}}" id="editor" color="[[selectedCombination.value]]"></hotspot-quiz-editor>
+            <hotspot-quiz-editor main states="combination" overlay="{{overlay}}" id="editor" color="[[selectedCombination.value]]" combination="{{selectedCombination}}"></hotspot-quiz-editor>
             <hotspot-quiz main overlay="{{overlay}}" id="quiz"></hotspot-quiz>
             <answers-selector right states="default" overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
             <answer-editor right states="combination" combination="{{selectedCombination}}">

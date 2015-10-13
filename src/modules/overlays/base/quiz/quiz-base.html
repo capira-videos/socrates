@@ -16,6 +16,12 @@ Capira.QuizImpl = {
         'skipped': '_quizSkipped',
         'answer-changed': '_answerChanged'
     },
+    properties: {
+        combination: {
+            type: Object,
+            notify: true
+        }
+    },
 
     _show: function() {
         this.value = null;
@@ -28,19 +34,20 @@ Capira.QuizImpl = {
     _answerChanged: function(value) {
         if (value !== undefined && value !== null && value !== '' && this.$.card) {
             this.$.card.wasAnswered();
+            //this.combination = null;
         }
     },
 
     _quizAnswered: function() {
         var result = this.evaluate();
 
-        if (result == null || result.grade == Capira.Grade.INCORRECT) {
+        if (result == null || result.grade === Capira.Grade.INCORRECT) {
             app.sounds.playWrong();
-        } else if (result.grade == Capira.Grade.CORRECT) {
+        } else if (result.grade === Capira.Grade.CORRECT) {
             app.sounds.playCorrect();
         }
-
-        this.$.card.showFeedback(result);
+        this.set('combination', null);
+        this.set('combination', result);
     },
 
     _quizSkipped: function(e) {

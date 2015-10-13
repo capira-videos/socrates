@@ -30,7 +30,7 @@
     }
     </style>
     <template>
-        <quiz-card id="card" question="{{overlay.question}}">
+        <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <div class="content">
                 <div class="picker-value font-light">{{value}}</div>
                 <paper-slider id="slider" min="{{overlay.min}}" max="{{overlay.max}}" step="{{step}}" on-value-changed="_sliderValueChanged"></paper-slider>

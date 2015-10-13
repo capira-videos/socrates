@@ -41,7 +41,7 @@
     #fab {
         position: absolute;
         right: 24px;
-        bottom: -34px;
+        bottom: -28px;
         display: none;
         z-index: 2;
     }
@@ -103,7 +103,7 @@
                         </div>
                     </div>
                     <div id="feedback-container">
-                        <mark-up id="feedback" uneditable="1"></mark-up>
+                        <mark-up id="feedback" content="{{combination.feedback}}"></mark-up>
                     </div>
                 </div>
             </div>
@@ -123,10 +123,9 @@
                 value: null,
                 notify: true
             },
-            _feedback: String,
             _state: {
                 type: String,
-                value: null, 
+                value: null,
                 observer: '_onStateChange'
             },
             _fabIcon: {
@@ -163,9 +162,14 @@
             },
             _opened: {
                 value: true
+            },
+            combination: {
+                type: Object,
+                notify: true,
+                observer: 'showFeedback'
             }
         },
-
+        observers: ['showFeedback(combination.grade)'],
 
         attached: function() {
             if (this.isTop) {
@@ -182,11 +186,9 @@
                 switch (newState) {
                     case 'correct':
                         this.$.container.classList.add('correct');
-                        //document.body.style.backgroundColor = '#b9f6ca';
                         return;
                     case 'wrong':
                         this.$.container.classList.add('wrong');
-                        //document.body.style.backgroundColor = '#ff9e80';
 
                         if (this.animateWrong) {
                             this.cancelAnimation();
@@ -197,7 +199,6 @@
                         this.$.container.classList.add('neutral');
                         return;
                     default:
-                        //document.body.style.backgroundColor = '#8c9eff';
                         return;
                 }
             }
@@ -210,24 +211,23 @@
             this._opened = true;
             this._state = 'question';
             this.$.fab.hide();
-            //document.body.style.backgroundColor = '#8c9eff';
         },
-        showFeedback: function(combination) {
-            this.combination = combination;
-            this.$.feedback.content = combination.feedback;
-            switch (combination.grade) {
-                case Capira.Grade.CORRECT:
-                    this.set('_state', 'correct');
-                    break;
-                case Capira.Grade.INCORRECT:
-                    this.set('_state', 'wrong');
-                    break;
-                case Capira.Grade.NEUTRAL:
-                    this.set('_state', 'neutral');
-                    break;
-                default:
-                    this.set('_state', 'question');
-                    break;
+        showFeedback: function() {
+            if (this.combination) {
+                switch (this.combination.grade) {
+                    case Capira.Grade.CORRECT:
+                        this.set('_state', 'correct');
+                        break;
+                    case Capira.Grade.INCORRECT:
+                        this.set('_state', 'wrong');
+                        break;
+                    case Capira.Grade.NEUTRAL:
+                        this.set('_state', 'neutral');
+                        break;
+                    default:
+                        this.set('_state', 'question');
+                        break;
+                }
             }
         },
         _nextAction: function(e) {
