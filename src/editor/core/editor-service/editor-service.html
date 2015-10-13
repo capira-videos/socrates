@@ -39,7 +39,7 @@
                 service.body = JSON.stringify(data);
                 service.method = method;
                 service.url = '/api' + url;
-                service.contentType = 'application/json';
+                service.contentType = 'application/json; charset=utf-8';
                 return service.generateRequest().completes;
             },
 
