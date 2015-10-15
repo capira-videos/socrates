@@ -35,7 +35,7 @@
             <paper-fab icon="editor-icons:add" on-tap="_create"></paper-fab>
         </right-bar-header>
         <div id="list">
-            <template is="dom-repeat" items="{{unit.overlays}}" id="overlayList" sort="_compareByTime" observe="event event.start" delay="300">
+            <template is="dom-repeat" items="{{unit.overlays}}" id="overlayList" sort="_compareByTime" observe="event event.start" delay="1000">
                 <div class="preview" on-tap="select">
                     <paper-ripple></paper-ripple>
                     <overlay-miniature overlay="{{item}}" width="300"></overlay-miniature>

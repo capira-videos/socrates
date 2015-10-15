@@ -49,7 +49,8 @@
             for (var i = 0; i < items.length; i++) {
                 var e = items[i];
                 if (e.nodeName === 'PAPER-CHECKBOX' && e.checked) {
-                    this.value.push(this._findOriginalIndex(e.innerText.trim()));
+                    var text = e.querySelector('mark-up').content.trim();
+                    this.value.push(this._findOriginalIndex(text));
                 }
             }
             this.value.sort();

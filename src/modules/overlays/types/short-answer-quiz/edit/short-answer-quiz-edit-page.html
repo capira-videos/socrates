@@ -18,7 +18,23 @@
     Polymer({
         is: 'short-answer-quiz-edit-page',
         behaviors: [Capira.QuizEditPage],
-
+        _createCorrectAnswer: function() {
+            return {
+                value: '',
+                grade: 0,
+                feedback: 'Correct!',
+                reaction: {
+                    type: 'play'
+                }
+            };
+        },
+        _createIncorrectAnswer: function() {
+            return {
+                value: '',
+                grade: 2,
+                feedback: 'Not quite...'
+            };
+        },
     });
 })();
 </script>

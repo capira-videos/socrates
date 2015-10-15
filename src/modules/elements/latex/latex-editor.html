@@ -1,3 +1,5 @@
+<link rel="import" href="../../../../bower_components/iron-validatable-behavior/iron-validatable-behavior.html">
+<link rel="import" href="latex-validator.html">
 <dom-module id="latex-editor">
     <style>
     :host {
@@ -12,13 +14,14 @@
     <template>
         <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
         <paper-dialog id="editor" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
-            <h2>LaTex Editor</h2>
+            <h2>LaTeX Editor</h2>
             <p>
-                <paper-input id="input" label="Latex Expression" value="{{exp}}" autofocus></paper-input>
+                <latex-validator is-valid="{{valid}}"></latex-validator>
+                <paper-input id="input" label="Latex Expression" value="{{exp}}" autofocus required auto-validate error-message="Enter a valid LaTeX expression!" validator="latex-validator"></paper-input>
             </p>
             <div class="buttons">
                 <paper-button dialog-dismiss>Cancel</paper-button>
-                <paper-button on-tap="_confirm">Create</paper-button>
+                <paper-button on-tap="_confirm" disabled$="{{!valid}}">Create</paper-button>
             </div>
         </paper-dialog>
     </template>
@@ -28,6 +31,9 @@
 (function() {
     Polymer({
         is: 'latex-editor',
+        behaviors: [
+            Polymer.IronValidatableBehavior
+        ],
         properties: {
             exp: {
                 type: String,
@@ -35,17 +41,19 @@
             }
         },
         _confirm: function() {
+            if (this.exp && this.exp.trim() !== '') {
+                this.callback(this.exp);
+            }
             this.$.editor.close();
-            this.callback(this.exp);
         },
         open: function(exp, cb) {
             this.exp = exp;
             this.callback = cb;
             this.$.editor.open();
-
+            Polymer.dom(this.root).querySelector('paper-input').$.input.focus();
             setTimeout(function() {
                 Polymer.dom(this.root).querySelector('paper-input').$.input.focus();
-            }.bind(this), 500);
+            }.bind(this), 300);
 
         }
     });

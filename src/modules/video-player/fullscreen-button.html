@@ -1,0 +1,70 @@
+<dom-module id="fullscreen-button">
+    <style>
+    :host {
+        pointer-events: all;
+        color: white;
+        position: absolute;
+        bottom: -6px;
+        right: 132px;
+    }
+    
+    paper-icon-button:hover {
+        transform: scale(1.2);
+        color:var(--paper-orange-500);
+    }
+    
+    paper-icon-button {
+        width: 32px;
+    }
+    </style>
+    <template>
+        <div style="display:inline-block">
+            <paper-icon-button icon="player-icons:fullscreen" id="close" noink></paper-icon-button>
+            <!-- <paper-tooltip position="top">Fullscreen</paper-tooltip> -->
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'fullscreen-button',
+        listeners: {
+            'mouseup': '_fullscreen'
+        },
+        attached:function(){
+            this.hide();
+        },
+        _fullscreen: function() {
+            if (!document.fullscreenElement && // alternative standard method
+                !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) { // current working methods
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                    document.documentElement.msRequestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                    document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        },
+        show: function() {
+            this.style.display = 'block';
+        },
+        hide: function() {
+            this.style.display = 'none';
+        }
+    });
+})();
+</script>

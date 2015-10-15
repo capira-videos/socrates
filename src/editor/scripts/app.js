@@ -25,7 +25,15 @@
             app.unitEditor.fire('edit-state', 'default');
         });
 
-        app.unitEditor.addEventListener('unit-saved',function(){
+        app.overlays.addEventListener('hide-unit', function() {
+            app.unitEditor.fire('edit-state', 'overlay');
+        });
+
+        app.overlays.addEventListener('overlay-created', function(e) {
+            app.unitEditor.fire('overlay-created', e.detail);
+        });
+
+        app.unitEditor.addEventListener('unit-saved', function() {
             app.protector.reset();
         });
 
@@ -33,8 +41,6 @@
         setTimeout(function() {
             document.getElementById('sp').innerHTML = '';
         }, 400);
-
-
     });
 
 })(document);

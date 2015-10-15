@@ -17,6 +17,11 @@
         height: 100%;
     }
     
+    #container.long-text {
+        font-size: 18px;
+        line-height: 24px;
+    }
+    
     #container > div {
         width: 100%;
         height: 100%;
@@ -79,6 +84,7 @@
         background-color: rgba(0, 0, 0, 0.2);
         height: 100%;
         width: 64px;
+        min-width: 64px;
     }
     
     #icon-container iron-icon {
@@ -107,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <animatable-fab icon="{{_fabIcon}}" on-tap="_nextAction" id="fab"></animatable-fab>
+            <animatable-fab icon="{{_fabIcon}}" on-mouseup="_nextAction" click="_stopPropagation" id="fab"></animatable-fab>
         </div>
     </template>
 </dom-module>
@@ -121,7 +127,7 @@
             question: {
                 type: String,
                 value: null,
-                notify: true
+                notify: true,
             },
             _state: {
                 type: String,
@@ -169,8 +175,12 @@
                 observer: 'showFeedback'
             }
         },
-        observers: ['showFeedback(combination.grade)'],
-
+        observers: ['showFeedback(combination.grade)', '_computeFontSize(question.length)'],
+        listeners: {
+            'click': '_stopPropagation',
+            'tap': '_stopPropagation',
+            'neon-animation-finish': '_stopPropagation'
+        },
         attached: function() {
             if (this.isTop) {
                 this.$.fab.classList.add('is-top');
@@ -264,6 +274,23 @@
         },
         _done: function() {
             this.fire('quiz-done', this.combination.reaction);
+        },
+        _stopPropagation: function(e) {
+            //prevent unintended clicks on overlay 
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        _computeFontSize: function() {
+            var text = this.question;
+            if (text) {
+                var regex = new RegExp('<latex-formula(.*?)</latex-formula>', 'g');
+                text = text.replace(regex, 'abc'); //'abc' assuming the average formula has 3 letters
+                if ((!this.isTop && text.length > 180) || (this.isTop && text.length > 120)) {
+                    this.$.container.classList.add('long-text');
+                } else {
+                    this.$.container.classList.remove('long-text');
+                }
+            }
         }
 
     });

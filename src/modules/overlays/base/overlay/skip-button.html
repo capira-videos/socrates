@@ -5,10 +5,17 @@
         position: absolute;
         top: 16px;
         right: 16px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.1);
+        color: white;
+    }
+    
+    paper-icon-button:hover {
+        color: var(--paper-red-500);
     }
     </style>
     <template>
-        <paper-icon-button icon="player-icons:close" id="close" on-tap="_skip"></paper-icon-button>
+        <paper-icon-button icon="player-icons:close" id="close"></paper-icon-button>
     </template>
 </dom-module>
 <script>
@@ -16,6 +23,9 @@
 (function() {
     Polymer({
         is: 'skip-button',
+        listeners: {
+            'mouseup': '_skip'
+        },
         _skip: function() {
             this.fire('skipped');
         }

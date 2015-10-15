@@ -287,15 +287,19 @@
 
         // TODO: this feels hacky, fix it somehow
         _parseCombination: function(combination) {
+            this.discardedUnits = [];
             if (!combination || !combination.value) {
                 return;
             }
-
             if (combination.value === '') {
                 this.expr = '';
                 this.inputExp = '';
                 this.func = 0;
+                this.unit = null;
             }
+
+
+
             this._itemsChanged();
 
 
@@ -352,7 +356,11 @@
         },
 
         _findUnit: function() {
-            this.unit = Slang.mathslang.extractUnit(this.expr);
+            var unit = Slang.mathslang.extractUnit(this.expr);
+            //don't set extracted unit if user has it already discarded
+            if (this.discardedUnits.indexOf(unit) === -1) {
+                this.unit = unit;
+            }
         },
 
         _unitChanged: function(newUnit, oldUnit) {
@@ -363,6 +371,7 @@
         },
 
         _removeUnit: function() {
+            this.discardedUnits.push(this.unit);
             this.unit = null;
         },
 

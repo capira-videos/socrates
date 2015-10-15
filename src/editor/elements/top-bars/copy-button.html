@@ -1,0 +1,30 @@
+<dom-module id="copy-button">
+    <template>
+        <div style="display:inline-block">
+            <paper-icon-button on-tap="_copy" icon="editor-icons:content-copy"></paper-icon-button>
+            <paper-tooltip>Duplicate this Overlay</paper-tooltip>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'copy-button',
+        properties: {
+            overlay: Object
+        },
+        _copy: function() {
+            var copy = JSON.parse(JSON.stringify(this.overlay));
+            copy.id = Date.now() + '';
+            if (copy.event) {
+                copy.event.start += 5;
+            }
+            this.fire('home-state');
+            setTimeout(function() {
+                this.fire('overlay-created', copy);
+            }.bind(this), 600);
+        }
+    });
+})();
+</script>

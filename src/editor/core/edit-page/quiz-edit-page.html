@@ -36,7 +36,7 @@ window.Capira.QuizEditPageImpl = {
         return {
             value: '',
             grade: 2,
-            feedback: 'Not quite...'
+            feedback: 'Not quite... Try again!'
         };
     },
     addAnswer: function() {
@@ -52,6 +52,7 @@ window.Capira.QuizEditPageImpl = {
         if (e.detail === 'default') {
             setTimeout(function() {
                 this.$.quiz.fire('answer-changed');
+                this.selectedCombination = null;
             }.bind(this), 500);
         }
     }

@@ -37,7 +37,7 @@
         _createCorrectAnswer: function() {
             return {
                 value: this._getNextColor(),
-                feedback: '',
+                feedback: 'Correct!',
                 grade: 0,
                 reaction: {
                     type: 'play'
@@ -47,7 +47,7 @@
         _createIncorrectAnswer: function() {
             return {
                 value: this._getNextColor(),
-                feedback: '',
+                feedback: 'Not quite... Try again!',
                 grade: 2
             };
         },

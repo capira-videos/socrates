@@ -33,18 +33,26 @@ window.Capira.EditableMarkup = {
         'edit-latex': '_openLatexEditor',
         'set-latex': '_insertLatex'
     },
-    _edit: function() {},
-    _done: function() {
-        if (this.el.textContent === '' || this.el.innerHTML === this.el.content) {
-            // prevent empty markup or rerender if nothing changed
-            this._renderContent(this.content);
-        } else {
-            this.set('content', this.el.innerHTML);
+    _edit: function(e) {
+        
+    },
+    _done: function(e) {
+        console.log(e);
+        if (!(e.relatedTarget && e.relatedTarget.nodeName === 'LATEX-EDITOR')) { //latex-editor opened - no render
+            if (this.el.innerHTML === '' || this.el.innerHTML === this.el.content) {
+                // prevent empty markup or rerender if nothing changed
+                this._renderContent(this.content);
+            } else {
+                this.set('content', this.el.innerHTML);
+            }
         }
     },
     attached: function() {
         this.el = this.$.content;
         if (!this.uneditable) {
+            if (!this.content || this.content === '') {
+                this.content = 'Type something...';
+            }
             this.el.addEventListener('focus', this._edit.bind(this));
             this.el.addEventListener('blur', this._done.bind(this));
             this.el.contentEditable = true;
@@ -57,19 +65,22 @@ window.Capira.EditableMarkup = {
             });
             this.addEventListener('keydown', function(e) {
                 e.stopPropagation();
-            });
+                if ((e.keyCode === 172 || e.keyCode === 76 || e.which === 172) && e.altKey) {
+                    this.set('position', getCaretCharacterOffsetWithin(this.el));
+                    this.el.blur();
+                    this.fire('edit-latex', '');
+                    e.preventDefault();
+                    return false;
+                }
+            }.bind(this), false);
             this.addEventListener('keypress', function(e) {
                 e.stopPropagation();
                 if (e.keyCode === 13 || e.which === 13) {
                     this.el.blur();
                     e.preventDefault();
                 }
-                if (e.keyCode === 172 && e.altKey) {
-                    this.set('position', getCaretCharacterOffsetWithin(this.el));
-                    this.fire('edit-latex', '');
-                    e.preventDefault();
-                }
             }.bind(this));
+
 
         }
     },
@@ -82,11 +93,19 @@ window.Capira.EditableMarkup = {
         console.log(pos);
         var c = this.el.innerHTML;
 
+        //replace non breaking line spaces!
+        c = c.replace(/&nbsp;/g, ' ');
+        //replace &nbsp at the end
+        if (c.lastIndexOf('&nbsp;') === c.length - 6) {
+            c = c.substr(0, c.length - 6);
+        }
+
         var temp = c;
         var i = 0; // to count the chars in the formula 
-        var regex = new RegExp('<latex-formula>(.*?)</latex-formula>');
+        var regex = new RegExp('<latex-formula contenteditable="false">(.*?)</latex-formula>');
         //compute how many latex-formulas are in front of the caret
         while (temp.regexIndexOf(regex) > -1 && temp.regexIndexOf(regex) < pos) {
+            //i += temp.match(regex)[0].length; //latex-exp length
             i += temp.match(regex)[1].length; //latex-exp length
             temp = temp.replace(regex, '');
         }
@@ -94,7 +113,7 @@ window.Capira.EditableMarkup = {
         var offset = c.length - temp.length - i;
         pos += offset;
 
-        latex = '<latex-formula>' + latex + '</latex-formula> ';
+        latex = '<latex-formula>' + latex + '</latex-formula>';
         //insert new formula at caret position
         c = [c.slice(0, pos), latex, c.slice(pos)].join('');
         this.set('content', c);

@@ -425,7 +425,12 @@ gulp.task('build-editor', function(cb) {
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
 
-
+gulp.task('build', function(cb) {
+    runSequence(
+        ['build-editor','build-player'],
+        cb);
+    // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
+});
 
 var polybuild = require('polybuild');
 

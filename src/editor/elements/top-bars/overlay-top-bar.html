@@ -1,7 +1,8 @@
 <dom-module id="overlay-top-bar">
     <template>
-        <timestamp-input value="{{overlay.event.start}}" hidden$="{{!overlay.event}}"></timestamp-input>
+        <timestamp-selector value="{{overlay.event.start}}" hidden$="{{!overlay.event}}"></timestamp-selector>
         <span class="flex"></span>
+        <copy-button overlay="{{overlay}}"></copy-button>
         <delete-button type="overlay"></delete-button>
         <home-button></home-button>
     </template>

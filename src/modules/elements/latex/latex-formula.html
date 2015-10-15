@@ -27,13 +27,14 @@
         is: 'latex-formula',
         behaviors: Capira.selectBehaviors([], [], Capira.EditableLatex),
         attached: function() {
-            this.$.tex.contentEditable = false;
+            this.contentEditable = false;
             var latexExp = Polymer.dom(this).innerHTML;
-            //replace html entities
-            latexExp = latexExp.replace('&lt;', '<').replace('&gt;', '>');
             this.render(latexExp);
         },
         render: function(latexExp) {
+            Polymer.dom(this).innerHTML = latexExp;
+            //replace html entities
+            latexExp = latexExp.replace('&lt;', '<').replace('&gt;', '>');
             this.latexExp = latexExp;
             this._execOnReady(function() {
                 this.$.tex.innerHTML = '';

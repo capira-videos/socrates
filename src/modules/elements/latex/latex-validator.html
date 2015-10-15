@@ -1,0 +1,28 @@
+<link rel="import" href="../../../../bower_components/iron-validator-behavior/iron-validator-behavior.html">
+<script>
+'use strict';
+Polymer({
+    is: 'latex-validator',
+    behaviors: [
+        Polymer.IronValidatorBehavior
+    ],
+    properties: {
+        isValid: {
+            type: Boolean,
+            notify: true
+        }
+    },
+    validate: function(value) {
+        // this regex validates incomplete latex's (by design)
+        var isValid = true;
+        try {
+            window.katex.renderToString(value);
+        } catch (e) {
+            isValid = false;
+        }
+        isValid = !value || isValid;
+        this.isValid = isValid;
+        return isValid;
+    }
+});
+</script>

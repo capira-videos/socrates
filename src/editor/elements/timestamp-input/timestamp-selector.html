@@ -1,0 +1,37 @@
+<link rel="import" href="timestamp-input.html">
+<dom-module id="timestamp-selector">
+    <style>
+    :host {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+    }
+    
+    timestamp-input {
+        margin-right: 8px;
+    }
+    </style>
+    <template>
+        <timestamp-input value="{{value}}"></timestamp-input>
+        <div style="display:inline-block">
+            <paper-icon-button icon="editor-icons:play-circle-outline" on-tap="_try"></paper-icon-button>
+            <paper-tooltip>Try Overlay</paper-tooltip>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+Polymer({
+    is: 'timestamp-selector',
+    properties: {
+        value: {
+            type: Number,
+            notify: true
+        }
+    },
+    _try: function() {
+        app.player.seekTo(this.value - 4);
+        app.player.play();
+        this.fire('home-state');
+    }
+});
+</script>

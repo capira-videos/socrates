@@ -69,26 +69,32 @@
             this.$.wizard.open();
         },
         _selected: function(e) {
-            console.log(e);
-            var overlay = null;
-            var path = e.path;
-            for (var i = 0; i < path.length; i++) {
-                if (path[i].nodeName === 'OVERLAY-MINIATURE-CARD') {
-                    overlay = path[i].overlay;
-                    break;
+            if (!this.blocked) {
+                this.blocked = true;
+                console.log(e);
+                var overlay = null;
+                var path = e.path;
+                for (var i = 0; i < path.length; i++) {
+                    if (path[i].nodeName === 'OVERLAY-MINIATURE-CARD') {
+                        overlay = path[i].overlay;
+                        break;
+                    }
                 }
-            }
-            if (overlay) {
-                console.log('selected', overlay);
-                this.$.wizard.close();
-                var overlayTemplate = JSON.parse(JSON.stringify(overlay.template));
-                var currentTime = app.player ? app.player.getCurrentTime() : 0;
-                overlayTemplate.id = Date.now() + '';
-                overlayTemplate.event = {
-                    type: 'STOP',
-                    start: currentTime,
-                };
-                this.fire('overlay-created', overlayTemplate);
+                if (overlay) {
+                    console.log('selected', overlay);
+                    this.$.wizard.close();
+                    var overlayTemplate = JSON.parse(JSON.stringify(overlay.template));
+                    var currentTime = app.player ? app.player.getCurrentTime() : 0;
+                    overlayTemplate.id = Date.now() + '';
+                    overlayTemplate.event = {
+                        type: 'STOP',
+                        start: currentTime,
+                    };
+                    this.fire('overlay-created', overlayTemplate);
+                }
+                setTimeout(function() {
+                    this.blocked = false;
+                }.bind(this), 500);
             }
         },
         _filter: function(o) {

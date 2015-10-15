@@ -35,13 +35,22 @@
         },
         listeners: {
             'home-state': 'hide',
+            'create-overlay': 'hide',
             'delete-overlay': '_deleteOverlay'
         },
         attached: function() {
             window.resizeNow();
+            this.overlayListener = function(e) {
+                if (e.detail.path) {
+                    var path = 'unit.overlays.' + this._getOverlayIndexById(this._openOverlayId) + e.detail.path.replace('overlay', '');
+                    var value = e.detail.value;
+                    this.notifyPath(path, value);
+                }
+            }.bind(this);
         },
         show: function(overlayId) {
             if (overlayId !== this._openOverlayId) {
+                this.fire('hide-unit');
 
                 this._unbind();
                 var overlayIndex = this._getOverlayIndexById(overlayId);
@@ -50,7 +59,7 @@
                 this.selected = overlay.type;
                 this._openPageElem = this.$[this.selected];
                 this._openPageElem.set('overlay', overlay);
-                this._openPageElem.addEventListener('overlay-changed', this._changeListener.bind(this), false);
+                this._openPageElem.addEventListener('overlay-changed', this.overlayListener, false);
                 this._openPageElem.show();
             }
         },
@@ -73,16 +82,9 @@
             }
             return -1;
         },
-        _changeListener: function(e) {
-            if (e.detail.path) {
-                var path = 'unit.overlays.' + this._getOverlayIndexById(this._openOverlayId) + e.detail.path.replace('overlay', '');
-                var value = e.detail.value;
-                this.notifyPath(path, value);
-            }
-        },
         _unbind: function() {
             if (this._openPageElem) {
-                this._openPageElem.removeEventListener('overlay-changed', this._changeListener.bind(this), false);
+                this._openPageElem.removeEventListener('overlay-changed', this.overlayListener, false);
             }
         },
         _deleteOverlay: function(e) {
