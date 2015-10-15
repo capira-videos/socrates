@@ -42,6 +42,10 @@
     #container.correct {
         background-color: var(--quiz-correct-primary-color);
     }
+
+    #container.neutral {
+        background-color: var(--quiz-neutral-primary-color);
+    }
     
     #fab {
         position: absolute;
@@ -199,7 +203,6 @@
                         return;
                     case 'wrong':
                         this.$.container.classList.add('wrong');
-
                         if (this.animateWrong) {
                             this.cancelAnimation();
                             this.playAnimation('incorrect-answer');
