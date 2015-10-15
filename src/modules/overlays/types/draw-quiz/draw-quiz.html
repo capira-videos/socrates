@@ -134,6 +134,9 @@
         },
         reset: function() {
             this.$.canvas.set('paths', []);
+        },
+        _show: function() {
+            this.reset();
         }
     });
 })();
