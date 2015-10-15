@@ -83,12 +83,14 @@
         },
 
         _showTimeline: function() {
-            this.$.timeline.show();
-            this.$.full.show();
-            clearTimeout(this.hideTimer);
-            this.hideTimer = setTimeout(function() {
-                this._hideTimeline();
-            }.bind(this), 3000);
+            if (this.playbackstarted) {
+                this.$.timeline.show();
+                this.$.full.show();
+                clearTimeout(this.hideTimer);
+                this.hideTimer = setTimeout(function() {
+                    this._hideTimeline();
+                }.bind(this), 3000);
+            }
         },
         _hideTimeline: function() {
             if (this.state !== 2) { //always show during pause
@@ -103,7 +105,7 @@
                 The idea is to disable the pointer events on the iframe, capture one mouse-move event from the surrounding container, activate the mouse-events again and repeat that every 3s.
              */
             var iframe = app.player._player.getIframe();
-            iframe.title = '';
+            iframe.title = ' ';
             var container = this.$.player;
             iframe.style.pointerEvents = 'none';
             container.addEventListener('mousemove', function(e) {
