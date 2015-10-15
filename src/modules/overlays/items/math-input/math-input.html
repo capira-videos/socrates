@@ -3,9 +3,6 @@
 <link rel="import" href="greek-alphabet.html">
 <script>
 'use strict';
-var KEYCODE_ESC = 27;
-
-
 Capira.MathInput = {
     properties: {
         greekMode: {
@@ -17,18 +14,12 @@ Capira.MathInput = {
         var input = this.$$('input') || Polymer.dom(this).querySelector('paper-input');
         this._input = input;
         if (input) {
-            var keys = app.create('iron-a11y-keys', {
-                target: input,
-                keys: 'alt',
-            });
-            //Polymer.dom(this.root).appendChild(keys);
-
+   
             var indicator = app.create('math-input-indicator', {
                 hidden: true
             });
             Polymer.dom(this.root).appendChild(indicator);
 
-            var inputElem = input.inputElement ? input.inputElement : input;
             input.addEventListener('keydown', function(e) {
                 if (e.altKey) {
                     this.greekMode = !this.greekMode;
@@ -62,7 +53,7 @@ Capira.MathInput = {
         }
     },
     _insertAt: function(character) {
-        var a = JSON.parse(JSON.stringify(this._input.value));
+        var a = JSON.parse(JSON.stringify(this._input.value||''));
         var position = this._input.selectionStart;
         position = position === undefined ? this._input.inputElement.selectionStart : position;
         this._input.value = [a.slice(0, position), character, a.slice(position)].join('');

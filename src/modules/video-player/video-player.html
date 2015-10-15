@@ -97,14 +97,13 @@
             }
         },
 
-
         _iframeMouseEventsHack: function() {
             /*  
                 This evil hack detects mousemove-events inside the yt-iframe.
                 The idea is to disable the pointer events on the iframe, capture one mouse-move event from the surrounding container, activate the mouse-events again and repeat that every 3s.
              */
             var iframe = app.player._player.getIframe();
-            iframe.title = null;
+            iframe.title = '';
             var container = this.$.player;
             iframe.style.pointerEvents = 'none';
             container.addEventListener('mousemove', function(e) {
@@ -113,6 +112,17 @@
                     iframe.style.pointerEvents = 'none';
                 }, 3000);
             });
+            container.addEventListener('click', function() {
+                this._togglePlay();
+            }.bind(this));
+        },
+
+        _togglePlay: function() {
+            if (this.state === 2) {
+                app.player.play();
+            } else {
+                app.player.pause();
+            }
         }
 
     });

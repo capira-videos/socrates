@@ -2,6 +2,7 @@
 <link rel="import" href="../../base/quiz/quiz-base.html">
 <link rel="import" href="../../base/quiz/question-feedback-card.html">
 <link rel="import" href="../../base/quiz/slang.html">
+<link rel="import" href="../../items/math-input/math-input-explanation.html">
 <dom-module id="custom-quiz">
     <style>
     #card {
@@ -11,11 +12,20 @@
         bottom: 0;
         height: 64px;
     }
+    
+    math-input-explanation-button {
+        position: absolute;
+        top: 16px;
+        right: 64px;
+        background-color: rgba(0, 0, 0, 0.1);
+        color: white;
+    }
     </style>
     <template>
         <div id="content"></div>
         <content></content>
         <question-feedback-card id="card" is-top question="{{overlay.question}}" combination="{{combination}}" animate-wrong></question-feedback-card>
+        <math-input-explanation-button></math-input-explanation-button>
     </template>
 </dom-module>
 <script>
@@ -37,7 +47,7 @@
         },
         _valueEquals: function(expected, given) {
             // TODO: support non-mathslang answers
-            if(typeof expected === 'string') {
+            if (typeof expected === 'string') {
                 return this.mathslang.compare(expected, given);
             } else {
                 return this.mathslang.compare(expected.expr, given, expected.units);

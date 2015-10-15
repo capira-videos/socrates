@@ -48,6 +48,7 @@
     #content {
         padding-left: 16px;
         padding-right: 16px;
+        position: relative;
     }
     
     #unitToast {
@@ -83,6 +84,20 @@
     #remove-unit {
         color: var(--paper-red-500);
         cursor: pointer;
+    }
+    
+    math-paper-input {
+        position: initial;
+    }
+    
+    :root {
+        --indicator-mixin: {
+            right: 56px;
+            left: auto;
+        };
+        --explanation-mixin: {
+            right: 16px;
+        };
     }
     </style>
     <template>

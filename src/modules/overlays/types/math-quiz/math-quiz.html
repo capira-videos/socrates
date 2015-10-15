@@ -1,6 +1,7 @@
 <link rel="import" href="../../base/quiz/quiz-base.html">
 <link rel="import" href="../../base/quiz/quiz-card.html">
 <link rel="import" href="../../base/quiz/slang.html">
+<link rel="import" href="../../items/math-input/math-paper-input.html">
 <dom-module id="math-quiz">
     <style>
     paper-input {
@@ -8,10 +9,12 @@
         margin: 0 auto;
         width: 304px;
     }
-    math-paper-input{
+    
+    math-paper-input {
         display: block;
     }
     
+
     </style>
     <template>
         <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">

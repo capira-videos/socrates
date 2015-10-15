@@ -6,6 +6,7 @@
         position: absolute;
         bottom: -6px;
         right: 132px;
+        display: none;
     }
     
     paper-icon-button:hover {
@@ -31,9 +32,6 @@
         is: 'fullscreen-button',
         listeners: {
             'mouseup': '_fullscreen'
-        },
-        attached:function(){
-            this.hide();
         },
         _fullscreen: function() {
             if (!document.fullscreenElement && // alternative standard method

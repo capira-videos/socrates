@@ -1,12 +1,27 @@
 <link rel="import" href="math-input.html">
+<link rel="import" href="math-input-explanation.html">
 <dom-module id="math-paper-input">
-	<style>
-		:host{
-			position: relative;
-		};
-	</style>
+    <style>
+    :host {
+        position: relative;
+    }
+    
+    :root {
+        --math-indicator-mixin: {
+            top: 16px;
+            left: 40px;
+            right: auto;
+            @apply(--indicator-mixin);
+        }
+    }
+    
+    math-input-explanation-button {
+        @apply(--explanation-mixin);
+    }
+    </style>
     <template>
         <content></content>
+        <math-input-explanation-button></math-input-explanation-button>
     </template>
 </dom-module>
 <script>
@@ -14,7 +29,7 @@
 (function() {
     Polymer({
         is: 'math-paper-input',
-        behaviors :[Capira.MathInput] 
+        behaviors: [Capira.MathInput]
     });
 })();
 </script>

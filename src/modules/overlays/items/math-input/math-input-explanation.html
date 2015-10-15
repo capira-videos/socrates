@@ -1,0 +1,90 @@
+<link rel="import" href="../../../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../../../bower_components/paper-button/paper-button.html">
+<dom-module id="math-input-explanation">
+    <style>
+    paper-dialog {
+        background-color: white;
+        width: 500px;
+        min-height: 500px;
+        top: 16px !important;
+    }
+    
+    span {
+        color: var(--paper-indigo-700);
+        @apply(--paper-font-code2);
+    }
+    
+    .h3 {
+        margin-top: 16px;
+        @apply(--paper-font-title);
+    }
+    </style>
+    <template>
+        <iron-a11y-keys target="{{}}" keys="enter esc" on-keys-pressed="_close"></iron-a11y-keys>
+        <paper-dialog id="dialog" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <h2>Math Quiz</h2>
+            <p>
+                <div>
+                    <i>Math Quizzes</i> have special keyboard inputs.
+                    <div class="h3">Powers</div>
+                    Powers like&nbsp;
+                    <latex-formula>x^{42}</latex-formula>&nbsp;can be expressed by <span>x^42</span>.
+                    <br> Expressions in the exponent like&nbsp;
+                    <latex-formula>x^{42+\pi}</latex-formula>&nbsp;must be written in parenthesis <span>x^(42+π)</span>.
+                    <div class="h3">Greek Letters</div>
+                    To type Greek letters, press <span>ALT</span> enter Greek Mode.
+                    <br> Press <span>ALT</span> again to leave Greek Mode.
+                    <br>
+                    <div class="h3">Indexed Variables</div>
+                    Indexed Variables like&nbsp;
+                    <latex-formula>x_2</latex-formula>&nbsp;can be written either by <span>x_2</span> or just <span>x2</span>.
+                </div>
+            </p>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Close</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+<dom-module id="math-input-explanation-button">
+    <style>
+    :host {
+        top: 8px;
+        position: absolute;
+        border-radius: 50%;
+    }
+    
+    paper-icon-button:hover {
+        color: var(--paper-red-500);
+    }
+    </style>
+    <template>
+        <paper-icon-button icon="player-icons:help-old" on-mouseup="open"></paper-icon-button>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'math-input-explanation',
+        open: function() {
+            this.$.dialog.open();
+        },
+        _close: function() {
+            this.$.dialog.close();
+        }
+    });
+    Polymer({
+        is: 'math-input-explanation-button',
+        open: function() {
+            var dialog = document.querySelector('math-input-explanation');
+            if (!dialog) {
+                dialog = app.create('math-input-explanation');
+                document.body.appendChild(dialog);
+            }
+            dialog.open();
+        }
+    });
+})();
+</script>
