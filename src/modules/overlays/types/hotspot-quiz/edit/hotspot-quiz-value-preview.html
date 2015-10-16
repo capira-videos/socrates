@@ -23,6 +23,7 @@
         _changed: function() {
             if (this.value.indexOf('#') === -1) {
                 this.$.color.innerText = '(default)';
+                this.$.color.style.backgroundColor = 'transparent';
             } else {
                 this.$.color.innerText = '';
                 this.$.color.style.backgroundColor = this.value;

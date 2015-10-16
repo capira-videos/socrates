@@ -44,6 +44,10 @@
                 type: Object,
                 notfiy: true,
                 observer: '_updateOverlay'
+            },
+            combination: {
+                type: Object,
+                observer: '_combinationChanged'
             }
         },
 
@@ -107,6 +111,16 @@
             this.setPenSize(15);
             this.$.mask.smoothing = false;
         },
+
+        _combinationChanged: function() {
+            if (this.combination) {
+                if (this.combination.value) {
+                    this.style.pointerEvents = 'all';
+                } else {
+                    this.style.pointerEvents = 'none';
+                }
+            }
+        }
 
     });
 })();

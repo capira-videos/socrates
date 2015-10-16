@@ -53,6 +53,13 @@
         },
         _updateOverlay: function() {
             this.$.quiz._overlayChanged();
+            var overlay = this.overlay;
+            if (overlay && overlay.combinations) {
+                //just initialized
+                if (this.overlay.combinations.length < 2) {
+                    this.$.editor.colorIndex = 0;
+                } 
+            }
         }
     });
 })();
