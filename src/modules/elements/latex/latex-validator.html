@@ -13,7 +13,6 @@ Polymer({
         }
     },
     validate: function(value) {
-        // this regex validates incomplete latex's (by design)
         var isValid = true;
         try {
             window.katex.renderToString(value);
