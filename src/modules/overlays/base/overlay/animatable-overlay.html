@@ -12,7 +12,6 @@ window.Capira.AnimatableOverlayImpl = {
                         node: this,
                         transformFrom: 'translateY(50vh) scale(0.8,1)',
                         timing: {
-                            delay: 100,
                             duration: 700,
                             easing: 'cubic-bezier(0.465, 0.183, 0.153, 0.946)'
                         }
@@ -20,7 +19,6 @@ window.Capira.AnimatableOverlayImpl = {
                         name: 'fade-in-animation',
                         node: this,
                         timing: {
-                            delay: 150,
                             duration: 700,
                         }
                     }],
@@ -91,6 +89,9 @@ window.Capira.AnimatableOverlayImpl = {
             this.playAnimation('entry-back');
             this.backPressed = false;
         }
+        setTimeout(function() {
+            this.style.display = 'block';
+        }.bind(this), 300);
     },
 
     showBack: function() {
@@ -122,5 +123,5 @@ window.Capira.AnimatableOverlayImpl = {
     }
 };
 
-Capira.AnimatableOverlay = [Polymer.NeonAnimationRunnerBehavior,Capira.AnimatableOverlayImpl];
+Capira.AnimatableOverlay = [Polymer.NeonAnimationRunnerBehavior, Capira.AnimatableOverlayImpl];
 </script>

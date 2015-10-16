@@ -66,13 +66,19 @@
             },
             combination: {
                 type: String,
-                notify: true
+                notify: true,
+                observer: 'showFeedback'
             },
             animationConfig: {
                 value: function() {
                     return {
-                        'wrong-answer': {
+                        'incorrect-answer': {
                             name: 'was-incorrect-animation',
+                            node: this,
+                            duration: 900
+                        },
+                        'correct-answer': {
+                            name: 'was-correct-animation',
                             node: this,
                             duration: 900
                         }
@@ -94,9 +100,13 @@
             this.$.questionFeedback.wasAnswered();
         },
         showFeedback: function(feedback) {
-            this.$.questionFeedback.showFeedback(feedback);
-            if (feedback.grade == Capira.Grade.INCORRECT) {
-                this.playAnimation('wrong-answer');
+            //this.$.questionFeedback.showFeedback(feedback);
+            if (feedback) {
+                if (feedback.grade === Capira.Grade.INCORRECT) {
+                    this.playAnimation('incorrect-answer');
+                } else {
+                    this.playAnimation('correct-answer');
+                }
             }
         },
         attached: function() {

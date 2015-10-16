@@ -29,10 +29,10 @@ Capira.QuizValue = {
         return this._getCombinationByValue(this.value);
     },
     sortFn: function(a, b) {
-        if (a.value === undefined) {
+        if (!a || a.value === undefined) {
             return 1;
         }
-        if (b.value === undefined) {
+        if (!b || b.value === undefined) {
             return -1;
         }
         return a.grade - b.grade;

@@ -1,4 +1,5 @@
 <link rel="import" href="was-incorrect-animation.html">
+<link rel="import" href="was-correct-animation.html">
 <link rel="import" href="../overlay/animatable-fab.html">
 <dom-module id="question-feedback-card">
     <style>
@@ -42,7 +43,7 @@
     #container.correct {
         background-color: var(--quiz-correct-primary-color);
     }
-
+    
     #container.neutral {
         background-color: var(--quiz-neutral-primary-color);
     }
@@ -166,6 +167,11 @@
                             name: 'was-incorrect-animation',
                             node: this,
                             duration: 900
+                        },
+                        'correct-answer': {
+                            name: 'was-correct-animation',
+                            node: this,
+                            duration: 900
                         }
                     };
                 }
@@ -200,6 +206,10 @@
                 switch (newState) {
                     case 'correct':
                         this.$.container.classList.add('correct');
+                        if (this.animateWrong) {
+                            this.cancelAnimation();
+                            this.playAnimation('correct-answer');
+                        }
                         return;
                     case 'wrong':
                         this.$.container.classList.add('wrong');
@@ -210,6 +220,10 @@
                         return;
                     case 'neutral':
                         this.$.container.classList.add('neutral');
+                        if (this.animateWrong) {
+                            this.cancelAnimation();
+                            this.playAnimation('correct-answer');
+                        }
                         return;
                     default:
                         return;
