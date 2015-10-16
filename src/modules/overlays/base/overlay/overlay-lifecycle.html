@@ -11,7 +11,6 @@ Capira.OverlayLifecycleImpl = {
     show: function() {
         var that = this;
         this.opened = true;
-        this.style.display = 'block';
         this.behaviors.forEach(function(behavior) {
             if (behavior._show) {
                 behavior._show.call(that);
