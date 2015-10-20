@@ -1,5 +1,7 @@
+<script type="text/javascript" src="../../../../bower_components/hashids/lib/hashids.min.js" inline></script>
 <script>
 'use strict';
+var hashids = new Hashids('Capira is aawesome', 8);
 Polymer({
     is: 'route-manager',
     properties: {
@@ -9,8 +11,9 @@ Polymer({
     },
     attached: function() {
         function changeHandler() {
-            var hash = window.location.hash.replace('#','').replace('/','');
-            this.set('unitId', parseInt(hash) || 1);
+            var hash = window.location.hash.replace('#', '').replace('/', '');
+            hash = hashids.decode(hash)[0] || 1;
+            this.set('unitId', hash);
             console.log('route changed to:', this.unitId);
         }
 
