@@ -15,6 +15,18 @@ function getCaretCharacterOffsetWithin(element) {
     return caretOffset;
 }
 
+function setCaretRange(element, index) {
+    var win = element.parentNode;
+    var sel = win.getSelection();
+    if (sel.rangeCount > 0) {
+        var range = win.getSelection().getRangeAt(0);
+        range.setStart(range.endContainer, index);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+}
+
 String.prototype.regexIndexOf = function(regex, startpos) {
     var indexOf = this.substring(startpos || 0).search(regex);
     return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
@@ -34,7 +46,7 @@ window.Capira.EditableMarkup = {
         'set-latex': '_insertLatex'
     },
     _edit: function(e) {
-        
+
     },
     _done: function(e) {
         console.log(e);
@@ -95,6 +107,7 @@ window.Capira.EditableMarkup = {
 
         //replace non breaking line spaces!
         c = c.replace(/&nbsp;/g, ' ');
+        c = c.replace(/\u200C/g, '');
         //replace &nbsp at the end
         if (c.lastIndexOf('&nbsp;') === c.length - 6) {
             c = c.substr(0, c.length - 6);
@@ -115,9 +128,8 @@ window.Capira.EditableMarkup = {
 
         latex = '<latex-formula>' + latex + '</latex-formula>';
         //insert new formula at caret position
-        c = [c.slice(0, pos), latex, c.slice(pos)].join('');
+        c = [c.slice(0, pos), latex, c.slice(pos),'&zwnj;'].join('');
         this.set('content', c);
-
         //TODO: compute how many <i> and <b> are in front of the caret 
     }
 };
