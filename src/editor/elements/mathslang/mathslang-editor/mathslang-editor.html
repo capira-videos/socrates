@@ -94,10 +94,12 @@
         --indicator-mixin: {
             right: 56px;
             left: auto;
-        };
+        }
+        ;
         --explanation-mixin: {
             right: 16px;
-        };
+        }
+        ;
     }
     </style>
     <template>
@@ -180,11 +182,6 @@
                 type: Boolean,
                 value: false
             },
-            customValue: {
-                type: String,
-                value: '',
-                observer: '_updateValue'
-            },
             value: {
                 type: String
             },
@@ -256,6 +253,16 @@
             this._updateValue();
         },
 
+
+        _computeInputExp: function(exp) {
+            if (this.overlay && this.overlay.items) {
+                this.overlay.items.forEach(function(item, index) {
+                    exp = exp.replace(new RegExp('@' + item.id, 'g'), 'x' + index);
+                });
+            }
+            return exp;
+        },
+
         _updateValue: function() {
             if (!this.overlay) {
                 return;
@@ -303,18 +310,15 @@
         // TODO: this feels hacky, fix it somehow
         _parseCombination: function(combination) {
             this.discardedUnits = [];
-            if (!combination || !combination.value) {
+            if (!combination) {
                 return;
             }
-            if (combination.value === '') {
+            if (!combination.value || combination.value === '') {
                 this.expr = '';
                 this.inputExp = '';
                 this.func = 0;
                 this.unit = null;
             }
-
-
-
             this._itemsChanged();
 
 
@@ -332,7 +336,7 @@
                 var variables = str.substr(0, str.indexOf('&'));
                 expr = str.substr(str.indexOf('&') + 1).trim();
                 if (this.overlay.items.length > 1) {
-                    this.customValue = variables.trim();
+                    this.inputExp = this._computeInputExp(variables.trim());
                 }
             }
             // select the correct function
