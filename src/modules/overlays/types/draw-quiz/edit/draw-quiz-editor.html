@@ -37,7 +37,12 @@
             if (this.combination) {
                 this.$.mask.paths = [];
                 this.$.mask.points = [];
-                this.$.mask.paintDataUrl(this.combination.value.src);
+                if (this.combination.value) {
+                    this.$.mask.style.pointerEvents = 'all';
+                    this.$.mask.paintDataUrl(this.combination.value.src);
+                } else {
+                    this.$.mask.style.pointerEvents = 'none';
+                }
             }
         },
 
