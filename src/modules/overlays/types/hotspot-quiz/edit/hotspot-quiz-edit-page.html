@@ -3,6 +3,7 @@
 <link rel="import" href="hotspot-quiz-editor.html">
 <link rel="import" href="hotspot-quiz-value-preview.html">
 <link rel="import" href="hotspot-value-selector.html">
+<link rel="import" href="../../../../../editor/core/edit-page/quiz-edit-page.html">
 <dom-module id="hotspot-quiz-edit-page">
     <template>
         <edit-page-layout>
@@ -30,13 +31,9 @@
         _updateTool: function(e) {
             this.$.editor._updateTool(e);
         },
-        _getNextColor: function() {
-            this.$.editor.colorIndex = this.overlay.combinations.length;
-            return JSON.parse(JSON.stringify(this.$.editor.color));
-        },
         _createCorrectAnswer: function() {
             return {
-                value: this._getNextColor(),
+                value: this.$.editor.getNextColor(),
                 feedback: 'Correct!',
                 grade: 0,
                 reaction: {
@@ -46,12 +43,13 @@
         },
         _createIncorrectAnswer: function() {
             return {
-                value: this._getNextColor(),
+                value: this.$.editor.getNextColor(),
                 feedback: 'Not quite... Try again!',
                 grade: 2
             };
         },
         _updateOverlay: function() {
+            console.log('hotspot-quiz-edit-page.html: overlay changed');
             this.$.quiz._overlayChanged();
             var overlay = this.overlay;
             if (overlay && overlay.combinations) {

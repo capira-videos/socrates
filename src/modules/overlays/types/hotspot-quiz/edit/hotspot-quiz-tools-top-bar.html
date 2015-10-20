@@ -24,7 +24,13 @@
 (function() {
     Polymer({
         is: 'hotspot-quiz-tools-top-bar',
-        behaviors: [Capira.TopBar]
+        behaviors: [Capira.TopBar],
+        listeners: {
+            'delete-answer': '_clear',
+        },
+        _clear: function() {
+            this.fire('toolbox-clicked', 'clear');
+        }
     });
 })();
 </script>

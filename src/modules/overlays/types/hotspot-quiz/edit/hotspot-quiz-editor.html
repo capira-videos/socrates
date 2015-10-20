@@ -19,7 +19,7 @@
     }
     </style>
     <template>
-        <draw-canvas id="mask"></draw-canvas>
+        <draw-canvas id="mask" color="[[color]]" pen-size="15" smoothing="false"></draw-canvas>
         <question-feedback-card id="card" question="{{overlay.question}}" is-top="true" animate-wrong icon="player-icons:my-location" combination="{{combination}}"></question-feedback-card>
     </template>
 </dom-module>
@@ -30,15 +30,9 @@
         is: 'hotspot-quiz-editor',
         behaviors: [Capira.Overlay, Capira.HasTools],
         properties: {
-            colorIndex: {
-                type: Number,
-                value: 0,
-                observer: '_updateColor'
-            },
             color: {
                 type: String,
                 notify: true,
-                observer: '_setColor'
             },
             overlay: {
                 type: Object,
@@ -50,18 +44,34 @@
                 observer: '_combinationChanged'
             }
         },
-
         _updateOverlay: function() {
             var mask = this.$.mask;
             console.log('update overlay!');
             if (this.overlay && this.overlay.mask) {
-                //mask.paintDataUrl(this.overlay.mask);
                 mask.set('points', []);
                 mask.set('paths', this.overlay.mask);
             }
         },
 
-        _updateColor: function(colorIndex) {
+        getNextColor: function() {
+            var color = '';
+
+            function different(o) {
+                return o.value === color;
+            }
+
+            var colorIndex = -1;
+            var isNotDifferent = true;
+            while (isNotDifferent) {
+                colorIndex += 1;
+                color = this._computeColor(colorIndex);
+                isNotDifferent = this.overlay.combinations.some(different);
+            }
+            return color;
+        },
+
+
+        _computeColor: function(colorIndex) {
             var max = 'FF';
             var min = '00';
             if (colorIndex > 11) {
@@ -88,36 +98,21 @@
                 case 2:
                     color = min + max + max;
             }
-
-            this.$.mask.history = [];
-            color = '#' + color;
-            this.color = color;
-            this._setColor(color);
-        },
-
-        _setColor: function() {
-            this.$.mask.color = this.color;
-        },
-
-        setPenSize: function(size) {
-            this.$.mask.penSize = size;
+            return '#' + color;
         },
 
         _save: function() {
-            //return this.$.mask.toDataURL();
             this.overlay.mask = this.$.mask.paths;
-        },
-        attached: function() {
-            this.setPenSize(15);
-            this.$.mask.smoothing = false;
         },
 
         _combinationChanged: function() {
+            this.$.mask.history = [];
             if (this.combination) {
                 if (this.combination.value) {
-                    this.style.pointerEvents = 'all';
+                    this.$.mask.style.pointerEvents = 'all';
                 } else {
-                    this.style.pointerEvents = 'none';
+                    //disable canvas for default answer
+                    this.$.mask.style.pointerEvents = 'none';
                 }
             }
         }
