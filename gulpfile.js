@@ -290,7 +290,8 @@ gulp.task('vulcan', function() {
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
-            inlineScripts: true
+            inlineScripts: true,
+            excludes: ['bower_components/katex/dist/katex.min.js'],
         }))
         .pipe(minifyHTML())
         .pipe(minifyInline({
@@ -368,6 +369,7 @@ gulp.task('editor-vulcan', function() {
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
+            excludes: ['bower_components/katex/dist/katex.min.js'],
             stripExcludes: ['bower_components/iron-icons/iron-icons.html']
         }))
         .pipe(gulp.dest(DEST_DIR))
@@ -427,7 +429,7 @@ gulp.task('build-editor', function(cb) {
 
 gulp.task('build', function(cb) {
     runSequence(
-        ['build-editor','build-player'],
+        ['build-editor', 'build-player'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
