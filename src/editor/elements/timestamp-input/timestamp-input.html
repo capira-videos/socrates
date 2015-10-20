@@ -20,7 +20,7 @@
             <span>:</span>
             <input id="seconds" is="iron-input" type="Number" min="-1" max="60" step="1" bind-value="{{_seconds}}">
             <span>:</span>
-            <input id="millis" is="iron-input" min="-1" max="1000" step="1" bind-value="{{_millis}}" type="Number">
+            <input id="millis" is="iron-input" min="-1" max="100" step="1" bind-value="{{_millis}}" type="Number">
         </paper-input-container>
     </template>
 </dom-module>
@@ -75,16 +75,16 @@ Polymer({
                     return;
                 }
             }
-            if (millis > 999) {
-                ms = millis % 1000;
-                s = seconds + Math.floor(millis / 1000);
+            if (millis > 99) {
+                ms = millis % 100;
+                s = seconds + Math.floor(millis / 100);
                 this._millis = ms;
                 this._seconds = s;
                 return;
             }
             if (millis < 0) {
                 if (seconds || minutes) {
-                    ms = 999;
+                    ms = 99;
                     s = seconds - 1;
                     this._millis = ms;
                     this._seconds = s;
@@ -94,12 +94,12 @@ Polymer({
                     return;
                 }
             }
-            this.value = minutes * 60 + seconds + millis / 1000;
+            this.value = minutes * 60 + seconds + millis / 100;
         }
     },
     _computeValues: function(value) {
         this._dontCompute = true;
-        this._millis = Math.floor((value - Math.floor(value)) * 1000);
+        this._millis = Math.floor((value - Math.floor(value)) * 100);
         this._seconds = Math.floor(value % 60);
         this._minutes = Math.floor(value / 60);
         this._dontCompute = false;
