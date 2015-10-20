@@ -1,4 +1,5 @@
 <link rel="import" href="latex-styles.html">
+<link rel="import" href="latex-import.html">
 <dom-module id="latex-formula">
     <style include="latex-styles"></style>
     <template>
@@ -8,21 +9,6 @@
 <script>
 'use strict';
 (function() {
-    var _callbacks = [];
-
-    function _loadKatex() {
-        var script = document.createElement('script');
-        script.setAttribute('src', '/bower_components/katex/dist/katex.min.js');
-        script.setAttribute('type', 'text/javascript');
-        script.onload = function() {
-            _callbacks.forEach(function(cb) {
-                cb();
-            });
-            _callbacks = null;
-        };
-        document.body.appendChild(script);
-    }
-
     Polymer({
         is: 'latex-formula',
         behaviors: Capira.selectBehaviors([], [], Capira.EditableLatex),
@@ -36,21 +22,8 @@
             //replace html entities
             latexExp = latexExp.replace('&lt;', '<').replace('&gt;', '>');
             this.latexExp = latexExp;
-            this._execOnReady(function() {
-                this.$.tex.innerHTML = '';
-                window.katex.render(latexExp, this.$.tex);
-            }.bind(this));
-        },
-        _execOnReady: function(callback) {
-            if (!window.katex) {
-                window.katex = 'pending';
-                _callbacks.push(callback);
-                _loadKatex();
-            } else if (window.katex === 'pending') {
-                _callbacks.push(callback);
-            } else {
-                callback();
-            }
+            this.$.tex.innerHTML = '';
+            window.katex.render(latexExp, this.$.tex);
         }
     });
 })();
