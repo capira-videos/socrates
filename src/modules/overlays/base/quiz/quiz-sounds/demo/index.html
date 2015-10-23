@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <!-- Mobile -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <!-- Chrome / Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="black">
+    <link rel="icon" href="icon.png">
+    <!-- Safari / iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
+    <!-- Web Components -->
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/paper-styles/paper-styles.html">
+    <link rel="import" href="/bower_components/paper-styles/demo-pages.html">
+    <link rel="import" href="../quiz-sounds.html">
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <quiz-sounds></quiz-sounds>
+    <button onclick="correct()">correct</button>
+    <button onclick="neutral()">neutral</button>
+    <button onclick="correct()">correct</button>
+    <script>
+    'use strict';
+    var sounds = Capira.QuizSounds;
+    sounds.attached();
+
+    function correct() {
+        sounds.playSound(Capira.Grade.CORRECT);
+    }
+
+    function neutral() {
+        sounds.playSound(Capira.Grade.NEUTRAL);
+    }
+
+    function incorrect() {
+        sounds.playSound(Capira.Grade.INCORRECT);
+    }
+
+    setTimeout(function() {
+        correct();
+    }, 1000);
+    setTimeout(function() {
+        neutral();
+    }, 2000);
+    setTimeout(function() {
+        incorrect();
+    }, 3000);
+    </script>
+</body>
+
+</html>
