@@ -8,8 +8,8 @@ Capira.QuizValue = {
             notify: true
         },
     },
-    _valueChanged: function(value) {
-        this.fire('answer-changed', value);
+    evaluate: function() {
+        return this._getCombinationByValue(this.value);
     },
     _getCombinationByValue: function(value) {
         var arr = this.overlay.combinations.slice();
@@ -25,9 +25,7 @@ Capira.QuizValue = {
     _valueEquals: function(expected, given) {
         return expected === given;
     },
-    evaluate: function() {
-        return this._getCombinationByValue(this.value);
-    },
+
     sortFn: function(a, b) {
         if (!a || a.value === undefined) {
             return 1;
@@ -36,6 +34,10 @@ Capira.QuizValue = {
             return -1;
         }
         return a.grade - b.grade;
-    }
+    },
+
+    _valueChanged: function(value) {
+        this.fire('answer-changed', value);
+    },
 };
 </script>

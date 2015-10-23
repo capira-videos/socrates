@@ -2,6 +2,7 @@
 <link rel="import" href="draw-quiz-editor.html">
 <link rel="import" href="draw-quiz-value-preview.html">
 <link rel="import" href="draw-quiz-value-selector.html">
+<link rel="import" href="../../../../../editor/core/edit-page/quiz-edit-page.html">
 <dom-module id="draw-quiz-edit-page">
     <template>
         <edit-page-layout>
@@ -36,7 +37,7 @@
             return {
                 value: {
                     src: '',
-                    threshold: 0.9
+                    threshold: 0.95
                 },
                 feedback: 'Correct!',
                 grade: 0,

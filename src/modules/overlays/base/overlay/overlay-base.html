@@ -2,6 +2,9 @@
 <link rel="import" href="reactions.html">
 <link rel="import" href="mark-up.html">
 <link rel="import" href="animatable-overlay.html">
+<link rel="import" href="animatable-fab.html">
+<link rel="import" href="mark-up.html">
+<link rel="import" href="../../../app/theme.html">
 <script>
 'use strict';
 window.Capira = window.Capira || {};
@@ -39,7 +42,7 @@ Capira.OverlayImpl = {
 
     overlayChanged: function() {
         if (this.overlay) {
-            var that=this;
+            var that = this;
             this._setSpecificStyle();
             this.behaviors.forEach(function(behavior) {
                 if (behavior._overlayChanged) {
@@ -81,7 +84,9 @@ Capira.OverlayImpl = {
     _shown: function() {
         console.log('shown!');
         //TODO: shown get's called to often.
-        Polymer.dom(this.root).appendChild(this.skipButton);
+        if (!this.skipButton.isAttached) {
+            Polymer.dom(this.root).appendChild(this.skipButton);
+        }
     },
 
     enterPressed: function() {
