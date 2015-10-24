@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <!-- Mobile -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <!-- Chrome / Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="black">
+    <link rel="icon" href="icon.png">
+    <!-- Safari / iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
+    <!-- Web Components -->
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="/modules/app/scaffold.js"></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="../custom-quiz.html">
+    <style>
+    html,
+    body {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    
+    body {
+        height: 80vh;
+        position: relative;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <custom-quiz></custom-quiz>
+    <script>
+    'use strict';
+
+    // Dummy Data 
+    var dummy = {
+        'id': 'quiz2',
+        'question': 'Wie oft muss man ein Blatt Papier falten, damit seine H\u00f6he 5cm betr\u00e4gt?',
+        'type': 'custom-quiz',
+        'items': [{
+            'id': 'times',
+            'type': 'input-item',
+            'x': 0.68,
+            'y': 0.68,
+            'z': 1,
+            'w': 0.06,
+            'fontSize': 2
+        }],
+        'combinations': [{
+            'value': '<& @times & #equals 9>',
+            'grade': 0,
+            'feedback': 'Korrekt. 9 Mal!',
+            'reaction': {
+                'type': 'seekTo',
+                'target': 171.535114
+            }
+        }, {
+            'grade': 2,
+            'feedback': 'Probier\'s nochmal!',
+            'reaction': {
+                'type': 'play'
+            }
+        }, {
+            'value': '<& @times & #lt 9>',
+            'grade': 2,
+            'feedback': 'Nein, das ist zu wenig. Man muss \u00f6fter falten...'
+        }, {
+            'value': '<& @times & #gt 9>',
+            'grade': 2,
+            'feedback': 'Nein, man muss weniger falten...&nbsp;'
+        }],
+        'event': {
+            'type': 'STOP',
+            'start': 137.8
+        }
+    };
+
+    var annotation = document.querySelector('custom-quiz');
+    setTimeout(function() {
+        annotation.overlay = dummy;
+        annotation.show();
+    }, 500);
+    </script>
+</body>
+
+</html>
