@@ -1,9 +1,11 @@
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../base/quiz/quiz-base.html">
 <link rel="import" href="../../base/quiz/quiz-card.html">
 <link rel="import" href="../../base/quiz/slang.html">
 <link rel="import" href="../../items/math-input/math-paper-input.html">
 <dom-module id="math-quiz">
-    <style>
+    <template>
+    <style> 
     paper-input {
         padding: 64px 0 64px 0;
         margin: 0 auto;
@@ -15,8 +17,7 @@
     }
     
 
-    </style>
-    <template>
+     </style>
         <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <math-paper-input>
                 <paper-input value="{{value}}" label="Input math answer" id="input"></paper-input>
@@ -32,9 +33,9 @@
         behaviors: [Capira.Quiz, Capira.Slang],
         _valueEquals: function(expected, given) {
             if (typeof expected === 'string') {
-                return Slang.mathslang.compare(expected, given);
+                return this.mathslang.compare(expected, given);
             } else {
-                return Slang.mathslang.compare(expected.expr, given, expected.units);
+                return this.mathslang.compare(expected.expr, given, expected.units);
             }
         },
         _shown: function() {

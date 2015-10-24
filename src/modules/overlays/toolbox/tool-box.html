@@ -1,6 +1,7 @@
 <link rel="import" href="toolbox-icon.html">
 <dom-module id="tool-box">
-    <style>
+    <template>
+    <style> 
     :host {
         z-index: 2;
         background-color:#FFF;
@@ -9,8 +10,7 @@
     :host .iron-selected {
         background-color:#b2ebf2;
     }
-    </style>
-    <template>
+     </style>
         <iron-selector selected="0" selectable="toolbox-icon:not([unselectable])">
             <content></content>
         </iron-selector>

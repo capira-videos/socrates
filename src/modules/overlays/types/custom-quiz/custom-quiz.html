@@ -4,7 +4,8 @@
 <link rel="import" href="../../base/quiz/slang.html">
 <link rel="import" href="../../items/math-input/math-input-explanation.html">
 <dom-module id="custom-quiz">
-    <style>
+    <template>
+    <style> 
     #card {
         position: absolute;
         left: 0;
@@ -20,8 +21,7 @@
         background-color: rgba(0, 0, 0, 0.1);
         color: white;
     }
-    </style>
-    <template>
+     </style>
         <div id="content"></div>
         <content></content>
         <question-feedback-card id="card" is-top question="{{overlay.question}}" combination="{{combination}}" animate-wrong></question-feedback-card>

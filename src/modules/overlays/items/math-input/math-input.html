@@ -1,4 +1,4 @@
-<link rel="import" href="../../../../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="/bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="math-input-indicator.html">
 <link rel="import" href="greek-alphabet.html">
 <script>
@@ -14,16 +14,18 @@ Capira.MathInput = {
         var input = this.$$('input') || Polymer.dom(this).querySelector('paper-input');
         this._input = input;
         if (input) {
-   
-            var indicator = app.create('math-input-indicator', {
-                hidden: true
-            });
+
+            var indicator = document.createElement('math-input-indicator');
             Polymer.dom(this.root).appendChild(indicator);
 
             input.addEventListener('keydown', function(e) {
                 if (e.altKey) {
                     this.greekMode = !this.greekMode;
-                    indicator.hidden = !this.greekMode;
+                    if (this.greekMode) {
+                        indicator.show();
+                    } else {
+                        indicator.hide();
+                    }
                     e.preventDefault();
                     e.stopPropagation();
                     return;
@@ -45,7 +47,7 @@ Capira.MathInput = {
 
             input.addEventListener('blur', function() {
                 this.greekMode = false;
-                indicator.hidden = true;
+                indicator.hide();
             }.bind(this), false);
 
         } else {
@@ -53,7 +55,7 @@ Capira.MathInput = {
         }
     },
     _insertAt: function(character) {
-        var a = JSON.parse(JSON.stringify(this._input.value||''));
+        var a = JSON.parse(JSON.stringify(this._input.value || ''));
         var position = this._input.selectionStart;
         position = position === undefined ? this._input.inputElement.selectionStart : position;
         this._input.value = [a.slice(0, position), character, a.slice(position)].join('');

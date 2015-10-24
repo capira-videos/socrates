@@ -9,7 +9,8 @@
 
 
 <dom-module id="single-answer-quiz">
-    <style>
+    <template>
+    <style> 
     #items {
         padding-top: 32px;
         padding-bottom: 32px;
@@ -36,8 +37,7 @@
     .letter {
         letter-spacing: 4px;
     }
-    </style>
-    <template>
+     </style>
         <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <div id="items">
                 <iron-selector selected="{{value}}" attr-for-selected="name">

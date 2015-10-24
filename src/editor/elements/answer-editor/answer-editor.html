@@ -1,7 +1,8 @@
 <!-- TODO: style this pretty -->
 <!-- TODO: limit feedback chars and show hint to create an annotation if feedback to large-->
 <dom-module id="answer-editor">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         @apply(--paper-font-body2);
@@ -17,8 +18,7 @@
     #save {
         min-height: 44px;
     }
-    </style>
-    <template>
+     </style>
         <right-bar-header>Define Answer</right-bar-header>
         <div id="content">
             <span hidden$="{{!_hasValue(combination.value)}}">

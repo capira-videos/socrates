@@ -1,6 +1,7 @@
 <link rel="import" href="../../../overlays/base/overlay/overlay-base.html">
 <dom-module id="short-annotation">
-    <style>
+    <template>
+    <style> 
     #card {
         position: absolute;
         left: 0;
@@ -23,8 +24,7 @@
         bottom: 42px;
         z-index: 2;
     }
-    </style>
-    <template>
+     </style>
         <animatable-fab id="fab" icon="player-icons:play-arrow" on-mouseup="_done"></animatable-fab>
         <div id="card">
             <mark-up content="{{overlay.body}}"></mark-up>

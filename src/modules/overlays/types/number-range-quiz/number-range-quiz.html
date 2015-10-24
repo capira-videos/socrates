@@ -4,7 +4,8 @@
 <link rel="import" href="../../base/quiz/slang.html">
 
 <dom-module id="number-range-quiz">
-    <style>
+    <template>
+    <style> 
     .content {
         padding: 40px;
     }
@@ -28,8 +29,7 @@
         --paper-slider-active-color: var(--quiz-input-color);
         --paper-slider-knob-color: var(--quiz-input-color);
     }
-    </style>
-    <template>
+     </style>
         <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <div class="content">
                 <div class="picker-value font-light">{{value}}</div>

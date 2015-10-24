@@ -3,7 +3,8 @@
 <link rel="import" href="../question-feedback-card/question-feedback-card.html">
 <link rel="import" href="draggable-item.html">
 <dom-module id="dnd-quiz">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         width: 100%;
@@ -18,8 +19,7 @@
         bottom: 0;
         height: 128px;
     }
-    </style>
-    <template>
+     </style>
         <template is="dom-repeat" items="{{overlay.items}}">
             <draggable-item item="{{item}}"></draggable-item>
         </template>

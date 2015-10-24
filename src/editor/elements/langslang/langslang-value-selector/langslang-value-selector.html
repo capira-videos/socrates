@@ -1,5 +1,6 @@
 <dom-module id="langslang-value-selector">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         padding-bottom: 16px;
@@ -13,8 +14,7 @@
     paper-button{
         margin-top: 8px;
     }
-    </style>
-    <template>
+     </style>
         <template is="dom-repeat" items="{{computedValue}}">
             <langslang-value-block value="{{item}}"></langslang-value-block>
             <div class="block-divider" hidden$="{{_hideDivider(index)}}">or</div>

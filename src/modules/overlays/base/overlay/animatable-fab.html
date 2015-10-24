@@ -1,9 +1,11 @@
 <link rel="import" href="../../../app/theme.html">
-<link rel="import" href="/bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="/bower_components/neon-animation/neon-animation-runner-behavior.html">
 <link rel="import" href="/bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="/bower_components/paper-fab/paper-fab.html">
+
 <dom-module id="animatable-fab">
-    <style>
+    <template>
+    <style> 
     :host {
         display: none;
     }
@@ -11,8 +13,7 @@
     paper-fab {
         -webkit-transform: translateZ(0);
     }
-    </style>
-    <template>
+     </style>
         <paper-fab icon="{{icon}}" mini$="{{mini}}" src="{{src}}" tabindex="0"></paper-fab>
     </template>
 </dom-module>

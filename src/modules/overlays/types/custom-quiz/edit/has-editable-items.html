@@ -10,7 +10,7 @@ Capira.HasEditableItems = {
     },
 
     attached: function() {
-        var selector = app.create('array-selector', {
+        var selector = Polymer.Base.create('array-selector', {
             id: 'selector',
             selected: this.selected
         });

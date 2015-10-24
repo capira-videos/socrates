@@ -1,5 +1,6 @@
 <dom-module id="answers-selector">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         @apply(--paper-font-body2);
@@ -50,8 +51,7 @@
         height: 64px;
         color: var(--accent-color);
     }
-    </style>
-    <template>
+     </style>
         <right-bar-header>Answers
             <paper-fab icon="editor-icons:add" on-tap="_createAnswer"></paper-fab>
         </right-bar-header>

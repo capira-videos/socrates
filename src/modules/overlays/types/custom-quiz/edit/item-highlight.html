@@ -1,5 +1,6 @@
 <dom-module id="item-highlight">
-    <style>
+    <template>
+    <style> 
     :host {
         position: absolute;
         top: -32px;
@@ -10,8 +11,7 @@
     iron-icon {
         color: var(--accent-color);
     }
-    </style>
-    <template>
+     </style>
         <iron-icon icon="player-icons:place" hidden$="{{!visible}}"></iron-icon>
     </template>
 </dom-module>

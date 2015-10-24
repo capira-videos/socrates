@@ -5,7 +5,8 @@
 <link rel="import" href="../../base/quiz/slang.html">
 <link rel="import" href="../../base/draw-canvas/draw-canvas.html">
 <dom-module id="draw-quiz">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         width: 100%;
@@ -37,8 +38,7 @@
             bottom: -64px;
         }
     }
-    </style>
-    <template>
+     </style>
         <draw-canvas id="solution" hidden></draw-canvas>
         <draw-canvas on-draw="_answered" id="canvas"></draw-canvas>
         <tool-box id="toolbox">

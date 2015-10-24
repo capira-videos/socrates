@@ -1,10 +1,10 @@
 <dom-module id="delete-button">
-    <style>
+    <template>
+    <style> 
     #confirm {
         background-color: white !important;
     }
-    </style>
-    <template>
+     </style>
         <div style="display:inline-block">
             <paper-icon-button icon="editor-icons:delete" on-tap="_confirm"></paper-icon-button>
             <paper-tooltip>Delete <span>{{_computedType}}</span></paper-tooltip>

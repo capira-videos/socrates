@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <title>paper-input-counter tests</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../../../../bower_components/iron-test-helpers/test-helpers.js"></script>
+    <link rel="import" href="../mathslang-editor.html">
+</head>
+
+<body>
+    <test-fixture id="container">
+        <template>
+            <mathslang-editor id="editor"></mathslang-editor>
+        </template>
+    </test-fixture>
+    <script>
+    'use strict';
+    suite('basic', function() {
+        test('character counter shows the value length', function() {
+            var container = fixture('container');
+            var editor = Polymer.dom(container).querySelector('#editor');
+            assert.equal();
+        });
+    });
+    </script>
+</body>
+
+</html>

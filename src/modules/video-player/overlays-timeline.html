@@ -1,35 +1,35 @@
 <dom-module id="overlays-timeline">
-    <style>
-    :host {
-        position: absolute;
-        left: 12px;
-        right: 12px;
-        bottom: 35px;
-        height: 12px;
-        pointer-events: none;
-        display: none;
-    }
-    
-    .timeline-overlay-anchor {
-        display: none;
-        background-color: var(--paper-orange-500);
-        transition: opacity 0.1s, background-color 0.1s;
-        position: absolute;
-        width: 4px;
-        height: 100%;
-        margin-left: -2px;
-        opacity: 0.4;
-        border-radius: 2px;
-        pointer-events: all;
-        cursor: pointer;
-    }
-    
-    .timeline-overlay-anchor:hover {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 35px;
+            height: 12px;
+            pointer-events: none;
+            display: none;
+        }
+        
+        .timeline-overlay-anchor {
+            display: none;
+            background-color: var(--paper-orange-500);
+            transition: opacity 0.1s, background-color 0.1s;
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            margin-left: -2px;
+            opacity: 0.4;
+            border-radius: 2px;
+            pointer-events: all;
+            cursor: pointer;
+        }
+        
+        .timeline-overlay-anchor:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        </style>
         <template is="dom-repeat" items="{{overlays}}">
             <div class="timeline-overlay-anchor" style$="{{_anchorStyle(item.*,duration)}}" on-tap="_jumpToOverlay"></div>
         </template>

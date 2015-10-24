@@ -3,8 +3,10 @@
 <link rel="import" href="../../base/quiz/question-feedback-card.html">
 <link rel="import" href="../../base/quiz/slang.html">
 <link rel="import" href="hotspot-marker.html">
+<link rel="import" href="../../base/draw-canvas/draw-canvas.html">
 <dom-module id="hotspot-quiz">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         width: 100%;
@@ -38,8 +40,7 @@
             bottom: -64px;
         }
     }
-    </style>
-    <template>
+     </style>
         <draw-canvas id="canvas" paths="{{overlay.mask}}"></draw-canvas>
         <div id="click" on-click="canvasClick"></div>
         <hotspot-marker id="marker"></hotspot-marker>

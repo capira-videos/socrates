@@ -1,7 +1,7 @@
-
 <link rel="import" href="../../../../../bower_components/iron-icon/iron-icon.html">
 <dom-module id="math-input-indicator">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         position: absolute;
@@ -11,12 +11,12 @@
         display: block;
         border-radius: 50%;
         border: 2px solid var(--accent-color);
-        background-color: rgba(255,255,255,0.7);
+        background-color: rgba(255, 255, 255, 0.7);
         @apply(--math-indicator-mixin);
         margin-top: -2px;
+        display: none;
     }
-    </style>
-    <template>
+     </style>
         <iron-icon icon="player-icons:functions"></iron-icon>
     </template>
 </dom-module>
@@ -24,7 +24,13 @@
 'use strict';
 (function() {
     Polymer({
-        is: 'math-input-indicator'
+        is: 'math-input-indicator',
+        show: function() {
+            this.style.display = 'block';
+        },
+        hide: function() {
+            this.style.display = 'none';
+        }
     });
 })();
 </script>

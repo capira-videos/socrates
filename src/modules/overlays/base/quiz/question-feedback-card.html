@@ -4,7 +4,8 @@
 <link rel="import" href="was-correct-animation.html">
 <link rel="import" href="../overlay/animatable-fab.html">
 <dom-module id="question-feedback-card">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
     }
@@ -102,8 +103,7 @@
     #feedback > a {
         color: white !important;
     }
-    </style>
-    <template>
+     </style>
         <div id="container">
             <div>
                 <div id="icon-container" hidden$="{{!icon}}">

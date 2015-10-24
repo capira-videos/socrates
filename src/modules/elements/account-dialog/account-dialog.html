@@ -1,5 +1,6 @@
 <dom-module id="account-dialog">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
     }
@@ -8,8 +9,7 @@
         width: 400px;
         background-color: white !important;
     }
-    </style>
-    <template>
+     </style>
         <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
         <paper-dialog id="login" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <h2>Login</h2>

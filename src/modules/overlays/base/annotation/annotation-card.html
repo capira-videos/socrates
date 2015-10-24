@@ -1,6 +1,7 @@
 <link rel="import" href="../overlay/animatable-fab.html">
 <dom-module id="annotation-card">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         width: 100%;
@@ -58,8 +59,7 @@
             box-shadow: none;
         }
     }
-    </style>
-    <template>
+     </style>
         <paper-material id="annotation" elevation="3">
             <div id="header">
                 <mark-up content="{{overlay.heading}}"></mark-up>

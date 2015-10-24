@@ -4,7 +4,8 @@
 <link rel="import" href="../../elements/right-bar-header/right-bar-header.html">
 
 <dom-module id="edit-page-layout">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         height: 100vh;
@@ -70,8 +71,7 @@
         height: 64px;
         margin-right: 8px;
     }
-    </style>
-    <template>
+     </style>
         <div id="top-bar">
             <neon-animated-pages animate-initial-selection id="top">
                 <empty-top-bar states="fallback"></empty-top-bar>

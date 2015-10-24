@@ -1,7 +1,8 @@
 <link rel="import" href="../quiz-item.html">
 <link rel="import" href="../math-input/math-input.html">
 <dom-module id="input-item">
-    <style>
+    <template>
+    <style> 
     input {
         width: 100%;
         height: 100%;
@@ -30,8 +31,7 @@
         font-family: 'Roboto', 'Noto', sans-serif;
         border: 1px solid transparent;
     }
-    </style>
-    <template>
+     </style>
         <input type="text" value="{{value::input}}" id="input">
     </template>
 </dom-module>

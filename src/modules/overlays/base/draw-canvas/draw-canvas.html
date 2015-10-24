@@ -2,7 +2,8 @@
 <link rel="import" href="has-tools.html">
 <link rel="import" href="draw-tools.html">
 <dom-module id="draw-canvas">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         width: 100%;
@@ -20,8 +21,7 @@
     canvas[tool=eraser] {
         cursor: url('/static/img/quiz-icons/eraser.ico') 7 40, pointer;
     }
-    </style>
-    <template>
+     </style>
         <canvas width="800" height="450" id="resize" tool="pen">
         </canvas>
     </template>

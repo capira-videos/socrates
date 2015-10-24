@@ -1,8 +1,10 @@
-<link rel="import" href="../../../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-<link rel="import" href="../../../../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
 <dom-module id="math-input-explanation">
-    <style>
+    <template>
+    <style> 
     paper-dialog {
         background-color: white;
         width: 500px;
@@ -61,8 +63,7 @@
     paper-icon-button:hover {
         color: var(--paper-red-500);
     }
-    </style>
-    <template>
+     </style>
         <paper-icon-button icon="player-icons:help-old" on-mouseup="open"></paper-icon-button>
     </template>
 </dom-module>
@@ -83,7 +84,7 @@
         open: function() {
             var dialog = document.querySelector('math-input-explanation');
             if (!dialog) {
-                dialog = app.create('math-input-explanation');
+                dialog = document.createElement('math-input-explanation');
                 document.body.appendChild(dialog);
             }
             dialog.open();

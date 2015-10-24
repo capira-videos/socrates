@@ -1,7 +1,8 @@
 <link rel="import" href="../../../base/draw-canvas/draw-canvas.html">
 <link rel="import" href="../hotspot-quiz.html">
 <dom-module id="hotspot-quiz-editor">
-    <style>
+    <template>
+    <style> 
     #mask {
         border: 1px solid black;
     }
@@ -17,8 +18,7 @@
         bottom: 0;
         height: 64px;
     }
-    </style>
-    <template>
+     </style>
         <draw-canvas id="mask" color="[[color]]" pen-size="15" smoothing="false"></draw-canvas>
         <question-feedback-card id="card" question="{{overlay.question}}" is-top="true" animate-wrong icon="player-icons:my-location" combination="{{combination}}"></question-feedback-card>
     </template>

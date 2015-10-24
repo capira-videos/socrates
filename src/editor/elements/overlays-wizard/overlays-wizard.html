@@ -3,7 +3,8 @@
 <link rel="import" href="overlay-miniature-card.html">
 <script type="text/javascript" src="overlays-palette.js"></script>
 <dom-module id="overlays-wizard">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         position: relative;
@@ -40,8 +41,7 @@
     paper-dialog-scrollable /deep/ #scrollable {
         max-height: calc(100vh - 200px) !important;
     }
-    </style>
-    <template>
+     </style>
         <paper-dialog id="wizard" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <div id="header">Select an Overlay to create</div>
             <paper-dialog-scrollable>

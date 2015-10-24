@@ -1,5 +1,6 @@
 <dom-module id="custom-quiz-top-bar">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         @apply(--layout-horizontal);
@@ -17,8 +18,7 @@
     paper-button:hover {
         background: var(--paper-orange-50);
     }
-    </style>
-    <template>
+     </style>
         <timestamp-selector value="{{overlay.event.start}}" hidden$="{{!overlay.event}}"></timestamp-selector>
         <span class="flex"></span>
         <paper-button on-tap="_add">

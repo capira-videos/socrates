@@ -1,13 +1,13 @@
 <dom-module id="item-top-bar">
-    <style>
+    <template>
+    <style> 
     :host {
         @apply(--layout-horizontal);
         @apply(--layout-center);
         padding: 8px;
         box-sizing: border-box;
     }
-    </style>
-    <template>
+     </style>
         <paper-input type="Number" step="0.01" min="0" max="1" value="{{item.x}}" label="left"></paper-input>
         <paper-input type="Number" step="0.01" min="0" max="1" value="{{item.y}}" label="top"></paper-input>
         <paper-input type="Number" step="0.01" min="0.02" max="1" value="{{item.w}}" label="width"></paper-input>

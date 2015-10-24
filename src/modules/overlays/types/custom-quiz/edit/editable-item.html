@@ -7,7 +7,7 @@ Capira.EditableItemImpl = {
         'tap': '_itemClicked'
     },
     attached: function() {
-        this.highlightElem = app.create('item-highlight');
+        this.highlightElem = Polymer.Base.create('item-highlight');
         Polymer.dom(this.root).appendChild(this.highlightElem);
     },
     _itemClicked: function(e) {

@@ -1,6 +1,7 @@
 <link rel="import" href="timestamp-input.html">
 <dom-module id="timestamp-selector">
-    <style>
+    <template>
+    <style> 
     :host {
         @apply(--layout-horizontal);
         @apply(--layout-center);
@@ -9,8 +10,7 @@
     timestamp-input {
         margin-right: 8px;
     }
-    </style>
-    <template>
+     </style>
         <timestamp-input value="{{value}}"></timestamp-input>
         <div style="display:inline-block">
             <paper-icon-button icon="editor-icons:play-circle-outline" on-tap="_try"></paper-icon-button>

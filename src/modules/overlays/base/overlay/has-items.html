@@ -22,7 +22,7 @@ Capira.HasItemsImpl = {
         if (this.overlay.items) {
             this.overlay.items.forEach(function(item) {
                 var type = item.type;
-                var elem = app.create(type, {
+                var elem = Polymer.Base.create(type, {
                     id: 'item' + item.id,
                     item: item,
                 });

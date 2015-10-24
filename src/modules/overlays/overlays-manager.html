@@ -1,5 +1,6 @@
 <dom-module id="overlays-manager">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         @apply(--layout-fit);
@@ -14,8 +15,7 @@
             left: 8px;
         }
     }
-    </style>
-    <template>
+     </style>
         <back-button on-tap="back" id="back"></back-button>
         <content></content>
     </template>
@@ -59,7 +59,7 @@
         },
 
         _appendOverlay: function(overlay) {
-            var overlayEl = app.create(overlay.type, {
+            var overlayEl = Polymer.Base.create(overlay.type, {
                 id: 'overlay' + overlay.id,
                 overlay: overlay
             });

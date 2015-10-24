@@ -1,6 +1,7 @@
 <link rel="import" href="../overlays-wizard/overlay-miniature.html">
 <dom-module id="unit-right-bar">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
     }
@@ -28,8 +29,7 @@
     .preview:hover {
         background-color: white;
     }
-    </style>
-    <template>
+     </style>
         <right-bar-header>Overlays in this Video
             <div class="flex"></div>
             <paper-fab icon="editor-icons:add" on-tap="_create"></paper-fab>

@@ -1,8 +1,10 @@
 <link rel="import" href="../../base/quiz/quiz-base.html">
 <link rel="import" href="../../base/overlay/resizable-overlay.html">
 <link rel="import" href="../../base/quiz/question-feedback-card.html">
+//my name was robin
 <dom-module id="live-hotspot-quiz">
-    <style>
+    <template>
+    <style> 
     #card {
         position: absolute;
         left: 0;
@@ -14,8 +16,7 @@
     canvas {
         cursor: url('/static/img/quiz-icons/location.ico') 24 24, pointer;
     }
-    </style>
-    <template>
+     </style>
         <canvas width="800" height="450" id="canvas" on-click="_onSpot"></canvas>
         <question-feedback-card id="card" is-top icon="player-icons:my-location" combination="{{combination}}"></question-feedback-card>
     </template>

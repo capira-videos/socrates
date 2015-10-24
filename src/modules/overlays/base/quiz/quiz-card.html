@@ -3,7 +3,8 @@
 <link rel="import" href="was-incorrect-animation.html">
 <link rel="import" href="was-correct-animation.html">
 <dom-module id="quiz-card">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         width: 100%;
@@ -43,8 +44,7 @@
             color: white;
         }
     }
-    </style>
-    <template>
+     </style>
         <paper-material id="quiz" elevation="3">
             <question-feedback-card id="questionFeedback" question="{{question}}" combination="{{combination}}">
             </question-feedback-card>

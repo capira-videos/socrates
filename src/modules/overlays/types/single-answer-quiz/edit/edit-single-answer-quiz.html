@@ -8,7 +8,7 @@ window.Capira.EditSingleAnswer = {
 
     //FIXME Why doesn't this work with attached???
     ready: function() {
-        var addButton = app.create('add-single-answer-button');
+        var addButton = Polymer.Base.create('add-single-answer-button');
         Polymer.dom(this.$.items).appendChild(addButton);
     },
     _createItem: function() {

@@ -105,13 +105,13 @@ window.Capira.EditableMarkup = {
         console.log(pos);
         var c = this.el.innerHTML;
 
-        //replace non breaking line spaces!
-        c = c.replace(/&nbsp;/g, ' ');
         c = c.replace(/\u200C/g, '');
         //replace &nbsp at the end
         if (c.lastIndexOf('&nbsp;') === c.length - 6) {
             c = c.substr(0, c.length - 6);
         }
+        //replace all breaking line spaces!
+        c = c.replace(/&nbsp;/g, ' ');
 
         var temp = c;
         var i = 0; // to count the chars in the formula 
@@ -128,7 +128,7 @@ window.Capira.EditableMarkup = {
 
         latex = '<latex-formula>' + latex + '</latex-formula>';
         //insert new formula at caret position
-        c = [c.slice(0, pos), latex, c.slice(pos),'&zwnj;'].join('');
+        c = [c.slice(0, pos), latex, c.slice(pos), '&zwnj;'].join('');
         this.set('content', c);
         //TODO: compute how many <i> and <b> are in front of the caret 
     }

@@ -1,7 +1,8 @@
 <link rel="import" href="../../base/overlay/overlay-base.html">
 <link rel="import" href="../../base/annotation/annotation-card.html">
 <dom-module id="standard-annotation">
-    <style>
+    <template>
+    <style> 
     #bodyText {
         padding: 0 16px;
     }
@@ -10,8 +11,7 @@
         color: var(--accent-color);
     }
 
-    </style>
-    <template>
+     </style>
         <annotation-card overlay="{{overlay}}" id="card">
             <div id="bodyText">
                 <mark-up content="{{overlay.body}}"></mark-up>

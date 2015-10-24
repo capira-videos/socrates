@@ -1,6 +1,7 @@
 <link rel="import" href="../overlay/animatable-fab.html">
 <dom-module id="question-card-content">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
     }
@@ -17,8 +18,7 @@
         bottom: inherit;
         top: -29px;
     }
-    </style>
-    <template>
+     </style>
         <animatable-fab icon="{{icon}}"></animatable-fab>
         <mark-up content="{{content}}" uneditable="{{uneditable}}"></mark-up>
     </template>

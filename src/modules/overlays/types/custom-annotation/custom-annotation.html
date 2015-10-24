@@ -2,14 +2,14 @@
 <link rel="import" href="../../base/overlay/overlay-base.html">
 <link rel="import" href="../../base/overlay/animatable-fab.html">
 <dom-module id="custom-annotation">
-    <style>
+    <template>
+    <style> 
     #fab {
         position: absolute;
         right: 24px;
         bottom: 24px;
     }
-    </style>
-    <template>
+     </style>
         <div id="content"></div>
         <animatable-fab on-tap="_goOn" icon="player-icons:play-arrow" id="fab"></animatable-fab>
     </template>

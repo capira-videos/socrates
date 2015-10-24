@@ -1,5 +1,6 @@
 <dom-module id="account-preview">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
     }
@@ -13,8 +14,7 @@
     #user {
         margin-right: 16px;
     }
-    </style>
-    <template>
+     </style>
         <account-dialog id="account" user="{{user}}"></account-dialog>
         <div on-tap="_account" id="content">
             <paper-icon-button icon="player-icons:account-circle"></paper-icon-button>

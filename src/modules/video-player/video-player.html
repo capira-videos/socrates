@@ -3,17 +3,17 @@
 <link rel="import" href="overlays-timeline.html">
 <link rel="import" href="fullscreen-button.html">
 <dom-module id="video-player">
-    <style>
-    :host {
-        display: block;
-        height: 100%;
-    }
-    
-    google-youtube {
-        height: 100%;
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            display: block;
+            height: 100%;
+        }
+        
+        google-youtube {
+            height: 100%;
+        }
+        </style>
         <google-youtube main video-id="[[unit.video.source]]" height="100%" width="100%" rel="0" autoplay="[[autoplay]]" controls="1" showinfo="0" fs="0" id="player" duration="{{duration}}" playbackstarted="{{playbackstarted}}" state="{{state}}">
         </google-youtube>
         <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}" id="timeline"></overlays-timeline>

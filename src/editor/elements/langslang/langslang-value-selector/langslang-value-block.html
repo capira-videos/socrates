@@ -1,5 +1,6 @@
 <dom-module id="langslang-value-block">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
     }
@@ -20,8 +21,7 @@
         width: 128px;
         @apply(--layout-vertical);
     }
-    </style>
-    <template>
+     </style>
         <div class="def-block">
             <paper-input value="{{computedValue}}" label="Answer"></paper-input>
             <span class="options">

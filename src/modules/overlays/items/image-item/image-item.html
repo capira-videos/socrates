@@ -1,6 +1,7 @@
 <link rel="import" href="../item.html">
 <dom-module id="image-item">
-    <style>
+    <template>
+    <style> 
     :host {
         transition: top 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96), left 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96), width 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96), height 0.3s cubic-bezier(0.26, 0.52, 0.45, 0.96);
         @apply(--layout);
@@ -17,8 +18,7 @@
     :host.full img {
         width: auto;
     }
-    </style>
-    <template>
+     </style>
         <img src="{{item.src}}">
     </template>
 </dom-module>

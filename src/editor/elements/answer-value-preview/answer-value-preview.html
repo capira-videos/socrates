@@ -1,11 +1,11 @@
 <dom-module id="answer-value-preview">
-    <style>
+    <template>
+    <style> 
     :host {
         @apply(--paper-font-body1);
         position: relative;
     }
-    </style>
-    <template>
+     </style>
         <content></content>
     </template>
 </dom-module>
@@ -38,7 +38,7 @@
 
         attached: function() {
             var elemName = this.valueType + '-value-preview';
-            var elem = app.create(elemName, {
+            var elem = Polymer.Base.create(elemName, {
                 id: 'preview',
                 value: this.getValue(this.value),
                 overlay: this.overlay

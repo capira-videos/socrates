@@ -1,6 +1,14 @@
 <!--TODO: Add intervals to functions-->
+<link rel="import" href="../../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../../elements/right-bar-header/right-bar-header.html">
+<link rel="import" href="../../../elements/mathslang/mathslang-item-view/mathslang-item-view.html">
+<link rel="import" href="../../../../modules/overlays/items/math-input/math-paper-input.html">
+<link rel="import" href="function-selector/function-selector.html">
 <dom-module id="mathslang-editor">
-    <style>
+    <template>
+    <style> 
     :host {
         display: block;
         position: relative;
@@ -10,12 +18,6 @@
     #items-exp {
         width: 80px;
         display: inline-block;
-    }
-    
-    #function {
-        width: 56px;
-        padding-top: 0;
-        margin-top: -8px;
     }
     
     #expr {
@@ -95,14 +97,11 @@
             right: 56px;
             left: auto;
         }
-        ;
         --explanation-mixin: {
             right: 16px;
         }
-        ;
     }
-    </style>
-    <template>
+     </style>
         <right-bar-header>Mathslang Editor</right-bar-header>
         <div id="content">
             <div class="items" hidden="{{!isComplex}}">
@@ -113,21 +112,8 @@
             </div>
             <div class="exp-def">
                 <div class="heading">Expression:</div>
-                <math-paper-input hidden="{{!isComplex}}">
-                    <paper-input label="Inputs" id="items-exp" value="{{inputExp}}"></paper-input>
-                </math-paper-input>
-                <paper-dropdown-menu id="function">
-                    <paper-menu class="dropdown-content" selected="{{func}}">
-                        <paper-item>=</paper-item>
-                        <paper-item>&equiv;</paper-item>
-                        <paper-item>&asymp;</paper-item>
-                        <paper-item>&lt;</paper-item>
-                        <paper-item>&gt;</paper-item>
-                        <paper-item>&le;</paper-item>
-                        <paper-item>&ge;</paper-item>
-                        <!--  <paper-item>&isin;</paper-item> -->
-                    </paper-menu>
-                </paper-dropdown-menu>
+                <paper-input label="Inputs" id="items-exp" value="{{inputExp}}" hidden="{{!isComplex}}"></paper-input>
+                <function-selector func="{{func}}"></function-selector>
                 <math-paper-input>
                     <paper-input id="expr" value="{{expr}}" on-keyup="_findUnit" label="expression"></paper-input>
                 </math-paper-input>
@@ -268,28 +254,10 @@
                 return;
             }
             var value = '';
-            switch (this.func) {
-                case 1:
-                    value += '#identic';
-                    break;
-                case 2:
-                    value += '#approx';
-                    break;
-                case 3:
-                    value += '#lt';
-                    break;
-                case 4:
-                    value += '#gt';
-                    break;
-                case 5:
-                    value += '#leq';
-                    break;
-                case 6:
-                    value += '#geq';
-                    break;
-                default:
-                    value += '#equals';
-            }
+
+            //TODO: ask func-selector fo news ... 
+
+
             value += ' ' + this.expr;
             if (this.func === 2) {
                 value += ' #epsilon ' + this.epsilon;
@@ -342,29 +310,9 @@
             // select the correct function
             var func = expr.substr(0, expr.indexOf(' '));
             var value = expr.substr(expr.indexOf(' ') + 1);
-            switch (func) {
-                case '#equals':
-                    this.func = 0;
-                    break;
-                case '#identic':
-                    this.func = 1;
-                    break;
-                case '#approx':
-                    this.func = 2;
-                    break;
-                case '#lt':
-                    this.func = 3;
-                    break;
-                case '#gt':
-                    this.func = 4;
-                    break;
-                case '#leq':
-                    this.func = 5;
-                    break;
-                case '#geq':
-                    this.func = 6;
-                    break;
-            }
+
+            //TODO: tell the news to func-selector
+
             // set the expression and approx fields
             if (this.func === 2) {
                 var split = value.split('#epsilon');

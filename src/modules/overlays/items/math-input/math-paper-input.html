@@ -1,7 +1,8 @@
 <link rel="import" href="math-input.html">
 <link rel="import" href="math-input-explanation.html">
 <dom-module id="math-paper-input">
-    <style>
+    <template>
+    <style> 
     :host {
         position: relative;
     }
@@ -18,8 +19,7 @@
     math-input-explanation-button {
         @apply(--explanation-mixin);
     }
-    </style>
-    <template>
+     </style>
         <content></content>
         <math-input-explanation-button></math-input-explanation-button>
     </template>

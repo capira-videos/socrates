@@ -1,13 +1,13 @@
 <link rel="import" href="../../elements/empty-page/empty-page.html">
 <dom-module id="pages-manager">
-    <style>
+    <template>
+    <style> 
     :host {
         @apply(--layout-fit);
         display: block;
         pointer-events: none;
     }
-    </style>
-    <template>
+     </style>
         <neon-animated-pages selected="{{selected}}" attr-for-selected="id" animate-initial-selection>
             <!-- Quizzes -->
             <single-answer-quiz-edit-page id="single-answer-quiz"></single-answer-quiz-edit-page>

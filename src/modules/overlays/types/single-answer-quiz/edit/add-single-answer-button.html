@@ -1,13 +1,13 @@
 <dom-module id="add-single-answer-button">
-    <style>
+    <template>
+    <style> 
     paper-item {
         padding: 3px 28px;
         cursor: pointer;
         margin: 3px 0;
         position: relative;
     }
-    </style>
-    <template>
+     </style>
         <paper-item name="{{item}}" on-tap="_createItem">
             <paper-ripple></paper-ripple>
             <span class="letter">+ Add Item</span>
