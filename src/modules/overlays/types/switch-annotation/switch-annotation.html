@@ -1,7 +1,11 @@
+<link rel="import" href="/bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="../../base/overlay/overlay-base.html">
 <link rel="import" href="../../base/annotation/annotation-card.html">
 <dom-module id="switch-annotation">
-    <style>
+    <template>
+    <style> 
     #items {
         padding-top: 32px;
         padding-bottom: 32px;
@@ -35,8 +39,7 @@
         display: list-item;
         margin-left: 16px;
     }
-    </style>
-    <template>
+     </style>
         <annotation-card overlay="{{overlay}}" id="card">
             <div>
                 <iron-selector selected="{{value}}" attr-for-selected="name" on-iron-select="_selected">
