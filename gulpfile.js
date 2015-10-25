@@ -14,6 +14,7 @@ var glob = require('glob');
 var historyApiFallback = require('connect-history-api-fallback');
 var todo = require('gulp-todo');
 var httpProxy = require('http-proxy');
+var abspath = __dirname;
 
 var AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
@@ -286,12 +287,13 @@ var clean = require('gulp-clean');
  */
 gulp.task('vulcan', function() {
     var DEST_DIR = '../dist/player';
-    return gulp.src('app/video-quiz/elements.html')
+    return gulp.src('/app/video-quiz/elements.html')
         .pipe($.vulcanize({
+            abspath: abspath,
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
-            excludes: ['bower_components/katex/dist/katex.min.js'],
+            excludes: ['/bower_components/katex/dist/katex.min.js'],
         }))
         .pipe(minifyHTML())
         .pipe(minifyInline({
@@ -364,13 +366,14 @@ gulp.task('todo', function() {
 
 gulp.task('editor-vulcan', function() {
     var DEST_DIR = '../dist/editor';
-    return gulp.src('app/editor/core/core-elements.html')
+    return gulp.src('/app/editor/core/core-elements.html')
         .pipe($.vulcanize({
+            abspath: abspath,
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
-            excludes: ['bower_components/katex/dist/katex.min.js'],
-            stripExcludes: ['bower_components/iron-icons/iron-icons.html']
+            excludes: ['/bower_components/katex/dist/katex.min.js'],
+            stripExcludes: ['/bower_components/iron-icons/iron-icons.html']
         }))
         .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
