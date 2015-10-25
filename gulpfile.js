@@ -86,8 +86,8 @@ gulp.task('images', function() {
 gulp.task('copy', function() {
     var src = gulp.src([
         'app/*',
-        '!src/test',
-        '!src/precache.json'
+        '!app/test',
+        '!app/precache.json'
     ], {
         dot: true
     }).pipe(gulp.dest('dist'));
