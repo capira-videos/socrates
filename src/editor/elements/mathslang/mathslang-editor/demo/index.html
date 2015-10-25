@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <!-- Mobile -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <!-- Chrome / Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="black">
+    <link rel="icon" href="icon.png">
+    <!-- Safari / iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
+    <!-- Web Components -->
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="/modules/app/scaffold.js"></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="../mathslang-editor.html">
+    <style>
+    html,
+    body {
+        width: 400px;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        height: 100%;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <mathslang-editor></mathslang-editor>
+    <script>
+    'use strict';
+
+
+    // Dummy Data 
+    var dummy = {};
+
+    var quiz = document.querySelector('mathslang-editor');
+    setTimeout(function() {
+        quiz.overlay = dummy;
+        quiz.show();
+    }, 500);
+    </script>
+</body>
+
+</html>
