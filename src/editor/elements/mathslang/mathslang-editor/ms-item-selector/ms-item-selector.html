@@ -1,0 +1,21 @@
+<link rel="import" href="../../mathslang-item-view/mathslang-item-view.html">
+<dom-module id="ms-item-selector.html">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
+        <div class="items" hidden="{{!isComplex}}">
+            <div class="heading">Inputs in this Quiz:</div>
+            <template is="dom-repeat" items="{{overlay.items}}">
+                <mathslang-item-view item="{{item}}" index="{{index}}"></mathslang-item-view on-tap="_addItem">
+            </template>
+        </div>
+    </template>
+    <script>
+    Polymer({
+        is: 'ms-item-selector'
+    });
+    </script>
+</dom-module>
