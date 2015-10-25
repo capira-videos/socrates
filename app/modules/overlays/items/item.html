@@ -21,5 +21,8 @@ Capira.ItemImpl = {
         s.zIndex = item.z;
     }
 };
-Capira.Item = Capira.selectBehaviors(Capira.ItemImpl, [], Capira.EditableItem);
+Capira.Item = Capira.selectBehaviors({
+    core: Capira.ItemImpl,
+    editor: Capira.EditableItem
+});
 </script>

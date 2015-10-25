@@ -5,21 +5,21 @@
 <link rel="import" href="../../base/quiz/slang.html">
 <dom-module id="multi-answer-quiz">
     <template>
-    <style> 
-    :host paper-checkbox {
-        padding: 16px 28px;
-        width: 100%;
-        box-sizing: border-box;
-        @apply(--paper-font-subhead);
-        position: relative;
-        cursor: pointer;
-    }
-    
-    #items {
-        padding-top: 32px;
-        padding-bottom: 32px;
-    }
-     </style>
+        <style>
+        :host paper-checkbox {
+            padding: 16px 28px;
+            width: 100%;
+            box-sizing: border-box;
+            @apply(--paper-font-subhead);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        #items {
+            padding-top: 32px;
+            padding-bottom: 32px;
+        }
+        </style>
         <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <div id="items">
                 <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle" id="list">
@@ -36,7 +36,11 @@
 (function() {
     Polymer({
         is: 'multi-answer-quiz',
-        behaviors: Capira.selectBehaviors([Capira.Quiz, Capira.Slang], Capira.CanShuffle, [Capira.EditSingleAnswer, Capira.CanNotShuffle]),
+        behaviors: Capira.selectBehaviors({
+            core: [Capira.Quiz, Capira.Slang],
+            player: Capira.CanShuffle,
+            editor: [Capira.EditSingleAnswer, Capira.CanNotShuffle]
+        }),
         _compare: function(expected, given) {
             expected = JSON.parse(expected).sort();
             return JSON.stringify(expected) === JSON.stringify(given);

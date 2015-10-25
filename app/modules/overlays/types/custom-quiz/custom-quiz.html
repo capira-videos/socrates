@@ -5,23 +5,23 @@
 <link rel="import" href="../../items/math-input/math-input-explanation.html">
 <dom-module id="custom-quiz">
     <template>
-    <style> 
-    #card {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 64px;
-    }
-    
-    math-input-explanation-button {
-        position: absolute;
-        top: 16px;
-        right: 64px;
-        background-color: rgba(0, 0, 0, 0.1);
-        color: white;
-    }
-     </style>
+        <style>
+        #card {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 64px;
+        }
+        
+        math-input-explanation-button {
+            position: absolute;
+            top: 16px;
+            right: 64px;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        </style>
         <div id="content"></div>
         <content></content>
         <question-feedback-card id="card" is-top question="{{overlay.question}}" combination="{{combination}}" animate-wrong></question-feedback-card>
@@ -33,7 +33,10 @@
 (function() {
     Polymer({
         is: 'custom-quiz',
-        behaviors: Capira.selectBehaviors([Capira.Quiz, Capira.HasItems, Capira.Slang], [], [Capira.HasEditableItems]),
+        behaviors: Capira.selectBehaviors({
+            core: [Capira.Quiz, Capira.HasItems, Capira.Slang],
+            editor: Capira.HasEditableItems
+        }),
         listeners: {
             'item-value-changed': '_itemValueChanged'
         },

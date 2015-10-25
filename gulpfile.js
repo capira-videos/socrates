@@ -29,7 +29,7 @@ var AUTOPREFIXER_BROWSERS = [
 
 var styleTask = function(stylesPath, srcs) {
     return gulp.src(srcs.map(function(src) {
-            return path.join('src', stylesPath, src);
+            return path.join('app', stylesPath, src);
         }))
         .pipe($.changed(stylesPath, {
             extension: '.css'
@@ -55,9 +55,9 @@ gulp.task('elements', function() {
 // Lint JavaScript
 gulp.task('jshint', function() {
     return gulp.src([
-            'src/scripts/**/*.js',
-            'src/elements/**/*.js',
-            'src/elements/**/*.html'
+            'app/scripts/**/*.js',
+            'app/elements/**/*.js',
+            'app/elements/**/*.html'
         ])
         .pipe(reload({
             stream: true,
@@ -71,7 +71,7 @@ gulp.task('jshint', function() {
 
 // Optimize Images
 gulp.task('images', function() {
-    return gulp.src('src/images/**/*')
+    return gulp.src('app/images/**/*')
         .pipe($.cache($.imagemin({
             progressive: true,
             interlaced: true
@@ -85,7 +85,7 @@ gulp.task('images', function() {
 // Copy All Files At The Root Level (src)
 gulp.task('copy', function() {
     var src = gulp.src([
-        'src/*',
+        'app/*',
         '!src/test',
         '!src/precache.json'
     ], {
@@ -96,7 +96,7 @@ gulp.task('copy', function() {
         'bower_components/**/*'
     ]).pipe(gulp.dest('dist/bower_components'));
 
-    var elements = gulp.src(['src/elements/**/*.html'])
+    var elements = gulp.src(['app/elements/**/*.html'])
         .pipe(gulp.dest('dist/elements'));
 
     var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
@@ -105,7 +105,7 @@ gulp.task('copy', function() {
     var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
         .pipe(gulp.dest('dist/sw-toolbox'));
 
-    var vulcanized = gulp.src(['src/elements/elements.html'])
+    var vulcanized = gulp.src(['app/elements/elements.html'])
         .pipe($.rename('elements.vulcanized.html'))
         .pipe(gulp.dest('dist/elements'));
 
@@ -120,10 +120,10 @@ gulp.task('copy', function() {
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function() {
     var assets = $.useref.assets({
-        searchPath: ['.tmp', 'src', 'dist']
+        searchPath: ['.tmp', 'app', 'dist']
     });
 
-    return gulp.src(['src/**/*.html', '!src/{elements,test}/**/*.html'])
+    return gulp.src(['app/**/*.html', '!src/{elements,test}/**/*.html'])
         // Replace path for vulcanized assets
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
         .pipe(assets)
@@ -205,7 +205,7 @@ gulp.task('serve', [], function() {
         //       will present a certificate warning in the browser.
         // https: true,
         server: {
-            baseDir: 'src',
+            baseDir: 'app',
             directory: true,
             proxy: {
                 target: 'http://capira.io',
@@ -222,11 +222,11 @@ gulp.task('serve', [], function() {
         }
     });
 
-    gulp.watch(['src/**/*.html'], reload);
-    gulp.watch(['src/styles/**/*.css'], ['styles', reload]);
-    gulp.watch(['src/elements/**/*.css'], ['elements', reload]);
-    gulp.watch(['src/{scripts,elements}/**/*.js'], ['jshint']);
-    gulp.watch(['src/images/**/*'], reload);
+    gulp.watch(['app/**/*.html'], reload);
+    gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
+    gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
+    gulp.watch(['app/{scripts,elements}/**/*.js'], ['jshint']);
+    gulp.watch(['app/images/**/*'], reload);
 });
 
 // Build and serve the output from the dist build
@@ -286,7 +286,7 @@ var clean = require('gulp-clean');
  */
 gulp.task('vulcan', function() {
     var DEST_DIR = '../dist/player';
-    return gulp.src('src/video-quiz/elements.html')
+    return gulp.src('app/video-quiz/elements.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
@@ -308,7 +308,7 @@ gulp.task('vulcan', function() {
 
 
 gulp.task('inline-scripts', function() {
-    return gulp.src('src/video-quiz/index.html')
+    return gulp.src('app/video-quiz/index.html')
         .pipe(inlinesource())
         .pipe(gulp.dest('../dist/player/'));
 });
@@ -364,7 +364,7 @@ gulp.task('todo', function() {
 
 gulp.task('editor-vulcan', function() {
     var DEST_DIR = '../dist/editor';
-    return gulp.src('src/editor/core/core-elements.html')
+    return gulp.src('app/editor/core/core-elements.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
@@ -380,7 +380,7 @@ gulp.task('editor-vulcan', function() {
 
 
 gulp.task('editor-inline-scripts', function() {
-    return gulp.src('src/editor/index.html')
+    return gulp.src('app/editor/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.replace('core/core-elements.html', 'core-elements.html')))
         .pipe(gulp.dest('../dist/editor/'));
@@ -437,7 +437,7 @@ gulp.task('build', function(cb) {
 var polybuild = require('polybuild');
 
 gulp.task('build-1', function() {
-    return gulp.src('src/editor/index.html')
+    return gulp.src('app/editor/index.html')
         .pipe(polybuild())
         .pipe(gulp.dest('../dist/editor/2'));
 })

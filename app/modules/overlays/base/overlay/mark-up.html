@@ -1,11 +1,11 @@
 <dom-module id="mark-up">
     <template>
-    <style> 
-    :host {
-        display: block;
-        width: 100%;
-    }
-     </style>
+        <style>
+        :host {
+            display: block;
+            width: 100%;
+        }
+        </style>
         <div id="content"></div>
     </template>
 </dom-module>
@@ -14,7 +14,9 @@
 (function() {
     Polymer({
         is: 'mark-up',
-        behaviors: Capira.selectBehaviors([], [], Capira.EditableMarkup),
+        behaviors: Capira.selectBehaviors({
+            editor: Capira.EditableMarkup
+        }),
         properties: {
             content: {
                 type: String,

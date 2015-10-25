@@ -57,5 +57,8 @@ Capira.OverlayLifecycleEditor = {
         this.style.display = 'block';
     }
 };
-Capira.OverlayLifecycle=Capira.selectBehaviors(Capira.OverlayLifecycleImpl,[],Capira.OverlayLifecycleEditor);
+Capira.OverlayLifecycle = Capira.selectBehaviors({
+    core: Capira.OverlayLifecycleImpl,
+    editor: Capira.OverlayLifecycleEditor
+});
 </script>

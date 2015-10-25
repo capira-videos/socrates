@@ -24,23 +24,30 @@
 
     window.Capira = window.Capira || {};
 
-    function preprocess(behavior) {
-        if (!behavior) {
-            return [];
-        }
-        if (behavior.constructor !== Array) {
-            return [behavior];
-        }
-        return behavior;
-    }
 
-    window.Capira.selectBehaviors = function(coreBehaviors, playerBehaviors, editorBehaviors) {
-        if (window.isEditor) {
-            return preprocess(coreBehaviors).concat(preprocess(editorBehaviors));
-        } else {
-            return preprocess(coreBehaviors).concat(preprocess(playerBehaviors));
+    window.Capira.selectBehaviors = (function() {
+        function preprocess(behavior) {
+            if (!behavior) {
+                return [];
+            }
+            if (behavior.constructor !== Array) {
+                return [behavior];
+            }
+            return behavior;
         }
-    };
+
+        return function(behaviors) {
+            if (behaviors) {
+                if (window.isEditor) {
+                    return preprocess(behaviors.core).concat(preprocess(behaviors.editor));
+                } else {
+                    return preprocess(behaviors.core).concat(preprocess(behaviors.editor));
+                }
+            } else {
+                console.err('behaviors empty!');
+            }
+        };
+    })();
 
     window.resizer = function(container, main) {
 

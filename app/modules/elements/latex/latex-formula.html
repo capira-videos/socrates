@@ -1,4 +1,3 @@
-<link rel="import" href="latex-styles.html">
 <link rel="import" href="latex-import.html">
 <dom-module id="latex-formula">
     <style include="latex-styles"></style>
@@ -11,7 +10,9 @@
 (function() {
     Polymer({
         is: 'latex-formula',
-        behaviors: Capira.selectBehaviors([], [], Capira.EditableLatex),
+        behaviors: Capira.selectBehaviors({
+            editor: Capira.EditableLatex
+        }),
         attached: function() {
             this.contentEditable = false;
             var latexExp = Polymer.dom(this).innerHTML;
