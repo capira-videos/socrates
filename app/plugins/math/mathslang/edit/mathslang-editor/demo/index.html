@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
     <!-- Web Components -->
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="/base/scripts/scaffold.js"></script>
@@ -11,29 +10,42 @@
     <style>
     html,
     body {
-        width: 400px;
+        width: 100%;
+        height: 100%;
         padding: 0;
         margin: 0;
         overflow: hidden;
-        height: 100%;
+    }
+    .editor{
+        width:360px;
+        display: inline-table;
+        margin-left: 36px;
     }
     </style>
 </head>
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <mathslang-editor></mathslang-editor>
+    <div class="editor">
+        <h2>Simple</h2>
+        <mathslang-editor id="simple"></mathslang-editor>
+    </div>
+    <div class="editor">
+        <h2>Complex</h2>
+        <mathslang-editor id="complex"></mathslang-editor>
+    </div>
+    <link rel="import" href="../../../../../../quizzes/custom-quiz/demo/demo-data.html">
     <script>
     'use strict';
-
-
-    // Dummy Data 
-    var dummy = {};
-
-    var quiz = document.querySelector('mathslang-editor');
+    var editor1 = document.querySelector('#simple');
     setTimeout(function() {
-        quiz.overlay = dummy;
-        quiz.show();
+        editor1.overlay = window.dummyOverlays[0];
+        editor1.combination = editor1.overlay.combinations[0];
+    }, 500);
+     var editor2 = document.querySelector('#complex');
+    setTimeout(function() {
+        editor2.overlay = window.dummyOverlays[1];
+        editor2.combination = editor2.overlay.combinations[0];
     }, 500);
     </script>
 </body>
