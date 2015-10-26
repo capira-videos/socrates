@@ -1,0 +1,37 @@
+<!--
+`<was-correct-animation>` animates a shaking denying animation.
+
+Configuration:
+```
+{
+  name: 'was-correct-animation',
+  node: <node>
+  timing: <animation-timing>
+}
+```
+-->
+<link rel="import" href="/bower_components/neon-animation/neon-animation-behavior.html">
+<script>
+'use strict';
+Polymer({
+
+    is: 'was-correct-animation',
+
+    behaviors: [
+        Polymer.NeonAnimationBehavior
+    ],
+
+    configure: function(config) {
+        var node = config.node;
+        this._effect = new KeyframeEffect(node, [{
+            'transform': 'scale(1.03) translateZ(0)'
+        }, {
+            'transform': 'scale(0.97) translateZ(0)'
+        }, {
+            'transform': 'scale(1) translateZ(0)'
+        }], this.timingFromConfig(config));
+        return this._effect;
+    }
+
+});
+</script>

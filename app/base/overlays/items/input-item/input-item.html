@@ -1,0 +1,66 @@
+<link rel="import" href="../quiz-item.html">
+<link rel="import" href="../../../../plugins/math/mathslang/math-input/math-input.html">
+<dom-module id="input-item">
+    <template>
+    <style> 
+    input {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ccc;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        -webkit-transition: border linear .2s, box-shadow linear .2s;
+        -moz-transition: border linear .2s, box-shadow linear .2s;
+        -o-transition: border linear .2s, box-shadow linear .2s;
+        transition: border linear .2s, box-shadow linear .2s;
+        z-index: 2;
+        text-align: center;
+        display: inline-block;
+        padding: 4px 6px;
+        color: #555;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        vertical-align: middle;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        background: rgba(248, 148, 6, .4);
+        margin: 0!important;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        border: 1px solid transparent;
+    }
+     </style>
+        <input type="text" value="{{value::input}}" id="input">
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'input-item',
+        behaviors: [Capira.QuizItem, Capira.MathInput],
+        observers: ['_setFontSize(item.fontSize)'],
+        _setFontSize: function() {
+            this.$.input.style.fontSize = this._calcFontSize() + 'px';
+        },
+        _calcFontSize: function() {
+            switch (this.item.fontSize + '') {
+                case '1':
+                    return 20;
+                case '2':
+                    return 25;
+                case '3':
+                    return 40;
+                case '4':
+                    return 60;
+                case '5':
+                    return 70;
+                default:
+                    return 25;
+            }
+        }
+    });
+})();
+</script>

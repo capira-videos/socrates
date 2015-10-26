@@ -1,0 +1,70 @@
+<link rel="import" href="/bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="/bower_components/paper-item/paper-item.html">
+<link rel="import" href="/bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../base/quiz.html">
+<link rel="import" href="../base/behaviors/quiz-card.html">
+<link rel="import" href="../base/behaviors/can-shuffle.html">
+<dom-module id="single-answer-quiz">
+    <template>
+        <style>
+        #items {
+            padding-top: 32px;
+            padding-bottom: 32px;
+        }
+        
+        paper-item {
+            padding: 3px 28px;
+            cursor: pointer;
+            margin: 3px 0;
+            -webkit-transition: background-color 1s;
+            transition: background-color 1s;
+            position: relative;
+        }
+        
+        paper-item.iron-selected {
+            background-color: #b2ebf2;
+        }
+        
+        paper-ripple {
+            color: #7cd9e6;
+            -webkit-transform: translateZ(0);
+        }
+        
+        .letter {
+            letter-spacing: 4px;
+        }
+        </style>
+        <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
+            <div id="items">
+                <iron-selector selected="{{value}}" attr-for-selected="name">
+                    <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle">
+                        <paper-item name="{{item}}">
+                            <paper-ripple></paper-ripple>
+                            <span class="letter">[[computeLetter(index)]]</span>
+                            <mark-up content="{{item}}"></mark-up>
+                        </paper-item>
+                    </template>
+                </iron-selector>
+            </div>
+        </quiz-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'single-answer-quiz',
+        behaviors: Capira.selectBehaviors({
+            core: Capira.Quiz,
+            player: Capira.CanShuffle,
+            editor: [Capira.EditSingleAnswer, Capira.CanNotShuffle]
+        }),
+        _valueEquals: function(expected, given) {
+            return expected === this._findOriginalIndex(this.value);
+        },
+        computeLetter: function(i) {
+            return String.fromCharCode(65 + i) + ':';
+        }
+    });
+})();
+</script>

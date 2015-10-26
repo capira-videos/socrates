@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <!-- Web Components -->
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="/base/scripts/scaffold.js"></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="../live-hotspot-quiz.html">
+    <style>
+    html,
+    body {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    
+    body {
+        height: 80vh;
+        position: relative;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <live-hotspot-quiz></live-hotspot-quiz>
+    <script>
+    'use strict';
+
+
+    // Dummy Data 
+    var dummy = {
+        id: 123123123123,
+        events: [{
+            type: 'HIDEAFTER',
+            start: 10,
+            duration: 15,
+        }],
+        type: 'live-hotspot-quiz',
+        x: 0.55,
+        y: 0.70,
+        r: 0.2,
+        combinations: [{
+            correct: true,
+            feedback: {
+                caption: 'C-arm hits table column!',
+                reaction: [{
+                    type: 'showOverlay',
+                    target: 42
+                }]
+            },
+            reaction: [{
+                type: 'stop',
+            }]
+        }]
+    };
+
+    var annotation = document.querySelector('live-hotspot-quiz');
+    setTimeout(function() {
+        annotation.overlay = dummy;
+        annotation.show();
+    }, 500);
+    </script>
+</body>
+
+</html>

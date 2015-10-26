@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <!-- Web Components -->
+    <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="/base/scripts/scaffold.js"></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="../number-range-quiz.html">
+    <style>
+    html,
+    body {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    
+    body {
+        height: 80vh;
+        position: relative;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <number-range-quiz></number-range-quiz>
+    <script>
+    'use strict';
+
+
+    // Dummy Data 
+    var dummy = {
+        id: 'number-range',
+        type: 'number-range-quiz',
+        question: 'How much is <latex-formula>\\pi</latex-formula>?',
+        min: 3,
+        max: 3.4,
+        step: 0.01,
+        combinations: [{
+            value: '#approx 3.14 #epsilon 0.01',
+            correct: true,
+            feedback: {
+                caption: 'Correct! <latex-formula>\\pi\\approx 3.14</latex-formula>',
+                reaction: {
+                    type: 'showOverlay',
+                    target: 0
+                }
+            }
+        }, {
+            value: '#lt 3.1 #or #gt 3.2',
+            feedback: {
+                caption: 'That\'s way off!',
+            }
+        }, {
+            value: '#lt 3.14',
+            feedback: {
+                caption: 'That\'s a little too low...',
+            }
+        }, {
+            value: '#gt 3.14',
+            feedback: {
+                caption: 'That\'s a little too much...',
+            }
+        }]
+    };
+
+    var annotation = document.querySelector('number-range-quiz');
+    setTimeout(function() {
+        annotation.overlay = dummy;
+        annotation.show();
+    }, 500);
+    </script>
+</body>
+
+</html>

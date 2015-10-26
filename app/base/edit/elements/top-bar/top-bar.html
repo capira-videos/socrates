@@ -1,0 +1,38 @@
+<link rel="import" href="/bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="/bower_components/neon-animation/animations/slide-down-animation.html">
+<link rel="import" href="/bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="/bower_components/neon-animation/animations/scale-down-animation.html">
+<link rel="import" href="../top-bars/home-button.html">
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.TopBarImpl = {
+    properties: {
+        animationConfig: {
+            type: Object,
+            value: function() {
+                return {
+                    'entry': [{
+                        name: 'slide-down-animation',
+                        node: this
+                    }],
+
+                    'exit': [{
+                        name: 'fade-out-animation',
+                        node: this
+                    }, {
+                        name: 'scale-down-animation',
+                        node: this,
+                        transformOrigin: '50% 100%',
+                        axis: 'y'
+                    }]
+                };
+            }
+        }
+    },
+    attached: function() {
+        this.classList.add('top-bar');
+    }
+};
+window.Capira.TopBar = [Polymer.NeonAnimatableBehavior, Capira.TopBarImpl];
+</script>

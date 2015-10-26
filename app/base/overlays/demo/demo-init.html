@@ -1,0 +1,10 @@
+<script>
+'use strict';
+window.initDemo = function(overlayElemName) {
+    var overlayElem = document.querySelector(overlayElemName);
+    setTimeout(function() {
+        overlayElem.overlay = window.dummyOverlay;
+        overlayElem.show();
+    }, 500);
+};
+</script>

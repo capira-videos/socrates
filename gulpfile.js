@@ -287,7 +287,7 @@ var clean = require('gulp-clean');
  */
 gulp.task('vulcan', function() {
     var DEST_DIR = '../dist/player';
-    return gulp.src('/app/video-quiz/elements.html')
+    return gulp.src('/app/player/elements.html')
         .pipe($.vulcanize({
             abspath: abspath,
             stripComments: true,
@@ -310,7 +310,7 @@ gulp.task('vulcan', function() {
 
 
 gulp.task('inline-scripts', function() {
-    return gulp.src('app/video-quiz/index.html')
+    return gulp.src('app/player/index.html')
         .pipe(inlinesource())
         .pipe(gulp.dest('../dist/player/'));
 });

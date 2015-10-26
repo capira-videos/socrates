@@ -1,0 +1,21 @@
+<link rel="import" href="../top-bar/top-bar.html">
+
+<dom-module id="empty-top-bar">
+    <template>
+    <style> 
+    :host {
+        background-color: rgb(215, 215, 215);
+        box-shadow: none;
+    }
+     </style>
+    <div class="flex"></div>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'empty-top-bar',
+        behaviors:[Capira.TopBar]
+    });
+})();
+</script>

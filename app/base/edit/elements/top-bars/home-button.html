@@ -1,0 +1,24 @@
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
+<dom-module id="home-button">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
+        <div style="display:inline-block">
+            <paper-icon-button on-tap="_home" icon="editor-icons:done-all"></paper-icon-button>
+            <paper-tooltip>Save Overlay and back.</paper-tooltip>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+Polymer({
+    is: 'home-button',
+    _home: function() {
+        this.fire('home-state');
+    }
+});
+</script>

@@ -1,0 +1,35 @@
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<dom-module id="skip-button">
+    <template>
+    <style> 
+    :host {
+        pointer-events: all;
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.1);
+        color: white;
+    }
+    
+    paper-icon-button:hover {
+        color: var(--paper-red-500);
+    }
+     </style>
+        <paper-icon-button icon="player-icons:close" id="close"></paper-icon-button>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'skip-button',
+        listeners: {
+            'mouseup': '_skip'
+        },
+        _skip: function() {
+            this.fire('skipped');
+        }
+    });
+})();
+</script>
