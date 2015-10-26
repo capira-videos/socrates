@@ -1,0 +1,74 @@
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<dom-module id="ms-input-exp">
+    <template>
+        <style>
+        :host {
+            width: 80px;
+            display: inline-block;
+        }
+        </style>
+        <paper-input label="Inputs" value="{{inputExp}}"></paper-input>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'ms-input-exp',
+        properties: {
+            inputExp: {
+                type: String,
+                value: '',
+                observer: '_parseInputExp'
+            },
+            overlay: Object,
+            parsedInputExp: {
+                type: String,
+                notify: true
+            }
+        },
+        _parseInputExp: function() {
+            var exp = this.inputExp;
+            if (this.overlay && this.overlay.items) {
+                this.overlay.items.forEach(function(item, index) {
+                    exp = exp.replace(new RegExp('x' + index, 'g'), '@' + item.id);
+                });
+            }
+            this.parsedInputExp = exp;
+            this.fire('update-value');
+        },
+
+
+        _computeInputExp: function(exp) {
+            if (this.overlay && this.overlay.items) {
+                this.overlay.items.forEach(function(item, index) {
+                    exp = exp.replace(new RegExp('@' + item.id, 'g'), 'x' + index);
+                });
+            }
+            return exp;
+        },
+        _addItem: function(e) {
+            var exp = this.inputExp;
+            var input = e.detail;
+            //if empty, just add
+            if (exp === '') {
+                this.inputExp += input;
+                return;
+            }
+            //if an operation is already defined, add
+            var lastChar = exp[exp.length - 1];
+            if (/[+\-*/^.]/.test(lastChar)) {
+                this.inputExp += input;
+                return;
+            }
+
+            //is a vector?
+            var i = exp.indexOf(']');
+            if (i > -1) {
+                this.inputExp = [exp.slice(0, i), ',' + input, exp.slice(i)].join('');
+                return;
+            }
+            //else we guess the user wants to add 
+            this.inputExp += '+' + input;
+        },
+    });
+    </script>
+</dom-module>
