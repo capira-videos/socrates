@@ -1,6 +1,6 @@
 <script>
 // Dummy Data 
-window.dummyOverlay = {
+window.dummyOverlays = [{
     'id': 'quiz2',
     'question': 'Wie oft muss man ein Blatt Papier falten, damit seine H\u00f6he 5cm betr\u00e4gt?',
     'type': 'custom-quiz',
@@ -40,5 +40,54 @@ window.dummyOverlay = {
         'type': 'STOP',
         'start': 137.8
     }
-};
+}, {
+    'id': 'quiz2',
+    'question': 'Wie oft muss man ein Blatt Papier falten, damit seine H\u00f6he 5cm betr\u00e4gt?',
+    'type': 'custom-quiz',
+    'items': [{
+        'id': 'item1',
+        'type': 'input-item',
+        'x': 0.68,
+        'y': 0.68,
+        'z': 1,
+        'w': 0.06,
+        'fontSize': 2
+    },{
+        'id': 'item2',
+        'type': 'input-item',
+        'x': 0.68,
+        'y': 0.68,
+        'z': 1,
+        'w': 0.06,
+        'fontSize': 2
+    }],
+    'combinations': [{
+        'value': '<& @item1 & #equals 9>',
+        'grade': 0,
+        'feedback': 'Korrekt. 9 Mal!',
+        'reaction': {
+            'type': 'seekTo',
+            'target': 171.535114
+        }
+    }, {
+        'grade': 2,
+        'feedback': 'Probier\'s nochmal!',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': '<& @item1 & #lt 9>',
+        'grade': 2,
+        'feedback': 'Nein, das ist zu wenig. Man muss \u00f6fter falten...'
+    }, {
+        'value': '<& @item1 & #gt 9>',
+        'grade': 2,
+        'feedback': 'Nein, man muss weniger falten...&nbsp;'
+    }],
+    'event': {
+        'type': 'STOP',
+        'start': 137.8
+    }
+}];
+window.dummyOverlay = window.dummyOverlays[0];
 </script>
