@@ -27,48 +27,10 @@
 <body unresolved>
     <span id="browser-sync-binding"></span>
     <multi-answer-quiz></multi-answer-quiz>
+    <link rel="import" href="demo-data.html">
+    <link rel="import" href="../../../base/overlays/demo/demo-init.html">
     <script>
-    'use strict';
-
-
-    // Dummy Data 
-    var dummy = {
-        id: 'multi-answer',
-        question: 'Mixing which two colors makes orange?',
-        type: 'multi-answer-quiz',
-        options: ['Blue', 'Yellow', 'Red'],
-        combinations: [{
-            value: '[1, 2]',
-            grade: 0,
-            feedback: 'Correct!',
-            reaction: {
-                type: 'showOverlay',
-                target: 0
-            }
-        }, {
-            value: '[0, 2]',
-            grade: 2,
-            feedback: 'No, that\'s purple!'
-        }, {
-            value: '[0, 1]',
-            grade: 2,
-            feedback: 'No, that\'s green!'
-        }, {
-            value: '[1] #or [2]',
-            grade: 2,
-            feedback: 'Almost... what color could you add?'
-        }, {
-            value: '[0]',
-            grade: 2,
-            feedback: 'Hmm... how can you mix one color?'
-        }]
-    };
-
-    var annotation = document.querySelector('multi-answer-quiz');
-    setTimeout(function() {
-        annotation.overlay = dummy;
-        annotation.show();
-    }, 500);
+    window.initDemo('multi-answer-quiz');
     </script>
 </body>
 

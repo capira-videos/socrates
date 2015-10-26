@@ -27,42 +27,10 @@
 <body unresolved>
     <span id="browser-sync-binding"></span>
     <live-hotspot-quiz></live-hotspot-quiz>
+    <link rel="import" href="demo-data.html">
+    <link rel="import" href="../../../base/overlays/demo/demo-init.html">
     <script>
-    'use strict';
-
-
-    // Dummy Data 
-    var dummy = {
-        id: 123123123123,
-        events: [{
-            type: 'HIDEAFTER',
-            start: 10,
-            duration: 15,
-        }],
-        type: 'live-hotspot-quiz',
-        x: 0.55,
-        y: 0.70,
-        r: 0.2,
-        combinations: [{
-            correct: true,
-            feedback: {
-                caption: 'C-arm hits table column!',
-                reaction: [{
-                    type: 'showOverlay',
-                    target: 42
-                }]
-            },
-            reaction: [{
-                type: 'stop',
-            }]
-        }]
-    };
-
-    var annotation = document.querySelector('live-hotspot-quiz');
-    setTimeout(function() {
-        annotation.overlay = dummy;
-        annotation.show();
-    }, 500);
+    window.initDemo('live-hotspot-quiz');
     </script>
 </body>
 

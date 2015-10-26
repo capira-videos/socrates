@@ -1,44 +1,34 @@
 <script>
 // Dummy Data 
 window.dummyOverlay = {
-    'id': 'quiz2',
-    'question': 'Wie oft muss man ein Blatt Papier falten, damit seine H\u00f6he 5cm betr\u00e4gt?',
-    'type': 'custom-quiz',
-    'items': [{
-        'id': 'times',
-        'type': 'input-item',
-        'x': 0.68,
-        'y': 0.68,
-        'z': 1,
-        'w': 0.06,
-        'fontSize': 2
-    }],
-    'combinations': [{
-        'value': '<& @times & #equals 9>',
-        'grade': 0,
-        'feedback': 'Korrekt. 9 Mal!',
-        'reaction': {
-            'type': 'seekTo',
-            'target': 171.535114
-        }
-    }, {
-        'grade': 2,
-        'feedback': 'Probier\'s nochmal!',
-        'reaction': {
-            'type': 'play'
-        }
-    }, {
-        'value': '<& @times & #lt 9>',
-        'grade': 2,
-        'feedback': 'Nein, das ist zu wenig. Man muss \u00f6fter falten...'
-    }, {
-        'value': '<& @times & #gt 9>',
-        'grade': 2,
-        'feedback': 'Nein, man muss weniger falten...&nbsp;'
-    }],
-    'event': {
-        'type': 'STOP',
-        'start': 137.8
-    }
-};
+        id: 'multi-answer',
+        question: 'Mixing which two colors makes orange?',
+        type: 'multi-answer-quiz',
+        options: ['Blue', 'Yellow', 'Red'],
+        combinations: [{
+            value: '[1, 2]',
+            grade: 0,
+            feedback: 'Correct!',
+            reaction: {
+                type: 'showOverlay',
+                target: 0
+            }
+        }, {
+            value: '[0, 2]',
+            grade: 2,
+            feedback: 'No, that\'s purple!'
+        }, {
+            value: '[0, 1]',
+            grade: 2,
+            feedback: 'No, that\'s green!'
+        }, {
+            value: '[1] #or [2]',
+            grade: 2,
+            feedback: 'Almost... what color could you add?'
+        }, {
+            value: '[0]',
+            grade: 2,
+            feedback: 'Hmm... how can you mix one color?'
+        }]
+    };
 </script>
