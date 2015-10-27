@@ -1,14 +1,18 @@
+<link rel="import" href="../../../base/edit/elements/top-bar/top-bar.html">
+<link rel="import" href="../../../base/edit/elements/top-bars/delete-button.html">
+<link rel="import" href="../../../base/edit/elements/top-bars/done-button.html">
+<link rel="import" href="../../../plugins/draw/toolbox/tool-box.html">
 <dom-module id="hotspot-quiz-tools-top-bar">
     <template>
-    <style> 
-    :host {
-        @apply(--paper-font-body1);
-    }
-    
-    #toolbox {
-        box-shadow: none;
-    }
-     </style>
+        <style>
+        :host {
+            @apply(--paper-font-body1);
+        }
+        
+        #toolbox {
+            box-shadow: none;
+        }
+        </style>
         <tool-box id="toolbox">
             <toolbox-icon icon="brush" name="pen"></toolbox-icon>
             <toolbox-icon icon="eraser" name="eraser"></toolbox-icon>
@@ -21,16 +25,15 @@
     </template>
 </dom-module>
 <script>
-(function() {
-    Polymer({
-        is: 'hotspot-quiz-tools-top-bar',
-        behaviors: [Capira.TopBar],
-        listeners: {
-            'delete-answer': '_clear',
-        },
-        _clear: function() {
-            this.fire('toolbox-clicked', 'clear');
-        }
-    });
-})();
+'use strict';
+Polymer({
+    is: 'hotspot-quiz-tools-top-bar',
+    behaviors: [Capira.TopBar],
+    listeners: {
+        'delete-answer': '_clear',
+    },
+    _clear: function() {
+        this.fire('toolbox-clicked', 'clear');
+    }
+});
 </script>

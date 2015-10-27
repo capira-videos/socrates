@@ -5,18 +5,20 @@
 <link rel="import" href="has-editable-items.html">
 <link rel="import" href="../custom-quiz.html">
 <link rel="import" href="../../base/mathslang-edit.html">
+<link rel="import" href="../../base/edit/create-mathslang-answers/create-mathslang-answers.html">
+
 <dom-module id="custom-quiz-edit-page">
     <template>
         <edit-page-layout>
             <custom-quiz-top-bar top overlay="{{overlay}}"></custom-quiz-top-bar>
             <answer-top-bar top states="combination" combination="{{selectedCombination}}"></answer-top-bar>
             <item-top-bar top states="item" item="{{selectedItem}}"></item-top-bar>
-            <custom-quiz main states="default combination item" overlay="{{overlay}}" on-tap="_overlayState" id="quiz" combination="{{selectedCombination}}"></custom-quiz>
+            <custom-quiz main states="default combination item mathslang" overlay="{{overlay}}" on-tap="_overlayState" id="quiz" combination="{{selectedCombination}}"></custom-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" states="default item" value-type="mathslang"></answers-selector>
             <answer-editor right states="combination" combination="{{selectedCombination}}">
                 <mathslang-value-selector value="{{selectedCombination.value}}" overlay="{{overlay}}" title="Click to edit"></mathslang-value-selector>
             </answer-editor>
-            <mathslang-editor right states="mathslang" overlay="{{overlay}}" combination="{{selectedCombination}}"></mathslang-editor>
+            <mathslang-editor right states="mathslang" overlay="{{overlay}}" value="{{selectedCombination.value}}"></mathslang-editor>
         </edit-page-layout>
     </template>
 </dom-module>
@@ -32,7 +34,7 @@
             },
         },
         observers: ['_itemChanged(selectedItem.*)', '_itemAdded(overlay.items.*)'],
-        behaviors: [Capira.QuizEditPage],
+        behaviors: [Capira.QuizEditPage,Capira.CreateMathslangAnswers],
         listeners: {
             'item-selected': '_itemSelected',
             'highlight-item': '_highlightItem',

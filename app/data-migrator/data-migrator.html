@@ -16,6 +16,7 @@ window.migrateUnit = function(unit) {
         unit.overlays.forEach(window.migrateOverlay);
     }
     unit.version = window.DATA_SCHEMA_VERSION;
+    return unit;
 };
 
 window.overlayVersion = [{

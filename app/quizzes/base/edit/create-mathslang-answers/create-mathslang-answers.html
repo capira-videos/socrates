@@ -1,0 +1,28 @@
+<script>
+'use strict';
+Capira.CreateMathslangAnswers = {
+    _createCorrectAnswer: function() {
+        return {
+            value: {
+                fun: '#equals',
+                exp: ''
+            },
+            grade: 0,
+            feedback: 'Correct!',
+            reaction: {
+                type: 'play'
+            }
+        };
+    },
+    _createIncorrectAnswer: function() {
+        return {
+            value: {
+                fun: '#equals',
+                exp: ''
+            },
+            grade: 2,
+            feedback: 'Not quite... Try again!'
+        };
+    },
+};
+</script>

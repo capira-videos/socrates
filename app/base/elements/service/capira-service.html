@@ -1,4 +1,5 @@
-<link rel="import" href="../../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../data-migrator/data-migrator.html">
 <dom-module id="capira-service">
     <template>
         <iron-ajax id="service" handle-as="json" verbose="true" loading="{{loading}}"></iron-ajax>
@@ -23,11 +24,12 @@
             },
 
             _loadUnit: function(unitId) {
-                this.set('unit', window.unit);
+                this.set('unit', window.migrateUnit(window.unit));
                 this.fire('unit-loaded');
                 this.fetchUnit(unitId).then(function(req) {
                     var unit = req.response;
                     unit.overlays = unit.overlays ? unit.overlays : [];
+                    unit = window.migrateUnit(unit);
                     this.set('unit', unit);
                     console.log('Service loaded: ', this.unit);
                     this.fire('unit-loaded');

@@ -6,82 +6,85 @@
 </dom-module>
 <script>
 'use strict';
-(function() {
-    Polymer({
-        is: 'mathslang-value',
-        properties: {
-            value: String,
-            overlay: Object,
-            markup: {
-                computed: 'computeMarkup(value,overlay)',
-                type: String
-            },
-            items: {
-                type: Array,
-                value: []
-            }
+
+Polymer({
+    is: 'mathslang-value',
+    properties: {
+        value: String,
+        overlay: Object,
+        markup: {
+            computed: 'computeMarkup(value.*,overlay)',
+            type: String
         },
-        computeMarkup: function(value, overlay) {
-            if (typeof value === 'object') {
-                value = value.expr;
-            }
-            if (value[0] !== '<' && value[0] !== '#') {
-                //not initialized yet. nothing to do.
-                return value;
-            }
-            value = value.replace(new RegExp('<&', 'g'), '');
-            value = value.replace(new RegExp('>', 'g'), '');
-            value = value.replace(new RegExp('&', 'g'), '');
-            value = value.replace(new RegExp('#equals', 'g'), ' = ');
-            value = value.replace(new RegExp('#vecEquals', 'g'), ' = ');
-            value = value.replace(new RegExp('#identic', 'g'), '\\equiv ');
-            value = value.replace(new RegExp('#approx', 'g'), '\\approx');
-            value = value.replace(new RegExp('#epsilon', 'g'), '\\pm');
-            value = value.replace(new RegExp('#leq', 'g'), '\\leq');
-            value = value.replace(new RegExp('#geq', 'g'), '\\geq');
-            value = value.replace(new RegExp('#lt', 'g'), '<');
-            value = value.replace(new RegExp('#gt', 'g'), '>');
-            value = value.replace(new RegExp('\\(', 'g'), '{(');
-            value = value.replace(new RegExp('\\)', 'g'), ')}');
-            value = value.replace(new RegExp('\\[', 'g'), '(');
-            value = value.replace(new RegExp('\\]', 'g'), ')');
-
-            Capira._greekAlphabet.forEach(function(letter) {
-                value = value.replace(new RegExp(letter.greek, 'g'), letter.latex + ' ');
-            });
-
-            this.items = [];
-            if (overlay.items) {
-                overlay.items.forEach(function(item, index) {
-                    if (value.indexOf('@' + item.id) > -1) {
-                        this.items.push(item);
-                    }
-                    value = value.replace(new RegExp('@' + item.id, 'g'), 'x_' + index);
-                }.bind(this));
-            } else {
-                value = 'x_0 ' + value;
-            }
-
-            try {
-                window.katex.renderToString(value);
-            } catch (e) {
-                value = 'LaTeX Syntax Error';
-            }
-
-            return '<latex-formula>' + value + '</latex-formula>';
-        },
-        attached: function() {
-            this.addEventListener('mouseenter', function() {
-                this.items.forEach(function(item) {
-                    this.fire('highlight-item', item);
-                }.bind(this));
-            }.bind(this));
-            this.addEventListener('mouseleave', function() {
-                this.items.forEach(function(item) {
-                    this.fire('unhighlight-item', item);
-                }.bind(this));
-            }.bind(this));
+        items: {
+            type: Array,
+            value: []
         }
-    });
-})();
+    },
+    computeMarkup: function(value, overlay) {
+        value = this.value;
+        if (value.exp === undefined) {
+            //not initialized yet. nothing to do.
+            return value;
+        }
+        if (value.exp === '') {
+            return 'Click here to define an expression';
+        }
+        var exp = value.exp;
+        exp = exp.replace(new RegExp('<&', 'g'), '');
+        exp = exp.replace(new RegExp('>', 'g'), '');
+        exp = exp.replace(new RegExp('&', 'g'), '');
+
+        exp = exp.replace(new RegExp('\\(', 'g'), '{(');
+        exp = exp.replace(new RegExp('\\)', 'g'), ')}');
+        exp = exp.replace(new RegExp('\\[', 'g'), '(');
+        exp = exp.replace(new RegExp('\\]', 'g'), ')');
+        Capira._greekAlphabet.forEach(function(letter) {
+            exp = exp.replace(new RegExp(letter.greek, 'g'), letter.latex + ' ');
+        });
+        var fun = value.fun;
+        fun = fun.replace(new RegExp('#equals', 'g'), ' = ');
+        fun = fun.replace(new RegExp('#vecEquals', 'g'), ' = ');
+        fun = fun.replace(new RegExp('#identic', 'g'), '\\equiv ');
+        fun = fun.replace(new RegExp('#approx', 'g'), '\\approx');
+        fun = fun.replace(new RegExp('#leq', 'g'), '\\leq');
+        fun = fun.replace(new RegExp('#geq', 'g'), '\\geq');
+        fun = fun.replace(new RegExp('#lt', 'g'), '<');
+        fun = fun.replace(new RegExp('#gt', 'g'), '>');
+
+        var error = value.error ? '\\pm' + value.error : '';
+        this.items = [];
+        var inputExp = value.inputExp;
+        if (inputExp && overlay.items) {
+            overlay.items.forEach(function(item, index) {
+                if (inputExp.indexOf('@' + item.id) > -1) {
+                    this.items.push(item);
+                }
+                inputExp = inputExp.replace(new RegExp('@' + item.id, 'g'), 'x_' + index);
+            }.bind(this));
+        } else {
+            inputExp = 'x_0 ';
+        }
+        var latexExp = inputExp + fun + exp + error;
+        try {
+            window.katex.renderToString(latexExp);
+        } catch (e) {
+            latexExp = 'LaTeX Syntax Error';
+        }
+
+        return '<latex-formula>' + latexExp + '</latex-formula>';
+    },
+    attached: function() {
+        this.addEventListener('mouseenter', function() {
+            this.items.forEach(function(item) {
+                this.fire('highlight-item', item);
+            }.bind(this));
+        }.bind(this));
+        this.addEventListener('mouseleave', function() {
+            this.items.forEach(function(item) {
+                this.fire('unhighlight-item', item);
+            }.bind(this));
+        }.bind(this));
+    }
+});
 </script>

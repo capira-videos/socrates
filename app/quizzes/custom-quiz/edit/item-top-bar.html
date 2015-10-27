@@ -1,13 +1,17 @@
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../base/edit/elements/top-bar/top-bar.html">
+<link rel="import" href="../../../base/edit/elements/top-bars/delete-button.html">
+<link rel="import" href="../../../base/edit/elements/top-bars/done-button.html">
 <dom-module id="item-top-bar">
     <template>
-    <style> 
-    :host {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        padding: 8px;
-        box-sizing: border-box;
-    }
-     </style>
+        <style>
+        :host {
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        </style>
         <paper-input type="Number" step="0.01" min="0" max="1" value="{{item.x}}" label="left"></paper-input>
         <paper-input type="Number" step="0.01" min="0" max="1" value="{{item.y}}" label="top"></paper-input>
         <paper-input type="Number" step="0.01" min="0.02" max="1" value="{{item.w}}" label="width"></paper-input>
@@ -18,13 +22,12 @@
     </template>
 </dom-module>
 <script>
-(function() {
-    Polymer({
-        is: 'item-top-bar',
-        behaviors: [Capira.TopBar],
-        _done: function() {
-            this.fire('edit-state', 'default');
-        }
-    });
-})();
+'use strict';
+Polymer({
+    is: 'item-top-bar',
+    behaviors: [Capira.TopBar],
+    _done: function() {
+        this.fire('edit-state', 'default');
+    }
+});
 </script>
