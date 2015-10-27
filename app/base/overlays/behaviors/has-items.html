@@ -10,6 +10,9 @@ Capira.HasItemsImpl = {
         this.resizingElem = this.$.content;
     },
     _show: function() {
+        if (!this.resizingElem) {
+            this.resizingElem = this.$.content;
+        }
         this.resizingElem.style.width = '800px';
         this.resizingElem.style.height = '450px';
     },

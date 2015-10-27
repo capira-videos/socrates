@@ -1,76 +1,77 @@
-<link rel="import" href="../../../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="/bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../right-bar/empty-right-bar.html">
 <link rel="import" href="../top-bars/empty-top-bar.html">
+<link rel="import" href="../center-stage/empty-center-stage.html">
 <link rel="import" href="../right-bar/right-bar-header/right-bar-header.html">
 <dom-module id="edit-page-layout">
     <template>
-    <style> 
-    :host {
-        display: block;
-        height: 100vh;
-    }
-    
-    #top-bar {
-        height: 64px;
-        display: block;
-        position: relative;
-        z-index: 10;
-    }
-    
-    #top >::content > * {
-        background-color: rgb(246, 246, 246);
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        padding: 0 16px;
-        box-sizing: border-box;
-    }
-    
-    #content {
-        width: 100%;
-        height: calc(100% - 64px);
-        position: relative;
-    }
-    
-    #stage {
-        height: 100%;
-        width: calc(100% - 360px);
-        position: relative;
-        display: inline-block;
-    }
-    
-    #main {
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-        margin: 0 auto;
-    }
-    
-    #right-bar {
-        width: 360px;
-        height: 100%;
-        float: right;
-    }
-    
-    #right,
-    #stage,
-    #top {
-        height: 100%;
-    }
-    
-    #top,
-    #right {
-        box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12), 0 3px 3px -2px rgba(0, 0, 0, 0.4);
-    }
-    
-    #right >::content > * {
-        background-color: rgb(246, 246, 246);
-    }
-
-    .top paper-input {
-        height: 64px;
-        margin-right: 8px;
-    }
-     </style>
+        <style>
+        :host {
+            display: block;
+            height: 100vh;
+        }
+        
+        #top-bar {
+            height: 64px;
+            display: block;
+            position: relative;
+            z-index: 10;
+        }
+        
+        #top >::content > * {
+            background-color: rgb(246, 246, 246);
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+        
+        #content {
+            width: 100%;
+            height: calc(100% - 64px);
+            position: relative;
+        }
+        
+        #stage {
+            height: 100%;
+            width: calc(100% - 360px);
+            position: relative;
+            display: inline-block;
+        }
+        
+        #main {
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            margin: 0 auto;
+        }
+        
+        #right-bar {
+            width: 360px;
+            height: 100%;
+            float: right;
+        }
+        
+        #right,
+        #stage,
+        #top {
+            height: 100%;
+        }
+        
+        #top,
+        #right {
+            box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12), 0 3px 3px -2px rgba(0, 0, 0, 0.4);
+        }
+        
+        #right >::content > * {
+            background-color: rgb(246, 246, 246);
+        }
+        
+        .top paper-input {
+            height: 64px;
+            margin-right: 8px;
+        }
+        </style>
         <div id="top-bar">
             <neon-animated-pages animate-initial-selection id="top">
                 <empty-top-bar states="fallback"></empty-top-bar>
@@ -82,6 +83,7 @@
         <div id="content">
             <div id="stage">
                 <neon-animated-pages animate-initial-selection id="main">
+                    <empty-center-stage states="fallback"></empty-center-stage>
                     <content select="[main]">
                         <!-- overlays -->
                     </content>
@@ -116,9 +118,8 @@
         },
 
         resize: function() {
-            window.resizer(this.$.stage,this.$.main);
+            window.resizer(this.$.stage, this.$.main);
         },
-
 
         _stateChange: function() {
             this._matchState(this.$.top);

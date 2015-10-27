@@ -1,5 +1,9 @@
+<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../edit-page/edit-page.html">
+<link rel="import" href="../../../../plugins/video-player/video-player.html">
 <link rel="import" href="unit-top-bar.html">
 <link rel="import" href="unit-right-bar.html">
+<link rel="import" href="../../../overlays/edit/overlays-wizard/overlays-wizard.html">
 <dom-module id="unit-edit-page">
     <template>
         <edit-page-layout>
@@ -8,7 +12,6 @@
                 <video-player main unit="[[unit]]" autoplay="1" id="video"></video-player>
             </template>
             <unit-right-bar right states="default" unit="{{unit}}"></unit-right-bar>
-            <create-overlay-button main id="create"></create-overlay-button>
         </edit-page-layout>
         <overlays-wizard id="wizard"></overlays-wizard>
         <paper-toast id="toast" duration="5000">Unit stored!</paper-toast>
@@ -30,9 +33,9 @@
             'save-unit': '_save',
             'open-wizard': 'openWizard',
             'overlay-created': 'overlayCreated',
-            'overlay-selected': 'overlaySelected'
+            'overlay-selected': 'overlaySelected',
+            'video-ready': '_showVideo'
         },
-
         _save: function() {
             console.log('save!');
             app.service.updateUnit(app.unit).then(function() {
@@ -57,6 +60,10 @@
             this.fire('edit-state', 'overlay');
             app.overlays.show(id);
             app.player.pause();
+        },
+        _showVideo: function() {
+            this.fire('edit-state', 'fallback');
+            this.fire('edit-state', 'default');
         }
 
     });
