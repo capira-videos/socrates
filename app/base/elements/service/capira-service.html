@@ -1,5 +1,5 @@
 <link rel="import" href="../../../../bower_components/iron-ajax/iron-ajax.html">
-<dom-module id="editor-service">
+<dom-module id="capira-service">
     <template>
         <iron-ajax id="service" handle-as="json" verbose="true" loading="{{loading}}"></iron-ajax>
     </template>
@@ -7,7 +7,7 @@
     'use strict';
     (function() {
         Polymer({
-            is: 'editor-service',
+            is: 'capira-service',
             properties: {
                 loading: {
                     notify: true

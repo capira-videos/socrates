@@ -1,3 +1,4 @@
+<link rel="import" href="../../../data-migrator/data-migrator.html">
 <script>
 // Dummy Data 
 window.dummyOverlays = [{
@@ -52,7 +53,7 @@ window.dummyOverlays = [{
         'z': 1,
         'w': 0.06,
         'fontSize': 2
-    },{
+    }, {
         'id': 'item2',
         'type': 'input-item',
         'x': 0.68,
@@ -62,7 +63,7 @@ window.dummyOverlays = [{
         'fontSize': 2
     }],
     'combinations': [{
-        'value': '<& @item1 & #equals 9>',
+        'value': '<& @item1 & #approx 19 #epsilon 2>',
         'grade': 0,
         'feedback': 'Korrekt. 9 Mal!',
         'reaction': {
@@ -88,6 +89,102 @@ window.dummyOverlays = [{
         'type': 'STOP',
         'start': 137.8
     }
+}, {
+    'type': 'custom-quiz',
+    'question': 'At what distance is this position?',
+    'items': [{
+        'id': 1444855712112,
+        'type': 'input-item',
+        'x': '0.22',
+        'y': '0.3',
+        'z': 1,
+        'w': '0.14',
+        'fontSize': 2
+    }],
+    'combinations': [{
+        'feedback': 'Not quite...',
+        'grade': 2
+    }, {
+        'value': {
+            'expr': '<& @1444855712112 & #equals 50km>',
+            'units': 'distance'
+        },
+        'grade': 0,
+        'feedback': 'Correct, 50 km !',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': {
+            'expr': '<& @1444855712112 & #lt 50km>',
+            'units': 'distance'
+        },
+        'grade': 1,
+        'feedback': '<span style=\'letter-spacing: -0.288px;\'>No that\'s too low... try again!<\/span>'
+    }, {
+        'value': {
+            'expr': '<& @1444855712112 & #gt 50km>',
+            'units': 'distance'
+        },
+        'grade': 1,
+        'feedback': '<span style=\'letter-spacing: -0.288px;\'>No that\'s too much... try again!<\/span>'
+    }, {
+        'value': '<& @1444855712112 & #equals 50>',
+        'grade': 1,
+        'feedback': '50 what? Eggs? ;-)'
+    }],
+    'id': '1444855711136',
+    'event': {
+        'type': 'STOP',
+        'start': 40.995
+    }
+}, {
+    'type': 'custom-quiz',
+    'question': 'Type a Question',
+    'items': [{
+        'id': 1445870853185,
+        'type': 'input-item',
+        'x': 0.2,
+        'y': 0.45,
+        'z': 1,
+        'w': 0.06,
+        'fontSize': 2
+    }, {
+        'id': 1445870857751,
+        'type': 'input-item',
+        'x': 0.46,
+        'y': 0.45,
+        'z': 1,
+        'w': 0.06,
+        'fontSize': 2
+    }],
+    'combinations': [{
+        'feedback': 'Not quite...',
+        'grade': 2
+    }, {
+        'value': '<& @1445870853185+@1445870857751 & #approx 12 #epsilon 3>',
+        'grade': 0,
+        'feedback': 'Correct!',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': '<& @1445870853185+@1445870857751 & #approx 12+x #epsilon 4>',
+        'grade': 0,
+        'feedback': 'Correct!',
+        'reaction': {
+            'type': 'play'
+        }
+    }],
+    'id': '1445870852183',
+    'event': {
+        'type': 'STOP',
+        'start': 2.178026
+    }
 }];
+
+window.dummyOverlays.forEach(window.migrateOverlay);
+
+
 window.dummyOverlay = window.dummyOverlays[0];
 </script>

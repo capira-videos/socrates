@@ -12,7 +12,7 @@
 
         app.overlays = document.querySelector('pages-manager');
         app.unitEditor = document.querySelector('unit-edit-page');
-        app.service = document.querySelector('editor-service');
+        app.service = document.querySelector('capira-service');
         app.sounds = document.querySelector('quiz-sounds');
         app.protector = document.querySelector('changes-protector');
 

@@ -24,7 +24,7 @@
     <div id="main">
         <template is="dom-bind" id="app">
             <route-manager unit-id="{{unitId}}"></route-manager>
-            <editor-service unit-id="{{unitId}}" unit="{{unit}}" loading="{{loading}}"></editor-service>
+            <capira-service unit-id="{{unitId}}" unit="{{unit}}" loading="{{loading}}"></capira-service>
             <template is="dom-if" if="[[unit.video]]">
                 <video-player unit="[[unit]]" autoplay="0" id="video"></video-player>
             </template>
