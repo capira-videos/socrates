@@ -42,7 +42,7 @@ window.overlayVersion = [{
                 var str = expr.substr(2, expr.length - 3);
                 var variables = str.substr(0, str.indexOf('&'));
                 expr = str.substr(str.indexOf('&') + 1).trim();
-                if (overlay.items.length > 1) {
+                if (overlay.items.length > 0) {
                     result.inputExp = variables.trim();
                 }
             }
