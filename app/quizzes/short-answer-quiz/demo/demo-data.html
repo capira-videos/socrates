@@ -1,44 +1,48 @@
 <script>
 // Dummy Data 
 window.dummyOverlay = {
-    'id': 'quiz2',
-    'question': 'Wie oft muss man ein Blatt Papier falten, damit seine H\u00f6he 5cm betr\u00e4gt?',
-    'type': 'custom-quiz',
-    'items': [{
-        'id': 'times',
-        'type': 'input-item',
-        'x': 0.68,
-        'y': 0.68,
-        'z': 1,
-        'w': 0.06,
-        'fontSize': 2
-    }],
-    'combinations': [{
-        'value': '<& @times & #equals 9>',
-        'grade': 0,
-        'feedback': 'Korrekt. 9 Mal!',
-        'reaction': {
-            'type': 'seekTo',
-            'target': 171.535114
-        }
-    }, {
-        'grade': 2,
-        'feedback': 'Probier\'s nochmal!',
-        'reaction': {
-            'type': 'play'
-        }
-    }, {
-        'value': '<& @times & #lt 9>',
-        'grade': 2,
-        'feedback': 'Nein, das ist zu wenig. Man muss \u00f6fter falten...'
-    }, {
-        'value': '<& @times & #gt 9>',
-        'grade': 2,
-        'feedback': 'Nein, man muss weniger falten...&nbsp;'
-    }],
-    'event': {
-        'type': 'STOP',
-        'start': 137.8
-    }
-};
+        id: 'short-answer',
+        type: 'short-answer-quiz',
+        question: 'What is the capital of Germany?',
+        combinations: [{
+            value: '#nocase Berlin',
+            grade: 0,
+            feedback: 'Correct! Berlin is the capital of Germany.',
+            reaction: {
+                type: 'showOverlay',
+                target: 0
+            }
+        }, {
+            value: '#typo Berlin',
+            grade: 2,
+            feedback: 'You are on the right track, but watch your spelling!'
+        }, {
+            value: '#typo hamburg #and <#not #nocase homburg>',
+            grade: 2,
+            feedback: 'Hamburg a big city in Germany, but it\'s not the capital!'
+        }, {
+            value: '#nocase Paris',
+            grade: 2,
+            feedback: 'Nope, that\'s the capital of France.'
+        }, {
+            value: '#typo Paris',
+            grade: 2,
+            feedback: 'Do you mean \'Paris\'?'
+        }, {
+            value: '#nocase Rome',
+            grade: 2,
+            feedback: 'Nope, that\'s the capital of Italy.'
+        }, {
+            value: '#nocase London',
+            feedback: 'Nope, that\'s the capital of England.',
+            grade: 2,
+        }, {
+            value: '#nocase Germany',
+            grade: 2,
+            feedback: 'Well, no. Germany is not its own capital!',
+        }, {
+            feedback: 'Hint: I know 5 Cities in Europe: Paris, Rome, Hamburg, London and Berlin.',
+            grade: 2
+        }]
+    };
 </script>
