@@ -1,15 +1,15 @@
 <link rel="import" href="/bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="../edit-page/edit-page.html">
 <link rel="import" href="../../../../plugins/video-player/video-player.html">
 <link rel="import" href="unit-top-bar.html">
 <link rel="import" href="unit-right-bar.html">
 <link rel="import" href="../../../overlays/edit/overlays-wizard/overlays-wizard.html">
+<link rel="import" href="../edit-page/edit-page.html">
 <dom-module id="unit-edit-page">
     <template>
         <edit-page-layout>
             <unit-top-bar top states="default" unit="{{unit}}"></unit-top-bar>
             <template is="dom-if" if="[[unit.video]]">
-                <video-player main unit="[[unit]]" autoplay="1" id="video"></video-player>
+                <video-player main states="default overlay" unit="[[unit]]" autoplay="1" id="video"></video-player>
             </template>
             <unit-right-bar right states="default" unit="{{unit}}"></unit-right-bar>
         </edit-page-layout>
@@ -62,7 +62,6 @@
             app.player.pause();
         },
         _showVideo: function() {
-            this.fire('edit-state', 'fallback');
             this.fire('edit-state', 'default');
         }
 

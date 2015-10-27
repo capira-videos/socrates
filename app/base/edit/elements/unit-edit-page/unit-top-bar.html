@@ -1,10 +1,14 @@
+<link rel="import" href="/bower_components/paper-input/paper-input.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../../base/elements/account/account-preview.html">
+<link rel="import" href="../top-bar/top-bar.html">
 <dom-module id="unit-top-bar">
     <template>
-    <style> 
-    paper-input {
-        width: 400px;
-    }
-     </style>
+        <style>
+        paper-input {
+            width: 400px;
+        }
+        </style>
         <paper-input value="{{unit.title}}" label="Video Title"></paper-input>
         <span class="flex"></span>
         <account-preview></account-preview>
@@ -13,22 +17,21 @@
     </template>
 </dom-module>
 <script>
-(function() {
-    Polymer({
-        is: 'unit-top-bar',
-        behaviors: [Capira.TopBar],
-        properties: {
-            unit: {
-                type: Object,
-                notify: true
-            }
-        },
-        _save: function() {
-            this.fire('save-unit');
-        },
-        _home: function() {
-            window.location = '../channel/#!/2';
+'use strict';
+Polymer({
+    is: 'unit-top-bar',
+    behaviors: [Capira.TopBar],
+    properties: {
+        unit: {
+            type: Object,
+            notify: true
         }
-    });
-})();
+    },
+    _save: function() {
+        this.fire('save-unit');
+    },
+    _home: function() {
+        window.location = '../channel/#!/2';
+    }
+});
 </script>

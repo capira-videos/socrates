@@ -25,6 +25,9 @@
 (function() {
     Polymer({
         is: 'video-player',
+        behaviors: Capira.selectBehaviors({
+            editor: Capira.CenterStage
+        }),
         properties: {
             unit: {
                 type: Object,

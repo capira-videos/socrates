@@ -109,7 +109,7 @@
             state: {
                 type: String,
                 observer: '_stateChange',
-                value: 'default'
+                value: 'fallback'
             }
         },
 
@@ -122,9 +122,11 @@
         },
 
         _stateChange: function() {
-            this._matchState(this.$.top);
-            this._matchState(this.$.main);
-            this._matchState(this.$.right);
+            if (this.state) {
+                this._matchState(this.$.top);
+                this._matchState(this.$.main);
+                this._matchState(this.$.right);
+            }
         },
         _matchState: function(pages) {
             var p = pages.items;
