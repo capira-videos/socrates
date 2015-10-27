@@ -366,9 +366,9 @@ gulp.task('todo', function() {
 
 gulp.task('editor-vulcan', function() {
     var DEST_DIR = '../dist/editor';
-    return gulp.src('/app/editor/core/core-elements.html')
+    return gulp.src('/app/endpoints/editor/elements/elements.html')
         .pipe($.vulcanize({
-            abspath: abspath,
+            abspath: __dirname,
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
@@ -377,15 +377,15 @@ gulp.task('editor-vulcan', function() {
         }))
         .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
-            title: 'vulcanize'
+            title: 'editor-vulcan'
         }));
 });
 
 
 gulp.task('editor-inline-scripts', function() {
-    return gulp.src('app/editor/index.html')
+    return gulp.src('app/endpoints/editor/index.html')
         .pipe(inlinesource())
-        .pipe($.if('*.html', $.replace('core/core-elements.html', 'core-elements.html')))
+        .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
         .pipe(gulp.dest('../dist/editor/'));
 });
 
@@ -404,7 +404,7 @@ gulp.task('editor-clean-index', function() {
 });
 
 gulp.task('editor-clean-vulcanized', function() {
-    return gulp.src('../dist/editor/core-elements.html')
+    return gulp.src('../dist/editor/elements.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -440,7 +440,24 @@ gulp.task('build', function(cb) {
 var polybuild = require('polybuild');
 
 gulp.task('build-1', function() {
-    return gulp.src('app/editor/index.html')
+    return gulp.src('app/editor/elements/elements.html')
         .pipe(polybuild())
         .pipe(gulp.dest('../dist/editor/2'));
-})
+});
+
+gulp.task('quiz-vulcan', function() {
+    var DEST_DIR = 'dist/custom-quiz';
+    return gulp.src('/app/quizzes/custom-quiz/custom-quiz.html')
+        .pipe($.vulcanize({
+            abspath: __dirname,
+            stripComments: true,
+            inlineCss: true,
+            inlineScripts: true,
+            excludes: ['/bower_components/katex/dist/katex.min.js'],
+            stripExcludes: ['/bower_components/iron-icons/iron-icons.html']
+        }))
+        .pipe(gulp.dest(DEST_DIR))
+        .pipe($.size({
+            title: 'editor-vulcan'
+        }));
+});
