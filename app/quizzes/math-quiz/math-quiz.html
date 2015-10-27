@@ -32,7 +32,7 @@
             if (typeof expected === 'string') {
                 return this.mathslang.compare(expected, given);
             } else {
-                return this.mathslang.compare(expected.expr, given, expected.units);
+                return this.mathslang.compare(expected, given);
             }
         },
         _shown: function() {

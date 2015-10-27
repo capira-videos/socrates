@@ -45,9 +45,10 @@
         listeners: {
             'selected-changed': '_computeString'
         },
+        observers: ['_computeNumber(value.fun)'],
         _computeNumber: function(value) {
             if (!this.blockInput) {
-                switch (value.fun) {
+                switch (this.value.fun) {
                     case '#equals':
                         this.func = 0;
                         break;
@@ -73,32 +74,34 @@
             }
         },
         _computeString: function(e) {
-            this.blockInput = true;
-            this.set('value.error', undefined);
-            switch (e.detail.value) {
-                case 1:
-                    this.set('value.fun', '#identic');
-                    return;
-                case 2:
-                    this.set('value.fun', '#approx');
-                    this.set('value.error', 1);   //todo remeber last given error in case user switches back here 
-                    return;
-                case 3:
-                    this.set('value.fun', '#lt');
-                    return;
-                case 4:
-                    this.set('value.fun', '#gt');
-                    return;
-                case 5:
-                    this.set('value.fun', '#leq');
-                    return;
-                case 6:
-                    this.set('value.fun', '#geq');
-                    return;
-                default:
-                    this.set('value.fun', '#equals');
+            if (e.detail.value) {
+                this.blockInput = true;
+                this.set('value.error', undefined);
+                switch (e.detail.value) {
+                    case 1:
+                        this.set('value.fun', '#identic');
+                        return;
+                    case 2:
+                        this.set('value.fun', '#approx');
+                        this.set('value.error', 1); //todo remeber last given error in case user switches back here 
+                        return;
+                    case 3:
+                        this.set('value.fun', '#lt');
+                        return;
+                    case 4:
+                        this.set('value.fun', '#gt');
+                        return;
+                    case 5:
+                        this.set('value.fun', '#leq');
+                        return;
+                    case 6:
+                        this.set('value.fun', '#geq');
+                        return;
+                    default:
+                        this.set('value.fun', '#equals');
+                }
+                this.blockInput = false;
             }
-            this.blockInput = false;
         }
     });
     </script>

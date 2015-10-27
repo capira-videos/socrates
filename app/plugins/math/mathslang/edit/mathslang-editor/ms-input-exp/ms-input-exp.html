@@ -25,13 +25,15 @@
             }
         },
         _computeParsedInputExp: function() {
-            var exp = this.value.inputExp;
-            if (exp && this.overlay && this.overlay.items) {
-                this.overlay.items.forEach(function(item, index) {
-                    exp = exp.replace(new RegExp('@' + item.id, 'g'), 'x' + index);
-                });
+            if (this.value) {
+                var exp = this.value.inputExp;
+                if (exp && this.overlay && this.overlay.items) {
+                    this.overlay.items.forEach(function(item, index) {
+                        exp = exp.replace(new RegExp('@' + item.id, 'g'), 'x' + index);
+                    });
+                }
+                this.parsedInputExp = exp;
             }
-            this.parsedInputExp = exp;
         },
 
         _computeInputExp: function() {

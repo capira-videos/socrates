@@ -1,8 +1,5 @@
-<link rel="import" href="../../../plugins/math/mathslang/edit/mathslang-value-selector/mathslang-value-selector.html">
-<link rel="import" href="../../../plugins/math/mathslang/edit/mathslang-value-preview/mathslang-value-preview.html">
-<link rel="import" href="../../../plugins/math/mathslang/edit/mathslang-editor/mathslang-editor.html">
 <link rel="import" href="../../base/quiz-edit-page.html">
-<link rel="import" href="../../base/edit/create-mathslang-answers/create-mathslang-answers.html">
+<link rel="import" href="../../base/mathslang-edit.html">
 <link rel="import" href="../math-quiz.html">
 
 <dom-module id="math-quiz-edit-page">
@@ -10,7 +7,7 @@
         <edit-page-layout>
             <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
             <answer-top-bar top states="combination" combination="{{selectedCombination}}"></answer-top-bar>
-            <math-quiz main id="quiz" states="default combination" overlay="{{overlay}}" combination="{{selectedCombination}}"></math-quiz>
+            <math-quiz main id="quiz" states="default combination mathslang" overlay="{{overlay}}" combination="{{selectedCombination}}"></math-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" value-type="mathslang"></answers-selector>
             <answer-editor right states="combination" combination="{{selectedCombination}}">
                 <mathslang-value-selector value="{{selectedCombination.value}}" overlay="{{overlay}}"></mathslang-value-selector>
@@ -25,7 +22,6 @@
     Polymer({
         is: 'math-quiz-edit-page',
         behaviors: [Capira.QuizEditPage,Capira.CreateMathslangAnswers],
-
     });
 })();
 </script>
