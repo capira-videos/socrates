@@ -6,7 +6,7 @@
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="/base/scripts/scaffold.js"></script>
     <link rel="import" href="/bower_components/polymer/polymer.html">
-    <link rel="import" href="../mathslang-editor.html">
+    <link rel="import" href="../ms-exp.html">
     <style>
     html,
     body {
@@ -29,13 +29,9 @@
     <span id="browser-sync-binding"></span>
     <div class="editor">
         <h2>Simple</h2>
-        <mathslang-editor id="simple"></mathslang-editor>
+        <ms-exp id="simple" on-value-changed="_combinationChanged"></ms-exp>
     </div>
-    <div class="editor">
-        <h2>Complex</h2>
-        <mathslang-editor id="complex"></mathslang-editor>
-    </div>
-    <link rel="import" href="../../../../../../quizzes/custom-quiz/demo/demo-data.html">
+    <link rel="import" href="demo-data.html">
     <script>
     'use strict';
     var editor1 = document.querySelector('#simple');
@@ -43,16 +39,8 @@
         editor1.overlay = window.dummyOverlays[0];
         editor1.value = editor1.overlay.combinations[0].value;
         editor1.addEventListener('value-changed', function(e) {
-            console.log('Value Changed', e.detail);
-        });
-    }, 500);
-    var editor2 = document.querySelector('#complex');
-    setTimeout(function() {
-        editor2.overlay = window.dummyOverlays[1];
-        editor2.value = editor2.overlay.combinations[0].value;
-        editor2.addEventListener('value-changed', function(e) {
-            console.log('Value Changed', e.detail);
-            console.log('New Value', editor2.value);
+            console.log('Value Change:', e.detail);
+            console.log('New Value:', editor1.value);
         });
     }, 500);
     </script>

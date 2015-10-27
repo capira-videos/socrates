@@ -1,0 +1,105 @@
+<link rel="import" href="../../../../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../../../../bower_components/paper-item/paper-item.html">
+<dom-module id="ms-fun">
+    <template>
+        <style>
+        :host {
+            display: inline-block;
+        }
+        
+        paper-dropdown-menu {
+            width: 56px;
+            padding-top: 0;
+            margin-top: -8px;
+        }
+        </style>
+        <paper-dropdown-menu>
+            <paper-menu class="dropdown-content" selected="{{func}}">
+                <paper-item>=</paper-item>
+                <paper-item>&equiv;</paper-item>
+                <paper-item>&asymp;</paper-item>
+                <paper-item>&lt;</paper-item>
+                <paper-item>&gt;</paper-item>
+                <paper-item>&le;</paper-item>
+                <paper-item>&ge;</paper-item>
+                <!--  <paper-item>&isin;</paper-item> -->
+            </paper-menu>
+        </paper-dropdown-menu>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'ms-fun',
+        properties: {
+            value: {
+                type: String,
+                notify: true,
+                observer: '_computeNumber'
+            },
+            func: {
+                type: Number,
+                value: 0,
+            },
+        },
+        listeners: {
+            'selected-changed': '_computeString'
+        },
+        _computeNumber: function(value) {
+            if (!this.blockInput) {
+                switch (value.fun) {
+                    case '#equals':
+                        this.func = 0;
+                        break;
+                    case '#identic':
+                        this.func = 1;
+                        break;
+                    case '#approx':
+                        this.func = 2;
+                        break;
+                    case '#lt':
+                        this.func = 3;
+                        break;
+                    case '#gt':
+                        this.func = 4;
+                        break;
+                    case '#leq':
+                        this.func = 5;
+                        break;
+                    case '#geq':
+                        this.func = 6;
+                        break;
+                }
+            }
+        },
+        _computeString: function(e) {
+            this.blockInput = true;
+            this.set('value.error', undefined);
+            switch (e.detail.value) {
+                case 1:
+                    this.set('value.fun', '#identic');
+                    return;
+                case 2:
+                    this.set('value.fun', '#approx');
+                    this.set('value.error', 1);   //todo remeber last given error in case user switches back here 
+                    return;
+                case 3:
+                    this.set('value.fun', '#lt');
+                    return;
+                case 4:
+                    this.set('value.fun', '#gt');
+                    return;
+                case 5:
+                    this.set('value.fun', '#leq');
+                    return;
+                case 6:
+                    this.set('value.fun', '#geq');
+                    return;
+                default:
+                    this.set('value.fun', '#equals');
+            }
+            this.blockInput = false;
+        }
+    });
+    </script>
+</dom-module>

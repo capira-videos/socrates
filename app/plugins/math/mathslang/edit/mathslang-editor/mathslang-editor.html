@@ -1,133 +1,60 @@
 <!--TODO: Add intervals to functions-->
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
-<link rel="import" href="/bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../../../../base/edit/elements/right-bar/right-bar.html">
 <link rel="import" href="../../../../../base/edit/elements/right-bar/right-bar-header/right-bar-header.html">
 <link rel="import" href="../mathslang-item-view/mathslang-item-view.html">
 <link rel="import" href="../../math-input/math-paper-input.html">
-<link rel="import" href="function-selector/function-selector.html">
+<link rel="import" href="ms-fun/ms-fun.html">
 <link rel="import" href="ms-item-selector/ms-item-selector.html">
+<link rel="import" href="ms-input-exp/ms-input-exp.html">
+<link rel="import" href="ms-exp/ms-exp.html">
 <dom-module id="mathslang-editor">
     <template>
-    <style> 
-    :host {
-        display: block;
-        position: relative;
-        @apply(--paper-font-body1);
-    }
-    
-    #items-exp {
-        width: 80px;
-        display: inline-block;
-    }
-    
-    #expr {
-        display: inline-block;
-        width: 180px;
-    }
-    
-    .approx #expr {
-        width: 104px;
-    }
-    
-    .simple #expr {
-        width: 200px;
-    }
-    
-    .simple.approx #expr {
-        width: 160px;
-    }
-    
-    #epsilon {
-        display: inline-block;
-        width: 64px;
-    }
-    
-    #test-custom paper-input {
-        display: inline-block;
-        width: 300px;
-    }
-    
-    #content {
-        padding-left: 16px;
-        padding-right: 16px;
-        position: relative;
-    }
-    
-    #unitToast {
-        z-index: 2;
-    }
-    
-    .heading {
-        @apply(--paper-font-subhead);
-    }
-    
-    .items {
-        margin-top: 16px;
-        margin-bottom: 8px;
-    }
-    
-    .items .heading {
-        margin-bottom: 8px;
-    }
-    
-    .exp-def {
-        padding-top: 16px;
-        padding-bottom: 16px;
-    }
-    
-    .buttons {
-        float: right;
-    }
-    
-    .buttons paper-button:hover {
-        color: var(--accent-color);
-    }
-    
-    #remove-unit {
-        color: var(--paper-red-500);
-        cursor: pointer;
-    }
-    
-    math-paper-input {
-        position: initial;
-    }
-    
-    :root {
-        --indicator-mixin: {
-            right: 56px;
-            left: auto;
+        <style>
+        :host {
+            display: block;
+            position: relative;
+            @apply(--paper-font-body1);
         }
-        --explanation-mixin: {
-            right: 16px;
+        
+        #content {
+            padding-left: 16px;
+            padding-right: 16px;
+            position: relative;
         }
-    }
-     </style>
+        
+        .heading {
+            @apply(--paper-font-subhead);
+        }
+        
+        .exp-def {
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+        
+        .buttons {
+            float: right;
+        }
+        
+        .buttons paper-button:hover {
+            color: var(--accent-color);
+        }
+        </style>
         <right-bar-header>Mathslang Editor</right-bar-header>
         <div id="content">
-            <ms-item-selector overlay="{{overlay}}"></ms-item-selector>
+            <ms-item-selector overlay="{{overlay}}" hidden$="{{!isComplex}}"></ms-item-selector>
             <div class="exp-def">
                 <div class="heading">Expression:</div>
-                <paper-input label="Inputs" id="items-exp" value="{{inputExp}}" hidden="{{!isComplex}}"></paper-input>
-                <function-selector func="{{func}}"></function-selector>
-                <math-paper-input>
-                    <paper-input id="expr" value="{{expr}}" on-keyup="_findUnit" label="expression"></paper-input>
-                </math-paper-input>
-                <span id="approx" hidden="true">
-                    &plusmn;
-                    <paper-input id="epsilon" value="{{epsilon}}" label="error"></paper-input>
-                </span>
-                <div id="unit" hidden$="{{!unit}}">
-                    Unit: <span>{{unit}}</span>
-                    <span on-tap="_removeUnit" id="remove-unit">X</span>
-                </div>
+                <ms-input-exp id="inputExp" value="{{value}}" overlay="{{overlay}}" hidden$="{{!isComplex}}"></ms-input-exp>
+                <ms-fun value="{{value}}"></ms-fun>
+                <ms-exp value="{{value}}"></ms-exp>
             </div>
             <div class="buttons">
                 <paper-button on-tap="_cancel">Cancel</paper-button>
                 <paper-button on-tap="_save">Save</paper-button>
             </div>
         </div>
-        <paper-toast id="unitToast" duration="7000"></paper-toast>
     </template>
 </dom-module>
 <script>
@@ -137,44 +64,12 @@
         is: 'mathslang-editor',
         behaviors: [Capira.RightBar],
         properties: {
-            expr: {
-                type: String,
-                observer: '_updateValue',
-                value: ''
-            },
-            epsilon: {
-                type: String,
-                observer: '_updateValue',
-                value: '0'
-            },
-            unit: {
-                type: String,
-                value: null,
-                observer: '_unitChanged'
-            },
-            func: {
-                type: Number,
-                value: 0,
-                observer: '_functionChanged'
-            },
             overlay: {
                 type: Object,
             },
-            isMathQuiz: {
-                type: Boolean,
-                value: false
-            },
             value: {
-                type: String
-            },
-            combination: {
                 type: Object,
-                observer: '_parseCombination'
-            },
-            inputExp: {
-                type: String,
-                value: '',
-                observer: '_parseInputExp'
+                notify: true
             },
             isComplex: {
                 type: Boolean,
@@ -185,168 +80,14 @@
         observers: ['_itemsChanged(overlay.items.length)'],
 
         listeners: {
-            'add-item-to-exp': '_addItem'
+            'add-item-to-exp': '_addItem',
         },
 
         _addItem: function(e) {
-            var exp = this.inputExp;
-            var input = e.detail;
-            //if empty, just add
-            if (exp === '') {
-                this.inputExp += input;
-                return;
-            }
-            //if an operation is already defined, add
-            var lastChar = exp[exp.length - 1];
-            if (/[+\-*/^.]/.test(lastChar)) {
-                this.inputExp += input;
-                return;
-            }
-
-            //is a vector?
-            var i = exp.indexOf(']');
-            if (i > -1) {
-                this.inputExp = [exp.slice(0, i), ',' + input, exp.slice(i)].join('');
-                return;
-            }
-            //else we guess the user wants to add 
-            this.inputExp += '+' + input;
-        },
-
-        _functionChanged: function(f) {
-            if (f === 2) {
-                this.$.approx.hidden = false;
-                this.$.content.classList.add('approx');
-            } else {
-                this.$.approx.hidden = true;
-                this.$.content.classList.remove('approx');
-            }
-            this._updateValue();
-        },
-
-        _parseInputExp: function() {
-            var exp = this.inputExp;
-            if (this.overlay && this.overlay.items) {
-                this.overlay.items.forEach(function(item, index) {
-                    exp = exp.replace(new RegExp('x' + index, 'g'), '@' + item.id);
-                });
-            }
-            this.parsedInputExp = exp;
-            this._updateValue();
-        },
-
-
-        _computeInputExp: function(exp) {
-            if (this.overlay && this.overlay.items) {
-                this.overlay.items.forEach(function(item, index) {
-                    exp = exp.replace(new RegExp('@' + item.id, 'g'), 'x' + index);
-                });
-            }
-            return exp;
-        },
-
-        _updateValue: function() {
-            if (!this.overlay) {
-                return;
-            }
-            var value = '';
-
-            //TODO: ask func-selector fo news ... 
-
-
-            value += ' ' + this.expr;
-            if (this.func === 2) {
-                value += ' #epsilon ' + this.epsilon;
-            }
-
-            if (this.expr.indexOf('[') > -1) {
-                value = value.replace('#equals', '#vecEquals');
-            }
-
-            if (this.isMathQuiz) {
-                this.value = value;
-            } else {
-                this.value = '<& ' + this.parsedInputExp + ' & ' + value + '>';
-            }
-
-        },
-
-        // TODO: this feels hacky, fix it somehow
-        _parseCombination: function(combination) {
-            this.discardedUnits = [];
-            if (!combination) {
-                return;
-            }
-            if (!combination.value || combination.value === '') {
-                this.expr = '';
-                this.inputExp = '';
-                this.func = 0;
-                this.unit = null;
-            }
-            this._itemsChanged();
-
-
-
-            var expr = this.combination.value;
-
-            if (typeof this.combination.value !== 'string') {
-                expr = this.combination.value.expr;
-                this.unit = this.combination.value.unit;
-            }
-
-            if (this.overlay.type === 'custom-quiz') {
-                // remove the <& and & and >
-                var str = expr.substr(2, expr.length - 3);
-                var variables = str.substr(0, str.indexOf('&'));
-                expr = str.substr(str.indexOf('&') + 1).trim();
-                if (this.overlay.items.length > 1) {
-                    this.inputExp = this._computeInputExp(variables.trim());
-                }
-            }
-            // select the correct function
-            var func = expr.substr(0, expr.indexOf(' '));
-            var value = expr.substr(expr.indexOf(' ') + 1);
-
-            //TODO: tell the news to func-selector
-
-            // set the expression and approx fields
-            if (this.func === 2) {
-                var split = value.split('#epsilon');
-                this.epsilon = split[1];
-                value = split[0];
-            }
-            this.expr = value;
-        },
-
-        _findUnit: function() {
-            var unit = Slang.mathslang.extractUnit(this.expr);
-            //don't set extracted unit if user has it already discarded
-            if (this.discardedUnits.indexOf(unit) === -1) {
-                this.unit = unit;
-            }
-        },
-
-        _unitChanged: function(newUnit, oldUnit) {
-            if (newUnit && oldUnit !== newUnit) {
-                this.$.unitToast.text = 'Detected unit: ' + newUnit;
-                this.$.unitToast.show();
-            }
-        },
-
-        _removeUnit: function() {
-            this.discardedUnits.push(this.unit);
-            this.unit = null;
+            this.$.inputExp._addItem(e);
         },
 
         _save: function() {
-            if (this.unit) {
-                this.set('combination.value', {
-                    expr: this.value,
-                    units: this.unit
-                });
-            } else {
-                this.set('combination.value', this.value);
-            }
             this.fire('edit-state', 'combination');
         },
 
@@ -362,8 +103,6 @@
                 } else {
                     this.$.content.classList.add('simple');
                     this.isComplex = false;
-                    this.inputExp = 'x0';
-                    this._parseInputExp();
                 }
             }
         }

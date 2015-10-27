@@ -7,67 +7,70 @@
             display: inline-block;
         }
         </style>
-        <paper-input label="Inputs" value="{{inputExp}}"></paper-input>
+        <paper-input label="Inputs" value="{{parsedInputExp}}"></paper-input>
     </template>
     <script>
     'use strict';
     Polymer({
         is: 'ms-input-exp',
         properties: {
-            inputExp: {
+            value: {
                 type: String,
-                value: '',
-                observer: '_parseInputExp'
+                observer: '_computeParsedInputExp'
             },
             overlay: Object,
             parsedInputExp: {
                 type: String,
-                notify: true
+                observer: '_computeInputExp'
             }
         },
-        _parseInputExp: function() {
-            var exp = this.inputExp;
-            if (this.overlay && this.overlay.items) {
-                this.overlay.items.forEach(function(item, index) {
-                    exp = exp.replace(new RegExp('x' + index, 'g'), '@' + item.id);
-                });
-            }
-            this.parsedInputExp = exp;
-            this.fire('update-value');
-        },
-
-
-        _computeInputExp: function(exp) {
-            if (this.overlay && this.overlay.items) {
+        _computeParsedInputExp: function() {
+            var exp = this.value.inputExp;
+            if (exp && this.overlay && this.overlay.items) {
                 this.overlay.items.forEach(function(item, index) {
                     exp = exp.replace(new RegExp('@' + item.id, 'g'), 'x' + index);
                 });
             }
-            return exp;
+            this.parsedInputExp = exp;
+        },
+
+        _computeInputExp: function() {
+            if (this.value) {
+                var exp = this.parsedInputExp;
+                if (exp && this.overlay && this.overlay.items) {
+                    this.overlay.items.forEach(function(item, index) {
+                        exp = exp.replace(new RegExp('x' + index, 'g'), '@' + item.id);
+                    });
+                }
+                this.value.inputExp = exp;
+            }
         },
         _addItem: function(e) {
-            var exp = this.inputExp;
+            var exp = this.parsedInputExp;
             var input = e.detail;
             //if empty, just add
             if (exp === '') {
-                this.inputExp += input;
+                exp += input;
+                this.set('parsedInputExp', exp);
                 return;
             }
             //if an operation is already defined, add
             var lastChar = exp[exp.length - 1];
             if (/[+\-*/^.]/.test(lastChar)) {
-                this.inputExp += input;
+                exp += input;
+                this.set('parsedInputExp', exp);
                 return;
             }
 
             //is a vector?
             var i = exp.indexOf(']');
             if (i > -1) {
-                this.inputExp = [exp.slice(0, i), ',' + input, exp.slice(i)].join('');
+                this.set('parsedInputExp', [exp.slice(0, i), ',' + input, exp.slice(i)].join(''));
                 return;
             }
-            //else we guess the user wants to add 
-            this.inputExp += '+' + input;
+            //else assume the user wants to add 
+            exp += '+' + input;
+            this.set('parsedInputExp', exp);
         },
     });
     </script>
