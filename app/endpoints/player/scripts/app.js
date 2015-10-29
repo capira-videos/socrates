@@ -1,6 +1,6 @@
 'use strict';
+window.isPlayer = true;
 (function(document) {
-    window.isPlayer = true;
     window.standardReaction = {
         type: 'play'
     };

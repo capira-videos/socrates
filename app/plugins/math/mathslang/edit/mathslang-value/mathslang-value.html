@@ -42,6 +42,7 @@ Polymer({
         Capira._greekAlphabet.forEach(function(letter) {
             exp = exp.replace(new RegExp(letter.greek, 'g'), letter.latex + ' ');
         });
+        //todo use switch statement here
         var fun = value.fun;
         fun = fun.replace(new RegExp('#equals', 'g'), ' = ');
         fun = fun.replace(new RegExp('#vecEquals', 'g'), ' = ');
@@ -52,7 +53,7 @@ Polymer({
         fun = fun.replace(new RegExp('#lt', 'g'), '<');
         fun = fun.replace(new RegExp('#gt', 'g'), '>');
 
-        var error = value.error ? '\\pm' + value.error : '';
+        var error = value.error ? ' \\pm ' + value.error : '';
         this.items = [];
         var inputExp = value.inputExp;
         if (inputExp && overlay.items) {

@@ -1,3 +1,7 @@
+<link rel="import" href="../../../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../../../../bower_components/paper-icon-button/paper-icon-button.html">
 <dom-module id="delete-button">
     <template>
     <style> 
@@ -11,10 +15,10 @@
         </div>
         <paper-dialog id="confirm" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <h2>Delete <span>{{_computedType}}</span></h2>
-            <paper-dialog-scrollable>
+            <p>
                 Do you really want to delete this <span>{{_computedType}}</span>?
                 <br/> This can not be undone!
-            </paper-dialog-scrollable>
+            </p>
             <div class="buttons">
                 <paper-button dialog-dismiss>Cancel</paper-button>
                 <paper-button dialog-confirm on-tap="_delete" autofocus>Delete</paper-button>

@@ -6,14 +6,11 @@
     <!-- Web Components -->
     <script src="../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../../../../../bower_components/polymer/polymer.html">
-    <link rel="import" href="../../../../../bower_components/paper-styles/paper-styles.html">
-    <link rel="import" href="../../../../../bower_components/paper-styles/demo-pages.html">
-    <link rel="import" href="../quiz-sounds.html">
+    <link rel="import" href="../quiz-sounds-behavior.html">
 </head>
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <quiz-sounds></quiz-sounds>
     <button onclick="correct()">correct</button>
     <button onclick="neutral()">neutral</button>
     <button onclick="correct()">correct</button>
@@ -36,13 +33,13 @@
 
     setTimeout(function() {
         correct();
-    }, 1000);
-    setTimeout(function() {
-        neutral();
     }, 2000);
     setTimeout(function() {
-        incorrect();
+        neutral();
     }, 3000);
+    setTimeout(function() {
+        incorrect();
+    }, 4000);
     </script>
 </body>
 

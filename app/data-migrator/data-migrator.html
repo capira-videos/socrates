@@ -14,8 +14,9 @@ window.migrateOverlay = function(overlay) {
 window.migrateUnit = function(unit) {
     if (unit && unit.overlays && unit.version !== window.DATA_SCHEMA_VERSION) {
         unit.overlays.forEach(window.migrateOverlay);
+        unit.version = window.DATA_SCHEMA_VERSION;
+        console.log('Unit Version updated:', window.DATA_SCHEMA_VERSION);
     }
-    unit.version = window.DATA_SCHEMA_VERSION;
     return unit;
 };
 
@@ -58,15 +59,16 @@ window.overlayVersion = [{
             result.exp = expr.replace(fun, '').trim();
 
             combination.value = result;
-            console.log('Combination Version updated:', combination.value);
         }
 
         return function(o) {
             overlay = o;
-            if (overlay.type === 'custom-quiz' || overlay.type === 'math-quiz') {
-                overlay.combinations.forEach(migrateMathCombination);
+            if (overlay) {
+                if (overlay.type === 'custom-quiz' || overlay.type === 'math-quiz') {
+                    overlay.combinations.forEach(migrateMathCombination);
+                }
+                overlay.version = '1';
             }
-            overlay.version = '1';
         };
     })()
 }];

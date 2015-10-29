@@ -16,7 +16,7 @@
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="CAPIRA">
-    <link href="../modules/app/app.css" rel="stylesheet" type="text/css" inline>
+    <link href="../../base/styles/app.css" rel="stylesheet" type="text/css" inline>
 </head>
 
 <body>
@@ -29,17 +29,16 @@
                 <video-player unit="[[unit]]" autoplay="0" id="video"></video-player>
             </template>
             <overlays-manager overlays="{{unit.overlays}}"></overlays-manager>
-            <quiz-sounds id="sounds"></quiz-sounds>
         </template>
     </div>
-    <script type="text/javascript" src="../base/scripts/scaffold.js" inline></script>
-    <script src="app.js" inline></script>
+    <script type="text/javascript" src="../../base/scripts/scaffold.js" inline></script>
+    <script src="scripts/app.js" inline></script>
     <!-- endbuild-->
     <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
-    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.min.js" inline></script>
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js" inline></script>
     <!-- endbuild -->
     <!-- will be replaced with elements/elements.vulcanized.html -->
-    <link rel="import" href="elements.html">
+    <link rel="import" href="elements/elements.html">
     <!-- endreplace-->
     <!-- Offline testing -->
     <script type="text/javascript" src="../../showcase/showcase5.js"></script>

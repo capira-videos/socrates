@@ -1,0 +1,20 @@
+<link rel="import" href="quiz-sounds.html">
+<script>
+'use strict';
+Capira = window.Capira || {};
+Capira.QuizSounds = {
+    attached: function() {
+        //lazy load sound files
+        setTimeout(function() {
+            if (!document.querySelector('quiz-sounds')) {
+                var sounds = Polymer.Base.create('quiz-sounds');
+                document.body.appendChild(sounds);
+            }
+        }, 1000);
+
+    },
+    playSound: function(grade) {
+        return document.querySelector('quiz-sounds').playGrade(grade);
+    }
+};
+</script>

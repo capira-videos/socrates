@@ -9,16 +9,15 @@
 <link rel="import" href="../../../../quizzes/single-answer-quiz/edit/single-answer-quiz-edit-page.html">
 <link rel="import" href="../../../../annotations/short-annotation/edit/short-annotation-edit-page.html">
 <link rel="import" href="../../../../annotations/standard-annotation/edit/standard-annotation-edit-page.html">
-
 <dom-module id="pages-manager">
     <template>
-    <style> 
-    :host {
-        @apply(--layout-fit);
-        display: block;
-        pointer-events: none;
-    }
-     </style>
+        <style>
+        :host {
+            @apply(--layout-fit);
+            display: block;
+            pointer-events: none;
+        }
+        </style>
         <neon-animated-pages selected="{{selected}}" attr-for-selected="id" animate-initial-selection>
             <!-- Quizzes -->
             <single-answer-quiz-edit-page id="single-answer-quiz"></single-answer-quiz-edit-page>
@@ -42,7 +41,8 @@
     Polymer({
         is: 'pages-manager',
         properties: {
-            unit: Object
+            unit: Object,
+            selected: Object
         },
         listeners: {
             'home-state': 'hide',

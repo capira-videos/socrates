@@ -17,60 +17,43 @@
 </dom-module>
 <script>
 'use strict';
-(function() {
-    Polymer({
-        is: 'quiz-sounds',
-        properties: {
-            volumes: {
-                value: {
-                    'correct': 0.8,
-                    'incorrect': 0.08,
-                    'neutral': 0.8,
-                    'soundsTheme': 1
-                }
-            }
-        },
-
-        playGrade: function(grade) {
-            switch (grade) {
-                case Capira.Grade.CORRECT:
-                    this._play('correct');
-                    break;
-                case Capira.Grade.INCORRECT:
-                    this._play('incorrect');
-                    break;
-                case Capira.Grade.NEUTRAL:
-                    this._play('neutral');
-                    break;
-                default:
-                    this._play('neutral');
-            }
-        },
-
-        _play: function(sound) {
-            var audio = this.$[sound];
-            if (audio.readyState > 0) {
-                audio.volume = this.volumes[sound];
-                audio.pause();
-                audio.currentTime = 0;
-                audio.play();
+Polymer({
+    is: 'quiz-sounds',
+    properties: {
+        volumes: {
+            value: {
+                'correct': 0.8,
+                'incorrect': 0.08,
+                'neutral': 0.8,
+                'soundsTheme': 1
             }
         }
-    });
-})();
-Capira.QuizSounds = {
-    attached: function() {
-        //lazy load sound files
-        setTimeout(function() {
-            if (!document.querySelector('quiz-sounds')) {
-                var sounds = document.createElement('quiz-sounds');
-                document.body.appendChild(sounds);
-            }
-        }, 1000);
-
     },
-    playSound: function(grade) {
-        return document.querySelector('quiz-sounds').playGrade(grade);
+
+    playGrade: function(grade) {
+        switch (grade) {
+            case Capira.Grade.CORRECT:
+                this._play('correct');
+                break;
+            case Capira.Grade.INCORRECT:
+                this._play('incorrect');
+                break;
+            case Capira.Grade.NEUTRAL:
+                this._play('neutral');
+                break;
+            default:
+                this._play('neutral');
+        }
+    },
+
+    _play: function(sound) {
+        var audio = this.$[sound];
+        if (audio.readyState > 0) {
+            audio.volume = this.volumes[sound];
+            audio.pause();
+            audio.currentTime = 0;
+            audio.play();
+        }
     }
-};
+});
 </script>

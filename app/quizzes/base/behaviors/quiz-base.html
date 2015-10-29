@@ -1,7 +1,8 @@
 <link rel="import" href="../../../base/overlays/overlay.html">
 <link rel="import" href="quiz-value.html">
 <link rel="import" href="quiz-grade.html">
-<link rel="import" href="../quiz-sounds/quiz-sounds.html">
+<link rel="import" href="../quiz-sounds/quiz-sounds-behavior.html">
+
 <script>
 'use strict';
 window.Capira = window.Capira || {};
@@ -56,5 +57,5 @@ Capira.QuizImpl = {
         }
     }
 };
-Capira.Quiz = [Capira.Overlay, Capira.QuizValue, Capira.QuizImpl, Capira.QuizSounds];
+Capira.Quiz = [Capira.Overlay, Capira.QuizSounds, Capira.QuizValue, Capira.QuizImpl];
 </script>
