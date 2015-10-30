@@ -30,7 +30,7 @@ var AUTOPREFIXER_BROWSERS = [
 
 var styleTask = function(stylesPath, srcs) {
     return gulp.src(srcs.map(function(src) {
-            return path.join('app', stylesPath, src);
+            return path.join('src', stylesPath, src);
         }))
         .pipe($.changed(stylesPath, {
             extension: '.css'
@@ -56,9 +56,9 @@ gulp.task('elements', function() {
 // Lint JavaScript
 gulp.task('jshint', function() {
     return gulp.src([
-            'app/scripts/**/*.js',
-            'app/elements/**/*.js',
-            'app/elements/**/*.html'
+            'src/scripts/**/*.js',
+            'src/elements/**/*.js',
+            'src/elements/**/*.html'
         ])
         .pipe(reload({
             stream: true,
@@ -72,7 +72,7 @@ gulp.task('jshint', function() {
 
 // Optimize Images
 gulp.task('images', function() {
-    return gulp.src('app/images/**/*')
+    return gulp.src('src/images/**/*')
         .pipe($.cache($.imagemin({
             progressive: true,
             interlaced: true
@@ -86,9 +86,9 @@ gulp.task('images', function() {
 // Copy All Files At The Root Level (src)
 gulp.task('copy', function() {
     var src = gulp.src([
-        'app/*',
-        '!app/test',
-        '!app/precache.json'
+        'src/*',
+        '!src/test',
+        '!src/precache.json'
     ], {
         dot: true
     }).pipe(gulp.dest('dist'));
@@ -97,7 +97,7 @@ gulp.task('copy', function() {
         'bower_components/**/*'
     ]).pipe(gulp.dest('dist/bower_components'));
 
-    var elements = gulp.src(['app/elements/**/*.html'])
+    var elements = gulp.src(['src/elements/**/*.html'])
         .pipe(gulp.dest('dist/elements'));
 
     var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
@@ -106,7 +106,7 @@ gulp.task('copy', function() {
     var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
         .pipe(gulp.dest('dist/sw-toolbox'));
 
-    var vulcanized = gulp.src(['app/elements/elements.html'])
+    var vulcanized = gulp.src(['src/elements/elements.html'])
         .pipe($.rename('elements.vulcanized.html'))
         .pipe(gulp.dest('dist/elements'));
 
@@ -121,10 +121,10 @@ gulp.task('copy', function() {
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function() {
     var assets = $.useref.assets({
-        searchPath: ['.tmp', 'app', 'dist']
+        searchPath: ['.tmp', 'src', 'dist']
     });
 
-    return gulp.src(['app/**/*.html', '!src/{elements,test}/**/*.html'])
+    return gulp.src(['src/**/*.html', '!src/{elements,test}/**/*.html'])
         // Replace path for vulcanized assets
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
         .pipe(assets)
@@ -206,7 +206,7 @@ gulp.task('serve', [], function() {
         //       will present a certificate warning in the browser.
         // https: true,
         server: {
-            baseDir: 'app',
+            baseDir: 'src',
             directory: true,
             proxy: {
                 target: 'http://capira.io',
@@ -223,11 +223,11 @@ gulp.task('serve', [], function() {
         }
     });
 
-    gulp.watch(['app/**/*.html'], reload);
-    gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
-    gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
-    gulp.watch(['app/{scripts,elements}/**/*.js'], ['jshint']);
-    gulp.watch(['app/images/**/*'], reload);
+    gulp.watch(['src/**/*.html'], reload);
+    gulp.watch(['src/styles/**/*.css'], ['styles', reload]);
+    gulp.watch(['src/elements/**/*.css'], ['elements', reload]);
+    gulp.watch(['src/{scripts,elements}/**/*.js'], ['jshint']);
+    gulp.watch(['src/images/**/*'], reload);
 });
 
 // Build and serve the output from the dist build
@@ -287,13 +287,13 @@ var clean = require('gulp-clean');
  */
 gulp.task('vulcan', function() {
     var DEST_DIR = '../dist/player';
-    return gulp.src('/app/player/elements.html')
+    return gulp.src('src/endpoints/player/elements/elements.html')
         .pipe($.vulcanize({
-            abspath: abspath,
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
             excludes: ['/bower_components/katex/dist/katex.min.js'],
+            stripExcludes: ['/bower_components/iron-icons/iron-icons.html']
         }))
         .pipe(minifyHTML())
         .pipe(minifyInline({
@@ -310,8 +310,9 @@ gulp.task('vulcan', function() {
 
 
 gulp.task('inline-scripts', function() {
-    return gulp.src('app/player/index.html')
+    return gulp.src('src/endpoints/player/index.html')
         .pipe(inlinesource())
+        .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
         .pipe(gulp.dest('../dist/player/'));
 });
 
@@ -366,9 +367,8 @@ gulp.task('todo', function() {
 
 gulp.task('editor-vulcan', function() {
     var DEST_DIR = '../dist/editor';
-    return gulp.src('/app/endpoints/editor/elements/elements.html')
+    return gulp.src('src/endpoints/editor/elements/elements.html')
         .pipe($.vulcanize({
-            abspath: __dirname,
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
@@ -383,7 +383,7 @@ gulp.task('editor-vulcan', function() {
 
 
 gulp.task('editor-inline-scripts', function() {
-    return gulp.src('app/endpoints/editor/index.html')
+    return gulp.src('src/endpoints/editor/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
         .pipe(gulp.dest('../dist/editor/'));
@@ -425,7 +425,7 @@ gulp.task('editor-clean-vulcanized', function() {
 
 gulp.task('build-editor', function(cb) {
     runSequence(
-        ['editor-vulcan', 'editor-inline-scripts'], ['editor-clean-vulcanized'],
+        ['editor-vulcan', 'editor-inline-scripts'], ['editor-clean-vulcanized', 'copy-tests'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
@@ -440,24 +440,104 @@ gulp.task('build', function(cb) {
 var polybuild = require('polybuild');
 
 gulp.task('build-1', function() {
-    return gulp.src('app/editor/elements/elements.html')
-        .pipe(polybuild())
-        .pipe(gulp.dest('../dist/editor/2'));
+    return gulp.src('src/endpoints/editor/elements/elements.html')
+        .pipe(polybuild({
+            maximumCrush: true
+        }))
+        .pipe(gulp.dest('dist/editor/2'));
 });
 
-gulp.task('quiz-vulcan', function() {
-    var DEST_DIR = 'dist/custom-quiz';
-    return gulp.src('/app/quizzes/custom-quiz/custom-quiz.html')
-        .pipe($.vulcanize({
-            abspath: __dirname,
-            stripComments: true,
-            inlineCss: true,
-            inlineScripts: true,
-            excludes: ['/bower_components/katex/dist/katex.min.js'],
-            stripExcludes: ['/bower_components/iron-icons/iron-icons.html']
+var flatten = require('gulp-flatten');
+var filenames = require('gulp-filenames');
+
+gulp.task('copy-tests', function() {
+    var bower = gulp.src([
+            'bower_components/**/webcomponents-lite.js',
+            'bower_components/**/webcomponents.min.js',
+            'bower_components/**/browser.js',
+            'bower_components/**/test-fixture.html',
+            'bower_components/**/test-fixture-mocha.js',
+            'bower_components/**/mock-interactions.js',
+            'bower_components/**/parsing.js',
+            'bower_components/**/formatting.js',
+            'bower_components/**/async.js',
+            'bower_components/**/normalization.js',
+            'bower_components/**/lodash.js',
+            'bower_components/**/mocha.js',
+            'bower_components/**/mocha.css',
+            'bower_components/**/chai.js',
+            'bower_components/**/sinon.js',
+            'bower_components/**/sinon-chai.js',
+            'bower_components/**/axs_testing.js',
+            'bower_components/**/a11ySuite.js',
+            'bower_components/**/polymer.html',
+        ])
+        .pipe(gulp.dest('../dist/bower_components/'));
+
+    var testsEditor = gulp.src('src/**/test/*.html')
+        .pipe(filenames('editorTests'))
+        .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
+        .pipe(flatten({
+            includeParents: -2
         }))
-        .pipe(gulp.dest(DEST_DIR))
-        .pipe($.size({
-            title: 'editor-vulcan'
-        }));
+        .pipe(gulp.dest('../dist/editor/test/'));
+    var demos = gulp.src(['src/**/demo/*.html'])
+        .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
+        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlays/demo/demo-init.html">')))
+        .pipe(flatten({
+            includeParents: -2
+        }))
+        .pipe(gulp.dest('../dist/editor/test/'));
+
+    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/edit/**/demo/*.html'])
+        .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
+        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlays/demo/demo-init.html">')))
+        .pipe(flatten({
+            includeParents: -2
+        }))
+        .pipe(gulp.dest('../dist/player/test/'));
+    var testsPlayer = gulp.src('src/**/test/*.html')
+        .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
+        .pipe(flatten({
+            includeParents: -2
+        }))
+        .pipe(gulp.dest('../dist/player/test/'));
+    var htaccess = gulp.src('static/tests/.htaccess')
+        .pipe(gulp.dest('../dist/editor/test/'))
+        .pipe(gulp.dest('../dist/player/test/'));
+
+    gulp.src('src/**/test/*.html')
+        .pipe(flatten({
+            includeParents: -2
+        }))
+        .pipe(filenames('testpaths'))
+        .pipe(gulp.dest('../dist/editor/test/'));
+
+});
+
+gulp.task('fetch-tests', function() {
+    var testsEditor = gulp.src('src/**/test/*.html')
+        .pipe(filenames('editorTests'))
+        .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
+        .pipe(flatten({
+            includeParents: -2
+        }))
+        .pipe(gulp.dest('../dist/editor/test/'));
+    return gulp.src('src/**/test/index.html')
+        .pipe(flatten({
+            includeParents: -2
+        }))
+        .pipe(filenames('testpaths'));
+});
+gulp.task('print-tests', function() {
+    gulp.src('static/tests/all.html')
+        .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('testpaths')))))
+        .pipe(gulp.dest('../dist/editor/test/'));
+});
+
+gulp.task('build-tests', function(cb) {
+    runSequence(
+        ['copy-tests','fetch-tests'], ['print-tests'],
+        cb);
+    // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

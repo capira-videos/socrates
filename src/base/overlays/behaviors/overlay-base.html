@@ -1,0 +1,108 @@
+<link rel="import" href="overlay-lifecycle.html">
+<link rel="import" href="reactions.html">
+<link rel="import" href="animatable-overlay.html">
+<link rel="import" href="../elements/animatable-fab.html">
+<link rel="import" href="../elements/markup/mark-up.html">
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+
+Capira.OverlayImpl = {
+    properties: {
+        overlay: {
+            type: Object,
+            observer: 'overlayChanged'
+        }
+    },
+    listeners: {
+        'skipped': '_done',
+    },
+
+    attached: function() {
+        this.skipButton = document.createElement('skip-button');
+        this._setGeneralStyle();
+    },
+
+    _hide: function() {
+        this._removeSkipButton();
+        document.activeElement.blur();
+    },
+
+    _setGeneralStyle: function() {
+        var s = this.style;
+        s.display = 'none';
+        s.width = '100%';
+        s.height = '100%';
+        s.pointerEvents = 'all';
+        s.position = 'absolute';
+    },
+
+    overlayChanged: function() {
+        if (this.overlay) {
+            var that = this;
+            this._setSpecificStyle();
+            this.behaviors.forEach(function(behavior) {
+                if (behavior._overlayChanged) {
+                    behavior._overlayChanged.call(that);
+                }
+            });
+            if (this._overlayChanged) {
+                this._overlayChanged();
+            }
+        }
+    },
+
+    _setSpecificStyle: function() {
+        var s = this.style;
+
+        if (this.overlay.backgroundImage) {
+            s.backgroundImage = 'url(' + this.overlay.backgroundImage + ')';
+            s.backgroundSize = 'cover';
+        }
+        if (this.overlay.backgroundColor) {
+            s.backgroundColor = this.overlay.backgroundColor;
+        }
+    },
+
+    _done: function(e) {
+        console.log('done');
+        if (e && Object.keys(e.detail).length !== 0 && !e.detail.sourceEvent) {
+            this.exec(e.detail);
+        } else {
+            this.exec(window.standardReaction);
+        }
+    },
+    _removeSkipButton: function() {
+        if (this.skipButton && this.skipButton.isAttached) {
+            Polymer.dom(this.root).removeChild(this.skipButton);
+        }
+    },
+
+    _shown: function() {
+        console.log('shown!');
+        //TODO: shown get's called to often.
+        if (this.skipButton && !this.skipButton.isAttached) {
+            Polymer.dom(this.root).appendChild(this.skipButton);
+        }
+    },
+
+    enterPressed: function() {
+        return;
+    },
+    arrowPressed: function() {
+        return;
+    },
+
+};
+
+Capira.OverlayEditLifecycle = {
+    attached: function() {
+        this.show();
+    }
+};
+
+Capira.Overlay = Capira.selectBehaviors({
+    core: [Capira.OverlayImpl, Capira.OverlayLifecycle, Capira.Reactions, Capira.AnimatableOverlay],
+    editor: Capira.OverlayEditLifecycle
+});
+</script>

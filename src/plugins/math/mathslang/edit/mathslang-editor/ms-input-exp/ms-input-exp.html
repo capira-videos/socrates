@@ -1,0 +1,82 @@
+<link rel="import" href="../../../../../../../bower_components/paper-input/paper-input.html">
+<dom-module id="ms-input-exp">
+    <template>
+        <style>
+        :host {
+            width: 80px;
+            display: inline-block;
+        }
+        </style>
+        <paper-input label="Inputs" value="{{parsedInputExp}}"></paper-input>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'ms-input-exp',
+        properties: {
+            value: {
+                type: String,
+                observer: '_computeParsedInputExp'
+            },
+            overlay: Object,
+            parsedInputExp: {
+                type: String,
+                observer: '_computeInputExp'
+            }
+        },
+        _computeParsedInputExp: function() {
+            if (this.value) {
+                if (this.overlay.type === 'custom-quiz' && !this.value.inputExp) {
+                    this.value.inputExp = '@' + this.overlay.items[0].id;
+                }
+                var exp = this.value.inputExp;
+                if (exp && this.overlay && this.overlay.items) {
+                    this.overlay.items.forEach(function(item, index) {
+                        exp = exp.replace(new RegExp('@' + item.id, 'g'), 'x' + index);
+                    });
+                }
+                this.parsedInputExp = exp;
+            }
+        },
+
+        _computeInputExp: function() {
+            if (this.value) {
+                var exp = this.parsedInputExp;
+                if (exp && this.overlay && this.overlay.items) {
+                    this.overlay.items.forEach(function(item, index) {
+                        exp = exp.replace(new RegExp('x' + index, 'g'), '@' + item.id);
+                    });
+                }
+                this.value.inputExp = exp;
+            }
+        },
+        _addItem: function(e) {
+            var exp = this.parsedInputExp;
+            var input = e.detail;
+            //if empty, just add
+            if (exp === '') {
+                exp += input;
+                this.set('parsedInputExp', exp);
+                return;
+            }
+            //if an operation is already defined, add
+            var lastChar = exp[exp.length - 1];
+            if (/[+\-*/^.]/.test(lastChar)) {
+                exp += input;
+                this.set('parsedInputExp', exp);
+                return;
+            }
+
+            //is a vector?
+            var i = exp.indexOf(']');
+            if (i > -1) {
+                this.set('parsedInputExp', [exp.slice(0, i), ',' + input, exp.slice(i)].join(''));
+                return;
+            }
+            //else assume the user wants to add 
+            exp += '+' + input;
+            this.set('parsedInputExp', exp);
+        },
+    });
+    </script>
+</dom-module>

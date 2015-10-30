@@ -1,0 +1,33 @@
+<link rel="import" href="latex-import.html">
+<dom-module id="latex-formula">
+    <style include="latex-styles"></style>
+    <template>
+        <span id="tex"></span>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'latex-formula',
+        behaviors: Capira.selectBehaviors({
+            editor: Capira.EditableLatex
+        }),
+        attached: function() {
+            this.contentEditable = false;
+            var latexExp = Polymer.dom(this).innerHTML;
+            this.render(latexExp);
+        },
+        render: function(latexExp) {
+            Polymer.dom(this).innerHTML = latexExp;
+            latexExp = latexExp.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+            latexExp = latexExp.replace(/&amp;/g, '&');
+            //replace html entities
+
+            this.latexExp = latexExp;
+            this.$.tex.innerHTML = '';
+            window.katex.render(latexExp, this.$.tex);
+        }
+    });
+})();
+</script>

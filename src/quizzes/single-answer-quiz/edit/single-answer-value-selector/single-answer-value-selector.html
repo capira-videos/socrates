@@ -1,0 +1,33 @@
+<link rel="import" href="../../../../base/edit/styles/editor-icons.html">
+<link rel="import" href="../../../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../../../bower_components/paper-item/paper-item.html">
+<dom-module id="single-answer-value-selector">
+    <template>
+        <paper-dropdown-menu>
+            <paper-menu class="dropdown-content" selected="{{selected}}">
+                <template is="dom-repeat" items="{{overlay.options}}">
+                    <paper-item>[[computeLetter(index)]]</paper-item>
+                </template>
+            </paper-menu>
+        </paper-dropdown-menu>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'single-answer-value-selector',
+        properties: {
+            selected: {
+                notify: true,
+                value: 0
+            },
+            overlay: Object
+        },
+        computeLetter: function(i) {
+            return String.fromCharCode(65 + i);
+        }
+    });
+})();
+</script>

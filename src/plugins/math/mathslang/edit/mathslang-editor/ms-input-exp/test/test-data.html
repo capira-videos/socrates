@@ -1,0 +1,58 @@
+<script>
+window.overlays = [{
+    type: 'custom-quiz',
+    items: [{
+        id: 'item1',
+    }],
+    combinations: [{
+        value: {
+            inputExp: '@item1'
+        }
+    }]
+}, {
+    type: 'custom-quiz',
+    items: [{
+        id: 'item1',
+    }, {
+        id: 'item2',
+    }],
+    combinations: [{
+        value: {
+            inputExp: '@item1+@item2'
+        }
+    }, {
+        value: {
+            inputExp: '@item1-@item2'
+        }
+    }, {
+        value: {
+            inputExp: '@item1*@item2'
+        }
+    }, {
+        value: {
+            inputExp: '@item1/@item2'
+        }
+    }, {
+        value: {
+            inputExp: '@item1^@item2'
+        }
+    }]
+}, {
+    type: 'custom-quiz',
+    items: [{
+        id: 'item1',
+    }],
+    combinations: [{
+        value: {
+
+        }
+    }]
+}, {
+    type: 'math-quiz',
+    combinations: [{
+        value: {
+
+        }
+    }]
+}];
+</script>

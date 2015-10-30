@@ -1,0 +1,36 @@
+<link rel="import" href="../../../data-migrator/data-migrator.html">
+<script>
+// Dummy Data 
+window.dummyOverlay = {
+    id: 'number-range',
+    type: 'number-range-quiz',
+    question: 'How much is <latex-formula>\\pi</latex-formula>?',
+    min: 3,
+    max: 3.4,
+    step: 0.01,
+    combinations: [{
+        value: '#approx 3.14 #epsilon 0.01',
+        correct: true,
+        feedback: 'Correct! <latex-formula>\\pi\\approx 3.14</latex-formula>',
+        grade: 0,
+        reaction: {
+            type: 'showOverlay',
+            target: 0
+        }
+
+    }, {
+        value: '#lt 3.1 #or #gt 3.2',
+        feedback: 'That\'s way off!',
+        grade: 2
+    }, {
+        value: '#lt 3.14',
+        feedback: 'That\'s a little too low...',
+        grade: 2
+    }, {
+        value: '#gt 3.14',
+        feedback: 'That\'s a little too much...',
+        grade: 2
+    }]
+};
+window.migrateOverlay(window.dummyOverlay);
+</script>

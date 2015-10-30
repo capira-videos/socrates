@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ms-input-exp basic tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="../../../../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../../../../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../../../../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../../../../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../../../../../../../bower_components/test-fixture/test-fixture.html">
+    <!-- build:js ../editor/elements.html -->
+    <link rel="import" href="../ms-input-exp.html">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <test-fixture id="MsInputExp">
+        <template>
+            <ms-input-exp></ms-input-exp>
+        </template>
+    </test-fixture>
+    <link rel="import" href="test-data.html">
+    <script>
+    'use strict';
+    suite('<ms-input-exp>', function() {
+        var msInputExp, input;
+        setup(function() {
+            msInputExp = fixture('MsInputExp');
+            input = msInputExp.$$('paper-input');
+        });
+
+        function testFun(overlay, combination, expectations, done) {
+            msInputExp.overlay = window.overlays[overlay];
+            msInputExp.value = window.overlays[overlay].combinations[combination].value;
+            Polymer.Base.async(function() {
+                try {
+                    expectations();
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, 1);
+        }
+        test('can set itemExp of overlay with 1 item', function(done) {
+            testFun(0, 0, function() {
+                expect(input.value).to.be.eql('x0');
+            }, done);
+        });
+        test('can set itemExp of overlay with 2 items and + ', function(done) {
+            testFun(1, 0, function() {
+                expect(input.value).to.be.eql('x0+x1');
+            }, done);
+        });
+        test('can set itemExp of overlay with 2 items and - ', function(done) {
+            testFun(1, 1, function() {
+                expect(input.value).to.be.eql('x0-x1');
+            }, done);
+        });
+        test('can set itemExp of overlay with 2 items and * ', function(done) {
+            testFun(1, 2, function() {
+                expect(input.value).to.be.eql('x0*x1');
+            }, done);
+        });
+        test('can set itemExp of overlay with 2 items and / ', function(done) {
+            testFun(1, 3, function() {
+                expect(input.value).to.be.eql('x0/x1');
+            }, done);
+        });
+        test('can set itemExp of overlay with 2 items and ^ ', function(done) {
+            testFun(1, 4, function() {
+                expect(input.value).to.be.eql('x0^x1');
+            }, done);
+        });
+        test('can set itemExp of overlay with 1 item and undefined inputExp ', function(done) {
+            testFun(2, 0, function() {
+                expect(input.value).to.be.eql('x0');
+            }, done);
+        });
+        test('ignores math-quiz overlays', function(done) {
+            testFun(3, 0, function() {
+                expect(input.value).to.be.eql(undefined);
+            }, done);
+        });
+    });
+    </script>
+</body>
+
+</html>

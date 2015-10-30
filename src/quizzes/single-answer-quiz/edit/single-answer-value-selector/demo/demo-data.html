@@ -1,0 +1,36 @@
+<script>
+window.dummyOverlay = {
+    id: "latex",
+    type: "single-answer-quiz",
+    question: "Which of the following expressions is the largest?",
+    options: ["<latex-formula>\\sqrt{140}</latex-formula>", "<latex-formula>\\sum_{i=1}^{5} i</latex-formula>", "<latex-formula>4\\pi</latex-formula>", "<latex-formula>\\left(\\frac{7}{2}\\right)^2</latex-formula>", "<latex-formula>\\displaystyle f(x) = \\int_{-\\infty}^\\infty\\hat f(\\xi)\\,e^{2 \\pi i \\xi x}\\,d\\xi</latex-formula>"],
+    combinations: [{
+        value: 1,
+        grade: 0,
+        feedback: "Yes! <latex-formula>\\sum_{i=1}^{5} i = 15</latex-formula>",
+        reaction: {
+            type: "showOverlay",
+            target: "seman-intro"
+        }
+    }, {
+        value: 0,
+        grade: 2,
+        feedback: "Not quite.<br/><i>Hint</i>: Do you know what <latex-formula>\\sqrt{144}</latex-formula> is?"
+    }, {
+        value: 2,
+        grade: 2,
+        feedback: "Not quite. <latex-formula>4\\pi\\approx 4 \\cdot 3.14 = 12.56 </latex-formula>"
+    }, {
+        value: 3,
+        grade: 2,
+        feedback: "Not quite. <latex-formula>\\left(\\frac{7}{2}\\right)^2 = \\frac{7^2}{2^2}=\\frac{49}{4} \\approx 12</latex-formula>"
+    }, {
+        value: 4,
+        grade: 2,
+        feedback: "<latex-formula>\\displaystyle f(x) = \\int_{-\\infty}^\\infty\\hat f(\\xi)\\,e^{2 \\pi i \\xi x}\\,d\\xi</latex-formula> <br>is just some fancy expression ;)"
+    }, {
+        grade: 2,
+        feedback: 'Not quite, try again!'
+    }]
+}
+</script>

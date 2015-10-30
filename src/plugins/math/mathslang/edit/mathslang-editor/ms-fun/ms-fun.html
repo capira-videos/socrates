@@ -1,0 +1,61 @@
+<link rel="import" href="../../../../../../base/edit/styles/editor-icons.html">
+<link rel="import" href="../../../../../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../../../../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../../../../../bower_components/paper-item/paper-item.html">
+<dom-module id="ms-fun">
+    <template>
+        <style>
+        :host {
+            display: inline-block;
+        }
+        
+        paper-dropdown-menu {
+            width: 56px;
+            padding-top: 0;
+            margin-top: -8px;
+        }
+        </style>
+        <paper-dropdown-menu>
+            <paper-menu class="dropdown-content" selected="{{value.fun}}" attr-for-selected="fun-name">
+                <paper-item fun-name="#equals">=</paper-item>
+                <paper-item fun-name="#identic">&equiv;</paper-item>
+                <paper-item fun-name="#approx">&asymp;</paper-item>
+                <paper-item fun-name="#lt">&lt;</paper-item>
+                <paper-item fun-name="#gt">&gt;</paper-item>
+                <paper-item fun-name="#leq">&le;</paper-item>
+                <paper-item fun-name="#geq">&ge;</paper-item>
+                <!-- TODO element of <paper-item>&isin;</paper-item> -->
+            </paper-menu>
+        </paper-dropdown-menu>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'ms-fun',
+        properties: {
+            value: {
+                type: String,
+                notify: true
+            }
+        },
+
+        listeners: {
+            'selected-changed': '_checkApprox'
+        },
+        _checkApprox: function(e) {
+            var value = e.detail.value;
+            if (!value) {
+                return;
+            }
+            if (value === '#approx' && !this.value.error) {
+                this.set('value.error', 1);
+                return;
+            }
+
+            if (value !== '#approx' && this.value.error) {
+                this.set('value.error', null);
+            }
+        }
+    });
+    </script>
+</dom-module>
