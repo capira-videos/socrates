@@ -1,9 +1,9 @@
-<link rel="import" href="../../base/overlays/elements/animatable-fab.html">
-<link rel="import" href="../../base/overlays/elements/markup/mark-up.html">
+<link rel="import" href="../../overlays/elements/animatable-fab.html">
+<link rel="import" href="../../overlays/elements/markup/mark-up.html">
 <link rel="import" href="../../base/styles/theme.html">
 <dom-module id="annotation-card">
     <template>
-    <style> 
+    <style>
     :host {
         display: block;
         width: 100%;
@@ -13,7 +13,7 @@
         padding-bottom: 32px;
         box-sizing: border-box;
     }
-    
+
     #annotation {
         width: 512px;
         margin: 0 auto 0;
@@ -21,7 +21,7 @@
         border-radius: 2px;
         min-height: 400px;
     }
-    
+
     #header {
         height: 192px;
         padding-left: 16px;
@@ -33,22 +33,22 @@
         @apply(--layout-center);
         @apply(--paper-font-headline);
     }
-    
+
     #body {
         @apply(--paper-font-subhead);
         padding: 48px 0;
     }
-    
+
     :host::content {
         @apply(--paper-font-subhead);
     }
-    
+
     #fab {
         position: absolute;
         right: 24px;
         bottom: -32px;
     }
-    
+
     @media all and (max-width: 600px) {
         #annotation {
             width: 100%;

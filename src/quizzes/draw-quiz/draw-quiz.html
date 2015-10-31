@@ -1,19 +1,19 @@
 <!--TODO: custom pen size -->
-<link rel="import" href="../../base/overlays/behaviors/resizable-overlay.html">
+<link rel="import" href="../../overlays/behaviors/resizable-overlay.html">
 <link rel="import" href="../base/quiz.html">
 <link rel="import" href="../base/question-card/question-feedback-card.html">
 <link rel="import" href="../../plugins/draw/draw-canvas/draw-canvas.html">
 <link rel="import" href="../../plugins/draw/toolbox/tool-box.html">
 <dom-module id="draw-quiz">
     <template>
-    <style> 
+    <style>
     :host {
         display: block;
         width: 100%;
         height: 100%;
         pointer-events: all;
     }
-    
+
     #card {
         position: absolute;
         left: 0;
@@ -21,18 +21,18 @@
         bottom: 0;
         height: 64px;
     }
-    
+
     #toolbox {
         position: absolute;
         bottom: 80px;
         left: 16px;
         width: 40px;
     }
-    
+
     #solution {
         display: hidden;
     }
-    
+
     @media all and (max-width: 600px) {
         #card {
             bottom: -64px;
@@ -126,7 +126,7 @@
                     this._initSolution(this.overlay.combinations[index]);
                 }
             }
-            //Don't update immediatly - wait until user didn't draw 
+            //Don't update immediatly - wait until user didn't draw
             if (this.timeout) {
                 clearTimeout(this.timeout);
             }

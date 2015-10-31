@@ -1,4 +1,4 @@
-<link rel="import" href="../../../base/overlays/behaviors/resizable-overlay.html">
+<link rel="import" href="../../../overlays/behaviors/resizable-overlay.html">
 <link rel="import" href="has-tools.html">
 <link rel="import" href="draw-tools.html">
 <dom-module id="draw-canvas">
@@ -9,15 +9,15 @@
             width: 100%;
             height: 100%;
         }
-        
+
         canvas[tool=pen] {
             cursor: url('/static/img/quiz-icons/brush.ico') 4 38, pointer;
         }
-        
+
         canvas[tool=line] {
             cursor: url('/static/img/quiz-icons/crosshair.ico') 24 24, pointer;
         }
-        
+
         canvas[tool=eraser] {
             cursor: url('/static/img/quiz-icons/eraser.ico') 7 40, pointer;
         }

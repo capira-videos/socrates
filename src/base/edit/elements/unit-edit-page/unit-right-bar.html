@@ -2,20 +2,20 @@
 <link rel="import" href="../../../../../bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="../right-bar/right-bar.html">
 <link rel="import" href="../right-bar/right-bar-header/right-bar-header.html">
-<link rel="import" href="../../../overlays/edit/overlays-wizard/overlay-miniature.html">
+<link rel="import" href="../../../../overlays/edit/overlays-wizard/overlay-miniature.html">
 <dom-module id="unit-right-bar">
     <template>
-    <style> 
+    <style>
     :host {
         display: block;
     }
-    
+
     #list {
         @apply(--layout-vertical);
         @apply(--layout-scroll);
         height: calc(100% - 88px);
     }
-    
+
     .preview {
         @apply(--layout);
         @apply(--layout-center-center);
@@ -29,7 +29,7 @@
         padding-bottom: 16px;
         position: relative;
     }
-    
+
     .preview:hover {
         background-color: white;
     }

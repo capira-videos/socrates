@@ -1,13 +1,13 @@
 
 <link rel="import" href="../quiz-theme.html">
-<link rel="import" href="../../../base/overlays/elements/animatable-fab.html">
+<link rel="import" href="../../../overlays/elements/animatable-fab.html">
 <dom-module id="question-feedback-card">
     <template>
-    <style> 
+    <style>
     :host {
         display: block;
     }
-    
+
     #container {
         position: relative;
         box-sizing: border-box;
@@ -18,37 +18,37 @@
         width: 100%;
         height: 100%;
     }
-    
+
     #container.long-text {
         font-size: 18px;
         line-height: 24px;
     }
-    
+
     #container > div {
         width: 100%;
         height: 100%;
         @apply(--layout-horizontal);
         overflow: hidden;
     }
-    
+
     #text-container {
         padding: 0px 24px 0px 24px;
         @apply(--layout-vertical);
         @apply(--layout-self-center);
     }
-    
+
     #container.wrong {
         background-color: var(--quiz-wrong-primary-color);
     }
-    
+
     #container.correct {
         background-color: var(--quiz-correct-primary-color);
     }
-    
+
     #container.neutral {
         background-color: var(--quiz-neutral-primary-color);
     }
-    
+
     #fab {
         position: absolute;
         right: 24px;
@@ -56,34 +56,34 @@
         display: none;
         z-index: 2;
     }
-    
+
     #fab.is-top {
         bottom: inherit;
         top: -29px;
     }
-    
+
     #fab.fab-wrong {
         --paper-fab-background: var(--default-primary-color);
     }
-    
+
     .correct #question-container,
     .wrong #question-container,
     .neutral #question-container {
         display: none;
     }
-    
+
     #feedback-container {
         opacity: 0;
         height: 0;
     }
-    
+
     .correct #feedback-container,
     .wrong #feedback-container,
     .neutral #feedback-container {
         opacity: 1;
         height: auto;
     }
-    
+
     #icon-container {
         @apply(--layout);
         @apply(--layout-center-center);
@@ -92,12 +92,12 @@
         width: 64px;
         min-width: 64px;
     }
-    
+
     #icon-container iron-icon {
         width: 40px;
         height: 40px;
     }
-    
+
     #feedback > a {
         color: white !important;
     }
@@ -293,7 +293,7 @@
             this.fire('quiz-done', this.combination.reaction);
         },
         _stopPropagation: function(e) {
-            //prevent unintended clicks on overlay 
+            //prevent unintended clicks on overlay
             e.stopPropagation();
             e.preventDefault();
         },
