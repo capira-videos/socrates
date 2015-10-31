@@ -283,7 +283,7 @@ var clean = require('gulp-clean');
  *       "clean-css": "jakubpawlowicz/clean-css#master"
  *   a hack is to type it into /node_modules/gulp-minify-inline/package.json
  *  maybe it works in our package too. it is added but not tested.
- *   
+ *
  */
 gulp.task('vulcan', function() {
     var DEST_DIR = '../dist/player';
@@ -338,9 +338,9 @@ gulp.task('build-player', function(cb) {
 });
 
 //TODO: Parse todos in inline-js
-//TODO: Parse optional priorities, milestones, etc 
+//TODO: Parse optional priorities, milestones, etc
 //TODO: Make diffs, collect history in git
-//TODO: Build Todo-List on the fly with watch task (every 5 minutes?) commit changes automatically? 
+//TODO: Build Todo-List on the fly with watch task (every 5 minutes?) commit changes automatically?
 //TODO: Parameter for todo-list to print personal todo-list?
 //TODO: dynamic output in shell instead of a file? filter with regex? todo-command-linetool?
 var argv = require('yargs').argv;
@@ -349,7 +349,7 @@ gulp.task('todo', function() {
     gulp.src(['**/*.js', '**/*.html', '!bower_components/**/*', '!node_modules/**/*']) //
         .pipe(todo())
         .pipe(gulp.dest('./'));
-    // -> Will output a TODO.md with your todos 
+    // -> Will output a TODO.md with your todos
 });
 
 
@@ -360,7 +360,7 @@ gulp.task('todo', function() {
 
 /*
  *  Editor
- *   
+ *
  */
 
 
@@ -478,7 +478,7 @@ gulp.task('copy-tests', function() {
 
     var demos = gulp.src(['src/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
-        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlays/demo/demo-init.html">')))
+        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlay/demo/demo-init.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
@@ -486,7 +486,7 @@ gulp.task('copy-tests', function() {
 
     var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/edit/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
-        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlays/demo/demo-init.html">')))
+        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlay/demo/demo-init.html">')))
         .pipe(flatten({
             includeParents: -2
         }))

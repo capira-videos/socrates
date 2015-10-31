@@ -5,7 +5,7 @@ function App(elemId) {
 
 
     function resize() {
-        // although the aspect ratio is also set via css style via viewport units, we also set it 
+        // although the aspect ratio is also set via css style via viewport units, we also set it
         // with fixed pixel values, as viewport units have issues on older browsers or are not supported.
         var container = document.getElementById(elemId);
 
@@ -70,7 +70,7 @@ function App(elemId) {
         window.app = document.querySelector('#app');
 
         console.log('we are ready to rock!');
-        app.overlays = document.querySelector('overlays-manager');
+        app.overlays = document.querySelector('overlay-manager');
         app.sounds = document.querySelector('quiz-sounds');
         app.resizeNow();
         app.fire('ready-to-rock');

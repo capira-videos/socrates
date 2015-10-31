@@ -1,6 +1,6 @@
 <link rel="import" href="../../../../../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../../../../../bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="../../../../../../quizzes/base/behaviors/slang.html">
+<link rel="import" href="../../../../../../slang/slang.html">
 <link rel="import" href="../../../math-input/math-paper-input.html">
 <dom-module id="ms-exp">
     <template>
@@ -8,47 +8,47 @@
         :host {
             display: inline-table;
         }
-        
+
         math-paper-input {
             position: initial;
         }
-        
+
         :root {
             --indicator-mixin: {
                 right: 56px;
                 left: auto;
             }
             --explanation-mixin: {
-                right: 16px; 
-            } 
+                right: 16px;
+            }
         }
-        
+
         #expr {
             display: inline-block;
             width: 180px;
         }
-        
+
         #expr[approx] {
             width: 104px;
         }
-        
+
         .simple #expr {
             width: 200px;
         }
-        
+
         .simple #expr[approx] {
             width: 160px;
         }
-        
+
         #epsilon {
             display: inline-block;
             width: 64px;
         }
-        
+
         #unitToast {
             z-index: 2;
         }
-        
+
         #remove-unit {
             color: var(--paper-red-500);
             cursor: pointer;
@@ -85,7 +85,7 @@
         },
         _valueChanged: function() {
             this.discardedUnits = [];
-            //Todo: add all discarded units, that must been discarded in last session with this value 
+            //Todo: add all discarded units, that must been discarded in last session with this value
         },
         _findUnit: function() {
             if (window.Slang) {

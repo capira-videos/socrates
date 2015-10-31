@@ -1,0 +1,315 @@
+
+<link rel="import" href="../quiz/quiz-theme.html">
+<link rel="import" href="../../../overlay/elements/animatable-fab.html">
+<dom-module id="quiz-question-card">
+    <template>
+    <style>
+    :host {
+        display: block;
+    }
+
+    #container {
+        position: relative;
+        box-sizing: border-box;
+        color: white;
+        background-color: var(--quiz-primary-color);
+        overflow: visible;
+        @apply(--paper-font-headline);
+        width: 100%;
+        height: 100%;
+    }
+
+    #container.long-text {
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    #container > div {
+        width: 100%;
+        height: 100%;
+        @apply(--layout-horizontal);
+        overflow: hidden;
+    }
+
+    #text-container {
+        padding: 0px 24px 0px 24px;
+        @apply(--layout-vertical);
+        @apply(--layout-self-center);
+    }
+
+    #container.wrong {
+        background-color: var(--quiz-wrong-primary-color);
+    }
+
+    #container.correct {
+        background-color: var(--quiz-correct-primary-color);
+    }
+
+    #container.neutral {
+        background-color: var(--quiz-neutral-primary-color);
+    }
+
+    #fab {
+        position: absolute;
+        right: 24px;
+        bottom: -28px;
+        display: none;
+        z-index: 2;
+    }
+
+    #fab.is-top {
+        bottom: inherit;
+        top: -29px;
+    }
+
+    #fab.fab-wrong {
+        --paper-fab-background: var(--default-primary-color);
+    }
+
+    .correct #question-container,
+    .wrong #question-container,
+    .neutral #question-container {
+        display: none;
+    }
+
+    #feedback-container {
+        opacity: 0;
+        height: 0;
+    }
+
+    .correct #feedback-container,
+    .wrong #feedback-container,
+    .neutral #feedback-container {
+        opacity: 1;
+        height: auto;
+    }
+
+    #icon-container {
+        @apply(--layout);
+        @apply(--layout-center-center);
+        background-color: rgba(0, 0, 0, 0.2);
+        height: 100%;
+        width: 64px;
+        min-width: 64px;
+    }
+
+    #icon-container iron-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    #feedback > a {
+        color: white !important;
+    }
+     </style>
+        <div id="container">
+            <div>
+                <div id="icon-container" hidden$="{{!icon}}">
+                    <iron-icon icon="{{icon}}"></iron-icon>
+                </div>
+                <div id="text-container">
+                    <div id="question-container" hidden$="{{!question}}">
+                        <div id="question">
+                            <mark-up content="{{question}}"></mark-up>
+                        </div>
+                    </div>
+                    <div id="feedback-container">
+                        <mark-up id="feedback" content="{{combination.feedback}}"></mark-up>
+                    </div>
+                </div>
+            </div>
+            <animatable-fab icon="{{_fabIcon}}" on-mouseup="_nextAction" click="_stopPropagation" id="fab"></animatable-fab>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'quiz-question-card',
+        behaviors: [Polymer.NeonAnimationRunnerBehavior],
+        properties: {
+            question: {
+                type: String,
+                value: null,
+                notify: true,
+            },
+            _state: {
+                type: String,
+                value: null,
+                observer: '_onStateChange'
+            },
+            _fabIcon: {
+                type: String,
+                computed: '_computeFabIcon(_state)'
+            },
+            _fabClass: {
+                type: String,
+                computed: '_computeFabClass(_state)'
+            },
+            isTop: {
+                type: Boolean,
+                value: false
+            },
+            animateWrong: {
+                type: Boolean,
+                value: false
+            },
+            icon: {
+                type: String,
+                value: null
+            },
+            animationConfig: {
+                type: Object,
+                value: function() {
+                    return {
+                        'incorrect-answer': {
+                            name: 'was-incorrect-animation',
+                            node: this,
+                            duration: 900
+                        },
+                        'correct-answer': {
+                            name: 'was-correct-animation',
+                            node: this,
+                            duration: 900
+                        }
+                    };
+                }
+            },
+            _opened: {
+                value: true
+            },
+            combination: {
+                type: Object,
+                notify: true,
+                observer: 'showFeedback'
+            }
+        },
+        observers: ['showFeedback(combination.grade)', '_computeFontSize(question.length)'],
+        listeners: {
+            'click': '_stopPropagation',
+            'tap': '_stopPropagation',
+            'neon-animation-finish': '_stopPropagation'
+        },
+        attached: function() {
+            if (this.isTop) {
+                this.$.fab.classList.add('is-top');
+            }
+        },
+
+        _onStateChange: function(newState) {
+            if (this._opened) {
+                this._computeFabClass();
+                this.$.container.classList.remove('neutral');
+                this.$.container.classList.remove('correct');
+                this.$.container.classList.remove('wrong');
+                switch (newState) {
+                    case 'correct':
+                        this.$.container.classList.add('correct');
+                        if (this.animateWrong) {
+                            this.cancelAnimation();
+                            this.playAnimation('correct-answer');
+                        }
+                        return;
+                    case 'wrong':
+                        this.$.container.classList.add('wrong');
+                        if (this.animateWrong) {
+                            this.cancelAnimation();
+                            this.playAnimation('incorrect-answer');
+                        }
+                        return;
+                    case 'neutral':
+                        this.$.container.classList.add('neutral');
+                        if (this.animateWrong) {
+                            this.cancelAnimation();
+                            this.playAnimation('correct-answer');
+                        }
+                        return;
+                    default:
+                        return;
+                }
+            }
+        },
+        wasAnswered: function() {
+            this._state = 'question';
+            this.$.fab.show();
+        },
+        show: function() {
+            this._opened = true;
+            this._state = 'question';
+            this.$.fab.hide();
+        },
+        showFeedback: function() {
+            if (this.combination) {
+                switch (this.combination.grade) {
+                    case Capira.Grade.CORRECT:
+                        this.set('_state', 'correct');
+                        break;
+                    case Capira.Grade.INCORRECT:
+                        this.set('_state', 'wrong');
+                        break;
+                    case Capira.Grade.NEUTRAL:
+                        this.set('_state', 'neutral');
+                        break;
+                    default:
+                        this.set('_state', 'question');
+                        break;
+                }
+            }
+        },
+        _nextAction: function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            if (this._state === 'question') {
+                this.fire('quiz-answered');
+                return;
+            } else if (!this.combination.reaction) {
+                // repeat question
+                this._state = 'question';
+            } else {
+                this._done();
+            }
+        },
+        _computeFabIcon: function(state) {
+            if (state === 'question') {
+                return 'player-icons:check';
+            } else if (this.combination && !this.combination.reaction) {
+                // repeat question
+                return 'player-icons:replay';
+            } else {
+                return 'player-icons:play-arrow';
+            }
+        },
+        _computeFabClass: function() {
+            if (this._state === 'wrong') {
+                this.$.fab.classList.add('fab-wrong');
+            } else {
+                this.$.fab.classList.remove('fab-wrong');
+            }
+        },
+        _done: function() {
+            this.fire('quiz-done', this.combination.reaction);
+        },
+        _stopPropagation: function(e) {
+            //prevent unintended clicks on overlay
+            e.stopPropagation();
+            e.preventDefault();
+        },
+        _computeFontSize: function() {
+            var text = this.question;
+            if (text) {
+                var regex = new RegExp('<latex-formula(.*?)</latex-formula>', 'g');
+                text = text.replace(regex, 'abc'); //'abc' assuming the average formula has 3 letters
+                if ((!this.isTop && text.length > 180) || (this.isTop && text.length > 120)) {
+                    this.$.container.classList.add('long-text');
+                } else {
+                    this.$.container.classList.remove('long-text');
+                }
+            }
+        }
+
+    });
+})();
+</script>

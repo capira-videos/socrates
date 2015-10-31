@@ -1,0 +1,153 @@
+<link rel="import" href="../overlay/elements/back-button.html">
+<link rel="import" href="../../annotations/short-annotation/short-annotation.html">
+<link rel="import" href="../../annotations/standard-annotation/standard-annotation.html">
+<link rel="import" href="../../quizzes/custom-quiz/custom-quiz.html">
+<link rel="import" href="../../quizzes/draw-quiz/draw-quiz.html">
+<link rel="import" href="../../quizzes/hotspot-quiz/hotspot-quiz.html">
+<link rel="import" href="../../quizzes/math-quiz/math-quiz.html">
+<link rel="import" href="../../quizzes/multi-answer-quiz/multi-answer-quiz.html">
+<link rel="import" href="../../quizzes/short-answer-quiz/short-answer-quiz.html">
+<link rel="import" href="../../quizzes/single-answer-quiz/single-answer-quiz.html">
+<link rel="import" href="../../quizzes/number-range-quiz/number-range-quiz.html">
+
+<dom-module id="overlays-manager">
+    <template>
+    <style>
+    :host {
+        display: block;
+        @apply(--layout-fit);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @media all and (max-width: 600px) {
+        back-button {
+            top: 8px;
+            color: white;
+            left: 8px;
+        }
+    }
+     </style>
+        <back-button on-tap="back" id="back"></back-button>
+        <content></content>
+    </template>
+</dom-module>
+<script>
+'use strict';
+
+(function() {
+    Polymer({
+        is: 'overlays-manager',
+        properties: {
+            overlays: {
+                type: Array,
+                notify: true,
+                observer: '_initOverlays'
+            },
+            openedOverlay: {
+                type: Object,
+                notify: true
+            },
+            _openedOverlayId: {
+                type: Object, // might be a String or Number
+                value: null
+            },
+            _previousOverlays: {
+                type: Array,
+                value: []
+            },
+
+        },
+        attached: function() {
+            this._initKeys();
+            this.id = 'overlays';
+        },
+        _initOverlays: function() {
+            this._previousOverlays = [];
+            this._openedOverlayId = null;
+            this.overlays.forEach(function(overlay) {
+                this._appendOverlay(overlay);
+            }.bind(this));
+        },
+
+        _appendOverlay: function(overlay) {
+            var overlayEl = Polymer.Base.create(overlay.type, {
+                id: 'overlay' + overlay.id,
+                overlay: overlay
+            });
+
+            Polymer.dom(this).appendChild(overlayEl);
+        },
+        show: function(overlayId, noHistory) {
+            if (overlayId !== this._openedOverlayId) {
+                if (!noHistory) {
+                    this.handleNext();
+                }
+                this.hide(null, noHistory);
+                var eOverlay = this.getOverlayById(overlayId);
+                if (!noHistory) {
+                    eOverlay.show();
+                } else {
+                    eOverlay.showBack();
+                }
+                var overlay = eOverlay.overlay;
+                this._openedOverlayId = overlay.id;
+                this.openedOverlay = overlay;
+            }
+        },
+        hide: function(overlayId, back) {
+            overlayId = overlayId || this._openedOverlayId;
+            if (overlayId || overlayId === 0) {
+                var eOverlay = this.getOverlayById(overlayId);
+                if (!back) {
+                    eOverlay.hide();
+                } else {
+                    eOverlay.hideBack();
+                }
+                this._openedOverlayId = null;
+                this.openedOverlay = null;
+                this.unlinkPaths('openedOverlay');
+                app.fire('hideoverlay', eOverlay.overlay);
+            }
+        },
+        handleNext: function() {
+            if (this._openedOverlayId || this._openedOverlayId === 0) {
+                this._previousOverlays.push(this._openedOverlayId);
+                this.$.back.show();
+            }
+            console.log(this._previousOverlays);
+        },
+        back: function() {
+            this.show(this._previousOverlays.pop(), true);
+            if (!this._previousOverlays.length) {
+                this.$.back.hide();
+            }
+            console.log(this._previousOverlays);
+        },
+        _initKeys: function() {
+            var elem = document.createElement('iron-a11y-keys');
+            elem.keys = 'enter left right';
+            elem.target = document.querySelector('body');
+            Polymer.dom(this.root).appendChild(elem);
+
+            this.addEventListener('keys-pressed', function(e) {
+                var overlayId = overlayId || this._openedOverlayId;
+                if (overlayId || overlayId === 0) {
+                    var eOverlay = this.getOverlayById(overlayId);
+                    if (e.detail.combo === 'left' || e.detail.combo === 'right') {
+                        eOverlay.arrowPressed(e.detail.combo);
+                    } else if (e.detail.combo === 'enter') {
+                        eOverlay.enterPressed();
+                    }
+                }
+            });
+        },
+        getOpenedOverlay: function() {
+            return this.getOverlayById(this._openedOverlayId);
+        },
+        getOverlayById: function(id) {
+            return Polymer.dom(this).querySelector('#overlay' + id);
+        }
+    });
+})();
+</script>
