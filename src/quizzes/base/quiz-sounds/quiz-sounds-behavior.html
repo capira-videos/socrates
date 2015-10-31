@@ -14,7 +14,12 @@ Capira.QuizSounds = {
 
     },
     playSound: function(grade) {
-        return document.querySelector('quiz-sounds').playGrade(grade);
+        var sounds = document.querySelector('quiz-sounds');
+        if (sounds) {
+            sounds.playGrade(grade);
+        } else {
+            console.warn('sounds not ready');
+        }
     }
 };
 </script>

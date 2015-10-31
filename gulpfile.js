@@ -471,16 +471,11 @@ gulp.task('copy-tests', function() {
             'bower_components/**/axs_testing.js',
             'bower_components/**/a11ySuite.js',
             'bower_components/**/polymer.html',
+            'bower_components/**/test-helpers.js',
         ])
         .pipe(gulp.dest('../dist/bower_components/'));
 
-    var testsEditor = gulp.src('src/**/test/*.html')
-        .pipe(filenames('editorTests'))
-        .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
-        .pipe(flatten({
-            includeParents: -2
-        }))
-        .pipe(gulp.dest('../dist/editor/test/'));
+
     var demos = gulp.src(['src/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
         .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlays/demo/demo-init.html">')))
@@ -505,19 +500,12 @@ gulp.task('copy-tests', function() {
     var htaccess = gulp.src('static/tests/.htaccess')
         .pipe(gulp.dest('../dist/editor/test/'))
         .pipe(gulp.dest('../dist/player/test/'));
-
-    gulp.src('src/**/test/*.html')
-        .pipe(flatten({
-            includeParents: -2
-        }))
-        .pipe(filenames('testpaths'))
-        .pipe(gulp.dest('../dist/editor/test/'));
-
 });
 
+
 gulp.task('fetch-tests', function() {
-    var testsEditor = gulp.src('src/**/test/*.html')
-        .pipe(filenames('editorTests'))
+
+    gulp.src('src/**/test/*.html')
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
         .pipe(flatten({
             includeParents: -2
@@ -537,7 +525,7 @@ gulp.task('print-tests', function() {
 
 gulp.task('build-tests', function(cb) {
     runSequence(
-        ['copy-tests','fetch-tests'], ['print-tests'],
+        ['copy-tests', 'fetch-tests'], ['print-tests'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

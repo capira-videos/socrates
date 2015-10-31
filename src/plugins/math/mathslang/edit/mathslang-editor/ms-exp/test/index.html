@@ -23,25 +23,25 @@
     <script>
     'use strict';
     suite('<ms-exp>', function() {
-        var msExp, menu;
+        var msExp, approx, expr;
         setup(function() {
             msExp = fixture('msExp');
-            menu = msExp.$$('paper-menu');
+            approx = msExp.$.approx;
+            expr = msExp.$.expr;
         });
 
-        function testFun(fun, done) {
-            msExp.value = {
-                fun: fun,
-                exp: 'x+1'
-            };
+        function testFun(value, done) {
+            msExp.value = value;
             Polymer.Base.async(function() {
                 try {
-                    expect(menu.selected).to.be.eql(fun);
-                    if (fun === '#approx') {
-                        expect(msExp.value.error).to.be.a('number');
+
+                    expect(expr.value).to.be.equal(value.exp);
+                    if (value.error) {
+                        expect(approx.hidden).to.be.equal(false);
                     } else {
-                        expect(msExp.value.error).to.be.an('undefined');
+                        expect(approx.hidden).to.be.equal(true);
                     }
+
                     done();
                 } catch (e) {
                     done(e);
@@ -49,27 +49,18 @@
             }, 1);
         }
 
-        test('can set it\'s Function to "#equals" ', function(done) {
-            testFun('#equals', done);
+        test('can set expression ', function(done) {
+            testFun({
+                exp: 'x-1'
+            }, done);
         });
-        test('can set it\'s Function to "#identic" ', function(done) {
-            testFun('#identic', done);
+        test('can set expression with error-margin', function(done) {
+            testFun({
+                exp: 'x-2',
+                error: 1
+            }, done);
         });
-        test('can set it\'s Function to "#approx" ', function(done) {
-            testFun('#approx', done);
-        });
-        test('can set it\'s Function to "#leq" ', function(done) {
-            testFun('#leq', done);
-        });
-        test('can set it\'s Function to "#lt" ', function(done) {
-            testFun('#lt', done);
-        });
-        test('can set it\'s Function to "#gt" ', function(done) {
-            testFun('#gt', done);
-        });
-        test('can set it\'s Function to "#geq" ', function(done) {
-            testFun('#geq', done);
-        });
+
     });
     </script>
 </body>

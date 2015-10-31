@@ -1,0 +1,24 @@
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+
+window.Capira.selectBehaviors = (function() {
+    function preprocess(behavior) {
+        if (!behavior) {
+            return [];
+        }
+        if (behavior.constructor !== Array) {
+            return [behavior];
+        }
+        return behavior;
+    }
+
+    return function(behaviors) {
+        if (behaviors) {
+            return preprocess(behaviors.core).concat(preprocess(window.isEditor ? behaviors.editor : behaviors.player));
+        } else {
+            console.err('behaviors empty!');
+        }
+    };
+})();
+</script>
