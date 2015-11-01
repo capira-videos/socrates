@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ms-exp basic tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="../../../../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../../../../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../../../../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../../../../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../../../../../../../bower_components/test-fixture/test-fixture.html">
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="../ms-exp.html">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <test-fixture id="msExp">
+        <template>
+            <ms-exp></ms-exp>
+        </template>
+    </test-fixture>
+    <script>
+    'use strict';
+    suite('<ms-exp>', function() {
+        var msExp, approx, expr;
+        setup(function() {
+            msExp = fixture('msExp');
+            approx = msExp.$.approx;
+            expr = msExp.$.expr;
+        });
+
+        function testFun(value, done) {
+            msExp.value = value;
+            Polymer.Base.async(function() {
+                try {
+
+                    expect(expr.value).to.be.equal(value.exp);
+                    if (value.error) {
+                        expect(approx.hidden).to.be.equal(false);
+                    } else {
+                        expect(approx.hidden).to.be.equal(true);
+                    }
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            }, 1);
+        }
+
+        test('can set expression ', function(done) {
+            testFun({
+                exp: 'x-1'
+            }, done);
+        });
+        test('can set expression with error-margin', function(done) {
+            testFun({
+                exp: 'x-2',
+                error: 1
+            }, done);
+        });
+
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<link rel="import" href="latex-editor.html">
+<script>
+'use strict';
+
+window.Capira.EditableLatex = {
+    listeners: {
+        'dblclick': '_editLatex'
+    },
+    attached: function() {
+        var editor = document.querySelector('latex-editor');
+        if (!editor) {
+            editor = Polymer.Base.create('latex-editor');
+            document.body.appendChild(editor);
+        }
+    },
+    _editLatex: function() {
+        var editor = document.querySelector('latex-editor');
+        editor.open(this.latexExp, this.render.bind(this));
+    }
+};
+</script>

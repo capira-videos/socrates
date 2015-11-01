@@ -1,0 +1,89 @@
+<link rel="import" href="../quiz/quiz.html">
+<link rel="import" href="../../overlay/behaviors/resizable-overlay.html">
+<link rel="import" href="../quiz-core-question/quiz-question-card.html">
+<link rel="import" href="../../plugins/draw/draw-canvas/draw-canvas.html">
+<link rel="import" href="hotspot-marker.html">
+<dom-module id="hotspot-quiz">
+    <template>
+    <style>
+    :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+        pointer-events: all;
+    }
+
+    draw-canvas {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+    }
+
+    #click {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        cursor: url('/static/img/quiz-icons/location.ico') 24 24, pointer;
+    }
+
+    #card {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 64px;
+    }
+
+    @media all and (max-width: 600px) {
+        #card {
+            bottom: -64px;
+        }
+    }
+     </style>
+        <draw-canvas id="canvas" paths="{{overlay.mask}}"></draw-canvas>
+        <div id="click" on-click="canvasClick"></div>
+        <hotspot-marker id="marker"></hotspot-marker>
+        <quiz-question-card id="card" question="{{overlay.question}}" is-top animate-wrong icon="player-icons:my-location" combination="{{combination}}">
+        </quiz-question-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'hotspot-quiz',
+        behaviors: [Capira.Quiz, Capira.Slang],
+        observers: ['_overlayChanged(overlay.mask.*)'],
+        created: function() {
+            this.scalingFactor = 2;
+        },
+        canvasClick: function(e) {
+            var x = e.offsetX;
+            var y = e.offsetY;
+            this.$.marker.setPosition(x, y);
+
+            var c = this.$.canvas.$.resize;
+            var click = this.$.click;
+
+            x *= (c.width / click.offsetWidth);
+            y *= (c.height / click.offsetHeight);
+
+            this.value = this.$.canvas.getPixelColor(x, y);
+        },
+
+        _valueEquals: function(expected, given) {
+            return this.colorslang.compare(expected, given);
+        },
+        _show: function() {
+            this.$.marker.hide();
+            this.$.card.show();
+        },
+        _overlayChanged: function() {
+            if (this.overlay) {
+                this.$.canvas.set('paths', this.overlay.mask);
+                this.$.canvas._drawLines();
+            }
+        }
+    });
+})();
+</script>

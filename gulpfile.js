@@ -484,7 +484,7 @@ gulp.task('copy-tests', function() {
         }))
         .pipe(gulp.dest('../dist/editor/test/'));
 
-    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/edit/**/demo/*.html'])
+    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/quiz-single-answer-editor/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
         .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlay/demo/demo-init.html">')))
         .pipe(flatten({

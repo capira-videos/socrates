@@ -1,0 +1,111 @@
+<!--TODO: Add intervals to functions-->
+<link rel="import" href="../../../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../../../editor/right-bar/right-bar.html">
+<link rel="import" href="../../../../../editor/right-bar/right-bar-header/right-bar-header.html">
+<link rel="import" href="../mathslang-item-view/mathslang-item-view.html">
+<link rel="import" href="../../../math-input/math-paper-input.html">
+<link rel="import" href="ms-fun/ms-fun.html">
+<link rel="import" href="ms-item-selector/ms-item-selector.html">
+<link rel="import" href="ms-input-exp/ms-input-exp.html">
+<link rel="import" href="ms-exp/ms-exp.html">
+<dom-module id="mathslang-editor">
+    <template>
+        <style>
+        :host {
+            display: block;
+            position: relative;
+            @apply(--paper-font-body1);
+        }
+
+        #content {
+            padding-left: 16px;
+            padding-right: 16px;
+            position: relative;
+        }
+
+        .heading {
+            @apply(--paper-font-subhead);
+        }
+
+        .exp-def {
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .buttons {
+            float: right;
+        }
+
+        .buttons paper-button:hover {
+            color: var(--accent-color);
+        }
+        </style>
+        <right-bar-header>Mathslang Editor</right-bar-header>
+        <div id="content">
+            <ms-item-selector overlay="{{overlay}}" hidden$="{{!isComplex}}"></ms-item-selector>
+            <div class="exp-def">
+                <div class="heading">Expression:</div>
+                <ms-input-exp id="inputExp" value="{{value}}" overlay="{{overlay}}" hidden$="{{!isComplex}}"></ms-input-exp>
+                <ms-fun value="{{value}}"></ms-fun>
+                <ms-exp value="{{value}}"></ms-exp>
+            </div>
+            <div class="buttons">
+                <paper-button on-tap="_cancel">Cancel</paper-button>
+                <paper-button on-tap="_save">Save</paper-button>
+            </div>
+        </div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mathslang-editor',
+        behaviors: [Capira.RightBar],
+        properties: {
+            overlay: {
+                type: Object,
+            },
+            value: {
+                type: Object,
+                notify: true
+            },
+            isComplex: {
+                type: Boolean,
+                value: false
+            }
+        },
+
+        observers: ['_itemsChanged(overlay.items.length)'],
+
+        listeners: {
+            'add-item-to-exp': '_addItem',
+        },
+
+        _addItem: function(e) {
+            this.$.inputExp._addItem(e);
+        },
+
+        _save: function() {
+            this.fire('edit-state', 'combination');
+        },
+
+        _cancel: function() {
+            this.fire('edit-state', 'combination');
+        },
+
+        _itemsChanged: function() {
+            if (this.overlay && this.overlay.items) {
+                if (this.overlay.items.length > 1) {
+                    this.isComplex = true;
+                    this.$.content.classList.remove('simple');
+                } else {
+                    this.$.content.classList.add('simple');
+                    this.isComplex = false;
+                }
+            }
+        }
+    });
+})();
+</script>

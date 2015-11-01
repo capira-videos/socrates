@@ -1,0 +1,93 @@
+<link rel="import" href="../../../../../overlay/elements/markup/mark-up.html">
+<link rel="import" href="../../../math-input/greek-alphabet.html">
+<dom-module id="mathslang-value">
+    <template>
+        <mark-up content="{{markup}}" uneditable="1"></mark-up>
+    </template>
+</dom-module>
+<script>
+'use strict';
+
+Polymer({
+    is: 'mathslang-value',
+    properties: {
+        value: String,
+        overlay: Object,
+        markup: {
+            computed: 'computeMarkup(value.*,overlay)',
+            type: String
+        },
+        items: {
+            type: Array,
+            value: []
+        }
+    },
+    computeMarkup: function(value, overlay) {
+        value = this.value;
+        if (value.exp === undefined) {
+            //not initialized yet. nothing to do.
+            return value;
+        }
+        if (value.exp === '') {
+            return 'Click here to define an expression';
+        }
+        var exp = value.exp;
+        exp = exp.replace(new RegExp('<&', 'g'), '');
+        exp = exp.replace(new RegExp('>', 'g'), '');
+        exp = exp.replace(new RegExp('&', 'g'), '');
+
+        exp = exp.replace(new RegExp('\\(', 'g'), '{(');
+        exp = exp.replace(new RegExp('\\)', 'g'), ')}');
+        exp = exp.replace(new RegExp('\\[', 'g'), '(');
+        exp = exp.replace(new RegExp('\\]', 'g'), ')');
+        Capira._greekAlphabet.forEach(function(letter) {
+            exp = exp.replace(new RegExp(letter.greek, 'g'), letter.latex + ' ');
+        });
+        //todo use switch statement here
+        var fun = value.fun;
+        fun = fun.replace(new RegExp('#equals', 'g'), ' = ');
+        fun = fun.replace(new RegExp('#vecEquals', 'g'), ' = ');
+        fun = fun.replace(new RegExp('#identic', 'g'), '\\equiv ');
+        fun = fun.replace(new RegExp('#approx', 'g'), '\\approx');
+        fun = fun.replace(new RegExp('#leq', 'g'), '\\leq');
+        fun = fun.replace(new RegExp('#geq', 'g'), '\\geq');
+        fun = fun.replace(new RegExp('#lt', 'g'), '<');
+        fun = fun.replace(new RegExp('#gt', 'g'), '>');
+        fun = ' '+fun+' '; //HACK to ensure fun isn't interpreted as js
+
+        var error = value.error ? ' \\pm ' + value.error : '';
+        this.items = [];
+        var inputExp = value.inputExp;
+        if (inputExp && overlay.items) {
+            overlay.items.forEach(function(item, index) {
+                if (inputExp.indexOf('@' + item.id) > -1) {
+                    this.items.push(item);
+                }
+                inputExp = inputExp.replace(new RegExp('@' + item.id, 'g'), 'x_' + index);
+            }.bind(this));
+        } else {
+            inputExp = 'x_0 ';
+        }
+        var latexExp = inputExp + fun + exp + error;
+        try {
+            window.katex.renderToString(latexExp);
+        } catch (e) {
+            latexExp = 'LaTeX Syntax Error';
+        }
+        //TODO: Fix XSS Vulnerability!
+        return '<latex-formula>' + latexExp + '</latex-formula>';
+    },
+    attached: function() {
+        this.addEventListener('mouseenter', function() {
+            this.items.forEach(function(item) {
+                this.fire('highlight-item', item);
+            }.bind(this));
+        }.bind(this));
+        this.addEventListener('mouseleave', function() {
+            this.items.forEach(function(item) {
+                this.fire('unhighlight-item', item);
+            }.bind(this));
+        }.bind(this));
+    }
+});
+</script>

@@ -1,0 +1,55 @@
+<link rel="import" href="../quiz-base/quiz-base.html">
+<link rel="import" href="../quiz-base/quiz-resizable.html">
+<link rel="import" href="../quiz-core-question/quiz-question-card.html">
+<link rel="import" href="draggable-item.html">
+<dom-module id="dnd-quiz">
+    <template>
+    <style>
+    :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+        pointer-events: all;
+    }
+
+    #card {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 128px;
+    }
+     </style>
+        <template is="dom-repeat" items="{{overlay.items}}">
+            <draggable-item item="{{item}}"></draggable-item>
+        </template>
+        <quiz-question-card id="card" question="{{overlay.question}}" is-top animate-wrong icon="open-with">
+        </quiz-question-card>
+    </template>
+</dom-module>
+<script>
+(function() {
+    Polymer({
+        is: 'dnd-quiz',
+        behaviors: [Capira.Quiz, Capira.QuizResizable],
+
+        attached: function() {
+            this.ondrop = function(event) {
+                var offset = event.dataTransfer.getData("text/plain").split(',');
+                var dm = document.getElementById('dragme');
+                dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+                dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+                event.preventDefault();
+                return false;
+            };
+            this.ondragover = function(ev) {
+                ev.preventDefault();
+            };
+        },
+
+        reset: function() {
+            this.$.card.reset();
+        }
+    });
+})();
+</script>

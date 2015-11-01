@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Web Components -->
+    <script src="../../../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="/capira-helper/scaffold.html">
+
+    <link rel="import" href="../../../../../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../../mathslang-value.html">
+
+    <!-- endbuild -->
+    <style>
+
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        padding: 48px;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .editor {
+        width: 360px;
+        display: inline-table;
+        margin-left: 36px;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <template is="dom-bind" id="app">
+        <h2>Mathslang Values</h2>
+        <template is="dom-repeat" items="{{overlay.combinations}}" >
+            <mathslang-value value="{{item.value}}" overlay="{{overlay}}"></mathslang-value>
+        </template>
+    </template>
+    <link rel="import" href="demo-data.html">
+    <script>
+    'use strict';
+    var editor1 = document.querySelector('#app');
+    setTimeout(function() {
+        var testOverlay= window.dummyOverlays[0];
+        window.dummyOverlays.forEach(function(overlay){
+            testOverlay.combinations.concat(overlay.combinations);
+        });
+        editor1.overlay = testOverlay;
+        editor1.addEventListener('value-changed', function(e) {
+            console.log('fun Change:', e.detail);
+            console.log('New Value:', value);
+        });
+    }, 500);
+    </script>
+</body>
+
+</html>

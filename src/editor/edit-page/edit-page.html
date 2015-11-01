@@ -1,0 +1,76 @@
+<script>
+window.isEditor = true;
+</script>
+<link rel="import" href="../../../../../bower_components/neon-animation/neon-animatable-behavior.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/animations/slide-up-animation.html">
+<link rel="import" href="../../../../../bower_components/neon-animation/animations/scale-down-animation.html">
+<link rel="import" href="edit-page-layout.html">
+<link rel="import" href="../../../../capira-icons/editor-icons.html">
+<link rel="import" href="../../../../overlay/elements/markup/editable-markup/editable-markup.html">
+
+<script>
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.EditPageImpl = {
+    properties: {
+        animationConfig: {
+            type: Object,
+            value: function() {
+                return {
+                    'entry': [{
+                        name: 'fade-in-animation',
+                        node: this
+                    }, {
+                        name: 'slide-up-animation',
+                        node: this
+                    }],
+
+                    'exit': [{
+                        name: 'fade-out-animation',
+                        node: this
+                    }, {
+                        name: 'scale-down-animation',
+                        node: this,
+                        transformOrigin: '50% 50%',
+                        axis: 'y'
+                    }]
+                };
+            }
+        }
+    },
+
+    listeners: {
+        'edit-state': '_setState',
+        'add-answer': 'addAnswer'
+    },
+
+    attached: function() {
+        this.style.pointerEvents = 'all';
+        this.layout = this.$$('edit-page-layout');
+    },
+    _setState: function(state) {
+        state = state.detail ? state.detail : state;
+        if (this.layout) {
+            this.layout.state = state;
+        }
+    },
+    show: function() {
+        this.behaviors.forEach(function(behavior) {
+            if (behavior._show) {
+                behavior._show.call(this);
+            }
+        }.bind(this));
+        if (this._show) {
+            this._show();
+        }
+    },
+    _show: function() {
+        window.dispatchEvent(new Event('resize'));
+        this.fire('edit-state', 'default');
+    }
+};
+
+window.Capira.EditPage = [Polymer.NeonAnimatableBehavior, Capira.EditPageImpl];
+</script>

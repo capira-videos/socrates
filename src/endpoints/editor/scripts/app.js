@@ -11,9 +11,9 @@
         window.app = document.querySelector('#app');
 
         app.overlays = document.querySelector('pages-manager');
-        app.unitEditor = document.querySelector('unit-edit-page');
+        app.unitEditor = document.querySelector('unit-quiz-single-answer-editor-page');
         app.service = document.querySelector('capira-service');
-        app.sounds = document.querySelector('quiz-sounds');
+        app.sounds = document.querySelector('quiz-core-sounds');
         app.protector = document.querySelector('changes-protector');
 
         app.service.addEventListener('unit-loaded', function() {

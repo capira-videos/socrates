@@ -16,7 +16,7 @@ window.isPlayer = true;
         window.app = document.querySelector('#app');
         app.service = document.querySelector('capira-service');
         app.overlays = document.querySelector('overlay-manager');
-        app.sounds = document.querySelector('quiz-sounds');
+        app.sounds = document.querySelector('quiz-core-sounds');
         app.playerManager = document.querySelector('video-player');
 
         app.service.addEventListener('unit-loaded', function() {

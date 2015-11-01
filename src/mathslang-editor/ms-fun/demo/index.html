@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Web Components -->
+    <script src="../../../../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="/capira-helper/scaffold.html">
+
+    <link rel="import" href="../../../../../../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../ms-fun.html">
+
+    <!-- endbuild -->
+    <style>
+
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .editor {
+        width: 360px;
+        display: inline-table;
+        margin-left: 36px;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <div class="editor">
+        <h2>Simple</h2>
+        <ms-fun id="simple" on-value-changed="_combinationChanged"></ms-fun>
+    </div>
+    <link rel="import" href="demo-data.html">
+    <script>
+    'use strict';
+    var editor1 = document.querySelector('#simple');
+    setTimeout(function() {
+        editor1.overlay = window.dummyOverlays[0];
+        var value = editor1.overlay.combinations[0].value;
+        editor1.value = value;
+        editor1.addEventListener('value-changed', function(e) {
+            console.log('fun Change:', e.detail);
+            console.log('New Value:', value);
+        });
+    }, 500);
+    </script>
+</body>
+
+</html>
