@@ -31,11 +31,15 @@ window.dummyOverlays = [{
     }, {
         'value': '<& @times & #lt 9>',
         'grade': 2,
-        'feedback': 'Nein, das ist zu wenig. Man muss \u00f6fter falten...'
+        'feedback': 'Nein, das ist zu wenig. Man muss öfter falten...'
     }, {
         'value': '<& @times & #gt 9>',
         'grade': 2,
         'feedback': 'Nein, man muss weniger falten...&nbsp;'
+    }, {
+        'grade': 1,
+        'feedback': 'Fast....',
+        'value': '<& @times & #approx 9 #epsilon 2>',
     }],
     'event': {
         'type': 'STOP',
