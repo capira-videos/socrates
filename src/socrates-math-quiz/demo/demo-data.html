@@ -1,68 +1,64 @@
-<link rel="import" href="../../../data-migrator/data-migrator.html">
+<link rel="import" href="../../capira-migrator/capira-migrator.html">
 <script>
 // Dummy Data 
 window.dummyOverlay = {
-        'type': 'math-quiz',
-        'question': 'Sch\u00e4tzfrage: Wie oft muss man ein Blatt Papier falten, damit der Papierstapel, der dabei entsteht, bis zum Mond reicht?',
-        'combinations': [{
-            'feedback': 'Nicht ganz, bleib dran...',
-            'grade': 1,
-            'reaction': {
-                'type': 'play'
-            }
-        }, {
-            'value': '#equals 42',
-            'grade': 0,
-            'feedback': 'Richtig! Du wei\u00dft schon bescheid ;-)',
-            'reaction': {
-                'type': 'play'
-            }
-        }, {
-            'value': '#approx 42 #epsilon 5',
-            'grade': 1,
-            'feedback': 'Gute Sch\u00e4tzung! Wenn du\'s genau wissen willst, bleib dran :-)',
-            'reaction': {
-                'type': 'play'
-            }
-        }, {
-            'value': '#gt 10000',
-            'grade': 1,
-            'feedback': 'Deutlich weniger. Bleib dran, du wirst \u00fcberrascht sein!',
-            'reaction': {
-                'type': 'play'
-            }
-        }, {
-            'value': '#gt 1000',
-            'grade': 1,
-            'feedback': 'Deutlich weniger. Bleib dran... ',
-            'reaction': {
-                'type': 'play'
-            }
-        }, {
-            'value': '#geq 100',
-            'grade': 1,
-            'feedback': 'Na... es sind weniger als 100 Faltungen. Du wirst \u00fcberrascht sein... ',
-            'reaction': {
-                'type': 'play'
-            }
-        }, {
-            'value': '#lt 37',
-            'grade': 1,
-            'feedback': 'Das ist ein bisschen zu wenig...',
-            'reaction': {
-                'type': 'play'
-            }
-        }, {
-            'value': '#lt 100',
-            'grade': 1,
-            'feedback': 'Das ist schon die richtige Gr\u00f6\u00dfenordnung. Man muss aber sogar noch weniger falten...'
-        }],
-        'id': '1444599959644',
-        'event': {
-            'type': 'STOP',
-            'start': 7
+    'type': 'math-quiz',
+    'question': 'Sch\u00e4tzfrage: Wie oft muss man ein Blatt Papier falten, damit der Papierstapel, der dabei entsteht, bis zum Mond reicht?',
+    'combinations': [{
+        'value': '#equals 42',
+        'grade': 0,
+        'feedback': 'Richtig! Du wei\u00dft schon bescheid ;-)',
+        'reaction': {
+            'type': 'play'
         }
-    };
- window.migrateOverlay(dummyOverlay);
-
+    }, {
+        'value': '#approx 42 #epsilon 5',
+        'grade': 1,
+        'feedback': 'Gute Sch\u00e4tzung! Wenn du\'s genau wissen willst, bleib dran :-)',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': '#gt 10000',
+        'grade': 1,
+        'feedback': 'Deutlich weniger. Bleib dran, du wirst \u00fcberrascht sein!',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': '#gt 1000',
+        'grade': 1,
+        'feedback': 'Deutlich weniger. Bleib dran... ',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': '#geq 100',
+        'grade': 1,
+        'feedback': 'Na... es sind weniger als 100 Faltungen. Du wirst \u00fcberrascht sein... ',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': '#lt 37',
+        'grade': 1,
+        'feedback': 'Das ist ein bisschen zu wenig...',
+        'reaction': {
+            'type': 'play'
+        }
+    }, {
+        'value': '#lt 100',
+        'grade': 1,
+        'feedback': 'Das ist schon die richtige Gr\u00f6\u00dfenordnung. Man muss aber sogar noch weniger falten...'
+    }, {
+        'grade': 2,
+        'feedback': 'Das ist schon die richtige Gr\u00f6\u00dfenordnung. Man muss aber sogar noch weniger falten...'
+    }],
+    'id': '1444599959644',
+    'event': {
+        'type': 'STOP',
+        'start': 7
+    }
+};
+window.migrateOverlay(dummyOverlay);
 </script>
