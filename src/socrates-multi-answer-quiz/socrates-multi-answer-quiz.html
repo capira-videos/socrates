@@ -49,7 +49,7 @@ Simpler way to do this?
             expected = JSON.parse(expected).sort();
             return JSON.stringify(expected) === JSON.stringify(given);
         },
-        _valueEquals: function(expected, given) {
+        _compareFn: function(expected, given) {
             return this.logicslang.compare(expected, given, this._compare);
         },
         _selectionChanged: function() {

@@ -59,7 +59,7 @@
             player: Capira.CanShuffle,
             editor: [Capira.EditSingleAnswer, Capira.CanNotShuffle]
         }),
-        _valueEquals: function(expected, given) {
+        _compareFn: function(expected, given) {
             return expected === this._findOriginalIndex(this.value);
         },
         computeLetter: function(i) {

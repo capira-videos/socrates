@@ -1,4 +1,4 @@
-<link rel="import" href="../quiz/quiz-grade.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <dom-module id="quiz-sounds">
     <template>
         <audio id="correct" preload="auto" autobuffer="true">
@@ -29,23 +29,15 @@ Polymer({
             }
         }
     },
-
-    playGrade: function(grade) {
-        switch (grade) {
-            case Capira.Grade.CORRECT:
-                this._play('correct');
-                break;
-            case Capira.Grade.INCORRECT:
-                this._play('incorrect');
-                break;
-            case Capira.Grade.NEUTRAL:
-                this._play('neutral');
-                break;
-            default:
-                this._play('neutral');
-        }
+    playCorrect: function() {
+        this._play('correct');
     },
-
+    playIncorrect: function() {
+        this._play('incorrect');
+    },
+    playNeutral: function() {
+        this._play('neutral');
+    },
     _play: function(sound) {
         var audio = this.$[sound];
         if (audio.readyState > 0) {

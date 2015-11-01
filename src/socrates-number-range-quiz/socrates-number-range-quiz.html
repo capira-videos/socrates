@@ -61,7 +61,7 @@
         _sliderValueChanged: function() {
             this.value = this.$.slider.immediateValue;
         },
-        _valueEquals: function(expected, given) {
+        _compareFn: function(expected, given) {
             return this.mathslang.compare(expected, given);
         },
 		arrowPressed: function(direction) {

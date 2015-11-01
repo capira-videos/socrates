@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>quiz-sounds tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../../bower_components/test-fixture/test-fixture.html">
+
+
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../quiz-sounds-behavior.html">
+    <!-- endbuild -->
+    <link rel="import" href="basic-quiz-dummy.html">
+</head>
+
+<body>
+    <test-fixture id="quiz">
+        <template>
+            <basic-quiz-dummy></basic-quiz-dummy>
+        </template>
+    </test-fixture>
+    <script>
+    'use strict';
+    suite('QuizSounds', function() {
+        var quiz;
+        setup(function() {
+            quiz = fixture('quiz');
+        });
+
+        function testSound(grade, gradeName, done) {
+            stub('quiz-sounds', {
+                _play: function(sound) {
+                    assert(sound === gradeName);
+                    done();
+                }
+            });
+            quiz.fire({
+                grade: grade
+            });
+        }
+
+        test('can play neutral', function(done) {
+            testSound(Capira.Grade.NEUTRAL, 'neutral', done);
+        });
+        test('can play correct', function(done) {
+            testSound(Capira.Grade.CORRECT, 'correct', done);
+        });
+        test('can play incorrect', function(done) {
+            testSound(Capira.Grade.INCORRECT, 'incorrect', done);
+        });
+    });
+    </script>
+</body>
+
+</html>

@@ -71,7 +71,7 @@
             this.value = this.$.canvas.getPixelColor(x, y);
         },
 
-        _valueEquals: function(expected, given) {
+        _compareFn: function(expected, given) {
             return this.colorslang.compare(expected, given);
         },
         _show: function() {

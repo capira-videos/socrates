@@ -1,0 +1,18 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../quiz-value.html">
+<dom-module id="basic-quiz-dummy">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+
+	</template>
+	<script>
+		Polymer({
+			is: 'basic-quiz-dummy',
+			behaviors:[Capira.QuizValue]
+		});
+	</script>
+</dom-module>

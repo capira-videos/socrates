@@ -1,5 +1,5 @@
 <link rel="import" href="../overlay/overlay.html">
-<link rel="import" href="quiz-value.html">
+<link rel="import" href="../quiz-value/quiz-value.html">
 <link rel="import" href="quiz-grade.html">
 <link rel="import" href="../quiz-sounds/quiz-sounds-behavior.html">
 <script>
@@ -8,10 +8,10 @@ window.Capira = window.Capira || {};
 
 Capira.QuizImpl = {
     listeners: {
-        'quiz-answered': '_quizAnswered',
         'quiz-done': '_done',
         'skipped': '_quizSkipped',
-        'answer-changed': '_answerChanged'
+        'answer-changed': '_answerChanged',
+        'quiz-graded': '_quizGraded'
     },
     properties: {
         combination: {
@@ -25,28 +25,26 @@ Capira.QuizImpl = {
         if (this.$.card && this.$.card.show) {
             this.$.card.show();
         }
-
     },
 
-    _answerChanged: function(value) {
-        if (value !== undefined && value !== null && value !== '' && this.$.card) {
+    _answerChanged: function(e) {
+        var answer = e.detail;
+        if (answer !== undefined && answer !== null && answer !== '' && this.$.card) {
             this.$.card.wasAnswered();
-            //this.combination = null;
         }
     },
 
-    _quizAnswered: function() {
-        var combination = this.evaluate();
-        if (combination) {
-            this.playSound(combination.grade);
-        }
+    _quizGraded: function(e) {
+        var combination = e.detail;
         this.set('combination', null);
         this.set('combination', combination);
     },
 
     _quizSkipped: function(e) {
         e.stopPropagation();
-        this.playSound(Capira.Grade.INCORRECT);
+        this.fire('quiz-graded', {
+            Grade: Capira.Grade.INCORRECT
+        });
         this._done();
     },
 

@@ -1,24 +1,44 @@
+<link rel="import" href="../quiz/quiz-grade.html">
 <link rel="import" href="quiz-sounds.html">
 <script>
 'use strict';
 Capira = window.Capira || {};
 Capira.QuizSounds = {
+    listeners: {
+        'quiz-graded': '_playGrade'
+    },
+
+    sounds: function() {
+        var sounds = document.querySelector('quiz-sounds');
+        if (!sounds) {
+            sounds = Polymer.Base.create('quiz-sounds');
+            document.body.appendChild(sounds);
+        }
+        return sounds;
+    },
+
     attached: function() {
         //lazy load sound files
         setTimeout(function() {
-            if (!document.querySelector('quiz-sounds')) {
-                var sounds = Polymer.Base.create('quiz-sounds');
-                document.body.appendChild(sounds);
-            }
-        }, 1000);
-
+            this.sounds();
+        }.bind(this), 1000);
     },
-    playSound: function(grade) {
-        var sounds = document.querySelector('quiz-sounds');
-        if (sounds) {
-            sounds.playGrade(grade);
-        } else {
-            console.warn('sounds not ready');
+    _playGrade: function(e) {
+        var combination = e.detail;
+        if (combination && combination.grade !== undefined) {
+            switch (combination.grade) {
+                case Capira.Grade.CORRECT:
+                    this.sounds().playCorrect();
+                    break;
+                case Capira.Grade.INCORRECT:
+                    this.sounds().playIncorrect();
+                    break;
+                case Capira.Grade.NEUTRAL:
+                    this.sounds().playNeutral();
+                    break;
+                default:
+                    this.sounds().playNeutral();
+            }
         }
     }
 };

@@ -1,6 +1,6 @@
 
 <link rel="import" href="../quiz/quiz-theme.html">
-<link rel="import" href="../../../overlay/elements/animatable-fab.html">
+<link rel="import" href="../overlay-elements/animatable-fab.html">
 <dom-module id="quiz-question-card">
     <template>
     <style>
@@ -263,7 +263,7 @@
                 e.stopPropagation();
             }
             if (this._state === 'question') {
-                this.fire('quiz-answered');
+                this.fire('grade-answer');
                 return;
             } else if (!this.combination.reaction) {
                 // repeat question

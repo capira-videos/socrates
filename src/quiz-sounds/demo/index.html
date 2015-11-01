@@ -21,15 +21,21 @@
     sounds.attached();
 
     function correct() {
-        sounds.playSound(Capira.Grade.CORRECT);
+        sounds._playSound({
+            grade: Capira.Grade.CORRECT
+        });
     }
 
     function neutral() {
-        sounds.playSound(Capira.Grade.NEUTRAL);
+        sounds._playSound({
+            grade: Capira.Grade.NEUTRAL
+        });
     }
 
     function incorrect() {
-        sounds.playSound(Capira.Grade.INCORRECT);
+        sounds._playSound({
+            grade: Capira.Grade.INCORRECT
+        });
     }
 
     setTimeout(function() {

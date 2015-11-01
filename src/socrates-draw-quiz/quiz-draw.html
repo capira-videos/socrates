@@ -72,7 +72,7 @@
             'toolbox-clicked': '_updateTool'
         },
 
-        _valueEquals: function(expected, given) {
+        _compareFn: function(expected, given) {
             var similarity = this.hausdorffslang.compare(this.combinations[expected.hash], given,
                 expected.translateX, expected.translateY, expected.scale);
             return (similarity >= expected.threshold);

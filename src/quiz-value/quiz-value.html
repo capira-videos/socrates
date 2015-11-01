@@ -4,14 +4,21 @@ window.Capira = window.Capira || {};
 Capira.QuizValue = {
     properties: {
         answer: {
-            notify: true
+            type: Object,
+            notify: true,
         },
     },
-    evaluate: function() {
-        var combination = this._getCombinationByValue(this.answer);
+
+    listeners: {
+        'grade-answer': '_evaluate'
+    },
+
+    _evaluate: function() {
+        var combination = this._getCombinationByAnswer(this.answer);
         this.fire('quiz-graded', combination);
     },
-    _getCombinationByValue: function(value) {
+
+    _getCombinationByAnswer: function(value) {
         var arr = this.overlay.combinations.slice();
         arr.sort(this.sortFn);
         for (var i = 0; i < arr.length; i++) {
@@ -22,6 +29,7 @@ Capira.QuizValue = {
         }
         return undefined;
     },
+
     _compareFn: function(expected, given) {
         return expected === given;
     },

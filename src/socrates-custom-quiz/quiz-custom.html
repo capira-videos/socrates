@@ -49,7 +49,7 @@
                 this._valueChanged(this.value);
             }
         },
-        _valueEquals: function(expected, given) {
+        _compareFn: function(expected, given) {
             if (typeof expected === 'string') {
                 return this.mathslang.compare(expected, given);
             } else {

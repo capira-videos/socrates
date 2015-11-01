@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>QuizValue tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../../bower_components/test-fixture/test-fixture.html">
+    <link rel="import" href="basic-quiz-dummy.html">
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="../quiz-value.html">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <test-fixture id="quiz">
+        <template>
+            <basic-quiz-dummy></basic-quiz-dummy>
+        </template>
+    </test-fixture>
+    <link rel="import" href="../demo/demo-data.html">
+    <script>
+    'use strict';
+    suite('QuizValue', function() {
+        var quiz;
+        setup(function() {
+            quiz = fixture('quiz');
+            quiz.set('overlay', window.dummyQuiz);
+        });
+
+        test('fires answer changed events', function(done) {
+            quiz.addEventListener('answer-changed', function(e) {
+                assert.equal(e.detail.value, 0);
+                done();
+            });
+            quiz.set('answer', 0);
+        });
+
+        test('can evaluate basic', function(done) {
+            quiz.set('answer', 0);
+            quiz.addEventListener('quiz-graded', function(e) {
+                assert.equal(e.detail, window.dummyQuiz.combinations[0]);
+                done();
+            });
+            quiz.fire('grade-answer');
+        });
+        test('can evaluate basic', function(done) {
+            quiz.set('answer', 1);
+            quiz.addEventListener('quiz-graded', function(e) {
+                assert.equal(e.detail, window.dummyQuiz.combinations[1]);
+                done();
+            });
+            quiz.fire('grade-answer');
+        });
+
+        test('can evaluate with custom compareFn', function(done) {
+            quiz.set('answer', 'advanced');
+            quiz._compareFn = function(a, b) {
+                return (a + '').toUpperCase() === (b + '').toUpperCase();
+            };
+            quiz.addEventListener('quiz-graded', function(e) {
+                assert.equal(e.detail, window.dummyQuiz.combinations[2]);
+                done();
+            });
+            quiz.fire('grade-answer');
+        });
+    });
+    </script>
+</body>
+
+</html>
