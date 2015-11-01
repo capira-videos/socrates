@@ -24,27 +24,37 @@
     <script>
     'use strict';
     suite('<single-answer-quiz>', function() {
-        var quiz;
+        var quiz, items;
         setup(function() {
             quiz = fixture('quiz');
+            quiz.overlay = window.dummyOverlay;
         });
 
-        function testOverlay(overlay, done) {
-            quiz.overlay = overlay;
-            Polymer.Base.async(function() {
-                try {
-                    quiz.set('value','9');
-                    quiz._quizAnswered();
-                    assert('quiz is alive');
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            }, 1);
+        function testReaction(answer, combination, done) {
+            quiz.answer = answer;
+            quiz.addEventListener('quiz-graded', function(e) {
+                var result = e.detail;
+                console.log(result, combination);
+                assert(result === combination, 'combination correctly evaluated');
+                done();
+            });
+            quiz.fire('grade-answer');
         }
 
-        test('is alive', function(done) {
-            testOverlay(window.dummyOverlay, done);
+        test('can grade correct answer', function(done) {
+            testReaction('Because 42 will do.', window.dummyOverlay.combinations[0], done);
+        });
+
+        test('can grade neutral answer', function(done) {
+            testReaction('Because 42 is 101010 in binary code.', window.dummyOverlay.combinations[1], done);
+        });
+
+        test('can grade totally incorrect answer', function(done) {
+            testReaction('123', window.dummyOverlay.combinations[3], done);
+        });
+
+        test('can grade incorrect answer', function(done) {
+            testReaction('Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.', window.dummyOverlay.combinations[2], done);
         });
     });
     </script>

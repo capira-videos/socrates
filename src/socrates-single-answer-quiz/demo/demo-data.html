@@ -1,44 +1,42 @@
 <script>
 // Dummy Data 
 window.dummyOverlay = {
-    'id': 'quiz2',
-    'question': 'Wie oft muss man ein Blatt Papier falten, damit seine H\u00f6he 5cm betr\u00e4gt?',
-    'type': 'custom-quiz',
-    'items': [{
-        'id': 'times',
-        'type': 'input-item',
-        'x': 0.68,
-        'y': 0.68,
-        'z': 1,
-        'w': 0.06,
-        'fontSize': 2
-    }],
-    'combinations': [{
-        'value': '<& @times & #equals 9>',
-        'grade': 0,
-        'feedback': 'Korrekt. 9 Mal!',
-        'reaction': {
-            'type': 'seekTo',
-            'target': 171.535114
+    id: 'single-answer',
+    question: 'Why is 42 the answer to the Ultimate Question of Life, the Universe, and Everything?',
+    type: 'single-answer-quiz',
+    options: [
+        'Because 42 will do.',
+        'Because 42 is 101010 in binary code.',
+        'Because light refracts off water by 42 degrees to create a rainbow.',
+        'Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.'
+    ],
+    combinations: [{
+        value: 0,
+        grade: 0,
+        feedback: 'Exactly! Dougles Adams choose 42 randomly.',
+        reaction: {
+            type: 'showOverlay',
+            target: 'multi-answer-intro'
         }
     }, {
-        'grade': 2,
-        'feedback': 'Probier\'s nochmal!',
-        'reaction': {
-            'type': 'play'
+        value: 1,
+        grade: 1,
+        feedback: 'Do you believe he thought that deeply about every random fact? ;)',
+        reaction: {
+            type: 'showOverlay',
+            target: 'single-answer-hint'
         }
     }, {
-        'value': '<& @times & #lt 9>',
-        'grade': 2,
-        'feedback': 'Nein, das ist zu wenig. Man muss \u00f6fter falten...'
+        value: 3,
+        grade: 2,
+        feedback: 'Do you believe he thought that deeply about every random fact? ;)',
+        reaction: {
+            type: 'showOverlay',
+            target: 'single-answer-hint'
+        }
     }, {
-        'value': '<& @times & #gt 9>',
-        'grade': 2,
-        'feedback': 'Nein, man muss weniger falten...&nbsp;'
-    }],
-    'event': {
-        'type': 'STOP',
-        'start': 137.8
-    }
+        grade: 2,
+        feedback: 'Not quite, try again!'
+    }]
 };
 </script>
