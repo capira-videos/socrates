@@ -1,0 +1,28 @@
+<script>
+'use strict';
+//TODO: Refactor to automatically fit into parent like scale-to-parent
+Capira.Ratio16to9 = {
+    attached: function() {
+        window.addEventListener('resize', function() {
+            var width = width || window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var height = height || window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+            if (height < 190) {
+                width = window.screen.width;
+                height = window.screen.height;
+            }
+
+            if (height * 16.0 / 9 > width) {
+                height = width * 9.0 / 16;
+            } else {
+                width = height * 16.0 / 9;
+            }
+            this.style.width = width + 'px';
+            this.style.height = height + 'px';
+        }.bind(this));
+    },
+    _show: function() {
+        window.dispatchEvent(new Event('resize'));
+    }
+};
+</script>
