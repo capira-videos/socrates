@@ -1,6 +1,7 @@
-<link rel="import" href="../../../overlay/behaviors/resizable-overlay.html">
+<link rel="import" href="../../overlay/resizable-overlay.html">
 <link rel="import" href="has-tools.html">
 <link rel="import" href="draw-tools.html">
+<link rel="import" href="../../scale-to-parent/scale-to-parent.html">
 <dom-module id="draw-canvas">
     <template>
         <style>
@@ -9,21 +10,22 @@
             width: 100%;
             height: 100%;
         }
-
+        
         canvas[tool=pen] {
             cursor: url('/static/img/quiz-icons/brush.ico') 4 38, pointer;
         }
-
+        
         canvas[tool=line] {
             cursor: url('/static/img/quiz-icons/crosshair.ico') 24 24, pointer;
         }
-
+        
         canvas[tool=eraser] {
             cursor: url('/static/img/quiz-icons/eraser.ico') 7 40, pointer;
         }
         </style>
-        <canvas width="800" height="450" id="resize" tool="pen">
-        </canvas>
+        <scale-to-parent>
+            <canvas width="800" height="450" id="resize" tool="pen"></canvas>
+        </scale-to-parent>
     </template>
 </dom-module>
 <script>
@@ -31,7 +33,7 @@
 (function() {
     Polymer({
         is: 'draw-canvas',
-        behaviors: [Capira.ResizableOverlay, Capira.DrawTools],
+        behaviors: [Capira.DrawTools],
 
         properties: {
             color: {
