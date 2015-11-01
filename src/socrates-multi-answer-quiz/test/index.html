@@ -1,0 +1,59 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>multi-answer-quiz basic tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../../../bower_components/test-fixture/test-fixture.html">
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="../socrates-multi-answer-quiz.html">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <test-fixture id="quiz">
+        <template>
+            <multi-answer-quiz></multi-answer-quiz>
+        </template>
+    </test-fixture>
+    <link rel="import" href="../demo/demo-data.html">
+    <script>
+    'use strict';
+    suite('<multi-answer-quiz>', function() {
+        var quiz, items;
+        setup(function() {
+            quiz = fixture('quiz');
+            items = Polymer.dom(quiz.root).querySelectorAll('paper-checkbox');
+            quiz.overlay = window.dummyOverlay;
+        });
+
+        function testReaction(answer, combination, done) {
+            quiz.answer=answer;
+            quiz.addEventListener('quiz-graded', function(e) {
+                var result = e.detail;
+                assert(result === combination, 'combination correctly evaluated');
+                done();
+            });
+            quiz.fire('grade-answer');
+        }
+
+        test('can grade correct answer', function(done) {
+            testReaction([1,2], window.dummyOverlay.combinations[0], done);
+        });
+
+        test('can grade neutral answer', function(done) {
+            testReaction([1], window.dummyOverlay.combinations[3], done);
+        });
+
+        test('can grade incorrect answer', function(done) {
+            testReaction([0,2], window.dummyOverlay.combinations[1], done);
+        });
+    });
+    </script>
+</body>
+
+</html>

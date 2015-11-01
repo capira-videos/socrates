@@ -2,11 +2,11 @@
 Simpler way to do this?
 <core-selector target="{{$.choices}}" multi itemsSelector="paper-checkbox" selected="{{selected}}" selectedProperty="checked"></core-selector>
  -->
-
+<link rel="import" href="../capira-helper/shadow-dom.html">
 <link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../quiz/quiz.html">
 <link rel="import" href="../quiz-card/quiz-card.html">
-<link rel="import" href="../base/behaviors/can-shuffle.html">
+<link rel="import" href="../quiz/can-shuffle.html">
 <dom-module id="multi-answer-quiz">
     <template>
         <style>
@@ -18,7 +18,7 @@ Simpler way to do this?
             position: relative;
             cursor: pointer;
         }
-
+        
         #items {
             padding-top: 32px;
             padding-bottom: 32px;
@@ -45,26 +45,28 @@ Simpler way to do this?
             player: Capira.CanShuffle,
             editor: [Capira.EditSingleAnswer, Capira.CanNotShuffle]
         }),
-        _compare: function(expected, given) {
+        _compareFn: function(expected, given) {
             expected = JSON.parse(expected).sort();
             return JSON.stringify(expected) === JSON.stringify(given);
         },
-        _compareFn: function(expected, given) {
+        _compareFn1: function(expected, given) {
+            //TODO: Debug logicslang and add #or and #and again ... 
             return this.logicslang.compare(expected, given, this._compare);
         },
         _selectionChanged: function() {
             var items = this.$.items.childNodes;
-            this.value = [];
+            var answer = [];
             for (var i = 0; i < items.length; i++) {
                 var e = items[i];
                 if (e.nodeName === 'PAPER-CHECKBOX' && e.checked) {
                     var text = e.querySelector('mark-up').content.trim();
-                    this.value.push(this._findOriginalIndex(text));
+                    answer.push(this._findOriginalIndex(text));
                 }
             }
-            this.value.sort();
-            console.log('given answer: ', this.value);
-            this.fire('answer-changed');
+            answer.sort();
+            this.answer = answer;
+            console.log('given answer',answer);
+            this.fire('answer-changed', answer);
         },
         enterPressed: function() {
             return;
