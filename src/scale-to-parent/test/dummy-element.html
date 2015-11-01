@@ -1,0 +1,25 @@
+<dom-module id="dummy-element">
+    <template>
+        <style>
+        :host {
+            display: block;
+
+        }
+        
+        .test-area {
+            background-color: green;
+            width: 800px;
+            height: 450px;
+            text-align: center;
+        }
+        </style>
+        <scale-to-parent>
+            <div class="test-area" id="scaler4">Test Area 200x112.5</div>
+        </scale-to-parent>
+    </template>
+    <script>
+    Polymer({
+        is: 'dummy-element'
+    });
+    </script>
+</dom-module>

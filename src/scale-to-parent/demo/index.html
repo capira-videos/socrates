@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Web Components -->
+    <script src="../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="../../capira-helper/shadow-dom.html">
+    <link rel="import" href="../../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../scale-to-parent.html">
+    <!-- endbuild -->
+</head>
+<style>
+.test1,
+.test2,
+.test3 {
+    margin: 8px;
+}
+
+.test1 {
+    width: 800px;
+    height: 450px;
+}
+
+.test2 {
+    width: 400px;
+    height: 225px;
+}
+
+.test3 {
+    width: 200px;
+    height: 112.5px;
+}
+
+.test-area {
+    background-color: green;
+    width: 800px;
+    height: 450px;
+    text-align: center;
+}
+</style>
+</head>
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+
+    <div class="test1">
+        <scale-to-parent>
+            <div class="test-area">Test Area 800x450</div>
+        </scale-to-parent>
+    </div>
+    <div class="test2">
+        <scale-to-parent>
+            <div class="test-area">Test Area 400x225</div>
+        </scale-to-parent>
+    </div>
+    <div class="test3">
+        <scale-to-parent>
+            <div class="test-area">Test Area 200x112.5</div>
+        </scale-to-parent>
+    </div>
+</body>
+
+</html>

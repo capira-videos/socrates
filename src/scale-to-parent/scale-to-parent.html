@@ -1,0 +1,47 @@
+<dom-module id="scale-to-parent">
+    <template>
+        <style>
+        :host {}
+        </style>
+        <content></content>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'scale-to-parent',
+        attached: function() {
+            this.scale();
+            window.addEventListener('resize', this.scale.bind(this), false);
+        },
+        scale: function() {
+
+            // Element to be scaled
+            var elemToScale = this.querySelector('*');
+            // Parent (in dom or shadow-dom )
+            var parent = this.parentElement || this.parentNode.host;
+
+            //Dimensions
+            var height = elemToScale.offsetHeight;
+            var parentHeight = parent.offsetHeight;
+            var width = elemToScale.offsetWidth;
+            var parentWidth = parent.offsetWidth;
+            
+
+            //scaling factors
+            var factorX = parentWidth / width;
+            var factorY = parentHeight / height;
+
+            //set style
+            var s = elemToScale.style;
+            s.setProperty('transform', 'scale(' + factorX + ',' + factorY + ')', '');
+            s.setProperty('-webkit-transform', 'scale(' + factorX + ',' + factorY + ')', '');
+            s.setProperty('-moz-transform', 'scale(' + factorX + ',' + factorY + ')', '');
+            s.setProperty('-o-transform', 'scale(' + factorX + ',' + factorY + ')', '');
+            s.setProperty('transform-origin', 'top left', '');
+            s.setProperty('-webkit-transform-origin', 'top left', '');
+            s.setProperty('-moz-transform-origin', 'top left', '');
+            s.setProperty('-o-transform-origin', 'top left', '');
+        }
+    });
+    </script>
+</dom-module>
