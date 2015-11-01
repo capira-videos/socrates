@@ -1,0 +1,122 @@
+<link rel="import" href="../../../plugins/draw/draw-canvas/draw-canvas.html">
+<link rel="import" href="../../quiz-question/quiz-question-card.html">
+<dom-module id="hotspot-quiz-editor">
+    <template>
+    <style>
+    #mask {
+        border: 1px solid black;
+    }
+
+    #mask {
+        opacity: 0.5;
+    }
+
+    #card {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 64px;
+    }
+     </style>
+        <draw-canvas id="mask" color="[[color]]" pen-size="15" smoothing="false"></draw-canvas>
+        <quiz-question-card id="card" question="{{overlay.question}}" is-top="true" animate-wrong icon="player-icons:my-location" combination="{{combination}}"></quiz-question-card>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'hotspot-quiz-editor',
+        behaviors: [Capira.Overlay, Capira.HasTools],
+        properties: {
+            color: {
+                type: String,
+                notify: true,
+            },
+            overlay: {
+                type: Object,
+                notfiy: true,
+                observer: '_updateOverlay'
+            },
+            combination: {
+                type: Object,
+                observer: '_combinationChanged'
+            }
+        },
+        _updateOverlay: function() {
+            var mask = this.$.mask;
+            console.log('update overlay!');
+            if (this.overlay && this.overlay.mask) {
+                mask.set('points', []);
+                mask.set('paths', this.overlay.mask);
+            }
+        },
+
+        getNextColor: function() {
+            var color = '';
+
+            function different(o) {
+                return o.value === color;
+            }
+
+            var colorIndex = -1;
+            var isNotDifferent = true;
+            while (isNotDifferent) {
+                colorIndex += 1;
+                color = this._computeColor(colorIndex);
+                isNotDifferent = this.overlay.combinations.some(different);
+            }
+            return color;
+        },
+
+
+        _computeColor: function(colorIndex) {
+            var max = 'FF';
+            var min = '00';
+            if (colorIndex > 11) {
+                min = 'AA';
+            } else if (colorIndex > 5) {
+                max = '99';
+            }
+
+            if (colorIndex % 2 === 0) {
+                var tmp = max;
+                max = min;
+                min = tmp;
+            }
+
+            var color;
+
+            switch (colorIndex % 3) {
+                case 0:
+                    color = max + max + min;
+                    break;
+                case 1:
+                    color = max + min + max;
+                    break;
+                case 2:
+                    color = min + max + max;
+            }
+            return '#' + color;
+        },
+
+        _save: function() {
+            this.overlay.mask = this.$.mask.paths;
+        },
+
+        _combinationChanged: function() {
+            this.$.mask.history = [];
+            if (this.combination) {
+                if (this.combination.value) {
+                    this.$.mask.style.pointerEvents = 'all';
+                } else {
+                    //disable canvas for default answer
+                    this.$.mask.style.pointerEvents = 'none';
+                }
+            }
+        }
+
+    });
+})();
+</script>

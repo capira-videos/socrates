@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Web Components -->
+    <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="/capira-helper/scaffold.html">
+
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../../socrates-short-answer-quiz-editor/socrates-short-answer-quiz-editor.html">
+
+    <!-- endbuild -->
+    <style>
+
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <short-answer-quiz-edit-page></short-answer-quiz-edit-page>
+    <link rel="import" href="demo-data.html">
+    <link rel="import" href="../../../overlay/demo/demo-init.html">
+    <script>
+    window.initDemo('short-answer-quiz-edit-page');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<link rel="import" href="../quiz/quiz.html">
+<link rel="import" href="../../overlay/behaviors/has-items.html">
+<link rel="import" href="../quiz-question/quiz-question-card.html">
+<link rel="import" href="../slang/slang.html">
+<link rel="import" href="../../plugins/math/mathslang/math-input/math-input-explanation.html">
+<dom-module id="custom-quiz">
+    <template>
+        <style>
+        #card {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 64px;
+        }
+
+        math-input-explanation-button {
+            position: absolute;
+            top: 16px;
+            right: 64px;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        </style>
+        <div id="content">
+        <content></content>
+        </div>
+        <quiz-question-card id="card" is-top question="{{overlay.question}}" combination="{{combination}}" animate-wrong></quiz-question-card>
+        <math-input-explanation-button></math-input-explanation-button>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'custom-quiz',
+        behaviors: Capira.selectBehaviors({
+            core: [Capira.Quiz, Capira.HasItems, Capira.Slang],
+            editor: Capira.HasEditableItems
+        }),
+        listeners: {
+            'item-value-changed': '_itemValueChanged'
+        },
+        _itemValueChanged: function(event) {
+            if (event && event.detail) {
+                var target = event.detail;
+                this.value = this.value || {};
+                this.value[target.id] = target.value;
+                this._valueChanged(this.value);
+            }
+        },
+        _valueEquals: function(expected, given) {
+            if (typeof expected === 'string') {
+                return this.mathslang.compare(expected, given);
+            } else {
+                return this.mathslang.compare(expected, given);
+            }
+        }
+    });
+})();
+</script>

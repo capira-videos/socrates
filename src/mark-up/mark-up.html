@@ -1,0 +1,36 @@
+<link rel="import" href="/../latex/latex-formula.html">
+<dom-module id="mark-up">
+    <template>
+        <style>
+        :host {
+            display: block;
+            width: 100%;
+        }
+        </style>
+        <div id="content"></div>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'mark-up',
+        behaviors: Capira.selectBehaviors({
+            editor: Capira.EditableMarkup
+        }),
+        properties: {
+            content: {
+                type: String,
+                notify: true,
+                observer: '_renderContent'
+            }
+        },
+        _renderContent: function(content) {
+            if (content) {
+                //TODO: Fix XSS vulnerability
+                this.$.content.innerHTML = content;
+            }
+        }
+    });
+})();
+</script>

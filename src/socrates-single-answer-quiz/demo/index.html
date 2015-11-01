@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <!-- Web Components -->
+    <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="/capira-helper/scaffold.html">
+
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../socrates-single-answer-quiz.html">
+
+    <!-- endbuild -->
+    <style>
+
+
+    html,
+    body {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <single-answer-quiz></single-answer-quiz>
+    <script>
+    'use strict';
+
+
+    // Dummy Data
+    var dummy = {
+        id: 'single-answer',
+        question: 'Why is 42 the answer to the Ultimate Question of Life, the Universe, and Everything?',
+        type: 'single-answer-quiz',
+        options: [
+            'Because 42 will do.',
+            'Because 42 is 101010 in binary code.',
+            'Because light refracts off water by 42 degrees to create a rainbow.',
+            'Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.'
+        ],
+        combinations: [{
+            value: 0,
+            grade: 0,
+            feedback: 'Exactly! Dougles Adams choose 42 randomly.',
+            reaction: {
+                type: 'showOverlay',
+                target: 'multi-answer-intro'
+            }
+        }, {
+            value: 1,
+            grade: 1,
+            feedback: 'Do you believe he thought that deeply about every random fact? ;)',
+            reaction: {
+                type: 'showOverlay',
+                target: 'single-answer-hint'
+            }
+        }, {
+            value: 3,
+            grade: 2,
+            feedback: 'Do you believe he thought that deeply about every random fact? ;)',
+            reaction: {
+                type: 'showOverlay',
+                target: 'single-answer-hint'
+            }
+        }, {
+            grade: 2,
+            feedback: 'Not quite, try again!'
+        }]
+    };
+
+    var quiz = document.querySelector('single-answer-quiz');
+    setTimeout(function() {
+        quiz.overlay = dummy;
+        quiz.show();
+    }, 500);
+    </script>
+</body>
+
+</html>
