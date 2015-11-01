@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>hotspot-quiz basic tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../../../bower_components/test-fixture/test-fixture.html">
+    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="../hotspot-quiz.html">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <test-fixture id="quiz">
+        <template>
+            <hotspot-quiz></hotspot-quiz>
+        </template>
+    </test-fixture>
+    <link rel="import" href="../demo/demo-data.html">
+    <script>
+    'use strict';
+    suite('<hotspot-quiz>', function() {
+        var quiz;
+        setup(function() {
+            quiz = fixture('quiz');
+            quiz.overlay = window.dummyOverlay;
+        });
+
+        function testReaction(answer, combination, done) {
+            quiz.answer = answer;
+            quiz.addEventListener('quiz-graded', function(e) {
+                var result = e.detail;
+                console.log('expected:',combination);
+                console.log('given:',result);
+                assert(result === combination, 'answer correctly graded');
+                done();
+            });
+            quiz.fire('grade-answer');
+        }
+
+        test('can grade correct answer', function(done) {
+            testReaction([255,0,0], window.dummyOverlay.combinations[0], done);
+        });
+
+        test('can grade neutral answer', function(done) {
+            testReaction([255,255,0], window.dummyOverlay.combinations[2], done);
+        });
+
+        test('can grade incorrect answer', function(done) {
+            testReaction([0,255,0], window.dummyOverlay.combinations[1], done);
+        });
+
+        test('can grade default incorrect answer', function(done) {
+            testReaction([12,34,56], window.dummyOverlay.combinations[3], done);
+        });
+    });
+    </script>
+</body>
+
+</html>
