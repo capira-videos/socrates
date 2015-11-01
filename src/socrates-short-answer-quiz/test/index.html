@@ -28,38 +28,33 @@
         setup(function() {
             quiz = fixture('quiz');
             input = quiz.$$('paper-input');
+            quiz.overlay = window.dummyOverlay;
         });
 
-        function testOverlay(overlay, done) {
-            quiz.overlay = overlay;
-
-            MockInteractions.focus(input);
-            MockInteractions.pressAndReleaseKeyOn(input, 57);
-
-            Polymer.Base.async(function() {
-                try {
-                    console.log('value', quiz.value);
-                    assert(quiz.value === '9', 'value was set');
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            }, 10);
-        }
-
-
-        test('underline is colored when input is focused', function(done) {
-            var container = fixture('quiz');
-            var input = container.$$('paper-input');
-            MockInteractions.focus(input);
-            requestAnimationFrame(function() {
-                assert.isTrue(input.focused, 'line is highlighted when input is focused');
+        function testReaction(answer, combination, done) {
+            input.value = answer;
+            quiz.addEventListener('quiz-graded', function(e) {
+                var result = e.detail;
+                assert(result === combination, 'combination correctly evaluated');
                 done();
             });
+            quiz.fire('grade-answer');
+        }
+
+        test('can grade totally incorrect answer', function(done) {
+            testReaction('totally wrong', window.dummyOverlay.combinations[8], done);
         });
 
-        test('is alive', function(done) {
-            testOverlay(window.dummyOverlay, done);
+        test('can grade correct answer', function(done) {
+            testReaction('Berlin', window.dummyOverlay.combinations[0], done);
+        });
+
+        test('can grade neutral answer', function(done) {
+            testReaction('Barlin', window.dummyOverlay.combinations[1], done);
+        });
+
+        test('can grade incorrect answer', function(done) {
+            testReaction('Rome', window.dummyOverlay.combinations[5], done);
         });
     });
     </script>

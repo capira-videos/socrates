@@ -3,26 +3,26 @@
 window.Capira = window.Capira || {};
 Capira.QuizValue = {
     properties: {
-        value: {
-            observer: '_valueChanged',
+        answer: {
             notify: true
         },
     },
     evaluate: function() {
-        return this._getCombinationByValue(this.value);
+        var combination = this._getCombinationByValue(this.answer);
+        this.fire('quiz-graded', combination);
     },
     _getCombinationByValue: function(value) {
         var arr = this.overlay.combinations.slice();
         arr.sort(this.sortFn);
         for (var i = 0; i < arr.length; i++) {
             var v = arr[i].value;
-            if (v === undefined || this._valueEquals(v, value)) {
+            if (v === undefined || this._compareFn(v, value)) {
                 return arr[i];
             }
         }
         return undefined;
     },
-    _valueEquals: function(expected, given) {
+    _compareFn: function(expected, given) {
         return expected === given;
     },
 
@@ -34,10 +34,6 @@ Capira.QuizValue = {
             return -1;
         }
         return a.grade - b.grade;
-    },
-
-    _valueChanged: function(value) {
-        this.fire('answer-changed', value);
     },
 };
 </script>
