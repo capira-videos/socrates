@@ -39,7 +39,7 @@
             sound.addEventListener('ended', function(e) {
                 console.log('expected:', gradeName);
                 console.log('given:', e.target.id);
-                assert('correct sound was played');
+                assert(gradeName === e.target.id, gradeName + 'sound was played');
                 sounds.remove();
                 done();
             }, false);
@@ -47,11 +47,18 @@
                 grade: grade
             });
         }
-        test('can play correct', function(done) {
-            testSound(Capira.Grade.CORRECT, 'correct', done);
+
+        test('can attach sounds-element to document', function() {
+            var soundsElem = quiz.sounds();
+            assert(soundsElem, 'Sounds created');
         });
+
         test('can play neutral', function(done) {
             testSound(Capira.Grade.NEUTRAL, 'neutral', done);
+        });
+
+        test('can play correct', function(done) {
+            testSound(Capira.Grade.CORRECT, 'correct', done);
         });
 
         test('can play incorrect', function(done) {

@@ -45,6 +45,12 @@ Polymer({
             audio.pause();
             audio.currentTime = 0;
             audio.play();
+        } else {
+            console.log('audio not ready yet...');
+            //play when ready
+            audio.addEventListener('loadedmetadata', function() {
+                this._play(sound);
+            }.bind(this), false);
         }
     }
 });
