@@ -544,7 +544,8 @@ gulp.task('build-tests', function(cb) {
 
 
 gulp.task('fetch-player-tests', function() {
-    return gulp.src(['src/**/test/index.html',/^[-editor]/)
+    //Todo: exclude editor tests from player
+    return gulp.src(['src/**/test/index.html','!editor-tests'])
         .pipe(filenames('playerpaths'));
 });
 
