@@ -4,8 +4,15 @@
 Capira.Ratio16to9 = {
     attached: function() {
         window.addEventListener('resize', function() {
-            var width = width || window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            var height = height || window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+            var parent = this.parentElement || this.parentNode.host;
+
+            //Dimensions
+            var parentHeight = parent.offsetHeight;
+            var parentWidth = parent.offsetWidth;
+
+            var width = parentWidth || window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var height = parentHeight || window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 
             if (height < 190) {
                 width = window.screen.width;

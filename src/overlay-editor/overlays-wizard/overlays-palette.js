@@ -8,11 +8,11 @@ Capira.OverlaysPalette = function() {
             description: 'Select a single answer from multiple choices.',
             preview: {
                 question: 'Why is 42 the answer to the Ultimate Question of Life, the Universe, and Everything?',
-                type: 'socrates-single-answer-quiz',
+                type: 'single-answer-quiz',
                 options: ['Because 42 will do.', 'Because 42 is 101010 in binary code.', 'Because light refracts off water by 42 degrees to create a rainbow.', 'Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.'],
             },
             template: {
-                type: 'socrates-single-answer-quiz',
+                type: 'single-answer-quiz',
                 question: 'Type a Question',
                 options: [],
                 combinations: [{
@@ -25,11 +25,11 @@ Capira.OverlaysPalette = function() {
             description: 'Select multiple answers from multiple choices.',
             preview: {
                 question: 'Why is 42 the answer to the Ultimate Question of Life, the Universe, and Everything?',
-                type: 'socrates-multi-answer-quiz',
+                type: 'multi-answer-quiz',
                 options: ['Because 42 will do.', 'Because 42 is 101010 in binary code.', 'Because light refracts off water by 42 degrees to create a rainbow.', 'Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.'],
             },
             template: {
-                type: 'socrates-multi-answer-quiz',
+                type: 'multi-answer-quiz',
                 question: 'Type a Question',
                 options: [],
                 combinations: [{
@@ -41,11 +41,11 @@ Capira.OverlaysPalette = function() {
             title: 'Short Answer Quiz',
             description: 'Answer by typing a short answer.',
             preview: {
-                type: 'socrates-short-answer-quiz-editor',
+                type: 'short-answer-quiz',
                 question: 'Lorem Ipsum?'
             },
             template: {
-                type: 'socrates-short-answer-quiz-editor',
+                type: 'short-answer-quiz',
                 question: 'Type a Question',
                 combinations: [{
                     feedback: 'Not quite...',
@@ -56,11 +56,11 @@ Capira.OverlaysPalette = function() {
             title: 'Math Quiz',
             description: 'Answer by typing a mathematical expression.',
             preview: {
-                type: 'socrates-math-quiz',
+                type: 'math-quiz',
                 question: 'Lorem Ipsum?'
             },
             template: {
-                type: 'socrates-math-quiz',
+                type: 'math-quiz',
                 question: 'Type a Question',
                 combinations: [{
                     feedback: 'Not quite...',
@@ -73,11 +73,11 @@ Capira.OverlaysPalette = function() {
             description: 'Answer by clicking into the visual context.',
             preview: {
                 question: 'Where is Germany on this map?',
-                type: 'socrates-hotspot-quiz',
+                type: 'hotspot-quiz',
                 backgroundImage: '/static/img/user-quiz-images/europe.gif',
             },
             template: {
-                type: 'socrates-hotspot-quiz',
+                type: 'hotspot-quiz',
                 question: 'Type a Question',
                 mask: [],
                 combinations: [{
@@ -91,11 +91,11 @@ Capira.OverlaysPalette = function() {
             description: 'Answer with a sketch.',
             preview: {
                 question: 'Where is Germany on this map?',
-                type: 'socrates-draw-quiz',
+                type: 'draw-quiz',
                 backgroundImage: '/static/img/user-quiz-images/coordinate-system.png',
             },
             template: {
-                type: 'socrates-draw-quiz',
+                type: 'draw-quiz',
                 question: 'Type a Question',
                 combinations: [{
                     feedback: 'Not quite...',
@@ -107,7 +107,7 @@ Capira.OverlaysPalette = function() {
             description: 'Answer within the visual context.',
             preview: {
                 question: 'What is the sum of the two fractions?',
-                type: 'socrates-custom-quiz',
+                type: 'custom-quiz',
                 backgroundImage: '/static/img/user-quiz-images/fractions.png',
                 items: [{
                     id: 'numerator',
@@ -128,7 +128,7 @@ Capira.OverlaysPalette = function() {
                 }]
             },
             template: {
-                type: 'socrates-custom-quiz',
+                type: 'custom-quiz',
                 question: 'Type a Question',
                 items: [],
                 combinations: [{
@@ -141,7 +141,7 @@ Capira.OverlaysPalette = function() {
             title: 'Number Range Quiz',
             description: 'Select a numerical value from a range.',
             preview: {
-                type: 'socrates-number-range-quiz',
+                type: 'number-range-quiz',
                 question: 'How much is <latex-formula>\\pi</latex-formula>?',
                 min: 3,
                 max: 3.4,
@@ -158,12 +158,12 @@ Capira.OverlaysPalette = function() {
             title: 'Standard Annotation',
             description: 'Further information and explanations.',
             preview: {
-                type: 'socrates-standard-annotation',
+                type: 'standard-annotation',
                 heading: 'Capira Socrates Quiz Showcase',
                 body: '<h3>Welcome to the first preview of Capira Socrates!</h3>We made this preview to demonstrate the basic functionality.<br/><br/>We would appreciate feedback, to make sure that we are building what instructors need and students love.<br/><br/>Click the play button to go on!',
             },
             template: {
-                type: 'socrates-standard-annotation',
+                type: 'standard-annotation',
                 heading: 'Heading',
                 body: '<h3>Body</h3>...',
             },
@@ -171,12 +171,12 @@ Capira.OverlaysPalette = function() {
             title: 'Short Annotation',
             description: 'Short information and explanations, within the video.',
             preview: {
-                type: 'socrates-short-annotation',
+                type: 'short-annotation',
                 backgroundImage: '/static/img/user-quiz-images/coordinate-system.png',
                 body: 'Welcome to the first preview of Capira Socrates!',
             },
             template: {
-                type: 'socrates-short-annotation',
+                type: 'short-annotation',
                 body: 'Type an annotation...',
             },
         }, {
@@ -184,7 +184,7 @@ Capira.OverlaysPalette = function() {
             title: 'Switch Annotation',
             description: 'Select from multiple options to continue.',
             preview: {
-                type: 'socrates-switch-annotation',
+                type: 'switch-annotation',
                 heading: 'Which type of quiz do you want to learn more about?',
                 options: ['Short Answer Quiz', 'Hotspot Quiz', 'Draw Quiz', 'Custom Quiz'],
 
@@ -194,7 +194,7 @@ Capira.OverlaysPalette = function() {
             title: 'In-context Annotation',
             description: 'Further information and explanations within the visual context.',
             preview: {
-                type: 'socrates-switch-annotation',
+                type: 'switch-annotation',
                 heading: 'Which type of quiz do you want to learn more about?',
                 options: ['Short Answer Quiz', 'Hotspot Quiz', 'Draw Quiz', 'Custom Quiz'],
 

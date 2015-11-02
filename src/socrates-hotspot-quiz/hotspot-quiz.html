@@ -54,7 +54,7 @@
 (function() {
     Polymer({
         is: 'hotspot-quiz',
-        behaviors: [Capira.Quiz, Capira.Slang, Capira.Ratio16to9],
+        behaviors: [Capira.Quiz, Capira.Slang],
         observers: ['_overlayChanged(overlay.mask.*)'],
         created: function() {
             this.scalingFactor = 2;
