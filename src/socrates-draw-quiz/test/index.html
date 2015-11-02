@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>hotspot-quiz basic tests</title>
+    <title>draw-quiz basic tests</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../../bower_components/web-component-tester/browser.js"></script>
@@ -11,21 +11,21 @@
     <link rel="import" href="../../../bower_components/test-fixture/test-fixture.html">
     <link rel="import" href="../../../bower_components/iron-test-helpers/mock-interactions.js">
     <!-- build:js ../editor/index.html -->
-    <link rel="import" href="../hotspot-quiz.html">
+    <link rel="import" href="../draw-quiz.html">
     <!-- endbuild -->
 </head>
 
 <body>
     <test-fixture id="quiz">
         <template>
-            <hotspot-quiz></hotspot-quiz>
+            <draw-quiz></draw-quiz>
         </template>
     </test-fixture>
     <link rel="import" href="../demo/demo-data.html">
     <script>
     'use strict';
 
-    suite('<hotspot-quiz>', function() {
+    suite('<draw-quiz>', function() {
         var quiz;
         setup(function() {
             quiz = fixture('quiz');

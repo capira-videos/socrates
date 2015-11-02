@@ -10,7 +10,7 @@
     <script src="../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
     <link rel="import" href="../../../bower_components/test-fixture/test-fixture.html">
     <link rel="import" href="basic-quiz-dummy.html">
-    <!-- build:js ../editor/editor.html -->
+    <!-- build:js ../editor/index.html -->
     <link rel="import" href="../quiz-value.html">
     <!-- endbuild -->
 </head>
@@ -39,21 +39,28 @@
             quiz.set('answer', 0);
         });
 
-        test('can evaluate basic', function(done) {
-            quiz.set('answer', 0);
+        function testValue(answer, combination, done) {
+            quiz.set('answer', answer);
             quiz.addEventListener('quiz-graded', function(e) {
-                assert.equal(e.detail, window.dummyQuiz.combinations[0]);
+                assert.equal(e.detail, window.dummyQuiz.combinations[combination]);
                 done();
             });
             quiz.fire('grade-answer');
+        }
+
+        test('can evaluate basic', function(done) {
+            testValue(0, 0, done);
         });
         test('can evaluate basic', function(done) {
-            quiz.set('answer', 1);
-            quiz.addEventListener('quiz-graded', function(e) {
-                assert.equal(e.detail, window.dummyQuiz.combinations[1]);
-                done();
-            });
-            quiz.fire('grade-answer');
+            testValue(1, 1, done);
+        });
+
+        test('can evaluate default answer', function(done) {
+            testValue(121, 3, done);
+        });
+
+        test('can evaluate `undefined` answer', function(done) {
+            testValue(undefined, 3, done);
         });
 
         test('can evaluate with custom compareFn', function(done) {

@@ -9,9 +9,9 @@
     <script src="../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
     <script src="../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
     <link rel="import" href="../../../bower_components/test-fixture/test-fixture.html">
-
-
-    <!-- build:js ../editor/editor.html -->
+    <link rel="import" href="../../../bower_components/iron-test-helpers/iron-test-helpers.html">
+    <link rel="import" href="../../../bower_components/iron-test-helpers/iron-mocha-addons.html">
+    <!-- build:js ../editor/index.html -->
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
     <link rel="import" href="../quiz-sounds-behavior.html">
     <!-- endbuild -->
@@ -27,19 +27,29 @@
     <script>
     'use strict';
     suite('QuizSounds', function() {
-        var quiz;
+        var quiz, sounds;
+
         setup(function() {
             quiz = fixture('quiz');
+
+            stub('quiz-sounds', {
+                _play: function(sound) {
+                    this.fire('test-played', sound);
+                }
+            });
         });
 
         function testSound(grade, gradeName, done) {
-            stub('quiz-sounds', {
-                _play: function(sound) {
-                    assert(sound === gradeName);
-                    done();
-                }
-            });
-            quiz.fire({
+            var sounds = quiz.sounds();
+            sounds.addEventListener('test-played', function(e) {
+                console.log('expected:', gradeName);
+                console.log('given:', e.detail);
+                //Todo: check assert!
+                assert(e.detail === gradeName, 'correct sound was played');
+                sounds.remove();
+                done();
+            }, false);
+            quiz.fire('quiz-graded', {
                 grade: grade
             });
         }

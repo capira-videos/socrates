@@ -17,12 +17,18 @@ Capira.QuizValue = {
         this.fire('quiz-graded', combination);
     },
 
-    _getCombinationByAnswer: function(value) {
+    _getCombinationByAnswer: function(answer) {
         var arr = this.overlay.combinations.slice();
         arr.sort(this.sortFn);
         for (var i = 0; i < arr.length; i++) {
-            var v = arr[i].value;
-            if (v === undefined || this._compareFn(v, value)) {
+            var value = arr[i].value;
+            if (value === undefined) {
+                return arr[i];
+            }
+            if (answer === undefined) {
+                continue; 
+            }
+            if (this._compareFn(value, answer)) {
                 return arr[i];
             }
         }

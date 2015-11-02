@@ -4,11 +4,11 @@
 <head>
     <!-- Web Components -->
     <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <!-- build:js ../editor/editor.html -->
+    <!-- build:js ../editor/index.html -->
     <link rel="import" href="/capira-helper/scaffold.html">
 
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
-    <link rel="import" href="../../socrates-draw-quiz-editor/draw-quiz-edit-page.html">
+    <link rel="import" href="../draw-quiz-edit-page.html">
 
     <!-- endbuild -->
     <style>
@@ -28,7 +28,7 @@
 <body unresolved>
     <span id="browser-sync-binding"></span>
     <draw-quiz-edit-page></draw-quiz-edit-page>
-    <link rel="import" href="demo-data.html">
+    <link rel="import" href="../../socrates-draw-quiz/demo/demo-data.html">
     <link rel="import" href="../../../overlay/demo/demo-init.html">
     <script>
     window.initDemo('draw-quiz-edit-page');

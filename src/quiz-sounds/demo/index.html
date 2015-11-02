@@ -4,7 +4,7 @@
 <head>
     <!-- Web Components -->
     <script src="../../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <!-- build:js ../editor/editor.html -->
+    <!-- build:js ../editor/index.html -->
     <link rel="import" href="../../../../bower_components/polymer/polymer.html">
     <link rel="import" href="../quiz-sounds-behavior.html">
     <!-- endbuild -->
@@ -21,19 +21,19 @@
     sounds.attached();
 
     function correct() {
-        sounds._playSound({
+        sounds._playGrade({
             grade: Capira.Grade.CORRECT
         });
     }
 
     function neutral() {
-        sounds._playSound({
+        sounds._playGrade({
             grade: Capira.Grade.NEUTRAL
         });
     }
 
     function incorrect() {
-        sounds._playSound({
+        sounds._playGrade({
             grade: Capira.Grade.INCORRECT
         });
     }

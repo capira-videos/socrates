@@ -16,7 +16,22 @@ window.Capira.ResizableOverlay = {
     },
     resize: function() {
         //console.log('resizable-overlay.html');
-        var factor = window.scalingFactor || 1;
+
+        var height = this.offsetHeight;
+        var width = this.offsetWidth;
+
+        if (height < 190) {
+            width = window.screen.width;
+            height = window.screen.height;
+        }
+
+        if (height * 16.0 / 9 > width) {
+            height = width * 9.0 / 16;
+        } else {
+            width = height * 16.0 / 9;
+        }
+
+        var factor  = width / 800;
         factor *= this.scalingFactor;
         var s = this.resizingElem.style;
         s.setProperty('transform', 'scale(' + factor + ')', '');

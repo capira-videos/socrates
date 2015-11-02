@@ -24,7 +24,7 @@ Capira.QuizSounds = {
         }.bind(this), 1000);
     },
     _playGrade: function(e) {
-        var combination = e.detail;
+        var combination = e.detail || e;
         if (combination && combination.grade !== undefined) {
             switch (combination.grade) {
                 case Capira.Grade.CORRECT:
