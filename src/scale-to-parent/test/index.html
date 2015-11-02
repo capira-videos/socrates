@@ -17,10 +17,7 @@
     <link rel="import" href="dummy-element.html">
 </head>
 <style>
-.test1,
-.test2,
-.test3,
-.test4 {
+.test {
     margin: 8px;
 }
 
@@ -34,12 +31,9 @@
     height: 225px;
 }
 
-.test3 {
-    width: 200px;
-    height: 113px;
-}
-
-.test4 {
+.test3,
+.test4,
+.test5 {
     width: 200px;
     height: 113px;
 }
@@ -55,24 +49,29 @@
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <div class="test1">
+    <div class="test test1">
         <scale-to-parent>
             <div class="test-area" id="scaler1">Test Area 800x450</div>
         </scale-to-parent>
     </div>
-    <div class="test2">
+    <div class="test test2">
         <scale-to-parent>
             <div class="test-area" id="scaler2">Test Area 400x225</div>
         </scale-to-parent>
     </div>
-    <div class="test3">
+    <div class="test test3">
         <scale-to-parent>
             <div class="test-area" id="scaler3">Test Area 200x112.5</div>
         </scale-to-parent>
     </div>
-    <dummy-element class="test4">
+    <dummy-element class="test test4">
         <div class="test-area" id="scaler4">Test Area 200x112.5</div>
     </dummy-element>
+    <div class="test test5">
+        <scale-to-parent id="manualScale">
+            <div class="test-area" id="scaler5">Test Area 200x112.5</div>
+        </scale-to-parent>
+    </div>
 </body>
 <script>
 'use strict';
@@ -110,6 +109,21 @@ suite('<scale-to-parent>', function() {
 
     test('scales correctly inside a shadow dom', function() {
         testScalingInShadowDom(4, 200, 113);
+    });
+
+    test('can handle resizing of parent manually', function() {
+        testScalingInDom(5, 200, 113);
+
+        var dummyElem = document.querySelector('.test5');
+        dummyElem.style.width = '300px';
+
+        //manually call scale()
+        var scaler = document.querySelector('#manualScale');
+        scaler.scale();
+        
+        //TODO: detect when parent is resizing and call scale automatically
+
+        testScalingInDom(5, 300, 113);
     });
 });
 </script>

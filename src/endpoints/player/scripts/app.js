@@ -15,7 +15,7 @@ window.isPlayer = true;
     app.addEventListener('dom-change', function() {
         window.app = document.querySelector('#app');
         app.service = document.querySelector('capira-service');
-        app.overlays = document.querySelector('overlay-manager');
+        app.overlays = document.querySelector('overlays-manager');
         app.sounds = document.querySelector('quiz-sounds');
         app.playerManager = document.querySelector('video-player');
 

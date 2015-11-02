@@ -12,6 +12,23 @@
     <!-- build:js ../editor/index.html -->
     <link rel="import" href="../custom-quiz.html">
     <!-- endbuild -->
+    <style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    test-fixture {
+        display: block;
+        height: 100%;
+        width: 100%;
+    }
+    </style>
 </head>
 
 <body>
@@ -35,7 +52,7 @@
             input.value = answer;
             quiz.addEventListener('quiz-graded', function(e) {
                 var result = e.detail;
-                console.log(result,combination);
+                console.log(result, combination);
                 assert(result === combination, 'combination correctly evaluated');
                 done();
             });
@@ -56,6 +73,26 @@
 
         test('can grade neutral answer with respect of combinations order', function(done) {
             testReaction('10', window.dummyOverlays[0].combinations[4], done);
+        });
+
+        test('can position it\'s items', function(done) {
+            quiz.style.display = 'block';
+            var item = Polymer.dom(quiz.root).querySelector('input-item');
+
+            var itemRect = item.getBoundingClientRect();
+            var quizRect = quiz.getBoundingClientRect();
+
+            var itemLeftExpected = window.dummyOverlays[0].items[0].x * quizRect.width;
+            var itemTopExpected = window.dummyOverlays[0].items[0].y * quizRect.height;
+
+            console.log(itemLeftExpected,itemRect.left);
+            console.log(itemTopExpected,itemRect.top);
+            //TODO: test proper scaling...
+            assert(itemLeftExpected === itemRect.left, 'correct left');
+            assert(itemTopExpected === itemRect.top, 'correct left');
+
+            done();
+
         });
     });
     </script>

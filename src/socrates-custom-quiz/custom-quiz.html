@@ -4,15 +4,27 @@
 <link rel="import" href="../quiz-question/quiz-question-card.html">
 <link rel="import" href="../slang/slang.html">
 <link rel="import" href="../math-input/math-input-explanation.html">
+<link rel="import" href="../scale-to-parent/scale-to-parent.html">
 <dom-module id="custom-quiz">
     <template>
         <style>
+        :host {
+            display: block;
+            height: 100%;
+        }
+        
         #card {
             position: absolute;
             left: 0;
             right: 0;
             bottom: 0;
             height: 64px;
+        }
+        
+        #content {
+            display: block;
+            width: 800px;
+            height: 450px;
         }
         
         math-input-explanation-button {
@@ -23,9 +35,11 @@
             color: white;
         }
         </style>
-        <div id="content">
-            <content></content>
-        </div>
+        <scale-to-parent id="scaler">
+            <div id="content">
+                <content></content>
+            </div>
+        </scale-to-parent>
         <quiz-question-card id="card" is-top question="{{overlay.question}}" combination="{{combination}}" animate-wrong></quiz-question-card>
         <math-input-explanation-button></math-input-explanation-button>
     </template>
@@ -48,7 +62,7 @@
                 var answer = this.answer || {};
                 answer[target.id] = target.value;
                 this.answer = answer;
-                this.fire('answer-changed',answer);
+                this.fire('answer-changed', answer);
             }
         },
         _compareFn: function(expected, given) {
@@ -57,6 +71,14 @@
             } else {
                 return this.mathslang.compare(expected, given);
             }
+        },
+        attached: function() {
+            this.$.scaler.scale();
+
+        },
+        _shown: function() {
+            //TODO: Scaling should happen before overlay is shown...
+            //this.$.scaler.scale();
         }
     });
 })();

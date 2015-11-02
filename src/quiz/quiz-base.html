@@ -43,7 +43,7 @@ Capira.QuizImpl = {
     _quizSkipped: function(e) {
         e.stopPropagation();
         this.fire('quiz-graded', {
-            Grade: Capira.Grade.INCORRECT
+            grade: Capira.Grade.SKIPPED
         });
         this._done();
     },

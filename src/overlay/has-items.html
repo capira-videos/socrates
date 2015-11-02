@@ -1,4 +1,3 @@
-<link rel="import" href="resizable-overlay.html">
 <link rel="import" href="../overlay-items/html-item/html-item.html">
 <link rel="import" href="../overlay-items/input-item/input-item.html">
 <link rel="import" href="../overlay-items/image-item/image-item.html">
@@ -6,16 +5,6 @@
 'use strict';
 window.Capira = window.Capira || {};
 Capira.HasItemsImpl = {
-    attached: function() {
-        this.resizingElem = this.$.content;
-    },
-    _show: function() {
-        if (!this.resizingElem) {
-            this.resizingElem = this.$.content;
-        }
-        this.resizingElem.style.width = '800px';
-        this.resizingElem.style.height = '450px';
-    },
     _overlayChanged: function() {
         this._initItems();
     },
@@ -40,5 +29,5 @@ Capira.HasItemsImpl = {
         }
     }
 };
-Capira.HasItems = [Capira.HasItemsImpl, Capira.ResizableOverlay];
+Capira.HasItems = [Capira.HasItemsImpl];
 </script>

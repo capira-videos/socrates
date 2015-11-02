@@ -484,7 +484,7 @@ gulp.task('copy-tests', function() {
         }))
         .pipe(gulp.dest('../dist/editor/test/'));
 
-    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/quiz-single-answer-editor/**/demo/*.html'])
+    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/socrates-single-answer-quiz-editor/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
         .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlay/demo/demo-init.html">')))
         .pipe(flatten({
@@ -529,3 +529,70 @@ gulp.task('build-tests', function(cb) {
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
+
+
+
+
+
+
+
+
+/*** *** *** *** *** ***/
+/*    Player Tests     */
+/*** *** *** *** *** ***/
+
+
+
+gulp.task('fetch-player-tests', function() {
+    return gulp.src(['src/**/test/index.html',/^[-editor]/)
+        .pipe(filenames('playerpaths'));
+});
+
+gulp.task('print-player-tests', function() {
+    gulp.src('static/tests/all.html')
+        .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('playerpaths')))))
+        .pipe($.rename('_test-player.html'))
+    .pipe(gulp.dest('src/'));
+});
+
+gulp.task('local-player-tests', function(cb) {
+    runSequence(
+        ['fetch-player-tests'], ['print-player-tests'],
+        cb);
+});
+
+
+
+/*** *** *** *** *** ***/
+/*    Editor Tests     */
+/*** *** *** *** *** ***/
+
+
+gulp.task('fetch-editor-tests', function() {
+    return gulp.src('src/**/test/index.html')
+        .pipe(filenames('editorpaths'));
+});
+
+gulp.task('print-editor-tests', function() {
+    gulp.src('static/tests/all.html')
+        .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('editorpaths')))))
+        .pipe($.rename('_test-editor.html'))
+    .pipe(gulp.dest('src/'));
+});
+
+gulp.task('local-editor-tests', function(cb) {
+    runSequence(
+        ['fetch-editor-tests'], ['print-editor-tests'],
+        cb);
+});
+
+/*** *** *** *** *** ***/
+/*    All Tests        */
+/*** *** *** *** *** ***/
+
+gulp.task('local-tests', function(cb) {
+    runSequence(
+        ['local-player-tests', 'local-editor-tests'],
+        cb);
+});
+
