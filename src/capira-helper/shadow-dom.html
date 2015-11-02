@@ -1,8 +1,12 @@
 <script>
-window.Polymer = {
-    //dom: 'shady'
-    dom: 'shadow'
-};
+if (window.Polymer) {
+	console.error('Can\'t set shadow dom. Polymer already loaded...')
+} else {
+    window.Polymer = {
+        //dom: 'shady'
+        dom: 'shadow'
+    };
+}
 
 window.Capira = window.Capira || {};
 </script>
