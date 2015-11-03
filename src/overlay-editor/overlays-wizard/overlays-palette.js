@@ -159,8 +159,8 @@ Capira.OverlaysPalette = function() {
             description: 'Further information and explanations.',
             preview: {
                 type: 'standard-annotation',
-                heading: 'Capira Socrates Quiz Showcase',
-                body: '<h3>Welcome to the first preview of Capira Socrates!</h3>We made this preview to demonstrate the basic functionality.<br/><br/>We would appreciate feedback, to make sure that we are building what instructors need and students love.<br/><br/>Click the play button to go on!',
+                heading: 'Capira socratic Quiz Showcase',
+                body: '<h3>Welcome to the first preview of Capira socratic!</h3>We made this preview to demonstrate the basic functionality.<br/><br/>We would appreciate feedback, to make sure that we are building what instructors need and students love.<br/><br/>Click the play button to go on!',
             },
             template: {
                 type: 'standard-annotation',
@@ -173,7 +173,7 @@ Capira.OverlaysPalette = function() {
             preview: {
                 type: 'short-annotation',
                 backgroundImage: '/static/img/user-quiz-images/coordinate-system.png',
-                body: 'Welcome to the first preview of Capira Socrates!',
+                body: 'Welcome to the first preview of Capira socratic!',
             },
             template: {
                 type: 'short-annotation',

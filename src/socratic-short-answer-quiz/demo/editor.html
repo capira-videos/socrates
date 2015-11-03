@@ -8,7 +8,7 @@
     <link rel="import" href="/capira-helper/scaffold.html">
 
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
-    <link rel="import" href="../capira-migrator.html">
+    <link rel="import" href="../../socratic-short-answer-quiz-editor/socratic-short-answer-quiz-editor.html">
 
     <!-- endbuild -->
     <style>
@@ -27,17 +27,11 @@
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <link rel="import" href="../../socratic-custom-quiz/demo/demo-data.html">
+    <short-answer-quiz-edit-page></short-answer-quiz-edit-page>
+    <link rel="import" href="demo-data.html">
+    <link rel="import" href="../../../overlay/demo/demo-init.html">
     <script>
-    function test(overlay) {
-        overlay = window.dummyOverlays[overlay];
-        window.migrateOverlay(overlay);
-    }
-    test(0, 0);
-    test(1, 0);
-    test(2, 0);
-    test(2, 1);
-    test(2, 2);
+    window.initDemo('short-answer-quiz-edit-page');
     </script>
 </body>
 

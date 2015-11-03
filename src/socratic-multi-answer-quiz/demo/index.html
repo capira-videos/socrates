@@ -2,42 +2,39 @@
 <html>
 
 <head>
+
     <!-- Web Components -->
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- build:js ../elements.html -->
     <link rel="import" href="/capira-helper/scaffold.html">
 
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
-    <link rel="import" href="../capira-migrator.html">
+    <link rel="import" href="../multi-answer-quiz.html">
 
     <!-- endbuild -->
     <style>
-
-
     html,
     body {
         width: 100%;
-        height: 100%;
         padding: 0;
         margin: 0;
         overflow: hidden;
+    }
+
+    body {
+        height: 80vh;
+        position: relative;
     }
     </style>
 </head>
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <link rel="import" href="../../socratic-custom-quiz/demo/demo-data.html">
+    <multi-answer-quiz></multi-answer-quiz>
+    <link rel="import" href="demo-data.html">
+    <link rel="import" href="../../../overlay/demo/demo-init.html">
     <script>
-    function test(overlay) {
-        overlay = window.dummyOverlays[overlay];
-        window.migrateOverlay(overlay);
-    }
-    test(0, 0);
-    test(1, 0);
-    test(2, 0);
-    test(2, 1);
-    test(2, 2);
+    window.initDemo('multi-answer-quiz');
     </script>
 </body>
 

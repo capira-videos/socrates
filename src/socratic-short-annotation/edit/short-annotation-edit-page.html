@@ -1,0 +1,21 @@
+<link rel="import" href="../../overlay-editor/overlay-edit-page/overlay-edit-page.html">
+<link rel="import" href="../socratic-short-annotation.html">
+
+<dom-module id="short-annotation-edit-page">
+    <template>
+        <edit-page-layout>
+			<overlay-top-bar top overlay="{{overlay}}" overlay="{{overlay}}"></overlay-top-bar>
+			<short-annotation main overlay="{{overlay}}"></short-annotation>
+
+        </edit-page-layout>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'short-annotation-edit-page',
+        behaviors: [Capira.OverlayEditPage]
+    });
+})();
+</script>
