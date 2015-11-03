@@ -71,14 +71,6 @@
             } else {
                 return this.mathslang.compare(expected, given);
             }
-        },
-        attached: function() {
-            this.$.scaler.scale();
-
-        },
-        _shown: function() {
-            //TODO: Scaling should happen before overlay is shown...
-            //this.$.scaler.scale();
         }
     });
 })();

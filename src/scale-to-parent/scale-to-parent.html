@@ -1,9 +1,7 @@
 <dom-module id="scale-to-parent">
     <template>
         <style>
-        :host {
-           
-        }
+        :host {}
         </style>
         <content></content>
     </template>
@@ -22,11 +20,21 @@
             // Parent (in dom or shadow-dom )
             var parent = this.parentElement || this.parentNode.host;
 
-            //Dimensions
-            var height = elemToScale.offsetHeight;
-            var parentHeight = parent.offsetHeight;
-            var width = elemToScale.offsetWidth;
+
             var parentWidth = parent.offsetWidth;
+            var parentHeight = parent.offsetHeight;
+
+            // if parent isn't visible, traverse dom upwards
+            // TODO: make this more robust
+            while (parent && (parent.style.display === 'none' || parent.offsetWidth === 0 || parent.offsetHeight === 0)) {
+                parent = parent.parentElement || parent.parentNode.host;
+                parentWidth = parent.offsetWidth;
+                parentHeight = parent.offsetHeight;
+            }
+
+            //Dimensions
+            var width = elemToScale.offsetWidth || 800;
+            var height = elemToScale.offsetHeight || 450;
 
 
             //scaling factors

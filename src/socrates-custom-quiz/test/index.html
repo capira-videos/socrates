@@ -23,7 +23,7 @@
         overflow: hidden;
     }
     
-    test-fixture {
+    #custom-quiz {
         display: block;
         height: 100%;
         width: 100%;
@@ -34,7 +34,7 @@
 <body>
     <test-fixture id="quiz">
         <template>
-            <custom-quiz></custom-quiz>
+            <custom-quiz id="custom-quiz"></custom-quiz>
         </template>
     </test-fixture>
     <link rel="import" href="../demo/demo-data.html">
@@ -45,10 +45,10 @@
         setup(function() {
             quiz = fixture('quiz');
             quiz.overlay = window.dummyOverlays[0];
-            input = quiz.$$('input-item');
+            input = Polymer.dom(quiz.root).querySelector('input-item');
         });
 
-        function testReaction(answer, combination, done) {
+        function testGrading(answer, combination, done) {
             input.value = answer;
             quiz.addEventListener('quiz-graded', function(e) {
                 var result = e.detail;
@@ -60,38 +60,48 @@
         }
 
         test('can grade totally incorrect answer', function(done) {
-            testReaction('totally wrong', window.dummyOverlays[0].combinations[1], done);
+            testGrading('totally wrong', window.dummyOverlays[0].combinations[1], done);
         });
 
         test('can grade correct answer', function(done) {
-            testReaction('9', window.dummyOverlays[0].combinations[0], done);
+            testGrading('9', window.dummyOverlays[0].combinations[0], done);
         });
 
         test('can grade incorrect answer', function(done) {
-            testReaction('43', window.dummyOverlays[0].combinations[3], done);
+            testGrading('43', window.dummyOverlays[0].combinations[3], done);
         });
 
         test('can grade neutral answer with respect of combinations order', function(done) {
-            testReaction('10', window.dummyOverlays[0].combinations[4], done);
+            testGrading('10', window.dummyOverlays[0].combinations[4], done);
         });
 
         test('can position it\'s items', function(done) {
-            quiz.style.display = 'block';
-            var item = Polymer.dom(quiz.root).querySelector('input-item');
+            
+            //TODO this feels really hacky... 
+            quiz.show();
 
-            var itemRect = item.getBoundingClientRect();
-            var quizRect = quiz.getBoundingClientRect();
+            Polymer.Base.async(function() {
 
-            var itemLeftExpected = window.dummyOverlays[0].items[0].x * quizRect.width;
-            var itemTopExpected = window.dummyOverlays[0].items[0].y * quizRect.height;
+                var item = Polymer.dom(quiz.root).querySelector('input-item');
 
-            console.log(itemLeftExpected,itemRect.left);
-            console.log(itemTopExpected,itemRect.top);
-            //TODO: test proper scaling...
-            assert(itemLeftExpected === itemRect.left, 'correct left');
-            assert(itemTopExpected === itemRect.top, 'correct left');
+                var itemRect = item.getBoundingClientRect();
+                var quizRect = quiz.getBoundingClientRect();
 
-            done();
+                var itemData = window.dummyOverlays[0].items[0];
+                var itemLeftExpected = itemData.x * quizRect.width;
+                var itemTopExpected = itemData.y * quizRect.height;
+
+                console.log('expected:', itemLeftExpected, 'given:', itemRect.left);
+                console.log('expected:', itemTopExpected, 'given:', itemRect.top);
+
+                assert(itemRect.left > 0, 'left greater zero');
+                assert(itemRect.top > 0, 'top greater zero');
+                assert(Math.abs(itemLeftExpected - itemRect.left) < 1, 'correct left');
+                assert(Math.abs(itemTopExpected - itemRect.top) < 1, 'correct left');
+
+                done();
+
+            }, 1000);
 
         });
     });
