@@ -46,11 +46,13 @@ Polymer({
             audio.currentTime = 0;
             audio.play();
         } else {
-            console.log('audio not ready yet...');
+            console.warn('audio not ready yet...');
             //play when ready
+            //TODO: play only if ready within next ~500ms 
             audio.addEventListener('loadedmetadata', function() {
                 this._play(sound);
             }.bind(this), false);
+
         }
     }
 });
