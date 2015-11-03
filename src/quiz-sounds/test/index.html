@@ -33,7 +33,7 @@
         });
 
         function testSound(grade, gradeName, done) {
-            var sound = sounds.querySelector('#' + gradeName);
+            var sound = Polymer.dom(sounds.root).querySelector('#' + gradeName);
             sound.addEventListener('ended', function(e) {
                 console.log('expected:', gradeName);
                 console.log('given:', e.target.id);

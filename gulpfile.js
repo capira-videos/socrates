@@ -478,28 +478,28 @@ gulp.task('copy-tests', function() {
 
     var demos = gulp.src(['src/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
-        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlay/demo/demo-init.html">')))
+        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../overlay/demo/demo-init.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/editor/test/'));
+        .pipe(gulp.dest('../dist/editor-test/'));
 
-    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/socrates-single-answer-quiz-editor/**/demo/*.html'])
+    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/socratic-single-answer-quiz-editor/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
-        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../../overlay/demo/demo-init.html">')))
+        .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../overlay/demo/demo-init.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/player/test/'));
+        .pipe(gulp.dest('../dist/player-test/'));
     var testsPlayer = gulp.src('src/**/test/*.html')
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/player/test/'));
+        .pipe(gulp.dest('../dist/player-test/'));
     var htaccess = gulp.src('static/tests/.htaccess')
-        .pipe(gulp.dest('../dist/editor/test/'))
-        .pipe(gulp.dest('../dist/player/test/'));
+        .pipe(gulp.dest('../dist/editor-test/'))
+        .pipe(gulp.dest('../dist/player-test/'));
 });
 
 
@@ -510,7 +510,7 @@ gulp.task('fetch-tests', function() {
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/editor/test/'));
+        .pipe(gulp.dest('../dist/editor-test/'));
     return gulp.src('src/**/test/index.html')
         .pipe(flatten({
             includeParents: -2
@@ -520,7 +520,7 @@ gulp.task('fetch-tests', function() {
 gulp.task('print-tests', function() {
     gulp.src('static/tests/all.html')
         .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('testpaths')))))
-        .pipe(gulp.dest('../dist/editor/test/'));
+        .pipe(gulp.dest('../dist/editor-test/'));
 });
 
 gulp.task('build-tests', function(cb) {
@@ -545,7 +545,7 @@ gulp.task('build-tests', function(cb) {
 
 gulp.task('fetch-player-tests', function() {
     //Todo: exclude editor tests from player
-    return gulp.src(['src/**/test/index.html','!editor-tests'])
+    return gulp.src(/^((?!(-editor)).)*test\/index.html$/g)
         .pipe(filenames('playerpaths'));
 });
 

@@ -1,0 +1,25 @@
+<dom-module id="auto-resize-parent">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        .test-area {
+            background-color: green;
+            width: 800px;
+            height: 450px;
+            text-align: center;
+        }
+        </style>
+        <scale-to-parent>
+            <div class="test-area" id="scaler5">Test Area 200x112.5</div>
+        </scale-to-parent>
+    </template>
+    <script>
+    Polymer({
+        is: 'auto-resize-parent',
+        behaviors: [Polymer.IronResizableBehavior]
+    });
+    </script>
+</dom-module>

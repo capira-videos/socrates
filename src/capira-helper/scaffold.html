@@ -2,6 +2,8 @@
 <script>
 'use strict';
 
+
+
 window.resizer = function(container, main) {
 
     var width = container ? container.offsetWidth : 0;
@@ -25,6 +27,7 @@ window.resizer = function(container, main) {
     s.height = height + 'px';
     s.width = width + 'px';
 };
+
 
 window.resizeNow = function() {
     window.dispatchEvent(new Event('resize'));

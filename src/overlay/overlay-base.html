@@ -1,3 +1,4 @@
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../capira-helper/behavior-context.html">
 <link rel="import" href="overlay-lifecycle.html">
 <link rel="import" href="reactions.html">
@@ -103,7 +104,7 @@ Capira.OverlayEditLifecycle = {
 };
 
 Capira.Overlay = Capira.selectBehaviors({
-    core: [Capira.OverlayImpl, Capira.OverlayLifecycle, Capira.Reactions, Capira.AnimatableOverlay],
+    core: [Capira.OverlayImpl, Capira.OverlayLifecycle, Capira.Reactions, Capira.AnimatableOverlay, Polymer.IronResizableBehavior],
     editor: Capira.OverlayEditLifecycle
 });
 </script>

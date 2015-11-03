@@ -4,6 +4,7 @@
 <link rel="import" href="../top-bars/empty-top-bar.html">
 <link rel="import" href="../center-stage/empty-center-stage.html">
 <link rel="import" href="../right-bar/right-bar-header/right-bar-header.html">
+<link rel="import" href="../../capira-helper/ratio-16-9.html">
 <dom-module id="edit-page-layout">
     <template>
         <style>
@@ -74,7 +75,7 @@
         }
         </style>
         <div id="top-bar">
-            <neon-animated-pages animate-initial-selection id="top">
+            <neon-animated-pages id="top">
                 <empty-top-bar states="fallback"></empty-top-bar>
                 <content select="[top]">
                     <!-- top-bars -->
@@ -83,7 +84,7 @@
         </div>
         <div id="content">
             <div id="stage">
-                <neon-animated-pages animate-initial-selection id="main">
+                <neon-animated-pages id="main">
                     <empty-center-stage states="fallback"></empty-center-stage>
                     <content select="[main]">
                         <!-- overlay -->
@@ -91,7 +92,7 @@
                 </neon-animated-pages>
             </div>
             <div id="right-bar">
-                <neon-animated-pages animate-initial-selection id="right">
+                <neon-animated-pages id="right">
                     <empty-right-bar states="fallback"></empty-right-bar>
                     <content select="[right]">
                         <!-- right-bars -->
@@ -109,20 +110,21 @@
         properties: {
             state: {
                 type: String,
-                observer: '_stateChange',
-                value: 'fallback'
+                observer: '_stateChange'
             }
         },
 
         attached: function() {
             window.addEventListener('resize', this.resize.bind(this), true);
+            this.state = 'fallback';
         },
 
         resize: function() {
             window.resizer(this.$.stage, this.$.main);
         },
 
-        _stateChange: function() {
+        _stateChange: function(e) {
+            console.log('state-change', e);
             if (this.state) {
                 this._matchState(this.$.top);
                 this._matchState(this.$.main);
@@ -143,11 +145,7 @@
                     }
                 }
             }
-            if (pages.length) {
-                pages.select(0);
-            } else {
-                console.error('bars are empty!', pages);
-            }
+            pages.select(0);
         },
 
     });

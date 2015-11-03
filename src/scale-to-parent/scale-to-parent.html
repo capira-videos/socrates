@@ -1,3 +1,4 @@
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <dom-module id="scale-to-parent">
     <template>
         <style>
@@ -9,28 +10,28 @@
     'use strict';
     Polymer({
         is: 'scale-to-parent',
+        behaviors: [Polymer.IronResizableBehavior],
+
+        listeners: {
+            'iron-resize': 'scale'
+        },
         attached: function() {
-            this.scale();
-            window.addEventListener('resize', this.scale.bind(this), false);
+            this.async(this.notifyResize, 1);
+        },
+        get parent() {
+            if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+                return this.parentNode.host;
+            }
+            return this.parentNode;
         },
         scale: function() {
+            //Parent Dimensions 
+            var parentWidth = this.parent.offsetWidth;
+            var parentHeight = this.parent.offsetHeight;
 
             // Element to be scaled
             var elemToScale = this.querySelector('*');
-            // Parent (in dom or shadow-dom )
-            var parent = this.parentElement || this.parentNode.host;
 
-
-            var parentWidth = parent.offsetWidth;
-            var parentHeight = parent.offsetHeight;
-
-            // if parent isn't visible, traverse dom upwards
-            // TODO: make this more robust
-            while (parent && (parent.style.display === 'none' || parent.offsetWidth === 0 || parent.offsetHeight === 0)) {
-                parent = parent.parentElement || parent.parentNode.host;
-                parentWidth = parent.offsetWidth;
-                parentHeight = parent.offsetHeight;
-            }
 
             //Dimensions
             var width = elemToScale.offsetWidth || 800;
@@ -43,14 +44,13 @@
 
             //set style
             var s = elemToScale.style;
-            s.setProperty('transform', 'scale(' + factorX + ',' + factorY + ')', '');
-            s.setProperty('-webkit-transform', 'scale(' + factorX + ',' + factorY + ')', '');
-            s.setProperty('-moz-transform', 'scale(' + factorX + ',' + factorY + ')', '');
-            s.setProperty('-o-transform', 'scale(' + factorX + ',' + factorY + ')', '');
             s.setProperty('transform-origin', 'top left', '');
             s.setProperty('-webkit-transform-origin', 'top left', '');
             s.setProperty('-moz-transform-origin', 'top left', '');
             s.setProperty('-o-transform-origin', 'top left', '');
+
+            this.transform('scale(' + factorX + ',' + factorY + ')', elemToScale);
+
         }
     });
     </script>

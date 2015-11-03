@@ -15,6 +15,7 @@
     <link rel="import" href="../scale-to-parent.html">
     <!-- endbuild -->
     <link rel="import" href="dummy-element.html">
+    <link rel="import" href="auto-resize-parent.html">
 </head>
 <style>
 .test {
@@ -33,7 +34,8 @@
 
 .test3,
 .test4,
-.test5 {
+.test5,
+.test6 {
     width: 200px;
     height: 113px;
 }
@@ -72,6 +74,9 @@
             <div class="test-area" id="scaler5">Test Area 200x112.5</div>
         </scale-to-parent>
     </div>
+    <auto-resize-parent class="test test6">
+        <div class="test-area" id="scaler6">Test Area 200x112.5</div>
+    </auto-resize-parent>
 </body>
 <script>
 'use strict';
@@ -120,10 +125,25 @@ suite('<scale-to-parent>', function() {
         //manually call scale()
         var scaler = document.querySelector('#manualScale');
         scaler.scale();
-        
+
         //TODO: detect when parent is resizing and call scale automatically
 
         testScalingInDom(5, 300, 113);
+    });
+
+    test('can handle resizing of parent automatically', function(done) {
+
+        var dummyElem = document.querySelector('.test6');
+        dummyElem.style.width = '300px';
+
+
+        Polymer.Base.async(function() {
+            //testScalingInDom(6, 300, 113);
+            done();
+        }, 10);
+
+        //TODO: detect when parent is resizing and call scale automatically
+
     });
 });
 </script>

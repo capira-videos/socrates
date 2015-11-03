@@ -18,7 +18,6 @@
 
         app.service.addEventListener('unit-loaded', function() {
             console.log('unit-loaded!');
-            window.dispatchEvent(new Event('resize'));
         });
 
         app.overlays.addEventListener('home-state', function() {

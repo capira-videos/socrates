@@ -95,6 +95,7 @@ window.Capira.AnimatableOverlayImpl = {
         }
         setTimeout(function() {
             this.style.display = 'block';
+            this.notifyResize();
         }.bind(this), 300);
     },
 
