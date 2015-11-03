@@ -30,7 +30,7 @@
             quiz.overlay = window.dummyOverlay;
         });
 
-        function testReaction(answer, combination, done) {
+        function testGrading(answer, combination, done) {
             quiz.answer = answer;
             quiz.addEventListener('quiz-graded', function(e) {
                 var result = e.detail;
@@ -42,19 +42,19 @@
         }
 
         test('can grade correct answer', function(done) {
-            testReaction('Because 42 will do.', window.dummyOverlay.combinations[0], done);
+            testGrading('Because 42 will do.', window.dummyOverlay.combinations[0], done);
         });
 
         test('can grade neutral answer', function(done) {
-            testReaction('Because 42 is 101010 in binary code.', window.dummyOverlay.combinations[1], done);
+            testGrading('Because 42 is 101010 in binary code.', window.dummyOverlay.combinations[1], done);
         });
 
         test('can grade totally incorrect answer', function(done) {
-            testReaction('123', window.dummyOverlay.combinations[3], done);
+            testGrading('123', window.dummyOverlay.combinations[3], done);
         });
 
         test('can grade incorrect answer', function(done) {
-            testReaction('Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.', window.dummyOverlay.combinations[2], done);
+            testGrading('Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.', window.dummyOverlay.combinations[2], done);
         });
     });
     </script>

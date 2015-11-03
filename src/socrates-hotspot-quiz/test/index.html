@@ -32,7 +32,7 @@
             quiz.overlay = window.dummyOverlay;
         });
 
-        function testReaction(answer, combination, done) {
+        function testGrading(answer, combination, done) {
             quiz.answer = answer;
             quiz.addEventListener('quiz-graded', function(e) {
                 var result = e.detail;
@@ -45,23 +45,23 @@
         }
 
         test('can grade correct answer', function(done) {
-            testReaction([255, 0, 0], window.dummyOverlay.combinations[0], done);
+            testGrading([255, 0, 0], window.dummyOverlay.combinations[0], done);
         });
 
         test('can grade neutral answer', function(done) {
-            testReaction([255, 255, 0], window.dummyOverlay.combinations[2], done);
+            testGrading([255, 255, 0], window.dummyOverlay.combinations[2], done);
         });
 
         test('can grade incorrect answer', function(done) {
-            testReaction([0, 255, 0], window.dummyOverlay.combinations[1], done);
+            testGrading([0, 255, 0], window.dummyOverlay.combinations[1], done);
         });
 
         test('can grade default incorrect answer', function(done) {
-            testReaction([12, 34, 56], window.dummyOverlay.combinations[3], done);
+            testGrading([12, 34, 56], window.dummyOverlay.combinations[3], done);
         });
 
         test('can grade null answer', function(done) {
-            testReaction(undefined, window.dummyOverlay.combinations[3], done);
+            testGrading(undefined, window.dummyOverlay.combinations[3], done);
         });
 
         test('can map click-position to answer-color', function(done) {
@@ -79,7 +79,7 @@
                         MockInteractions.up(clickElem, point);
                         console.log('answer:', quiz.answer);
 
-                        testReaction(quiz.answer, window.dummyOverlay.combinations[0], done);
+                        testGrading(quiz.answer, window.dummyOverlay.combinations[0], done);
             */
         });
     });

@@ -31,7 +31,7 @@
             quiz.overlay = window.dummyOverlay;
         });
 
-        function testReaction(answer, combination, done) {
+        function testGrading(answer, combination, done) {
             quiz.answer=answer;
             quiz.addEventListener('quiz-graded', function(e) {
                 var result = e.detail;
@@ -42,15 +42,15 @@
         }
 
         test('can grade correct answer', function(done) {
-            testReaction([1,2], window.dummyOverlay.combinations[0], done);
+            testGrading([1,2], window.dummyOverlay.combinations[0], done);
         });
 
         test('can grade neutral answer', function(done) {
-            testReaction([1], window.dummyOverlay.combinations[3], done);
+            testGrading([1], window.dummyOverlay.combinations[3], done);
         });
 
         test('can grade incorrect answer', function(done) {
-            testReaction([0,2], window.dummyOverlay.combinations[1], done);
+            testGrading([0,2], window.dummyOverlay.combinations[1], done);
         });
     });
     </script>
