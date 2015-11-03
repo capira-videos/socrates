@@ -2,27 +2,30 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<dom-module id="math-input-explanation">
+<link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../latex/latex-formula.html">
+<link rel="import" href="../capira-icons/icons.html">
+<dom-module id="math-input-explanation-dialog">
     <template>
-    <style> 
-    paper-dialog {
-        background-color: white;
-        width: 500px;
-        min-height: 500px;
-        top: 16px !important;
-    }
-    
-    span {
-        color: var(--paper-indigo-700);
-        @apply(--paper-font-code2);
-    }
-    
-    .h3 {
-        margin-top: 16px;
-        @apply(--paper-font-title);
-    }
-    </style>
-    <template>
+        <style>
+        paper-dialog {
+            background-color: white;
+            width: 500px;
+            min-height: 500px;
+            top: 16px !important;
+        }
+        
+        span {
+            color: var(--paper-indigo-700);
+            @apply(--paper-font-code2);
+        }
+        
+        .h3 {
+            margin-top: 16px;
+            @apply(--paper-font-title);
+        }
+        </style>
         <iron-a11y-keys target="{{}}" keys="enter esc" on-keys-pressed="_close"></iron-a11y-keys>
         <paper-dialog id="dialog" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <h2>Math Quiz</h2>
@@ -52,7 +55,7 @@
         </paper-dialog>
     </template>
 </dom-module>
-<dom-module id="math-input-explanation-button">
+<dom-module id="math-input-explanation">
     <style>
     :host {
         top: 8px;
@@ -63,32 +66,32 @@
     paper-icon-button:hover {
         color: var(--paper-red-500);
     }
-     </style>
+    </style>
+    <template>
         <paper-icon-button icon="player-icons:help-old" on-mouseup="open"></paper-icon-button>
     </template>
 </dom-module>
 <script>
 'use strict';
-(function() {
-    Polymer({
-        is: 'math-input-explanation',
-        open: function() {
-            this.$.dialog.open();
-        },
-        _close: function() {
-            this.$.dialog.close();
+//Todo: 
+Polymer({
+    is: 'math-input-explanation-dialog',
+    open: function() {
+        this.$.dialog.open();
+    },
+    _close: function() {
+        this.$.dialog.close();
+    }
+});
+Polymer({
+    is: 'math-input-explanation',
+    open: function() {
+        var dialog = document.querySelector('math-input-explanation-dialog');
+        if (!dialog) {
+            dialog = document.createElement('math-input-explanation-dialog');
+            document.body.appendChild(dialog);
         }
-    });
-    Polymer({
-        is: 'math-input-explanation-button',
-        open: function() {
-            var dialog = document.querySelector('math-input-explanation');
-            if (!dialog) {
-                dialog = document.createElement('math-input-explanation');
-                document.body.appendChild(dialog);
-            }
-            dialog.open();
-        }
-    });
-})();
+        dialog.open();
+    }
+});
 </script>
