@@ -11,7 +11,7 @@ Capira.HasItemsImpl = {
     _initItems: function() {
         var that = this;
         this._clear();
-        if (this.overlay.items) {
+        if (this.overlay && this.overlay.items) {
             this.overlay.items.forEach(function(item) {
                 var type = item.type;
                 var elem = Polymer.Base.create(type, {
