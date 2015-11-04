@@ -11,8 +11,9 @@ window.isPlayer = true;
     window.addEventListener('resize', function() {
         window.resizer(null, document.getElementById('main'));
     });
-    window.resizer(null, document.getElementById('main'));
+
     app.addEventListener('dom-change', function() {
+        window.resizer(null, document.getElementById('main'));
         window.app = document.querySelector('#app');
         app.service = document.querySelector('capira-service');
         app.overlays = document.querySelector('overlays-manager');
