@@ -1,21 +1,21 @@
+<link rel="import" href="account-dialog.html">
 <dom-module id="account-preview">
     <template>
-    <style> 
-    :host {
-        display: block;
-    }
-    
-    #content {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        cursor: pointer;
-    }
-    
-    #user {
-        margin-right: 16px;
-    }
-     </style>
-        <account-dialog id="account" user="{{user}}"></account-dialog>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        #content {
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+            cursor: pointer;
+        }
+        
+        #user {
+            margin-right: 16px;
+        }
+        </style>
         <div on-tap="_account" id="content">
             <paper-icon-button icon="player-icons:account-circle"></paper-icon-button>
             <span hidden$="{{!user.name}}" id="user">{{user.name}}</span>
@@ -34,27 +34,45 @@
                 value: {}
             }
         },
-        listeners: {
-            'logged-in': '_loggedIn',
-            'logged-out': '_loggedOut'
+
+        get dialog() {
+            var dialog = document.querySelector('account-dialog');
+            if (!dialog) {
+                dialog = Polymer.Base.create('account-dialog', {
+                    user: this.user
+                });
+                document.body.appendChild(dialog);
+            }
+            return dialog;
         },
+
         attached: function() {
             setTimeout(function() {
                 this._fetchUser();
             }.bind(this), 500);
+            this.async(function() {
+                this.dialog.addEventListener('logged-in', function(e) {
+                    this._loggedIn();
+                }.bind(this), true);
+                this.dialog.addEventListener('logged-out', function(e) {
+                    this._loggedOut();
+                }.bind(this), true);
+            }, 1);
         },
         _account: function() {
-            this.$.account.open();
+            this.dialog.open();
         },
         _loggedIn: function() {
             this._fetchUser();
         },
         _loggedOut: function() {
             this.set('user', {});
+            this.dialog.user = this.user;
         },
         _fetchUser: function() {
             app.service.fetchMe().then(function(req) {
                 this.user = req.response;
+                this.dialog.user = this.user;
             }.bind(this));
         }
     });

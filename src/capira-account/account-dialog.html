@@ -1,15 +1,15 @@
 <dom-module id="account-dialog">
     <template>
-    <style> 
-    :host {
-        display: block;
-    }
-    
-    paper-dialog {
-        width: 400px;
-        background-color: white !important;
-    }
-     </style>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        paper-dialog {
+            width: 400px;
+            background-color: white !important;
+        }
+        </style>
         <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
         <paper-dialog id="login" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <h2>Login</h2>
@@ -43,7 +43,12 @@
     'use strict';
     Polymer({
         is: 'account-dialog',
-
+        properties: {
+            user: {
+                type: Object,
+                notify: true
+            }
+        },
         open: function() {
             this.username = '';
             this.password = '';
