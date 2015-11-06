@@ -1,6 +1,5 @@
 <link rel="import" href="latex-import.html">
 <link rel="import" href="../capira-helper/behavior-context.html">
-
 <dom-module id="latex-formula">
     <style include="latex-styles"></style>
     <template>
@@ -22,9 +21,11 @@
         },
         render: function(latexExp) {
             Polymer.dom(this).innerHTML = latexExp;
-            latexExp = latexExp.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-            latexExp = latexExp.replace(/&amp;/g, '&');
             //replace html entities
+            latexExp = latexExp
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&amp;/g, '&');
 
             this.latexExp = latexExp;
             this.$.tex.innerHTML = '';

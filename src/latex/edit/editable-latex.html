@@ -6,16 +6,19 @@ window.Capira.EditableLatex = {
     listeners: {
         'dblclick': '_editLatex'
     },
-    attached: function() {
+    get editor() {
         var editor = document.querySelector('latex-editor');
         if (!editor) {
             editor = Polymer.Base.create('latex-editor');
             document.body.appendChild(editor);
         }
+        return editor;
     },
     _editLatex: function() {
-        var editor = document.querySelector('latex-editor');
-        editor.open(this.latexExp, this.render.bind(this));
+        this.editor.open(this.latexExp, function(exp){
+             this.render.bind(this)(exp);
+             this.fire('latex-changed');
+        }.bind(this));
     }
 };
 </script>
