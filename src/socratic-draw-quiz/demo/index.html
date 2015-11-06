@@ -9,6 +9,8 @@
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
     <link rel="import" href="../draw-quiz.html">
     <!-- endbuild -->
+    <link rel="import" href="demo-data.html">
+    <link rel="import" href="../../../overlay/demo/demo-init.html">
     <style>
     html,
     body {
@@ -17,7 +19,7 @@
         margin: 0;
         overflow: hidden;
     }
-
+    
     body {
         height: 80vh;
         position: relative;
@@ -28,10 +30,10 @@
 <body unresolved>
     <span id="browser-sync-binding"></span>
     <draw-quiz></draw-quiz>
-    <link rel="import" href="demo-data.html">
-    <link rel="import" href="../../../overlay/demo/demo-init.html">
     <script>
-    window.initDemo('draw-quiz');
+    window.addEventListener('HTMLImportsLoaded', function(e) {
+        window.initDemo('draw-quiz');
+    });
     </script>
 </body>
 

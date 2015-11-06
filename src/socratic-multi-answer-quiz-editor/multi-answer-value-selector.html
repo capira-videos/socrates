@@ -1,6 +1,11 @@
 <dom-module id="multi-answer-value-selector">
     <template>
-        <paper-input value="{{selected}}"></paper-input>
+        <style>
+        :host {
+            cursor: pointer;
+        }
+        </style>
+        <span>{{selected}}</span>
     </template>
 </dom-module>
 <script>
@@ -12,6 +17,12 @@
             selected: {
                 notify: true
             }
+        },
+        listeners: {
+            tap: '_editValue'
+        },
+        _editValue: function() {
+            this.fire('edit-state', 'value');
         }
     });
 })();

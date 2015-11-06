@@ -17,7 +17,7 @@
         margin: 0;
         overflow: hidden;
     }
-
+    
     body {
         height: 80vh;
         position: relative;
@@ -31,7 +31,9 @@
     <link rel="import" href="demo-data.html">
     <link rel="import" href="../../../overlay/demo/demo-init.html">
     <script>
-    window.initDemo('number-range-quiz');
+    window.addEventListener('HTMLImportsLoaded', function(e) {
+        window.initDemo('number-range-quiz');
+    });
     </script>
 </body>
 

@@ -1,0 +1,24 @@
+<dom-module id="multi-answer-quiz-value-preview">
+    <template>
+        <span>{{displayed}}</span>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'multi-answer-quiz-value-preview',
+        properties: {
+            value: {
+                type: Array,
+                notify: true
+            },
+            displayed: String
+        },
+        observers: ['_computeDisplayed(value.*)'],
+        _computeDisplayed: function() {
+            this.set('displayed', JSON.stringify(this.value));
+        }
+    });
+})();
+</script>

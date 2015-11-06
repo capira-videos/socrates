@@ -6,14 +6,10 @@
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- build:js ../elements.html -->
     <link rel="import" href="/capira-helper/scaffold.html">
-
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
     <link rel="import" href="../custom-quiz.html">
-
     <!-- endbuild -->
     <style>
-
-
     html,
     body {
         width: 100%;
@@ -21,7 +17,7 @@
         margin: 0;
         overflow: hidden;
     }
-
+    
     body {
         height: 80vh;
         position: relative;
@@ -35,7 +31,9 @@
     <link rel="import" href="demo-data.html">
     <link rel="import" href="../../overlay/demo/demo-init.html">
     <script>
-    window.initDemo('custom-quiz');
+    window.addEventListener('HTMLImportsLoaded', function(e) {
+        window.initDemo('custom-quiz');
+    });
     </script>
 </body>
 

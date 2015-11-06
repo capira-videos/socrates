@@ -24,7 +24,9 @@
     <link rel="import" href="demo-data.html">
     <link rel="import" href="../../../overlay/demo/demo-init.html">
     <script>
-    window.initDemo('hotspot-quiz');
+    window.addEventListener('HTMLImportsLoaded', function(e) {
+        window.initDemo('hotspot-quiz');
+    });
     </script>
 </body>
 

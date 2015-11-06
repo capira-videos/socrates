@@ -6,14 +6,10 @@
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- build:js ../elements.html -->
     <link rel="import" href="/capira-helper/scaffold.html">
-
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
     <link rel="import" href="..//socratic-single-answer-editor.html">
-
     <!-- endbuild -->
     <style>
-
-
     html,
     body {
         width: 100%;
@@ -31,7 +27,9 @@
     <link rel="import" href="../../socratic-single-answer-quiz/demo/demo-data.html">
     <link rel="import" href="../../overlay/demo/demo-init.html">
     <script>
-    window.initDemo('custom-quiz-edit-page');
+    window.addEventListener('HTMLImportsLoaded', function(e) {
+        window.initDemo('custom-quiz-edit-page');
+    });
     </script>
 </body>
 

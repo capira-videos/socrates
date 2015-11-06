@@ -1,17 +1,17 @@
-
 <link rel="import" href="../quiz-editor/quiz-editor.html">
 <link rel="import" href="../socratic-single-answer-quiz-editor/edit-single-answer-quiz.html">
-
 <link rel="import" href="../socratic-multi-answer-quiz/multi-answer-quiz.html">
 <link rel="import" href="multi-answer-value-selector.html">
-
+<link rel="import" href="multi-answer-value-right-bar.html">
+<link rel="import" href="multi-answer-quiz-value-preview.html">
 <dom-module id="multi-answer-quiz-edit-page">
     <template>
         <edit-page-layout>
             <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
             <answer-top-bar top states="combination" combination="{{selectedCombination}}"></answer-top-bar>
-            <multi-answer-quiz id="quiz" main states="default combination" overlay="{{overlay}}" combination="{{selectedCombination}}"></multi-answer-quiz>
-            <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
+            <multi-answer-quiz id="quiz" main states="default combination value" overlay="{{overlay}}" combination="{{selectedCombination}}"></multi-answer-quiz>
+            <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" value-preview-type="multiple-choice"></answers-selector>
+            <multi-answer-value-right-bar right overlay="{{overlay}}" combination="{{selectedCombination}}" states="value"></multi-answer-value-right-bar>
             <answer-editor right states="combination" combination="{{selectedCombination}}">
                 <multi-answer-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></multi-answer-value-selector>
             </answer-editor>
@@ -21,10 +21,9 @@
 <script>
 'use strict';
 
-    Polymer({
-        is: 'multi-answer-quiz-edit-page',
-        behaviors: [Capira.QuizEditPage],
+Polymer({
+    is: 'multi-answer-quiz-edit-page',
+    behaviors: [Capira.QuizEditPage],
 
-    });
-
+});
 </script>
