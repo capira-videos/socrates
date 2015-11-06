@@ -1,3 +1,4 @@
+<link rel="import" href="../latex/edit/editable-latex.html">
 <script>
 'use strict';
 
@@ -43,14 +44,13 @@ window.Capira.EditableMarkup = {
     },
     listeners: {
         'edit-latex': '_openLatexEditor',
-        'set-latex': '_insertLatex'
-    },
-    _edit: function(e) {
-
+        'set-latex': '_insertLatex',
+        'latex-changed': '_latexChanged'
     },
     _done: function(e) {
         console.log(e);
-        if (!(e.relatedTarget && e.relatedTarget.nodeName === 'LATEX-EDITOR')) { //latex-editor opened - no render
+        if (!(e.relatedTarget && e.relatedTarget.nodeName === 'LATEX-EDITOR')) { 
+        //latex-editor opened - no render
             if (this.el.innerHTML === '' || this.el.innerHTML === this.el.content) {
                 // prevent empty mark-up or rerender if nothing changed
                 this._renderContent(this.content);
@@ -65,7 +65,6 @@ window.Capira.EditableMarkup = {
             if (!this.content || this.content === '') {
                 this.content = 'Type something...';
             }
-            this.el.addEventListener('focus', this._edit.bind(this));
             this.el.addEventListener('blur', this._done.bind(this));
             this.el.contentEditable = true;
             this.style.zIndex = 5;
@@ -97,7 +96,7 @@ window.Capira.EditableMarkup = {
         }
     },
     _openLatexEditor: function(e) {
-        var editor = document.querySelector('latex-editor');
+        var editor = Capira.EditableLatex.editor;
         editor.open(e.detail, this._insertLatex.bind(this));
     },
     _insertLatex: function(latex) {
@@ -131,6 +130,9 @@ window.Capira.EditableMarkup = {
         c = [c.slice(0, pos), latex, c.slice(pos), '&zwnj;'].join('');
         this.set('content', c);
         //TODO: compute how many <i> and <b> are in front of the caret
+    },
+    _latexChanged: function() {
+        this.set('content', this.el.innerHTML);
     }
 };
 </script>
