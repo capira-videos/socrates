@@ -2,6 +2,11 @@
 <link rel="import" href="../capira-helper/behavior-context.html">
 <dom-module id="latex-formula">
     <style include="latex-styles"></style>
+    <style>
+    :host /deep/ [aria-hidden] {
+        display: none;
+    }
+    </style>
     <template>
         <span id="tex"></span>
     </template>
