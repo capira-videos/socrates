@@ -1,12 +1,13 @@
 <script>
 'use strict';
 
-window.DATA_SCHEMA_VERSION = '1';
+window.DATA_SCHEMA_VERSION = '2';
 window.migrateOverlay = function(overlay) {
     if (overlay) {
         var i = 0;
         while (overlay.version !== window.DATA_SCHEMA_VERSION) {
             window.overlayVersion[i].migrate(overlay);
+            i += 1;
         }
     }
 };
@@ -68,6 +69,30 @@ window.overlayVersion = [{
                     overlay.combinations.forEach(migrateMathCombination);
                 }
                 overlay.version = '1';
+            }
+        };
+    })()
+}, {
+    version: '2',
+    migrate: (function() {
+        var overlay = null;
+
+
+        function migrateMultiAnswerCombination(combination) {
+            if (!combination.value) {
+                return;
+            }
+            combination.value = JSON.parse(combination.value);
+        }
+
+
+        return function(o) {
+            overlay = o;
+            if (overlay) {
+                if (overlay.type === 'multi-answer-quiz') {
+                    overlay.combinations.forEach(migrateMultiAnswerCombination);
+                }
+                overlay.version = '2';
             }
         };
     })()

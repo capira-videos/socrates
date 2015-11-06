@@ -1,0 +1,83 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>capira-migrator tests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../../bower_components/test-fixture/test-fixture-mocha.js"></script>
+    <script src="../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+    <link rel="import" href="../../../bower_components/test-fixture/test-fixture.html">
+    <!-- build:js ../elements.html -->
+    <link rel="import" href="../capira-migrator.html">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <span id="browser-sync-binding"></span>
+    <script>
+    'use strict';
+
+    suite('<capira-migrator>', function() {
+
+        test('migrate custom-quiz values', function() {
+
+            var toTest = {
+                'id': 'quiz2',
+                'question': 'Wie oft muss man ein Blatt Papier falten, damit seine Höhe 5cm beträgt?',
+                'type': 'custom-quiz',
+                'items': [{
+                    'id': 'times'
+                }],
+                'combinations': [{
+                    'value': '<& @times & #equals 9>'
+                }]
+            };
+
+            var expected = {
+                'id': 'quiz2',
+                'question': 'Wie oft muss man ein Blatt Papier falten, damit seine Höhe 5cm beträgt?',
+                'type': 'custom-quiz',
+                'items': [{
+                    'id': 'times'
+                }],
+                'combinations': [{
+                    'value': {
+                        'inputExp': '@times',
+                        'fun': '#equals',
+                        'exp': '9'
+                    }
+                }],
+                'version': window.DATA_SCHEMA_VERSION
+            };
+
+            window.migrateOverlay(toTest);
+            assert(JSON.stringify(toTest) === JSON.stringify(expected));
+        });
+
+        test('migrate multiple-answer-quiz values', function() {
+
+            var toTest = {
+                'type': 'multi-answer-quiz',
+                'combinations': [{
+                    'value': '[1,2]'
+                }]
+            };
+
+            var expected = {
+                'type': 'multi-answer-quiz',
+                'combinations': [{
+                    'value': [1, 2]
+                }],
+                'version': window.DATA_SCHEMA_VERSION
+            };
+
+            window.migrateOverlay(toTest);
+            assert(JSON.stringify(toTest) === JSON.stringify(expected));
+        });
+    });
+    </script>
+</body>
+
+</html>
