@@ -73,7 +73,6 @@
 </dom-module>
 <script>
 'use strict';
-//Todo: 
 Polymer({
     is: 'math-input-explanation-dialog',
     open: function() {
@@ -85,13 +84,18 @@ Polymer({
 });
 Polymer({
     is: 'math-input-explanation',
-    open: function() {
+
+    get dialog() {
         var dialog = document.querySelector('math-input-explanation-dialog');
         if (!dialog) {
             dialog = document.createElement('math-input-explanation-dialog');
             document.body.appendChild(dialog);
         }
-        dialog.open();
+        return dialog;
+    },
+
+    open: function() {
+        this.dialog.open();
     }
 });
 </script>
