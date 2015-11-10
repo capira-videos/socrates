@@ -1,6 +1,8 @@
 <!--TODO: Add intervals to functions-->
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../capira-icons/editor-icons.html">
 <link rel="import" href="../editor/right-bar/right-bar.html">
 <link rel="import" href="../editor/right-bar/right-bar-header/right-bar-header.html">
 <link rel="import" href="../mathslang/mathslang-item-view.html">
@@ -17,38 +19,59 @@
             position: relative;
             @apply(--paper-font-body1);
         }
-
+        
         #content {
             padding-left: 16px;
             padding-right: 16px;
             position: relative;
         }
-
+        
         .heading {
             @apply(--paper-font-subhead);
         }
-
+        
         .exp-def {
             padding-top: 16px;
             padding-bottom: 16px;
         }
-
+        
+        .exp {
+            margin-bottom: 8px;
+        }
+        
         .buttons {
             float: right;
         }
-
+        
         .buttons paper-button:hover {
             color: var(--accent-color);
+        }
+        
+        paper-icon-button {
+            display: block;
         }
         </style>
         <right-bar-header>Mathslang Editor</right-bar-header>
         <div id="content">
             <ms-item-selector overlay="{{overlay}}" hidden$="{{!isComplex}}"></ms-item-selector>
             <div class="exp-def">
-                <div class="heading">Expression:</div>
-                <ms-input-exp id="inputExp" value="{{value}}" overlay="{{overlay}}" hidden$="{{!isComplex}}"></ms-input-exp>
-                <ms-fun value="{{value}}"></ms-fun>
-                <ms-exp value="{{value}}"></ms-exp>
+                <div class="heading" hidden$="{{!value.values}}">Expression:</div>
+                <div class="heading" hidden$="{{value.values}}">Expressions:</div>
+                <template is="dom-if" if="{{!value.values.length}}">
+                    <ms-input-exp id="inputExp" value="{{value}}" overlay="{{overlay}}" hidden$="{{!isComplex}}"></ms-input-exp>
+                    <ms-fun value="{{value}}"></ms-fun>
+                    <ms-exp value="{{value}}"></ms-exp>
+                </template>
+                <template is="dom-if" if="{{value.values.length}}">
+                    <template is="dom-repeat" items="{{value.values}}">
+                        <div class="exp">
+                            <ms-input-exp overlay="[[overlay]]" value="{{item}}" on-tap="_currentInputExp"></ms-input-exp>
+                            <ms-fun value="{{item}}"></ms-fun>
+                            <ms-exp value="{{item}}"></ms-exp>
+                        </div>
+                    </template>
+                </template>
+                <paper-icon-button icon="editor-icons:add" on-tap="_addValue" hidden$="{{!isComplex}}">Add Expression</paper-icon-button>
             </div>
             <div class="buttons">
                 <paper-button on-tap="_cancel">Cancel</paper-button>
@@ -66,6 +89,7 @@
         properties: {
             overlay: {
                 type: Object,
+                notify: true
             },
             value: {
                 type: Object,
@@ -84,7 +108,11 @@
         },
 
         _addItem: function(e) {
-            this.$.inputExp._addItem(e);
+            if (this.$.inputExp) {
+                this.$.inputExp._addItem(e);
+            } else {
+                this.currentInputExp._addItem(e);
+            }
         },
 
         _save: function() {
@@ -95,16 +123,41 @@
             this.fire('edit-state', 'combination');
         },
 
+        _addValue: function() {
+            this._setArrayValue();
+            this.push('value.values', {
+                fun: '#equals',
+                exp: '123',
+                inputExp: 'x0'
+            });
+        },
+
+        _setArrayValue: function() {
+            if (this.value) {
+                if (!this.value.values) {
+                    var value = JSON.parse(JSON.stringify(this.value));
+                    this.set('value', {
+                        values: [value]
+                    });
+                }
+            }
+        },
+
         _itemsChanged: function() {
             if (this.overlay && this.overlay.items) {
                 if (this.overlay.items.length > 1) {
                     this.isComplex = true;
                     this.$.content.classList.remove('simple');
+                    this._setArrayValue();
                 } else {
                     this.$.content.classList.add('simple');
                     this.isComplex = false;
                 }
             }
+        },
+
+        _currentInputExp: function(e) {
+            this.currentInputExp = e.target;
         }
     });
 })();

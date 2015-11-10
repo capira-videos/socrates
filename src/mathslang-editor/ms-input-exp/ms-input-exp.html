@@ -15,8 +15,7 @@
         is: 'ms-input-exp',
         properties: {
             value: {
-                type: String,
-                observer: '_computeParsedInputExp'
+                type: Object,
             },
             overlay: Object,
             parsedInputExp: {
@@ -24,8 +23,9 @@
                 observer: '_computeInputExp'
             }
         },
+        observers: ['_computeParsedInputExp(value.*,overlay)'],
         _computeParsedInputExp: function() {
-            if (this.value) {
+            if (this.value && this.overlay) {
                 if (this.overlay.type === 'custom-quiz' && !this.value.inputExp) {
                     this.value.inputExp = '@' + this.overlay.items[0].id;
                 }

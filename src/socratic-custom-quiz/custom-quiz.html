@@ -66,11 +66,12 @@
             }
         },
         _compareFn: function(expected, given) {
-            if (typeof expected === 'string') {
-                return this.mathslang.compare(expected, given);
-            } else {
-                return this.mathslang.compare(expected, given);
+            if (expected.values) {
+                return expected.values.every(function(ev) {
+                    return this.mathslang.compare(ev, given);
+                }.bind(this));
             }
+            return this.mathslang.compare(expected, given);
         }
     });
 })();

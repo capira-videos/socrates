@@ -1,19 +1,19 @@
 <link rel="import" href="mathslang-value.html">
 <dom-module id="mathslang-value-selector">
     <template>
-    <style>
-    :host {
-        cursor: pointer;
-        margin-bottom: 16px;
-        display: inline-block;
-        margin-left: 8px;
-    }
-
-    div {
-        @apply(--paper-font-body1);
-        cursor: pointer;
-    }
-     </style>
+        <style>
+        :host {
+            cursor: pointer;
+            margin-bottom: 16px;
+            display: inline-block;
+            margin-left: 8px;
+        }
+        
+        div {
+            @apply(--paper-font-body1);
+            cursor: pointer;
+        }
+        </style>
         <mathslang-value value="{{value}}" overlay="{{overlay}}" hidden$="{{!valueExists}}"></mathslang-value>
         <span hidden$="{{valueExists}}">Click here to define an expression.</span>
     </template>
@@ -27,8 +27,14 @@
             'tap': '_editValue'
         },
         properties: {
-            value: String,
-            overlay: Object,
+            value: {
+                type: Object,
+                notify: true
+            },
+            overlay: {
+                type: Object,
+                notify: true
+            },
             valueExists: {
                 computed: '_computeState(value)'
             }

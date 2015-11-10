@@ -11,7 +11,10 @@
 Polymer({
     is: 'mathslang-value',
     properties: {
-        value: String,
+        value: {
+            type: Object,
+            notify: true
+        },
         overlay: Object,
         markup: {
             computed: 'computeMarkup(value.*,overlay)',
@@ -22,15 +25,30 @@ Polymer({
             value: []
         }
     },
+    observers: ['computeMarkup(value.*,overlay)', 'computeMarkup(value.values.*,overlay)'],
+
     computeMarkup: function(value, overlay) {
         value = this.value;
-        if (value.exp === undefined) {
+        if (value.exp === undefined && !value.values) {
             //not initialized yet. nothing to do.
             return value;
         }
         if (value.exp === '') {
             return 'Click here to define an expression';
         }
+        var latexExp = '';
+        if (!value.values) {
+            latexExp = this._computeSingleMarkup(value, overlay);
+        } else {
+            value.values.forEach(function(val, index) {
+                latexExp += (index > 0 ? ' \\land ' : '') + this._computeSingleMarkup(val, overlay);
+            }.bind(this));
+        }
+        //TODO: Fix XSS Vulnerability!
+        return '<latex-formula>' + latexExp + '</latex-formula>';
+    },
+
+    _computeSingleMarkup: function(value, overlay) {
         var exp = value.exp;
         exp = exp.replace(new RegExp('<&', 'g'), '');
         exp = exp.replace(new RegExp('>', 'g'), '');
@@ -53,7 +71,7 @@ Polymer({
         fun = fun.replace(new RegExp('#geq', 'g'), '\\geq');
         fun = fun.replace(new RegExp('#lt', 'g'), '<');
         fun = fun.replace(new RegExp('#gt', 'g'), '>');
-        fun = ' '+fun+' '; //HACK to ensure fun isn't interpreted as js
+        fun = ' ' + fun + ' '; //HACK to ensure fun isn't interpreted as js
 
         var error = value.error ? ' \\pm ' + value.error : '';
         this.items = [];
@@ -74,9 +92,9 @@ Polymer({
         } catch (e) {
             latexExp = 'LaTeX Syntax Error';
         }
-        //TODO: Fix XSS Vulnerability!
-        return '<latex-formula>' + latexExp + '</latex-formula>';
+        return latexExp;
     },
+
     attached: function() {
         this.addEventListener('mouseenter', function() {
             this.items.forEach(function(item) {

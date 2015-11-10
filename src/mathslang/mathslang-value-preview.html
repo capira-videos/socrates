@@ -10,7 +10,14 @@
     Polymer({
         is: 'mathslang-value-preview',
         properties: {
-            value: Object
+            value: {
+                type: Object,
+                notify: true
+            },
+            overlay: {
+                type: Object,
+                notify: true
+            },
         }
     });
 })();
