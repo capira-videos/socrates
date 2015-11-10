@@ -7,7 +7,7 @@
     <!-- build:js ../elements.html -->
     <link rel="import" href="/capira-helper/scaffold.html">
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
-    <link rel="import" href="..//socratic-single-answer-editor.html">
+    <link rel="import" href="../single-answer-editor.html">
     <!-- endbuild -->
     <style>
     html,
@@ -23,12 +23,12 @@
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <custom-quiz-edit-page></custom-quiz-edit-page>
+    <single-answer-quiz-edit-page></single-answer-quiz-edit-page>
     <link rel="import" href="../../socratic-single-answer-quiz/demo/demo-data.html">
     <link rel="import" href="../../overlay/demo/demo-init.html">
     <script>
     window.addEventListener('HTMLImportsLoaded', function(e) {
-        window.initDemo('custom-quiz-edit-page');
+        window.initDemo('single-answer-quiz-edit-page');
     });
     </script>
 </body>

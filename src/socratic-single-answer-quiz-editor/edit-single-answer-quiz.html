@@ -5,6 +5,11 @@ window.Capira.EditSingleAnswer = {
     listeners: {
         'create-item': '_createItem'
     },
+    properties: {
+        editor: {
+            value: true
+        }
+    },
 
     //FIXME Why doesn't this work with attached???
     ready: function() {
@@ -16,6 +21,11 @@ window.Capira.EditSingleAnswer = {
             this.set('overlay.options', []);
         }
         this.push('overlay.options', 'Type answer ' + (this.overlay.options.length + 1));
+    },
+    _deleteItem: function(e) {
+        var option = e.path[5].name;
+        var index = this.overlay.options.indexOf(option);
+        this.splice('overlay.options', index, 1);
     }
 };
 
