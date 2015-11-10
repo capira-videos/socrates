@@ -2,62 +2,63 @@
 <link rel="import" href="answer-editor.html">
 <link rel="import" href="answers-selector.html">
 <link rel="import" href="../overlay-editor/overlay-edit-page/overlay-edit-page.html">
+<link rel="import" href="../quiz-editor/answer-top-bar.html">
 <script>
-  'use strict';
-  window.Capira = window.Capira || {};
-  window.Capira.QuizEditPageImpl = {
+'use strict';
+window.Capira = window.Capira || {};
+window.Capira.QuizEditPageImpl = {
     listeners: {
-      'skipped': '_done',
-      'delete-answer': '_deleteCombination',
-      'edit-state': '_reset'
+        'skipped': '_done',
+        'delete-answer': '_deleteCombination',
+        'edit-state': '_reset'
     },
     selectedCombination: {
-      type: Object,
-      notify: true
+        type: Object,
+        notify: true
     },
 
     _createAnswer: function() {
-      if (this.overlay.combinations && this.overlay.combinations.length < 2) {
-        return this._createCorrectAnswer();
-      } else {
-        return this._createIncorrectAnswer();
-      }
+        if (this.overlay.combinations && this.overlay.combinations.length < 2) {
+            return this._createCorrectAnswer();
+        } else {
+            return this._createIncorrectAnswer();
+        }
     },
     _createCorrectAnswer: function() {
-      return {
-        value: '',
-        grade: 0,
-        feedback: 'Correct!',
-        reaction: {
-          type: 'play'
-        }
-      };
+        return {
+            value: '',
+            grade: 0,
+            feedback: 'Correct!',
+            reaction: {
+                type: 'play'
+            }
+        };
     },
     _createIncorrectAnswer: function() {
-      return {
-        value: '',
-        grade: 2,
-        feedback: 'Not quite... Try again!'
-      };
+        return {
+            value: '',
+            grade: 2,
+            feedback: 'Not quite... Try again!'
+        };
     },
     addAnswer: function() {
-      this.$$('answers-selector').addAnswer(this._createAnswer());
+        this.$$('answers-selector').addAnswer(this._createAnswer());
     },
     _deleteCombination: function(e) {
-      var combination = this.selectedCombination;
-      var index = this.overlay.combinations.indexOf(combination);
-      this.splice('overlay.combinations', index, 1);
-      this.fire('edit-state', 'default');
+        var combination = this.selectedCombination;
+        var index = this.overlay.combinations.indexOf(combination);
+        this.splice('overlay.combinations', index, 1);
+        this.fire('edit-state', 'default');
     },
     _reset: function(e) {
-      if (e.detail === 'default') {
-        setTimeout(function() {
-          this.$.quiz.fire('answer-changed');
-          this.selectedCombination = null;
-        }.bind(this), 500);
-      }
+        if (e.detail === 'default') {
+            setTimeout(function() {
+                this.$.quiz.fire('answer-changed');
+                this.selectedCombination = null;
+            }.bind(this), 500);
+        }
     }
-  };
+};
 
-  window.Capira.QuizEditPage = [Capira.OverlayEditPage, Capira.QuizEditPageImpl];
+window.Capira.QuizEditPage = [Capira.OverlayEditPage, Capira.QuizEditPageImpl];
 </script>
