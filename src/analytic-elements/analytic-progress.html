@@ -1,0 +1,24 @@
+<dom-module id="analytic-progress">
+    <template>
+        <iron-ajax id="service" auto url="" handle-as="json" on-response="handleResponse"></iron-ajax>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'analytic-progress',
+        get service() {
+            return this.$.service;
+        }
+    });
+    Capira.Progress = {
+        get progress() {
+            var progress = document.querySelector('analytic-progress');
+            if (!progress) {
+                progress = Polymer.Base.createElement('analytic-progress');
+                document.body.append(progress);
+            }
+            return progress;
+        }
+    };
+    </script>
+</dom-module>
