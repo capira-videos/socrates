@@ -30,11 +30,11 @@ window.overlayVersion = [{
             var result = {};
             var expr = combination.value;
 
-            if (!combination.value) {
+            if (!combination.value || combination.value.fun) {
                 return;
             }
 
-            if (typeof combination.value !== 'string') {
+            if (typeof combination.value !== 'string' && combination.value.units) {
                 expr = combination.value.expr;
                 result.units = combination.value.units.split(' ');
             }
@@ -42,10 +42,12 @@ window.overlayVersion = [{
             if (overlay.type === 'custom-quiz') {
                 // remove the <& and & and >
                 var str = expr.substr(2, expr.length - 3);
-                var variables = str.substr(0, str.indexOf('&'));
-                expr = str.substr(str.indexOf('&') + 1).trim();
-                if (overlay.items.length > 0) {
-                    result.inputExp = variables.trim();
+                if (str) {
+                    var variables = str.substr(0, str.indexOf('&'));
+                    expr = str.substr(str.indexOf('&') + 1).trim();
+                    if (overlay.items.length > 0) {
+                        result.inputExp = variables.trim();
+                    }
                 }
             }
 
