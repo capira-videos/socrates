@@ -61,7 +61,7 @@
             <paper-fab icon="editor-icons:add" on-tap="_createAnswer"></paper-fab>
         </right-bar-header>
         <div id="list">
-            <template is="dom-repeat" items="{{overlay.combinations}}" id="combinationsList" sort="_sortFn" observe="grade">
+            <template is="dom-repeat" items="{{overlay.combinations}}" id="combinationsList" sort="_sortFn" observe="grade value">
                 <paper-icon-item on-tap="toggleSelection">
                     <paper-ripple></paper-ripple>
                     <iron-icon icon="{{_icon(item.grade)}}" item-icon class$="{{class(item.grade)}}"></iron-icon>

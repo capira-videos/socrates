@@ -1,34 +1,39 @@
+<link rel="import" href="../../capira-migrator/capira-migrator.html">
 <script>
 // Dummy Data 
 window.dummyOverlay = {
-        id: 'multi-answer',
-        question: 'Mixing which two colors makes orange?',
-        type: 'multi-answer-quiz',
-        options: ['Blue', 'Yellow', 'Red'],
-        combinations: [{
-            value: '[1, 2]',
-            grade: 0,
-            feedback: 'Correct!',
-            reaction: {
-                type: 'showOverlay',
-                target: 0
-            }
-        }, {
-            value: '[0, 2]',
-            grade: 2,
-            feedback: 'No, that\'s purple!'
-        }, {
-            value: '[0, 1]',
-            grade: 2,
-            feedback: 'No, that\'s green!'
-        }, {
-            value: '[1]', //#or [2]
-            grade: 1,
-            feedback: 'Almost... what color could you add?'
-        }, {
-            value: '[0]',
-            grade: 2,
-            feedback: 'Hmm... how can you mix one color?'
-        }]
-    };
+    id: 'multi-answer',
+    question: 'Mixing which two colors makes orange?',
+    type: 'multi-answer-quiz',
+    options: ['Blue', 'Yellow', 'Red'],
+    combinations: [{
+        value: '[1, 2]',
+        grade: 0,
+        feedback: 'Correct!',
+        reaction: {
+            type: 'showOverlay',
+            target: 0
+        }
+    }, {
+        value: '[0, 2]',
+        grade: 2,
+        feedback: 'No, that\'s purple!'
+    }, {
+        value: '[0, 1]',
+        grade: 2,
+        feedback: 'No, that\'s green!'
+    }, {
+        value: '[1]', //TODO: eval #or [2]
+        grade: 1,
+        feedback: 'Almost... what color could you add?'
+    }, {
+        value: '[0]',
+        grade: 2,
+        feedback: 'Hmm... how can you mix one color?'
+    }, {
+        grade: 2,
+        feedback: 'Nope...'
+    }]
+};
+window.migrateOverlay(window.dummyOverlay);
 </script>

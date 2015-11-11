@@ -5,20 +5,18 @@
 </dom-module>
 <script>
 'use strict';
-(function() {
-    Polymer({
-        is: 'multi-answer-quiz-value-preview',
-        properties: {
-            value: {
-                type: Array,
-                notify: true
-            },
-            displayed: String
+Polymer({
+    is: 'multi-answer-quiz-value-preview',
+    properties: {
+        value: {
+            type: Array,
+            notify: true
         },
-        observers: ['_computeDisplayed(value.*)'],
-        _computeDisplayed: function() {
-            this.set('displayed', JSON.stringify(this.value));
-        }
-    });
-})();
+        displayed: String
+    },
+    observers: ['_computeDisplayed(value.*)', '_computeDisplayed(value.length)'],
+    _computeDisplayed: function() {
+        this.set('displayed', JSON.stringify(this.value));
+    }
+});
 </script>

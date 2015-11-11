@@ -1,29 +1,80 @@
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../mark-up/mark-up.html">
 <dom-module id="multi-answer-value-selector">
     <template>
         <style>
-        :host {
-            cursor: pointer;
+        paper-checkbox {
+            display: block;
+            padding: 8px;
         }
         </style>
-        <span>{{selected}}</span>
+        <div id="content">
+            <template is="dom-repeat" items="{{overlay.options}}" id="list">
+                <paper-checkbox checked$="{{_computeChecked(index)}}" on-iron-change="toggleSelection" on-change="_computeValue">
+                    <mark-up content="[[item]]"></mark-up>
+                </paper-checkbox>
+            </template>
+        </div>
+        <array-selector multi items="{{overlay.options}}" selected="{{selected}}" id="selector" selectedProperty="checked" toggle></array-selector>
     </template>
 </dom-module>
 <script>
 'use strict';
-(function() {
-    Polymer({
-        is: 'multi-answer-value-selector',
-        properties: {
-            selected: {
-                notify: true
-            }
-        },
-        listeners: {
-            tap: '_editValue'
-        },
-        _editValue: function() {
-            this.fire('edit-state', 'value');
+Polymer({
+    is: 'multi-answer-value-selector',
+    properties: {
+        overlay: Object,
+        combination: {
+            type: Object,
+            notify: true,
+            observer: '_combinationChanged'
         }
-    });
-})();
+    },
+    _combinationChanged: function() {
+        if (this.overlay) {
+            this.overlay.options.forEach(function(option) {
+                this.$.selector.deselect(option);
+            }.bind(this));
+
+
+            if (this.combination) {
+                var checkboxes = this.$.content.querySelectorAll('paper-checkbox');
+                for (var i = 0; i < checkboxes.length; i++) {
+                    var checkbox = checkboxes[i];
+                    if (this.combination.value.indexOf(i) > -1) {
+                        checkbox.checked = true;
+                    } else {
+                        checkbox.checked = false;
+                    }
+                }
+            }
+        }
+    },
+    _computeChecked: function(optionIndex) {
+        if (!this.combination) {
+            return false;
+        }
+        return this.combination.value.indexOf(optionIndex) > -1;
+    },
+    toggleSelection: function(e) {
+        if (e && e.target && this.combination && this.overlay && this.overlay.options) {
+            var selector = this.$.selector;
+            var item = this.$.list.itemForElement(e.target);
+
+            if (e.target.checked) {
+                selector.select(item);
+            } else {
+                selector.deselect(item);
+            }
+        }
+    },
+    _computeValue: function() {
+        var value = [];
+        this.$.selector.selected.forEach(function(option) {
+            value.push(this.overlay.options.indexOf(option));
+        }.bind(this));
+        this.combination.value = value;
+    }
+});
 </script>

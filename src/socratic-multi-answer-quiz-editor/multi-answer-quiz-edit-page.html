@@ -2,7 +2,6 @@
 <link rel="import" href="../socratic-single-answer-quiz-editor/edit-single-answer-quiz.html">
 <link rel="import" href="../socratic-multi-answer-quiz/multi-answer-quiz.html">
 <link rel="import" href="multi-answer-value-selector.html">
-<link rel="import" href="multi-answer-value-right-bar.html">
 <link rel="import" href="multi-answer-quiz-value-preview.html">
 <dom-module id="multi-answer-quiz-edit-page">
     <template>
@@ -11,19 +10,33 @@
             <answer-top-bar top states="combination" combination="{{selectedCombination}}"></answer-top-bar>
             <multi-answer-quiz id="quiz" main states="default combination value" overlay="{{overlay}}" combination="{{selectedCombination}}"></multi-answer-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" value-preview-type="multiple-choice"></answers-selector>
-            <multi-answer-value-right-bar right overlay="{{overlay}}" combination="{{selectedCombination}}" states="value"></multi-answer-value-right-bar>
             <answer-editor right states="combination" combination="{{selectedCombination}}">
-                <multi-answer-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></multi-answer-value-selector>
+                <multi-answer-value-selector overlay="{{overlay}}" combination="{{selectedCombination}}"></multi-answer-value-selector>
             </answer-editor>
         </edit-page-layout>
     </template>
 </dom-module>
 <script>
 'use strict';
-
 Polymer({
     is: 'multi-answer-quiz-edit-page',
     behaviors: [Capira.QuizEditPage],
-
+    _createCorrectAnswer: function() {
+        return {
+            value: [],
+            feedback: 'Correct!',
+            grade: 0,
+            reaction: {
+                type: 'play'
+            }
+        };
+    },
+    _createIncorrectAnswer: function() {
+        return {
+            value: [],
+            feedback: 'Not quite... Try again!',
+            grade: 2
+        };
+    },
 });
 </script>
