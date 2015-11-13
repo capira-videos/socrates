@@ -16,7 +16,19 @@ Polymer({
     },
     observers: ['_computeDisplayed(value.*)', '_computeDisplayed(value.length)'],
     _computeDisplayed: function() {
-        this.set('displayed', JSON.stringify(this.value));
+        if (this.value.constructor === Array) {
+            var display = '';
+            this.value.sort().forEach(function(e, index) {
+                display += (index > 0 ? ', ' : '') + this.computeLetter(e);
+            }.bind(this));
+            this.set('displayed', display);
+        }
+        if (this.value === '(default)') {
+            this.set('displayed', this.value);
+        }
+    },
+    computeLetter: function(i) {
+        return String.fromCharCode(65 + i);
     }
 });
 </script>

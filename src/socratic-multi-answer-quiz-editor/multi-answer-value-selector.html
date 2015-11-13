@@ -8,15 +8,19 @@
             display: block;
             padding: 8px;
         }
+        
+        #content {
+            margin-bottom: 16px;
+        }
         </style>
         <div id="content">
             <template is="dom-repeat" items="{{overlay.options}}" id="list">
-                <paper-checkbox checked$="{{_computeChecked(index)}}" on-iron-change="toggleSelection" on-change="_computeValue">
+                <paper-checkbox on-iron-change="toggleSelection" on-change="_computeValue">
                     <mark-up content="[[item]]"></mark-up>
                 </paper-checkbox>
             </template>
         </div>
-        <array-selector multi items="{{overlay.options}}" selected="{{selected}}" id="selector" selectedProperty="checked" toggle></array-selector>
+        <array-selector multi items="{{overlay.options}}" selected="{{selected}}" id="selector"></array-selector>
     </template>
 </dom-module>
 <script>
@@ -33,10 +37,10 @@ Polymer({
     },
     _combinationChanged: function() {
         if (this.overlay) {
+            var selector = this.$.selector;
             this.overlay.options.forEach(function(option) {
-                this.$.selector.deselect(option);
+                selector.deselect(option);
             }.bind(this));
-
 
             if (this.combination) {
                 var checkboxes = this.$.content.querySelectorAll('paper-checkbox');
@@ -44,18 +48,13 @@ Polymer({
                     var checkbox = checkboxes[i];
                     if (this.combination.value.indexOf(i) > -1) {
                         checkbox.checked = true;
+                        selector.select(this.overlay.options[i]);
                     } else {
                         checkbox.checked = false;
                     }
                 }
             }
         }
-    },
-    _computeChecked: function(optionIndex) {
-        if (!this.combination) {
-            return false;
-        }
-        return this.combination.value.indexOf(optionIndex) > -1;
     },
     toggleSelection: function(e) {
         if (e && e.target && this.combination && this.overlay && this.overlay.options) {
@@ -70,11 +69,14 @@ Polymer({
         }
     },
     _computeValue: function() {
-        var value = [];
-        this.$.selector.selected.forEach(function(option) {
-            value.push(this.overlay.options.indexOf(option));
-        }.bind(this));
-        this.combination.value = value;
+        this.async(function() {
+            var value = [];
+            this.selected.forEach(function(option) {
+                value.push(this.overlay.options.indexOf(option));
+            }.bind(this));
+            this.set('combination.value', value);
+            console.log(this.combination.value);
+        }, 0);
     }
 });
 </script>
