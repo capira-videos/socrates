@@ -1,10 +1,13 @@
 {
   "private": true,
   "devDependencies": {
+    "blink-diff": "^1.0.12",
     "browser-sync": "^2.7.7",
     "clean-css": "jakubpawlowicz/clean-css#master",
     "connect-history-api-fallback": "^1.1.0",
     "del": "^1.1.1",
+    "dom-urls": "^1.1.0",
+    "es6-promise": "^3.0.2",
     "glob": "^5.0.6",
     "gulp": "^3.8.5",
     "gulp-autoprefixer": "^2.1.0",
@@ -35,6 +38,9 @@
     "opn": "^1.0.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.0.2",
+    "selenium-standalone": "^4.7.1",
+    "selenium-webdriver": "2.47.0",
+    "sprintf-js": "^1.0.3",
     "vulcanize": ">= 1.4.2",
     "web-component-tester": "^3.1.3",
     "yargs": "^3.21.0"

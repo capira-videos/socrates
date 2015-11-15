@@ -597,3 +597,35 @@ gulp.task('local-tests', function(cb) {
         cb);
 });
 
+
+
+
+
+
+// Usage: gulp screenshots [--compareTo=branchOrCommit] [--pages=page1,page2,...]
+//                       [widths=width1,width2,...] [height=height]
+// The task performs a `git stash` prior to the checkout and then a `git stash pop` after the
+// completion, but on the off chance the task ends unexpectedly, you can manually switch back to
+// your current branch and run `git stash pop` to restore.
+gulp.task('screenshots', function(callback) {
+  var seleniumScreenshots = require('./gulp_scripts/selenium-screenshots');
+  
+  var callbackWrapper = function(error) {
+    callback(error);
+  };
+
+  var allPages = glob.sync('src' + '/**/test/index.html').map(function(templateFile) {
+    return path.basename(templateFile).replace('.html', '');
+  });
+
+  var branchOrCommit = argv.compareTo || 'master';
+  var pages = argv.pages ? argv.pages.split(',') : allPages;
+  var widths = argv.widths ?
+    // widths is coerced into a Number unless there's a comma, and only strings can be split().
+    (argv.widths.split ? argv.widths.split(',').map(Number) : [argv.widths]) :
+    [400, 900, 1200];
+  var height = argv.height || 9999;
+  seleniumScreenshots(branchOrCommit, 'src', 'http://localhost:3000/',
+    pages, widths, height, callbackWrapper);
+});
+
