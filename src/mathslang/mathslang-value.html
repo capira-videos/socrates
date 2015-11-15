@@ -17,7 +17,6 @@ Polymer({
         },
         overlay: Object,
         markup: {
-            computed: 'computeMarkup(value.*,overlay)',
             type: String
         },
         items: {
@@ -25,27 +24,31 @@ Polymer({
             value: []
         }
     },
-    observers: ['computeMarkup(value.*,overlay)', 'computeMarkup(value.values.*,overlay)'],
+    observers: ['computeMarkup(value,overlay)', 'computeMarkup(value.*,overlay)', 'computeMarkup(value.values.*,overlay)'],
 
-    computeMarkup: function(value, overlay) {
-        value = this.value;
+    computeMarkup: function() {
+        var value = this.value;
         if (value.exp === undefined && !value.values) {
             //not initialized yet. nothing to do.
-            return value;
+            return 'Click here to define an expression';
         }
         if (value.exp === '') {
+            //not initialized yet. nothing to do.
             return 'Click here to define an expression';
+        }
+        if (value.exp === '(default)') {
+            return value;
         }
         var latexExp = '';
         if (!value.values) {
-            latexExp = this._computeSingleMarkup(value, overlay);
+            latexExp = this._computeSingleMarkup(value, this.overlay);
         } else {
             value.values.forEach(function(val, index) {
-                latexExp += (index > 0 ? ' \\land ' : '') + this._computeSingleMarkup(val, overlay);
+                latexExp += (index > 0 ? ' \\land ' : '') + this._computeSingleMarkup(val, this.overlay);
             }.bind(this));
         }
         //TODO: Fix XSS Vulnerability!
-        return '<latex-formula>' + latexExp + '</latex-formula>';
+        this.set('markup', '<latex-formula>' + latexExp + '</latex-formula>');
     },
 
     _computeSingleMarkup: function(value, overlay) {
@@ -81,10 +84,11 @@ Polymer({
                 if (inputExp.indexOf('@' + item.id) > -1) {
                     this.items.push(item);
                 }
-                inputExp = inputExp.replace(new RegExp('@' + item.id, 'g'), 'x_' + index);
+                inputExp = inputExp.replace(new RegExp('@' + item.id, 'g'), ' x_' + index);
+                console.log(inputExp);
             }.bind(this));
         } else {
-            inputExp = 'x_0 ';
+            inputExp = ' x_0 ';
         }
         var latexExp = inputExp + fun + exp + error;
         try {

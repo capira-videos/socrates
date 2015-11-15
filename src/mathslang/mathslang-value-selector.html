@@ -36,14 +36,24 @@
                 notify: true
             },
             valueExists: {
-                computed: '_computeState(value)'
+                type: Boolean
             }
         },
+        observers: ['_computeState(value.*)', '_computeState(value.exp)', '_computeState(value.values.splices)'],
         _editValue: function() {
             this.fire('edit-state', 'mathslang');
         },
-        _computeState: function(value) {
-            return value !== '';
+        _computeState: function() {
+            var value = this.value;
+            if (value && value.exp && value.exp !== '') {
+                this.set('valueExists', true);
+                return;
+            }
+            if (value && value.values) {
+                this.set('valueExists', true);
+                return;
+            }
+            this.set('valueExists', false);
         }
     });
 })();

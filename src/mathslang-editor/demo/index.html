@@ -6,14 +6,10 @@
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- build:js ../elements.html -->
     <link rel="import" href="/capira-helper/scaffold.html">
-
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
     <link rel="import" href="../mathslang-editor.html">
-
     <!-- endbuild -->
     <style>
-
-
     html,
     body {
         width: 100%;
@@ -22,7 +18,7 @@
         margin: 0;
         overflow: hidden;
     }
-
+    
     .editor {
         width: 360px;
         display: inline-table;
@@ -34,7 +30,7 @@
 <body unresolved>
     <span id="browser-sync-binding"></span>
     <div class="editor">
-        <h2>Simple</h2>
+        <h2>Simples</h2>
         <mathslang-editor id="simple"></mathslang-editor>
     </div>
     <div class="editor">
@@ -44,23 +40,25 @@
     <link rel="import" href="../../socratic-custom-quiz/demo/demo-data.html">
     <script>
     'use strict';
-    var editor1 = document.querySelector('#simple');
-    setTimeout(function() {
-        editor1.overlay = window.dummyOverlays[0];
-        editor1.value = editor1.overlay.combinations[0].value;
-        editor1.addEventListener('value-changed', function(e) {
-            console.log('Value Changed', e.detail);
-        });
-    }, 500);
-    var editor2 = document.querySelector('#complex');
-    setTimeout(function() {
-        editor2.overlay = window.dummyOverlays[1];
-        editor2.value = editor2.overlay.combinations[0].value;
-        editor2.addEventListener('value-changed', function(e) {
-            console.log('Value Changed', e.detail);
-            console.log('New Value', editor2.value);
-        });
-    }, 500);
+    window.addEventListener('HTMLImportsLoaded', function() {
+        var editor1 = document.querySelector('#simple');
+        setTimeout(function() {
+            editor1.overlay = window.dummyOverlays[0];
+            editor1.value = editor1.overlay.combinations[0].value;
+            editor1.addEventListener('value-changed', function(e) {
+                console.log('Value Changed', e.detail);
+            });
+        }, 500);
+        var editor2 = document.querySelector('#complex');
+        setTimeout(function() {
+            editor2.overlay = window.dummyOverlays[1];
+            editor2.value = editor2.overlay.combinations[0].value;
+            editor2.addEventListener('value-changed', function(e) {
+                console.log('Value Changed', e.detail);
+                console.log('New Value', editor2.value);
+            });
+        }, 500);
+    });
     </script>
 </body>
 
