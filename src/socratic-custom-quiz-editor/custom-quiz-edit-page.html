@@ -5,7 +5,6 @@
 <link rel="import" href="has-editable-items.html">
 <link rel="import" href="../socratic-custom-quiz/custom-quiz.html">
 <link rel="import" href="../mathslang/edit-mathslang.html">
-
 <dom-module id="custom-quiz-edit-page">
     <template>
         <edit-page-layout>
@@ -33,7 +32,7 @@
             },
         },
         observers: ['_itemChanged(selectedItem.*)', '_itemAdded(overlay.items.*)'],
-        behaviors: [Capira.QuizEditPage,Capira.CreateMathslangAnswers],
+        behaviors: [Capira.QuizEditPage, Capira.CreateMathslangAnswers],
         listeners: {
             'item-selected': '_itemSelected',
             'highlight-item': '_highlightItem',

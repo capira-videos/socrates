@@ -13,11 +13,12 @@ Polymer({
     properties: {
         value: {
             type: Object,
-            notify: true
+            notify: true,
+            observer: 'computeMarkup'
         },
         overlay: Object,
         markup: {
-            type: String
+            type: String,
         },
         items: {
             type: Array,
@@ -28,17 +29,15 @@ Polymer({
 
     computeMarkup: function() {
         var value = this.value;
-        if (value.exp === undefined && !value.values) {
+        if (value === undefined || value === '(default)') {
+            this.set('markup', value);
+            return;
+        }
+        if (value.exp === undefined && !value.values || value.exp === '') {
             //not initialized yet. nothing to do.
-            return 'Click here to define an expression';
+            return;
         }
-        if (value.exp === '') {
-            //not initialized yet. nothing to do.
-            return 'Click here to define an expression';
-        }
-        if (value.exp === '(default)') {
-            return value;
-        }
+
         var latexExp = '';
         if (!value.values) {
             latexExp = this._computeSingleMarkup(value, this.overlay);
@@ -79,7 +78,7 @@ Polymer({
         var error = value.error ? ' \\pm ' + value.error : '';
         this.items = [];
         var inputExp = value.inputExp;
-        if (inputExp && overlay.items) {
+        if (inputExp && overlay && overlay.items) {
             overlay.items.forEach(function(item, index) {
                 if (inputExp.indexOf('@' + item.id) > -1) {
                     this.items.push(item);
