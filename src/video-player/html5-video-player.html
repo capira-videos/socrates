@@ -1,0 +1,37 @@
+<dom-module id="html5-video-player">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
+        <video src="{{src}}" id="player"></video>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'html5-video-player',
+        properties: {
+            src: {
+                type: String
+            },
+            duration: {
+                type: Number,
+                notify: true
+            }
+        },
+        get player() {
+            return this.$.player;
+        },
+        attached: function() {
+            this.player.addEventListener('canplay', function() {
+                this.duration = this.player.duration;
+            }.bind(this));
+        },
+        get currentTime() {
+            return this.player.currentTime;
+        }
+
+    });
+    </script>
+</dom-module>
