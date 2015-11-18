@@ -16,7 +16,7 @@ Capira.OverlaysPalette = function() {
                 question: 'Type a Question',
                 options: ['Option 1','Option 2'],
                 combinations: [{
-                    feedback: 'Not quite...',
+                    feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
                 }]
             }
@@ -33,7 +33,7 @@ Capira.OverlaysPalette = function() {
                 question: 'Type a Question',
                 options: ['Option 1','Option 2'],
                 combinations: [{
-                    feedback: 'Not quite...',
+                    feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
                 }]
             }
@@ -48,7 +48,7 @@ Capira.OverlaysPalette = function() {
                 type: 'short-answer-quiz',
                 question: 'Type a Question',
                 combinations: [{
-                    feedback: 'Not quite...',
+                    feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
                 }]
             }
@@ -63,7 +63,7 @@ Capira.OverlaysPalette = function() {
                 type: 'math-quiz',
                 question: 'Type a Question',
                 combinations: [{
-                    feedback: 'Not quite...',
+                    feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
                 }]
             }
@@ -81,7 +81,7 @@ Capira.OverlaysPalette = function() {
                 question: 'Type a Question',
                 mask: [],
                 combinations: [{
-                    feedback: 'Not quite...',
+                    feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
                 }]
             }
@@ -98,7 +98,7 @@ Capira.OverlaysPalette = function() {
                 type: 'draw-quiz',
                 question: 'Type a Question',
                 combinations: [{
-                    feedback: 'Not quite...',
+                    feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
                 }]
             }
@@ -132,7 +132,7 @@ Capira.OverlaysPalette = function() {
                 question: 'Type a Question',
                 items: [],
                 combinations: [{
-                    feedback: 'Not quite...',
+                    feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
                 }]
             }
@@ -148,7 +148,7 @@ Capira.OverlaysPalette = function() {
                 step: 0.01
             },
             combinations: [{
-                feedback: 'Not quite...',
+                feedback: 'Leider falsch... Probier\'s nochmal!',
                 grade: 2
             }]
         }]
