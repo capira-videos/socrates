@@ -6,17 +6,17 @@
 <link rel="import" href="latex-validator.html">
 <dom-module id="latex-editor">
     <template>
-    <style> 
-    :host {
-        display: block;
-    }
-    
-    paper-dialog {
-        width: 400px;
-        background-color: white !important;
-    }
-     </style>
-        <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        paper-dialog {
+            width: 400px;
+            background-color: white !important;
+        }
+        </style>
+        <iron-a11y-keys id="keys" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
         <paper-dialog id="editor" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <h2>LaTeX Editor</h2>
             <p>
@@ -43,6 +43,10 @@
                 type: String,
                 value: '',
             }
+        },
+        attached: function() {
+            //HACK to fix a bug in iron-a11y-keys. It can't handle undefined target when latex-editor is created but not yet attached
+            this.$.keys.target = this;
         },
         _confirm: function() {
             if (this.exp && this.exp.trim() !== '') {
