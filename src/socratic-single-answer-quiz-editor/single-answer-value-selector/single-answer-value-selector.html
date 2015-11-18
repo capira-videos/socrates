@@ -4,6 +4,14 @@
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <dom-module id="single-answer-value-selector">
     <template>
+        <style>
+        :host {
+            margin-left: 16px;
+            margin-top: -16px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        </style>
         <paper-dropdown-menu>
             <paper-menu class="dropdown-content" selected="{{selected}}">
                 <template is="dom-repeat" items="{{overlay.options}}">
