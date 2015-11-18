@@ -125,7 +125,7 @@ window.Capira.EditableMarkup = {
         var offset = c.length - temp.length - i;
         pos += offset;
 
-        latex = '<latex-formula>' + latex + '</latex-formula>';
+        latex = ' <latex-formula>' + latex + '</latex-formula>';
         //insert new formula at caret position
         c = [c.slice(0, pos), latex, c.slice(pos), '&zwnj;'].join('');
         this.set('content', c);
