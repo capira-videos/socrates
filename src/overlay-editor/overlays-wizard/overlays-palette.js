@@ -5,7 +5,7 @@ Capira.OverlaysPalette = function() {
         category: 'Quizzes',
         overlays: [{
             title: 'Single Answer Quiz',
-            description: 'Select a single answer from multiple choices.',
+            description: 'Select a single answer from multiple choices. Choices are randomized.',
             preview: {
                 question: 'Why is 42 the answer to the Ultimate Question of Life, the Universe, and Everything?',
                 type: 'single-answer-quiz',
@@ -14,7 +14,7 @@ Capira.OverlaysPalette = function() {
             template: {
                 type: 'single-answer-quiz',
                 question: 'Type a Question',
-                options: [],
+                options: ['Option 1','Option 2'],
                 combinations: [{
                     feedback: 'Not quite...',
                     grade: 2
@@ -22,7 +22,7 @@ Capira.OverlaysPalette = function() {
             }
         }, {
             title: 'Multi Answer Quiz',
-            description: 'Select multiple answers from multiple choices.',
+            description: 'Select multiple answers from multiple choices. Choices are randomized.',
             preview: {
                 question: 'Why is 42 the answer to the Ultimate Question of Life, the Universe, and Everything?',
                 type: 'multi-answer-quiz',
@@ -31,7 +31,7 @@ Capira.OverlaysPalette = function() {
             template: {
                 type: 'multi-answer-quiz',
                 question: 'Type a Question',
-                options: [],
+                options: ['Option 1','Option 2'],
                 combinations: [{
                     feedback: 'Not quite...',
                     grade: 2
@@ -112,10 +112,10 @@ Capira.OverlaysPalette = function() {
                 items: [{
                     id: 'numerator',
                     type: 'input-item',
-                    x: .75,
-                    y: .1,
+                    x: 0.75,
+                    y: 0.1,
                     z: 1,
-                    w: .15,
+                    w: 0.15,
                     fontSize: 5
                 }, {
                     id: 'denominator',
