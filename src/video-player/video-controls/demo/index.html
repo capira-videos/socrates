@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Web Components -->
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- build:js ../elements.html -->
+    <link rel="import" href="../../../capira-helper/scaffold.html">
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../video-controls.html">
+    <!-- endbuild -->
+    <style>
+    html,
+    body {
+        width: 400px;
+        height: 100%;
+        padding: 50px;
+        margin: 0;
+        overflow: hidden;
+    }
+    
+    </style>
+</head>
+
+<body unresolved>
+    <span id="browser-sync-binding"></span>
+    <video-controls id="player"></video-controls>
+    <script>
+    'use strict';
+    window.addEventListener('HTMLImportsLoaded', function() {
+        var player = document.querySelector('#player');
+        setTimeout(function() {
+            player.src = 'http://www.html5rocks.com/en/tutorials/video/basics/devstories.mp4';
+        }, 500);
+    });
+    </script>
+</body>
+
+</html>

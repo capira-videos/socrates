@@ -1,32 +1,30 @@
 <script src="event-timer.js"></script>
 <link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
-<link rel="import" href="video-player-html5/video-player-html5.html">
-<link rel="import" href="video-controls/video-controls.html">
-<link rel="import" href="overlays-timeline/overlays-timeline.html">
-<dom-module id="video-player">
+<link rel="import" href="overlays-timeline.html">
+<link rel="import" href="fullscreen-button.html">
+<dom-module id="video-player-youtube">
     <template>
         <style>
         :host {
             display: block;
             height: 100%;
         }
+        
+        google-youtube {
+            height: 100%;
+        }
         </style>
-        <template is="dom-if" if="[[isYoutube]]">
-            <google-youtube main video-id="[[unit.video.source]]" height="100%" width="100%" rel="0" autoplay="[[autoplay]]" controls="1" showinfo="0" fs="0" id="player" duration="{{duration}}" playbackstarted="{{playbackstarted}}" state="{{state}}">
-            </google-youtube>
-        </template>
-        <template is="dom-if" if="[[isHTML5]]">
-            <video-player-html5 id="html5" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}"></video-player-html5>
-        </template>
-        <video-controls current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}"></video-controls>
+        <google-youtube main video-id="[[unit.video.source]]" height="100%" width="100%" rel="0" autoplay="[[autoplay]]" controls="1" showinfo="0" fs="0" id="player" duration="{{duration}}" playbackstarted="{{playbackstarted}}" state="{{state}}">
+        </google-youtube>
         <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}" id="timeline"></overlays-timeline>
+        <fullscreen-button id="full"></fullscreen-button>
     </template>
 </dom-module>
 <script>
 'use strict';
 (function() {
     Polymer({
-        is: 'video-player',
+        is: 'video-player-youtube',
         behaviors: Capira.selectBehaviors({
             editor: Capira.CenterStage
         }),
@@ -45,49 +43,13 @@
             state: {
                 type: Number,
                 notify: true
-            },
-            isYoutube: {
-                computed: '_computeIsYoutube(unit)'
-            },
-            isHTML5: {
-                computed: '_computeIsHTML5(unit)'
             }
         },
-        _computeIsYoutube: function(unit) {
-            return unit.video.type === 'yt';
-        },
-
-        _computeIsHTML5: function(unit) {
-            return unit.video.type === 'html5';
-        },
-
-        listeners: {
-            'play-clicked': 'play',
-            'pause-clicked': 'pause',
-            'seek-to': 'seekTo'
-        },
-
-        get player() {
-            if (this.isYoutube) {
-                return this.$$('#youtube');
-            }
-            if (this.isHTML5) {
-                return this.$$('#html5');
-            }
-        },
-
-        play: function() {
-            this.isPlaying = true;
-            this.player.play();
-        },
-        pause: function() {
-            this.isPlaying = false;
-            this.player.pause();
-        },
-
-        seekTo: function(e) {
-            var time = e.detail;
-            this.player.seekTo(time);
+        attached: function() {
+            this.addEventListener('mouseenter', this._showTimeline.bind(this), false);
+            this.addEventListener('mousemove', this._showTimeline.bind(this), false);
+            //this.$.player.addEventListener('mousemove', this._showTimeline.bind(this), false);
+            this.addEventListener('mouseleave', this._hideTimeline.bind(this), false);
         },
 
         _playerReady: function() {
@@ -118,6 +80,7 @@
 
                 window.dispatchEvent(new Event('resize'));
                 app.eventTimer.start();
+                this._iframeMouseEventsHack();
                 this.fire('video-ready');
             }
         },
@@ -125,6 +88,7 @@
         _showTimeline: function() {
             if (this.playbackstarted) {
                 this.$.timeline.show();
+                this.$.full.show();
                 clearTimeout(this.hideTimer);
                 this.hideTimer = setTimeout(function() {
                     this._hideTimeline();
@@ -134,7 +98,28 @@
         _hideTimeline: function() {
             if (this.state !== 2) { //always show during pause
                 this.$.timeline.hide();
+                this.$.full.hide();
             }
+        },
+
+        _iframeMouseEventsHack: function() {
+            /*  
+                This evil hack detects mousemove-events inside the yt-iframe.
+                The idea is to disable the pointer events on the iframe, capture one mouse-move event from the surrounding container, activate the mouse-events again and repeat that every 3s.
+             */
+            var iframe = app.player._player.getIframe();
+            iframe.title = ' ';
+            var container = this.$.player;
+            iframe.style.pointerEvents = 'none';
+            container.addEventListener('mousemove', function(e) {
+                iframe.style.pointerEvents = 'all';
+                setTimeout(function() {
+                    iframe.style.pointerEvents = 'none';
+                }, 3000);
+            });
+            container.addEventListener('click', function() {
+                this._togglePlay();
+            }.bind(this));
         },
 
         _togglePlay: function() {

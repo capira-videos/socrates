@@ -11,7 +11,7 @@
             display: none;
         }
         
-        .timeline-overlay-anchor {
+        .anchor {
             display: none;
             background-color: var(--paper-orange-500);
             transition: opacity 0.1s, background-color 0.1s;
@@ -25,13 +25,13 @@
             cursor: pointer;
         }
         
-        .timeline-overlay-anchor:hover {
+        .anchor:hover {
             opacity: 1;
             transform: scale(1.2);
         }
         </style>
         <template is="dom-repeat" items="{{overlays}}">
-            <div class="timeline-overlay-anchor" style$="{{_anchorStyle(item.*,duration)}}" on-tap="_jumpToOverlay"></div>
+            <div class="anchor" style$="{{_anchorStyle(item.*,duration)}}" on-tap="_jump"></div>
         </template>
     </template>
 </dom-module>
@@ -51,12 +51,12 @@
         _anchorStyle: function(changeRecord, duration) {
             var event = changeRecord.base.event;
             if (!event) {
-                return; // overlay that isn't triggert by timer
+                return; // overlay isn't triggert by timer
             }
             return 'display:block; left:' + (100 * event.start / duration) + '%;';
         },
 
-        _jumpToOverlay: function(event) {
+        _jump: function(event) {
             event.stopPropagation();
             this.fire('overlay-selected', event.model.item);
         },

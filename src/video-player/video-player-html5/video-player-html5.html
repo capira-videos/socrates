@@ -1,4 +1,4 @@
-<dom-module id="html5-video-player">
+<dom-module id="video-player-html5">
     <template>
         <style>
         :host {
@@ -10,12 +10,16 @@
     <script>
     'use strict';
     Polymer({
-        is: 'html5-video-player',
+        is: 'video-player-html5',
         properties: {
             src: {
                 type: String
             },
             duration: {
+                type: Number,
+                notify: true
+            },
+            currentTime: {
                 type: Number,
                 notify: true
             }
@@ -27,7 +31,23 @@
             this.player.addEventListener('canplay', function() {
                 this.duration = this.player.duration;
             }.bind(this));
+            setInterval(function() {
+                this.currentTime = this.player.currentTime;
+            }.bind(this), 1000);
         },
+
+        seekTo: function(time) {
+            this.player.currentTime = time;
+        },
+
+        play: function() {
+            this.player.play();
+        },
+
+        pause: function() {
+            this.player.pause();
+        },
+
         get currentTime() {
             return this.player.currentTime;
         }

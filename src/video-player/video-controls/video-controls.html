@@ -1,0 +1,136 @@
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../capira-icons/icons.html">
+<dom-module id="video-controls">
+    <template>
+        <style>
+        :host {
+            display: block;
+            width: 100%;
+            color: white;
+            position: relative;
+        }
+        
+        #progress {
+            background-color: transparent;
+            padding-top: 3px;
+            height: 5px;
+            cursor: pointer;
+        }
+        
+        #progressed {
+            background-color: green;
+            height: 100%;
+        }
+        
+        #controls {
+            height: 36px;
+            background-color: rgba(0, 0, 0, 0.3);
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+        }
+        
+        #duration {
+            @apply(--paper-font-body2);
+        }
+        
+        #play,
+        #pause {
+            padding: 0 8px;
+            cursor: pointer;
+        }
+        
+        #right {
+            position: absolute;
+            right: 8px;
+            top: 13px;
+        }
+        
+        [hidden] {
+            display: none !important;
+        }
+        </style>
+        <div id="progress">
+            <div id="progressed" style$="{{cProgressStyle}}"></div>
+            <div id="loaded"></div>
+        </div>
+        <div id="controls">
+            <div id="left">
+                <iron-icon icon="player-icons:play-arrow" hidden$="{{isPlaying}}" id="play" on-tap="_play"></iron-icon>
+                <iron-icon icon="player-icons:pause" hidden$="{{!isPlaying}}" id="pause" on-tap="_pause"></iron-icon>
+                <span id="duration">{{cProgress}}</span>
+            </div>
+            <div id="right">
+                <iron-icon icon="player-icons:fullscreen"></iron-icon>
+                <span id="yt-logo"></span>
+            </div>
+        </div>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'video-controls',
+        properties: {
+            currentTime: {
+                type: Number,
+                value: 0
+            },
+            duration: {
+                type: Number,
+                value: 0
+            },
+            cProgress: {
+                computed: '_computeProgress(currentTime,duration)'
+            },
+            cProgressStyle: {
+                computed: '_computeProgressStyle(currentTime,duration)'
+            },
+            isPlaying: {
+                type: Boolean,
+                value: false
+            }
+        },
+        _computeTime: function(time) {
+            var mins = parseInt(time / 60);
+            mins = mins > 9 ? mins : '0' + mins;
+            mins = mins ? mins : '00';
+
+            var secs = parseInt(time % 60);
+            secs = secs > 9 ? secs : '0' + secs;
+            secs = secs ? secs : '00';
+           
+            return mins + ':' + secs;
+        },
+        _computeProgress: function(currentTime, duration) {
+            return this._computeTime(currentTime) + ' / ' + this._computeTime(duration);
+        },
+        _computeProgressStyle: function(currentTime, duration) {
+            return 'width:' + (currentTime / duration) * 100 + '%';
+        },
+        _play: function() {
+            this.fire('play-clicked');
+        },
+        _pause: function() {
+            this.fire('pause-clicked');
+        },
+        attached: function() {
+            var progress = this.$.progress;
+            progress.addEventListener('mousedown', function() {
+                this.mousedown = true;
+            }.bind(this));
+            progress.addEventListener('mouseup', function() {
+                this.mousedown = false;
+            }.bind(this));
+            progress.addEventListener('mouseleave', function() {
+                this.mousedown = false;
+            }.bind(this));
+            progress.addEventListener('mousemove', function(e) {
+                if (this.mousedown) {
+                    var x = e.layerX / progress.clientWidth;
+                    this.fire('seek-to', x * this.duration);
+                }
+            }.bind(this));
+        },
+    });
+    </script>
+</dom-module>
