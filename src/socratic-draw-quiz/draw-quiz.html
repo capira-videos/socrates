@@ -120,7 +120,7 @@
 
             function update() {
                 if (e.path.indexOf('value.src') > 0) {
-                    var index = e.path.replace('overlay.combinations.', '').replace('.value.src');
+                    var index = e.path.replace('overlay.combinations.#', '').replace('.value.src','');
                     index = parseInt(index);
                     console.log(index);
                     this._initSolution(this.overlay.combinations[index]);
