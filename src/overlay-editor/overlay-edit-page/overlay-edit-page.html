@@ -15,19 +15,22 @@ window.Capira.OverlayEditPageImpl = {
     overlayChanged: function() {
         //abstract
     },
-    _timestampChanged: function() {
-        if (window.app && app.player) {
-            app.player.pause();
-            if (this.overlay.event && this.overlay.event.start) {
-                app.player.seekTo(this.overlay.event.start);
-            }
+    _timestampChanged: function(changeRecord) {
+        if (changeRecord.path !== 'overlay.event') {
+            console.log('timestamp-changed', changeRecord);
+            if (window.app && app.player) {
+                app.player.pause();
+                if (this.overlay.event && this.overlay.event.start) {
+                    app.player.seekTo(this.overlay.event.start);
+                }
 
-            if (this.timestampTimeout) {
-                clearTimeout(this.timestampTimeout);
+                if (this.timestampTimeout) {
+                    clearTimeout(this.timestampTimeout);
+                }
+                this.timestampTimeout = setTimeout(function() {
+                    app.player.play();
+                }, 1000);
             }
-            this.timestampTimeout = setTimeout(function() {
-                app.player.start();
-            }, 1000);
         }
     }
 };

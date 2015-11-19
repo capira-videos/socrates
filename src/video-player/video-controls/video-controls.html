@@ -10,8 +10,14 @@
             display: block;
             width: 100%;
             color: white;
+            bottom: 0;
+        }
+        
+        #container {
             position: relative;
-            display: none;
+            z-index: 1;
+            padding: 0 12px;
+            box-sizing: border-box;
         }
         
         :host,
@@ -26,61 +32,104 @@
         
         #progress {
             background-color: transparent;
-            padding-top: 3px;
-            height: 5px;
+            padding-top: 12px;
+            height: 3px;
             cursor: pointer;
             z-index: 4;
+            position: relative;
+            z-index: 1;
+        }
+        
+        #progressed,
+        #bar {
+            will-change: height;
+        }
+        
+        #progress:hover #progressed,
+        #progress:hover #bar {
+            height: 4px;
         }
         
         #progressed {
-            background-color: var(--paper-green-500);
-            height: 100%;
+            background-color: #F00;
+            height: 3px;
+            position: absolute;
+        }
+        
+        #progress > #bar {
+            background-color: rgba(255, 255, 255, .2);
+            height: 3px;
+            width: 100%;
+            position: absolute;
+            pointer-events: none;
         }
         
         #controls {
             height: 36px;
-            background-color: rgba(0, 0, 0, 0.3);
             @apply(--layout-horizontal);
             @apply(--layout-center);
+            z-index: 1;
         }
         
         #duration {
-            @apply(--paper-font-body2);
-            line-height: 21px;
+            font-family: 'Roboto', 'Noto', sans-serif;
+            text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+            color: #eee;
+            -webkit-font-smoothing: antialiased;
+            line-height: 22px;
             vertical-align: bottom;
+            font-size: 11px;
+            font-weight: 400;
+            margin-left: 4px;
         }
         
         #play,
         #pause {
-            padding: 0 12px;
+            padding: 0 4px;
             cursor: pointer;
         }
         
         #right {
             position: absolute;
             right: 8px;
-            top: 6px;
+            bottom: -2px;
         }
         
         [hidden] {
             display: none !important;
         }
+        
+        #gradient {
+            position: absolute;
+            bottom: 0;
+            height: 98px;
+            width: 100%;
+            background-repeat: repeat-x;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADGCAYAAAAT+OqFAAAAdklEQVQoz42QQQ7AIAgEF/T/D+kbq/RWAlnQyyazA4aoAB4FsBSA/bFjuF1EOL7VbrIrBuusmrt4ZZORfb6ehbWdnRHEIiITaEUKa5EJqUakRSaEYBJSCY2dEstQY7AuxahwXFrvZmWl2rh4JZ07z9dLtesfNj5q0FU3A5ObbwAAAABJRU5ErkJggg==);
+            background-position: bottom;
+            pointer-events: none;
+            z-index: 0;
+        }
         </style>
-        <div id="progress">
-            <div id="progressed" style$="{{cProgressStyle}}"></div>
-            <div id="loaded"></div>
-        </div>
-        <div id="controls">
-            <div id="left">
-                <iron-icon icon="player-icons:play-arrow" hidden$="{{isPlaying}}" id="play" on-tap="_play"></iron-icon>
-                <iron-icon icon="player-icons:pause" hidden$="{{!isPlaying}}" id="pause" on-tap="_pause"></iron-icon>
-                <span id="duration">{{cProgress}}</span>
+        <div id="gradient"></div>
+        <div id="container">
+            <div id="progress">
+                <div id="progressed" style$="{{cProgressStyle}}"></div>
+                <div id="loaded"></div>
+                <div id="bar"></div>
             </div>
-            <div id="right">
-                <fullscreen-button></fullscreen-button>
-                <span id="yt-logo"></span>
+            <div id="controls">
+                <div id="left">
+                    <iron-icon icon="player-icons:play-arrow" hidden$="{{isPlaying}}" id="play" on-tap="_play"></iron-icon>
+                    <iron-icon icon="player-icons:pause" hidden$="{{!isPlaying}}" id="pause" on-tap="_pause"></iron-icon>
+                    <span id="duration">{{cProgress}}</span>
+                </div>
+                <div id="right">
+                    <fullscreen-button></fullscreen-button>
+                    <span id="yt-logo"></span>
+                </div>
+                <content></content>
             </div>
-            <content></content>
         </div>
     </template>
     <script>

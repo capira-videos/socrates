@@ -29,9 +29,10 @@
             right: 0;
         }
         
-        video-controls {
+        #controls {
             position: absolute;
             bottom: 0;
+            display: none;
         }
         
         #mouseevents {
@@ -80,6 +81,7 @@
                 computed: '_computeIsHTML5(unit)'
             },
             isPlaying: {
+                notify: true,
                 observer: '_stateChanged'
             }
         },
