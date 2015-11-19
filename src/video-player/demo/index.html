@@ -40,13 +40,35 @@
                 video: {
                     type: 'html5',
                     src: 'http://www.html5rocks.com/en/tutorials/video/basics/devstories.mp4'
-                }
+                },
+                overlays: [{
+                    'event': {
+                        'type': 'STOP',
+                        'start': 10
+                    }
+                }, {
+                    'event': {
+                        'type': 'STOP',
+                        'start': 20
+                    }
+                }]
             };
             player2.unit = {
                 video: {
                     type: 'yt',
                     src: 'WwZBXFHJnkA'
-                }
+                },
+                overlays: [{
+                    'event': {
+                        'type': 'STOP',
+                        'start': 10
+                    }
+                }, {
+                    'event': {
+                        'type': 'STOP',
+                        'start': 20
+                    }
+                }]
             };
         }, 500);
     });

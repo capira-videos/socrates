@@ -110,6 +110,7 @@
         },
 
         _playerReady: function() {
+            window.app = window.app || {};
             window.app.player = this.player;
             app.eventTimer = window.EventTimer(app.player, function(type, overlay) {
                 switch (type) {
@@ -124,11 +125,11 @@
 
             this.addEventListener('overlay-selected', function(e) {
                 app.eventTimer.seekTo(e.detail);
-            },false);
+            }, false);
 
             this.addEventListener('mousemove', function(e) {
                 this._showControls();
-            }.bind(this),false);
+            }.bind(this), false);
 
             app.eventTimer.start();
             this.fire('video-ready');
