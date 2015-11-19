@@ -18,21 +18,34 @@
         margin: 0;
         overflow: hidden;
     }
+    
+    .player {
+        width: 47%;
+    }
     </style>
 </head>
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <video-player id="player"></video-player>
+    <video-player class="player" id="player1"></video-player>
+    <video-player class="player" id="player2"></video-player>
     <script>
     'use strict';
     window.addEventListener('HTMLImportsLoaded', function() {
-        var player = document.querySelector('#player');
+        var player1 = document.querySelector('#player1');
+        var player2 = document.querySelector('#player2');
+
         setTimeout(function() {
-            player.unit = {
+            player1.unit = {
                 video: {
                     type: 'html5',
                     src: 'http://www.html5rocks.com/en/tutorials/video/basics/devstories.mp4'
+                }
+            };
+            player2.unit = {
+                video: {
+                    type: 'yt',
+                    src: 'WwZBXFHJnkA'
                 }
             };
         }, 500);

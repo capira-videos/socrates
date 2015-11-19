@@ -1,8 +1,16 @@
+<link rel="import" href="../video-player-behavior.html">
 <dom-module id="video-player-html5">
     <template>
         <style>
         :host {
             display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        video {
+            width: 100% !important;
+            height: auto !important;
         }
         </style>
         <video src="{{src}}" id="player"></video>
@@ -11,29 +19,23 @@
     'use strict';
     Polymer({
         is: 'video-player-html5',
-        properties: {
-            src: {
-                type: String
-            },
-            duration: {
-                type: Number,
-                notify: true
-            },
-            currentTime: {
-                type: Number,
-                notify: true
-            }
-        },
-        get player() {
-            return this.$.player;
-        },
+        behaviors: [Capira.VideoPlayer],
         attached: function() {
             this.player.addEventListener('canplay', function() {
                 this.duration = this.player.duration;
             }.bind(this));
-            setInterval(function() {
-                this.currentTime = this.player.currentTime;
-            }.bind(this), 1000);
+
+            this.player.addEventListener('play', function() {
+                this.set('isPlaying', true);
+            }.bind(this));
+
+            this.player.addEventListener('pause', function() {
+                this.set('isPlaying', false);
+            }.bind(this));
+
+            this.player.addEventListener('click', function() {
+                this.togglePlay();
+            }.bind(this));
         },
 
         seekTo: function(time) {
@@ -48,7 +50,7 @@
             this.player.pause();
         },
 
-        get currentTime() {
+        getCurrentTime: function() {
             return this.player.currentTime;
         }
 

@@ -1,13 +1,11 @@
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 <dom-module id="fullscreen-button">
     <template>
     <style> 
     :host {
         pointer-events: all;
         color: white;
-        position: absolute;
-        bottom: -2px;
-        right: 132px;
-        display: none;
+        display: inline-block;
     }
     
     paper-icon-button:hover {
@@ -56,12 +54,6 @@
                     document.webkitExitFullscreen();
                 }
             }
-        },
-        show: function() {
-            this.style.display = 'block';
-        },
-        hide: function() {
-            this.style.display = 'none';
         }
     });
 })();

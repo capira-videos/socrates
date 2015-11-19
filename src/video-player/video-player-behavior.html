@@ -1,0 +1,41 @@
+<script>
+'use strict';
+Capira.VideoPlayer = {
+    properties: {
+        src: {
+            type: String,
+        },
+        duration: {
+            type: Number,
+            value: 0,
+            notify: true
+        },
+        currentTime: {
+            type: Number,
+            notify: true
+        },
+        isPlaying: {
+            type: Boolean,
+            notify: true
+        },
+        autoplay: {
+            value: 0
+        },
+    },
+    get player() {
+        return this.$.player;
+    },
+    attached: function() {
+        setInterval(function() {
+            this.currentTime = this.getCurrentTime();
+        }.bind(this), 1000);
+    },
+    togglePlay: function() {
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.play();
+        }
+    }
+};
+</script>

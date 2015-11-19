@@ -1,6 +1,7 @@
 <link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../../capira-icons/icons.html">
+<link rel="import" href="fullscreen-button.html">
 <dom-module id="video-controls">
     <template>
         <style>
@@ -43,7 +44,6 @@
         #right {
             position: absolute;
             right: 8px;
-            top: 13px;
         }
         
         [hidden] {
@@ -61,7 +61,7 @@
                 <span id="duration">{{cProgress}}</span>
             </div>
             <div id="right">
-                <iron-icon icon="player-icons:fullscreen"></iron-icon>
+                <fullscreen-button></fullscreen-button>
                 <span id="yt-logo"></span>
             </div>
         </div>
@@ -91,15 +91,18 @@
             }
         },
         _computeTime: function(time) {
-            var mins = parseInt(time / 60);
+            var hrs = parseInt(time / 3600);
+            hrs = hrs > 0 ? hrs + ':' : '';
+
+            var mins = parseInt((time % 3600) / 60);
             mins = mins > 9 ? mins : '0' + mins;
             mins = mins ? mins : '00';
 
             var secs = parseInt(time % 60);
             secs = secs > 9 ? secs : '0' + secs;
             secs = secs ? secs : '00';
-           
-            return mins + ':' + secs;
+
+            return hrs + mins + ':' + secs;
         },
         _computeProgress: function(currentTime, duration) {
             return this._computeTime(currentTime) + ' / ' + this._computeTime(duration);
@@ -118,19 +121,31 @@
             progress.addEventListener('mousedown', function() {
                 this.mousedown = true;
             }.bind(this));
-            progress.addEventListener('mouseup', function() {
+            progress.addEventListener('mouseup', function(e) {
                 this.mousedown = false;
+                this.performSeek(e);
             }.bind(this));
             progress.addEventListener('mouseleave', function() {
                 this.mousedown = false;
             }.bind(this));
             progress.addEventListener('mousemove', function(e) {
                 if (this.mousedown) {
-                    var x = e.layerX / progress.clientWidth;
-                    this.fire('seek-to', x * this.duration);
+                    this.performSeek(e);
                 }
             }.bind(this));
         },
+        performSeek: function(e) {
+            var progress = this.$.progress;
+            var seekToTime = e.layerX / progress.clientWidth * this.duration;
+
+            this.fire('seek-to', seekToTime);
+        },
+        show: function() {
+            this.style.display = 'block';
+        },
+        hide: function() {
+            this.style.display = 'none';
+        }
     });
     </script>
 </dom-module>

@@ -1,25 +1,51 @@
 <script src="event-timer.js"></script>
 <link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
 <link rel="import" href="video-player-html5/video-player-html5.html">
+<link rel="import" href="video-player-youtube/video-player-youtube.html">
 <link rel="import" href="video-controls/video-controls.html">
 <link rel="import" href="overlays-timeline/overlays-timeline.html">
 <dom-module id="video-player">
     <template>
         <style>
         :host {
+            width: 45%;
+            background: rgba(0, 0, 0, 0.7);
+            position: relative;
+            display: inline-block;
+            margin: 1%;
+            vertical-align: top;
+            box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+        }
+        
+        :host:before {
+            padding-top: 56.25%;
+            content: '';
             display: block;
-            height: 100%;
+        }
+        
+        .players {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+        
+        video-controls {
+            position: absolute;
+            bottom: 0;
         }
         </style>
-        <template is="dom-if" if="[[isYoutube]]">
-            <google-youtube main video-id="[[unit.video.source]]" height="100%" width="100%" rel="0" autoplay="[[autoplay]]" controls="1" showinfo="0" fs="0" id="player" duration="{{duration}}" playbackstarted="{{playbackstarted}}" state="{{state}}">
-            </google-youtube>
-        </template>
-        <template is="dom-if" if="[[isHTML5]]">
-            <video-player-html5 id="html5" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}"></video-player-html5>
-        </template>
-        <video-controls current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}"></video-controls>
-        <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}" id="timeline"></overlays-timeline>
+        <div class="players" main>
+            <template is="dom-if" if="[[isYoutube]]">
+                <video-player-youtube id="youtube" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}"></video-player-youtube>
+            </template>
+            <template is="dom-if" if="[[isHTML5]]">
+                <video-player-html5 id="html5" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}"></video-player-html5>
+            </template>
+            <video-controls current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}" id="controls"></video-controls>
+            <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}" id="timeline"></overlays-timeline>
+        </div>
     </template>
 </dom-module>
 <script>
@@ -38,19 +64,14 @@
             autoplay: {
                 value: 0
             },
-            playbackstarted: {
-                type: Boolean,
-                observer: '_playerReady'
-            },
-            state: {
-                type: Number,
-                notify: true
-            },
             isYoutube: {
                 computed: '_computeIsYoutube(unit)'
             },
             isHTML5: {
                 computed: '_computeIsHTML5(unit)'
+            },
+            isPlaying: {
+                observer: '_stateChanged'
             }
         },
         _computeIsYoutube: function(unit) {
@@ -64,7 +85,8 @@
         listeners: {
             'play-clicked': 'play',
             'pause-clicked': 'pause',
-            'seek-to': 'seekTo'
+            'seek-to': 'seekTo',
+            'player-ready': '_playerReady',
         },
 
         get player() {
@@ -77,74 +99,61 @@
         },
 
         play: function() {
-            this.isPlaying = true;
             this.player.play();
         },
         pause: function() {
-            this.isPlaying = false;
             this.player.pause();
         },
-
         seekTo: function(e) {
             var time = e.detail;
             this.player.seekTo(time);
         },
 
         _playerReady: function() {
-            if (this.playbackstarted) {
-                window.app.player = this.$.player;
-                app.player.getCurrentTime = function() {
-                    return app.player._player.getCurrentTime();
-                };
-                app.player.play = function() {
-                    app.player._player.playVideo();
-                    this.$.timeline.hide();
-                }.bind(this);
+            window.app.player = this.player;
+            app.eventTimer = window.EventTimer(app.player, function(type, overlay) {
+                switch (type) {
+                    case 'show':
+                        app.overlays.show(overlay.id);
+                        break;
+                    case 'hide':
+                        app.overlays.hide(overlay.id);
+                        break;
+                }
+            });
 
-                app.eventTimer = window.EventTimer(app.player, function(type, overlay) {
-                    switch (type) {
-                        case 'show':
-                            app.overlays.show(overlay.id);
-                            break;
-                        case 'hide':
-                            app.overlays.hide(overlay.id);
-                            break;
-                    }
-                });
+            this.addEventListener('overlay-selected', function(e) {
+                app.eventTimer.seekTo(e.detail);
+            },false);
 
-                this.addEventListener('overlay-selected', function(e) {
-                    app.eventTimer.seekTo(e.detail);
-                });
+            this.addEventListener('mousemove', function(e) {
+                this._showControls();
+            }.bind(this),false);
 
-                window.dispatchEvent(new Event('resize'));
-                app.eventTimer.start();
-                this.fire('video-ready');
-            }
+            app.eventTimer.start();
+            this.fire('video-ready');
         },
 
-        _showTimeline: function() {
-            if (this.playbackstarted) {
-                this.$.timeline.show();
-                clearTimeout(this.hideTimer);
-                this.hideTimer = setTimeout(function() {
-                    this._hideTimeline();
-                }.bind(this), 3000);
-            }
+        _showControls: function() {
+            this.$.timeline.show();
+            this.$.controls.show();
+            clearTimeout(this.hideTimer);
+            this.hideTimer = setTimeout(function() {
+                this._hideControls();
+            }.bind(this), 3000);
         },
-        _hideTimeline: function() {
-            if (this.state !== 2) { //always show during pause
+        _hideControls: function() {
+            if (this.isPlaying) { //don't hide during pause
                 this.$.timeline.hide();
+                this.$.controls.hide();
             }
         },
 
-        _togglePlay: function() {
-            if (this.state === 2) {
-                app.player.play();
-            } else {
-                app.player.pause();
+        _stateChanged: function(isPlaying) {
+            if (isPlaying) {
+                this._showControls();
             }
         }
-
     });
 })();
 </script>
