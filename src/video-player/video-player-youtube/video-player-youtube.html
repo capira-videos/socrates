@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
+<link rel="import" href="../../../bower_components/google-youtube/google-youtube.html">
 <link rel="import" href="../video-player-behavior.html">
 <dom-module id="video-player-youtube">
     <template>
@@ -37,8 +37,8 @@
             }
         },
 
-        seekTo: function(time) {
-            this.player.seekTo(time);
+        _seekTo: function(time) {
+            this.player._player.seekTo(time, true);
         },
 
         play: function() {
@@ -58,13 +58,11 @@
         },
 
         _isPlaying: function(state) {
-            if (window.YT) {
-                if (state === YT.PlayerState.PLAYING) {
-                    return true;
-                }
-                if (state === YT.PlayerState.PAUSED) {
-                    return false;
-                }
+            if (state === 1) {
+                return true;
+            }
+            if (state === 2) {
+                return false;
             }
             return false;
         }

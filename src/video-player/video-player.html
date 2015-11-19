@@ -8,13 +8,11 @@
     <template>
         <style>
         :host {
-            width: 45%;
+            width: 100%;
             background: rgba(0, 0, 0, 0.7);
             position: relative;
             display: inline-block;
-            margin: 1%;
-            vertical-align: top;
-            box-shadow: 0 0 4px rgba(0, 0, 0, .3);
+            overflow: hidden;
         }
         
         :host:before {
@@ -35,16 +33,27 @@
             position: absolute;
             bottom: 0;
         }
+        
+        #mouseevents {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+        }
         </style>
         <div class="players" main>
             <template is="dom-if" if="[[isYoutube]]">
-                <video-player-youtube id="youtube" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}"></video-player-youtube>
+                <video-player-youtube id="youtube" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}" autoplay="{{autoplay}}"></video-player-youtube>
             </template>
             <template is="dom-if" if="[[isHTML5]]">
-                <video-player-html5 id="html5" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}"></video-player-html5>
+                <video-player-html5 id="html5" src="[[unit.video.src]]" current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}" autoplay="{{autoplay}}"></video-player-html5>
             </template>
-            <video-controls current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}" id="controls"></video-controls>
-            <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}" id="timeline"></overlays-timeline>
+            <div id="mouseevents"></div>
+            <video-controls current-time="{{currentTime}}" duration="{{duration}}" is-playing="{{isPlaying}}" id="controls">
+                <overlays-timeline duration="{{duration}}" overlays="{{unit.overlays}}"></overlays-timeline>
+            </video-controls>
         </div>
     </template>
 </dom-module>
@@ -83,9 +92,6 @@
         },
 
         listeners: {
-            'play-clicked': 'play',
-            'pause-clicked': 'pause',
-            'seek-to': 'seekTo',
             'player-ready': '_playerReady',
         },
 
@@ -98,45 +104,30 @@
             }
         },
 
-        play: function() {
-            this.player.play();
-        },
-        pause: function() {
-            this.player.pause();
-        },
-        seekTo: function(e) {
-            var time = e.detail;
-            this.player.seekTo(time);
-        },
-
         _playerReady: function() {
             window.app = window.app || {};
             window.app.player = this.player;
-            app.eventTimer = window.EventTimer(app.player, function(type, overlay) {
+            this.$.controls.setPlayer(this.player);
+            var eventTimer = window.EventTimer(app.player, this.unit.overlays, function(type, overlay) {
                 switch (type) {
                     case 'show':
-                        app.overlays.show(overlay.id);
+                        this.fire('show-overlay', overlay.id);
                         break;
                     case 'hide':
-                        app.overlays.hide(overlay.id);
+                        this.fire('hide-overlay', overlay.id);
                         break;
                 }
-            });
-
+            }.bind(this));
             this.addEventListener('overlay-selected', function(e) {
-                app.eventTimer.seekTo(e.detail);
+                eventTimer.seekTo(e.detail);
             }, false);
+            eventTimer.start();
 
-            this.addEventListener('mousemove', function(e) {
-                this._showControls();
-            }.bind(this), false);
-
-            app.eventTimer.start();
+            this._initMouseEvents();
             this.fire('video-ready');
         },
 
         _showControls: function() {
-            this.$.timeline.show();
             this.$.controls.show();
             clearTimeout(this.hideTimer);
             this.hideTimer = setTimeout(function() {
@@ -145,7 +136,6 @@
         },
         _hideControls: function() {
             if (this.isPlaying) { //don't hide during pause
-                this.$.timeline.hide();
                 this.$.controls.hide();
             }
         },
@@ -154,6 +144,17 @@
             if (isPlaying) {
                 this._showControls();
             }
+        },
+
+        _initMouseEvents: function() {
+            var mouseevents = this.$.mouseevents;
+            mouseevents.style.display = 'block';
+            mouseevents.addEventListener('mousemove', function(e) {
+                this._showControls();
+            }.bind(this), false);
+            mouseevents.addEventListener('click', function() {
+                this.player.togglePlay();
+            }.bind(this));
         }
     });
 })();

@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/paper-styles/paper-styles.html">
 <link rel="import" href="../../capira-icons/icons.html">
 <link rel="import" href="fullscreen-button.html">
+<link rel="import" href="video-controls-animations.html">
 <dom-module id="video-controls">
     <template>
         <style>
@@ -10,6 +11,17 @@
             width: 100%;
             color: white;
             position: relative;
+            display: none;
+        }
+        
+        :host,
+        #progress {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
         #progress {
@@ -17,10 +29,11 @@
             padding-top: 3px;
             height: 5px;
             cursor: pointer;
+            z-index: 4;
         }
         
         #progressed {
-            background-color: green;
+            background-color: var(--paper-green-500);
             height: 100%;
         }
         
@@ -33,17 +46,20 @@
         
         #duration {
             @apply(--paper-font-body2);
+            line-height: 21px;
+            vertical-align: bottom;
         }
         
         #play,
         #pause {
-            padding: 0 8px;
+            padding: 0 12px;
             cursor: pointer;
         }
         
         #right {
             position: absolute;
             right: 8px;
+            top: 6px;
         }
         
         [hidden] {
@@ -64,12 +80,14 @@
                 <fullscreen-button></fullscreen-button>
                 <span id="yt-logo"></span>
             </div>
+            <content></content>
         </div>
     </template>
     <script>
     'use strict';
     Polymer({
         is: 'video-controls',
+        behaviors: [Capira.VideoControlsAnimations],
         properties: {
             currentTime: {
                 type: Number,
@@ -111,40 +129,55 @@
             return 'width:' + (currentTime / duration) * 100 + '%';
         },
         _play: function() {
-            this.fire('play-clicked');
+            this.player.play();
         },
         _pause: function() {
-            this.fire('pause-clicked');
+            this.player.pause();
         },
         attached: function() {
             var progress = this.$.progress;
-            progress.addEventListener('mousedown', function() {
-                this.mousedown = true;
-            }.bind(this));
-            progress.addEventListener('mouseup', function(e) {
-                this.mousedown = false;
-                this.performSeek(e);
-            }.bind(this));
-            progress.addEventListener('mouseleave', function() {
-                this.mousedown = false;
-            }.bind(this));
-            progress.addEventListener('mousemove', function(e) {
-                if (this.mousedown) {
-                    this.performSeek(e);
-                }
-            }.bind(this));
-        },
-        performSeek: function(e) {
-            var progress = this.$.progress;
-            var seekToTime = e.layerX / progress.clientWidth * this.duration;
+            var background = document.body;
 
-            this.fire('seek-to', seekToTime);
+            var seekStart = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.mousedown = true;
+            }.bind(this);
+
+            var seekPerformed = function(e) {
+                if (this.mousedown) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var x = e.pageX - progress.getBoundingClientRect().left;
+                    var seekToTime = x / progress.clientWidth * this.duration;
+                    //this.currentTime = seekToTime;
+                    this.player.seekTo(seekToTime);
+                }
+            }.bind(this);
+
+            var seekEnd = function(e) {
+                seekPerformed(e);
+                this.mousedown = false;
+            }.bind(this);
+
+            //mouse events
+            progress.addEventListener('mousedown', seekStart, false);
+            background.addEventListener('mousemove', seekPerformed, false);
+            background.addEventListener('mouseup', seekEnd, false);
+            background.addEventListener('mouseleave', seekEnd, false);
+
+            //touch events 
+            progress.addEventListener('touchstart', seekStart, false);
+            background.addEventListener('touchmove', seekPerformed, false);
+            background.addEventListener('touchend', seekEnd, false);
+            background.addEventListener('touchcancel', seekEnd, false);
+
         },
-        show: function() {
-            this.style.display = 'block';
-        },
-        hide: function() {
-            this.style.display = 'none';
+        setPlayer: function(player) {
+            this.player = player;
+            setInterval(function() {
+                this.currentTime = this.player.getCurrentTime();
+            }.bind(this), 100);
         }
     });
     </script>

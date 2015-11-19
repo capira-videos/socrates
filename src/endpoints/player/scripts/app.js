@@ -1,6 +1,7 @@
 'use strict';
 window.isPlayer = true;
 (function(document) {
+    window.app = document.querySelector('#app');
     window.standardReaction = {
         type: 'play'
     };
@@ -11,6 +12,7 @@ window.isPlayer = true;
     window.addEventListener('resize', function() {
         window.resizer(null, document.getElementById('main'));
     });
+
 
     app.addEventListener('dom-change', function() {
         window.resizer(null, document.getElementById('main'));
@@ -23,5 +25,13 @@ window.isPlayer = true;
         app.service.addEventListener('unit-loaded', function() {
             console.log('loaded', app.unit);
         });
+
+        app.playerManager.addEventListener('show-overlay', function(e) {
+            app.overlays.show(e.detail);
+        }.bind(this));
+
+        app.playerManager.addEventListener('hide-overlay', function(e) {
+            app.overlays.hide(e.detail);
+        }.bind(this));
     });
 })(document);

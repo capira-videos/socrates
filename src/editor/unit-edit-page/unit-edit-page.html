@@ -58,8 +58,8 @@
             var id = e.detail ? e.detail : e;
             id = id.id ? id.id : id;
             this.fire('edit-state', 'overlay');
-            app.overlays.show(id);
             app.player.pause();
+            app.overlays.show(id);
         },
         _showVideo: function() {
             this.fire('edit-state', 'default');

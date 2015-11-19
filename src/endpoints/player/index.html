@@ -26,9 +26,7 @@
         <template is="dom-bind" id="app">
             <route-manager unit-id="{{unitId}}"></route-manager>
             <capira-service unit-id="{{unitId}}" unit="{{unit}}" loading="{{loading}}"></capira-service>
-            <template is="dom-if" if="[[unit.video]]">
-                <video-player unit="[[unit]]" autoplay="0" id="video"></video-player>
-            </template>
+            <video-player unit="[[unit]]"></video-player>
             <overlays-manager overlays="{{unit.overlays}}"></overlays-manager>
         </template>
     </div>

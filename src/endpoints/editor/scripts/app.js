@@ -36,6 +36,14 @@
             app.protector.reset();
         });
 
+        app.unitEditor.addEventListener('show-overlay', function(e) {
+            app.overlays.show(e.detail);
+        }.bind(this));
+
+        app.unitEditor.addEventListener('hide-overlay', function(e) {
+            app.overlays.hide(e.detail);
+        }.bind(this));
+
         //remove editor splash
         setTimeout(function() {
             document.getElementById('sp').innerHTML = '';

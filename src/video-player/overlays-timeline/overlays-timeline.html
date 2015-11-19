@@ -3,12 +3,11 @@
         <style>
         :host {
             position: absolute;
-            left: 12px;
-            right: 12px;
+            left: 0px;
+            right: 0px;
             bottom: 35px;
             height: 12px;
             pointer-events: none;
-            display: none;
         }
         
         .anchor {
@@ -59,12 +58,6 @@
         _jump: function(event) {
             event.stopPropagation();
             this.fire('overlay-selected', event.model.item);
-        },
-        show: function() {
-            this.style.display = 'block';
-        },
-        hide: function() {
-            this.style.display = 'none';
         }
     });
 })();

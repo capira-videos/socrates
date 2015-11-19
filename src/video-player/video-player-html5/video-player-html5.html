@@ -1,4 +1,5 @@
 <link rel="import" href="../video-player-behavior.html">
+<link rel="import" href="../../capira-helper/device-detector.html">
 <dom-module id="video-player-html5">
     <template>
         <style>
@@ -13,7 +14,7 @@
             height: auto !important;
         }
         </style>
-        <video src="{{src}}" id="player"></video>
+        <video src="{{src}}" id="player" preload="auto"></video>
     </template>
     <script>
     'use strict';
@@ -21,8 +22,15 @@
         is: 'video-player-html5',
         behaviors: [Capira.VideoPlayer],
         attached: function() {
+            if (window.isiPad) {
+                this.player.controls = true;
+            }
             this.player.addEventListener('canplay', function() {
+                //hack to hide controls on the ipad
+                this.player.controls = false;
+
                 this.duration = this.player.duration;
+                this.fire('player-ready');
             }.bind(this));
 
             this.player.addEventListener('play', function() {
@@ -32,13 +40,9 @@
             this.player.addEventListener('pause', function() {
                 this.set('isPlaying', false);
             }.bind(this));
-
-            this.player.addEventListener('click', function() {
-                this.togglePlay();
-            }.bind(this));
         },
 
-        seekTo: function(time) {
+        _seekTo: function(time) {
             this.player.currentTime = time;
         },
 

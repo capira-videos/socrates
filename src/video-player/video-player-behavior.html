@@ -10,10 +10,6 @@ Capira.VideoPlayer = {
             value: 0,
             notify: true
         },
-        currentTime: {
-            type: Number,
-            notify: true
-        },
         isPlaying: {
             type: Boolean,
             notify: true
@@ -25,16 +21,26 @@ Capira.VideoPlayer = {
     get player() {
         return this.$.player;
     },
-    attached: function() {
-        setInterval(function() {
-            this.currentTime = this.getCurrentTime();
-        }.bind(this), 1000);
-    },
     togglePlay: function() {
         if (this.isPlaying) {
             this.pause();
         } else {
             this.play();
+        }
+    },
+    seekTo: function(time, pause) {
+        var wasPlaying = false;
+        if (pause !== true && this.isPlaying) {
+            wasPlaying = true;
+        }
+        this.pause();
+        this._seekTo(time);
+
+        clearTimeout(this.seekTimeout);
+        if (wasPlaying === true) {
+            this.seekTimeout = setTimeout(function() {
+                this.play();
+            }.bind(this), 300);
         }
     }
 };

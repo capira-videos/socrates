@@ -1,9 +1,9 @@
 'use strict';
-window.EventTimer = function(videoPlayer,callback) {
+window.EventTimer = function(videoPlayer, overlays, callback) {
     var eventTimer = null;
     var oldTime = 0;
     var refreshRate = 25; //ms (50s^-1)
-    var delay = 0.2; //s
+    var delay = 0; //s
     var timerAssignDelay = null;
 
     var timerStep = function() {
@@ -30,13 +30,16 @@ window.EventTimer = function(videoPlayer,callback) {
                     // old < a <= new
                     if (oldTime < a && a <= newTime) {
                         videoPlayer.pause();
-                        videoPlayer.seekTo(a);
-                        callback('show', overlay);
                         var newDelay = newTime - a; // TODO delay exakter berechnen nachdem Video pausiert ist
                         // TODO seek to correct position if delay is to big
                         // calc new delay by midpoint
                         var assignDelay = (delay + newDelay) / 2.0;
                         console.log('delay:' + parseInt(delay * 1000) + '->' + parseInt(newDelay * 1000));
+
+                        if (newDelay > 0.075) {
+                            videoPlayer.seekTo(a, true);
+                        }
+                        callback('show', overlay);
                         var time = videoPlayer.getCurrentTime();
                         // assign or install new delay
                         if (delay > assignDelay) { // if the new delay is smaller than the old delay, we assign it in a
@@ -83,10 +86,7 @@ window.EventTimer = function(videoPlayer,callback) {
         // which overlay are inside the pacing time ?
         var a = Math.min(oldTime, newTime);
         var b = Math.max(oldTime, newTime);
-        if (!app.unit || !app.unit.overlays) {
-            return [];
-        }
-        return app.unit.overlays.filter(function(overlay) {
+        return overlays.filter(function(overlay) {
             if (!overlay.event) {
                 return false;
             }
@@ -124,7 +124,7 @@ window.EventTimer = function(videoPlayer,callback) {
                 switch (overlay.event.type) {
                     case 'STOP':
                     case 'PLAYAFTER':
-                        app.player.pause();
+                        videoPlayer.pause();
                         break;
                 }
                 videoPlayer.seekTo(overlay.event.start, true);

@@ -1,7 +1,7 @@
 <script>
 'use strict';
 
-window.DATA_SCHEMA_VERSION = '2';
+window.DATA_SCHEMA_VERSION = '3';
 window.migrateOverlay = function(overlay) {
     if (overlay) {
         var i = 0;
@@ -15,11 +15,23 @@ window.migrateOverlay = function(overlay) {
 window.migrateUnit = function(unit) {
     if (unit && unit.overlays && unit.version !== window.DATA_SCHEMA_VERSION) {
         unit.overlays.forEach(window.migrateOverlay);
+        window.migrateVideo(unit);
         unit.version = window.DATA_SCHEMA_VERSION;
         console.log('Unit Version updated:', window.DATA_SCHEMA_VERSION);
     }
     return unit;
 };
+
+window.migrateVideo = function(unit) {
+    if (unit && unit.video && (unit.version === undefined || unit.version < '3')) {
+        unit.video.src = unit.video.source;
+        if (unit.video.type === 'youtube') {
+            unit.video.type = 'yt';
+        }
+        delete unit.video.source;
+        unit.version = '3';
+    }
+}
 
 window.overlayVersion = [{
     version: '1',
@@ -98,5 +110,10 @@ window.overlayVersion = [{
             }
         };
     })()
+}, {
+    version: '3',
+    migrate: function(overlay) {
+        overlay.version = '3';
+    }
 }];
 </script>

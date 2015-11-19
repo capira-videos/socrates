@@ -16,8 +16,8 @@ window.Capira.OverlayEditPageImpl = {
         //abstract
     },
     _timestampChanged: function() {
-        if (window.app && app.eventTimer) {
-            app.eventTimer.pause();
+        if (window.app && app.player) {
+            app.player.pause();
             if (this.overlay.event && this.overlay.event.start) {
                 app.player.seekTo(this.overlay.event.start);
             }
@@ -26,7 +26,7 @@ window.Capira.OverlayEditPageImpl = {
                 clearTimeout(this.timestampTimeout);
             }
             this.timestampTimeout = setTimeout(function() {
-                app.eventTimer.start();
+                app.player.start();
             }, 1000);
         }
     }
