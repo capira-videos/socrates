@@ -31,7 +31,7 @@ window.migrateVideo = function(unit) {
         delete unit.video.source;
         unit.version = '3';
     }
-}
+};
 
 window.overlayVersion = [{
     version: '1',
@@ -42,7 +42,7 @@ window.overlayVersion = [{
             var result = {};
             var expr = combination.value;
 
-            if (!combination.value || combination.value.fun) {
+            if (!combination.value || combination.value.fun || combination.value.values) {
                 return;
             }
 
@@ -78,7 +78,7 @@ window.overlayVersion = [{
 
         return function(o) {
             overlay = o;
-            if (overlay) {
+            if (overlay && (overlay.version === undefined || overlay.version < '1')) {
                 if (overlay.type === 'custom-quiz' || overlay.type === 'math-quiz' || overlay.type === 'number-range-quiz') {
                     overlay.combinations.forEach(migrateMathCombination);
                 }
@@ -93,16 +93,15 @@ window.overlayVersion = [{
 
 
         function migrateMultiAnswerCombination(combination) {
-            if (!combination.value) {
+            if (!combination.value || combination.value.constructor === Array) {
                 return;
             }
             combination.value = JSON.parse(combination.value);
         }
 
-
         return function(o) {
             overlay = o;
-            if (overlay) {
+            if (overlay && overlay.version < '2') {
                 if (overlay.type === 'multi-answer-quiz') {
                     overlay.combinations.forEach(migrateMultiAnswerCombination);
                 }
@@ -113,7 +112,9 @@ window.overlayVersion = [{
 }, {
     version: '3',
     migrate: function(overlay) {
-        overlay.version = '3';
+        if (overlay && overlay.version < '3') {
+            overlay.version = '3';
+        }
     }
 }];
 </script>
