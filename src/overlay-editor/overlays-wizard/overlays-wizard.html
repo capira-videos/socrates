@@ -4,44 +4,44 @@
 <script type="text/javascript" src="overlays-palette.js"></script>
 <dom-module id="overlays-wizard">
     <template>
-    <style> 
-    :host {
-        display: block;
-        position: relative;
-    }
-    
-    paper-dialog {
-        width: calc(100% - 64px);
-        background-color: white;
-        height: calc(100vh - 64px);
-        padding-top: 56px;
-        box-sizing: border-box;
-        z-index: 100 !important;
-    }
-    
-    #header {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        height: 64px;
-        background-color: var(--paper-teal-400);
-        color: white;
-        margin-top: 0;
-        @apply(--paper-font-headline);
-        @apply(--layout);
-        @apply(--layout-center);
-    }
-    
-    .category-title {
-        @apply(--paper-font-title);
-        padding-top: 24px;
-    }
-    
-    paper-dialog-scrollable /deep/ #scrollable {
-        max-height: calc(100vh - 200px) !important;
-    }
-     </style>
+        <style>
+        :host {
+            display: block;
+            position: relative;
+        }
+        
+        paper-dialog {
+            width: calc(100% - 64px);
+            background-color: white;
+            height: calc(100vh - 64px);
+            padding-top: 56px;
+            box-sizing: border-box;
+            z-index: 100 !important;
+        }
+        
+        #header {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 64px;
+            background-color: var(--paper-teal-400);
+            color: white;
+            margin-top: 0;
+            @apply(--paper-font-headline);
+            @apply(--layout);
+            @apply(--layout-center);
+        }
+        
+        .category-title {
+            @apply(--paper-font-title);
+            padding-top: 24px;
+        }
+        
+        paper-dialog-scrollable /deep/ #scrollable {
+            max-height: calc(100vh - 200px) !important;
+        }
+        </style>
         <paper-dialog id="wizard" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <div id="header">Select an Overlay to create</div>
             <paper-dialog-scrollable>
@@ -90,6 +90,7 @@
                         type: 'STOP',
                         start: currentTime,
                     };
+                    overlayTemplate.version = window.DATA_SCHEMA_VERSION;
                     this.fire('overlay-created', overlayTemplate);
                 }
                 setTimeout(function() {
