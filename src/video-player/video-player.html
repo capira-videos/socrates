@@ -110,6 +110,7 @@
             window.app = window.app || {};
             window.app.player = this.player;
             this.$.controls.setPlayer(this.player);
+            this._initMouseEvents();
             var eventTimer = window.EventTimer(app.player, this.unit.overlays, function(type, overlay) {
                 switch (type) {
                     case 'show':
@@ -125,7 +126,6 @@
             }, false);
             eventTimer.start();
 
-            this._initMouseEvents();
             this.fire('video-ready');
         },
 

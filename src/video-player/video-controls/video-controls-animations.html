@@ -57,19 +57,21 @@ window.Capira.VideoControlsAnimationsImpl = {
     show: function() {
         if (!this.opened) {
             this.opened = true;
+            this.cancelAnimation();
             this.playAnimation('entry');
-            this.style.display = 'block';
         }
+        this.style.display = 'block';
+
     },
 
     hide: function() {
         this.opened = false;
+        this.cancelAnimation();
         this.playAnimation('exit');
     },
 
     _onNeonAnimationFinish: function(e) {
         if (!this.opened) {
-            this.opened = false;
             this.style.display = 'none';
         }
     }
