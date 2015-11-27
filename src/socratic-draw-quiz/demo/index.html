@@ -20,17 +20,32 @@
         overflow: hidden;
     }
     
-    body {
-        height: 80vh;
+    .sixteen-nine {
         position: relative;
+    }
+    
+    .sixteen-nine:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: 56.25%;
+    }
+    
+    .sixteen-nine > .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
     </style>
 </head>
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <draw-quiz></draw-quiz>
-    <script>
+    <div class="sixteen-nine">
+        <draw-quiz class="content"></draw-quiz>
+    </div>    <script>
     window.addEventListener('HTMLImportsLoaded', function(e) {
         window.initDemo('draw-quiz');
     });

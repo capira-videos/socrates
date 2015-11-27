@@ -15,12 +15,33 @@
         margin: 0;
         overflow: hidden;
     }
+    
+    .sixteen-nine {
+        position: relative;
+    }
+    
+    .sixteen-nine:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: 56.25%;
+    }
+    
+    .sixteen-nine > .content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
     </style>
 </head>
 
 <body unresolved>
     <span id="browser-sync-binding"></span>
-    <hotspot-quiz></hotspot-quiz>
+    <div class="sixteen-nine">
+        <hotspot-quiz class="content"></hotspot-quiz>
+    </div>
     <link rel="import" href="demo-data.html">
     <link rel="import" href="../../../overlay/demo/demo-init.html">
     <script>
