@@ -39,7 +39,7 @@ window.requestAnimFrame = (function() {
         };
 })();
 
-window.inIframe = (function() {
+window.isIframe = (function() {
     try {
         return window.self !== window.top;
     } catch (e) {
