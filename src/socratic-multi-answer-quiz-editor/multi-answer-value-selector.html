@@ -46,7 +46,7 @@ Polymer({
                 var checkboxes = this.$.content.querySelectorAll('paper-checkbox');
                 for (var i = 0; i < checkboxes.length; i++) {
                     var checkbox = checkboxes[i];
-                    if (this.combination.value.indexOf(i) > -1) {
+                    if (this.combination.value && this.combination.value.indexOf(i) > -1) {
                         checkbox.checked = true;
                         selector.select(this.overlay.options[i]);
                     } else {

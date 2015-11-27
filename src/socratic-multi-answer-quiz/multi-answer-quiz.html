@@ -38,7 +38,7 @@ Simpler way to do this?
             <div id="items">
                 <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle" id="list">
                     <div class="option">
-                        <paper-checkbox on-tap="_selectionChanged">
+                        <paper-checkbox on-tap="_selectionChanged" data-model="{{index}}">
                             <mark-up content="{{item}}" pointer-events="1">placeholder</mark-up>
                         </paper-checkbox>
                         <paper-icon-button icon="editor-icons:delete" hidden$="{{!editor}}" on-tap="_deleteItem"></paper-icon-button>
@@ -72,8 +72,9 @@ Simpler way to do this?
             for (var i = 0; i < items.length; i++) {
                 var e = items[i];
                 if (e.checked) {
-                    var text = e.querySelector('mark-up').content.trim();
-                    answer.push(this._findOriginalIndex(text));
+                    var index = e.dataModel;
+                    var option = this.overlay.options[index];
+                    answer.push(this._findOriginalIndex(option));
                 }
             }
             answer.sort();
