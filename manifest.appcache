@@ -1,0 +1,7 @@
+CACHE MANIFEST
+/player/index.html
+/player/elements.html
+/static/sound/neutral.ogg
+/static/sound/correct.ogg
+/static/sound/incorrect.ogg
+/bower_components/katex/dist/katex.min.js

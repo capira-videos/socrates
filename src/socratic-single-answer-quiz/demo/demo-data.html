@@ -2,26 +2,35 @@
 // Dummy Data 
 window.dummyOverlay = {
     id: 'single-answer',
-    question: 'Why is 42 the answer to the Ultimate Question of Life, the Universe, and Everything?',
+    question: 'What is the only bird that can fly backwards?',
     type: 'single-answer-quiz',
     options: [
-        'Because 42 will do.',
-        'Because 42 is 101010 in binary code.',
-        'Because light refracts off water by 42 degrees to create a rainbow.',
-        'Because light requires <latex-formula>10^{-42}</latex-formula> seconds to cross the diameter of a proton.'
+        'Falcon',
+        'Hummingbird',
+        'Pelican',
+        'Ostrich',
+        'Penguin',
     ],
     combinations: [{
-        value: 0,
+        value: 1,
         grade: 0,
-        feedback: 'Exactly! Dougles Adams choose 42 randomly.',
+        feedback: 'Exactly! In fact, the Hummingbird can fly side to side, hover, and mostly move what can best be described as a “flying ninja.”',
         reaction: {
             type: 'showOverlay',
             target: 'multi-answer-intro'
         }
     }, {
-        value: 1,
-        grade: 1,
-        feedback: 'Do you believe he thought that deeply about every random fact? ;)',
+        value: 0,
+        grade: 2,
+        feedback: 'Falcons are one of the fastest bird species on earth, but they can\'t fly backwards!',
+        reaction: {
+            type: 'showOverlay',
+            target: 'single-answer-hint'
+        }
+    }, {
+        value: 2,
+        grade: 2,
+        feedback: 'Have you ever seen a Pelican flying backwards? ;-)',
         reaction: {
             type: 'showOverlay',
             target: 'single-answer-hint'
@@ -29,14 +38,22 @@ window.dummyOverlay = {
     }, {
         value: 3,
         grade: 2,
-        feedback: 'Do you believe he thought that deeply about every random fact? ;)',
+        feedback: 'An ostrich weigths about 230 lb. It is one of the largest birds on earth...',
+        reaction: {
+            type: 'showOverlay',
+            target: 'single-answer-hint'
+        }
+    }, {
+        value: 4,
+        grade: 2,
+        feedback: 'Penguins can\'t fly! ;-)',
         reaction: {
             type: 'showOverlay',
             target: 'single-answer-hint'
         }
     }, {
         grade: 2,
-        feedback: 'Not quite... Try again!'
+        feedback: 'Try again!'
     }]
 };
 </script>

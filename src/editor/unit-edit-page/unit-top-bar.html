@@ -2,18 +2,33 @@
 <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../capira-account/account-preview.html">
 <link rel="import" href="../top-bar/top-bar.html">
+<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/paper-tooltip/paper-tooltip.html">
 <dom-module id="unit-top-bar">
     <template>
         <style>
         paper-input {
             width: 400px;
         }
+        
+        a {
+            color: #212121;
+        }
         </style>
         <paper-input value="{{unit.title}}" label="Video Title"></paper-input>
         <span class="flex"></span>
-        <account-preview></account-preview>
-        <paper-icon-button icon="editor-icons:home" on-tap="_home"></paper-icon-button>
-        <paper-icon-button icon="editor-icons:save" on-tap="_save"></paper-icon-button>
+        <account-preview id="account"></account-preview>
+        <paper-tooltip for="account">Your Account</paper-tooltip>
+        <paper-icon-button id="home" icon="editor-icons:home" on-tap="_home"></paper-icon-button>
+        <paper-tooltip for="home">Back to Channel</paper-tooltip>
+        <a href="/player/{{hashedId}}" target="_blank" id="view">
+            <paper-icon-button icon="editor-icons:slideshow"></paper-icon-button>
+        </a>
+        <paper-tooltip for="view">View Lesson</paper-tooltip>
+        <paper-icon-button id="save" icon="editor-icons:save" on-tap="_save"></paper-icon-button>
+        <paper-tooltip for="save">Save Lesson</paper-tooltip>
+        <!-- read channelId written by channel-editor app -->
+        <iron-localstorage name="channelUrl" value="{{channelUrl}}"></iron-localstorage>
     </template>
 </dom-module>
 <script>
@@ -25,13 +40,23 @@ Polymer({
         unit: {
             type: Object,
             notify: true
+        },
+        channelUrl: {
+            type: String,
+            value: '/channel/#!/1'
+        },
+        hashedId: {
+            computed: '_hash(unit)'
         }
     },
     _save: function() {
         this.fire('save-unit');
     },
     _home: function() {
-        window.location = '../channel/#!/2';
+        window.location = this.channelUrl;
+    },
+    _hash: function() {
+        return location.hash;
     }
 });
 </script>
