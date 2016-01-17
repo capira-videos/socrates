@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../capira-migrator/capira-migrator.html">
+<dom-module id="capira-service">
+    <template>
+        <iron-ajax id="service" handle-as="json" verbose="true" loading="{{loading}}"></iron-ajax>
+    </template>
+    <script>
+    'use strict';
+    (function() {
+        Polymer({
+            is: 'capira-service',
+            properties: {
+                loading: {
+                    notify: true
+                },
+                unitId: {
+                    observer: '_loadUnit',
+                    notify: true
+                },
+                unit: {
+                    type: Object,
+                    notify: true
+                }
+            },
+            _loadUnit: function(unitId) {
+                //this.set('unit', window.migrateUnit(window.unit));
+                //this.fire('unit-loaded');
+                this.fetchUnit(unitId).then(function(req) {
+                    var unit = req.response;
+                    unit.overlays = unit.overlays ? unit.overlays : [];
+                    unit = window.migrateUnit(unit);
+                    this.set('unit', unit);
+                    //console.log('Service loaded: ', this.unit);
+                    this.fire('unit-loaded',this.unit);
+                }.bind(this));
+            },
+
+            _generateRequest: function(method, url, data) {
+                var service = this.$.service;
+                service.body = JSON.stringify(data);
+                service.method = method;
+                service.url = '/api' + url;
+                service.contentType = 'application/json; charset=utf-8';
+                return service.generateRequest().completes;
+            },
+
+            fetchUnit: function(id) {
+                return this._generateRequest('GET', '/lesson/' + id);
+            },
+
+            updateUnit: function(unit) {
+                return this._generateRequest('POST', '/lesson', unit);
+            },
+
+            deleteUnit: function(unitId) {
+                return this._generateRequest('DELETE', '/lesson/' + unitId);
+            }
+
+        });
+    })();
+    </script>
+</dom-module>

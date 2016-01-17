@@ -1,0 +1,42 @@
+<html>
+<head>
+    <style>
+    html,
+    body,
+    a {
+        margin: 0;
+        font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        width: 100%;
+        height: 100%;
+        display: block;
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 32px;
+        background-color: #2196f3;
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    a > span {
+        position: absolute;
+        top: 50%;
+        margin-top: -16px;
+        width: 100%;
+        text-align: center;
+        color: white;
+    }
+    </style>
+</head>
+<body>
+    <a href="/editor" target="_blank">
+        <span>Click here to open the Capira Editor.</span>
+    </a>
+    <script>
+    'use strict';
+    var anchor = document.querySelector('a');
+    var redirectUrl = location.hash.substr(1);
+    anchor.href=redirectUrl;
+    anchor.click();
+    </script>
+</body>
+
+</html>

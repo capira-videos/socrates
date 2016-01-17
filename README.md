@@ -1,6 +1,18 @@
 # capira
 
 
+## Adding Capira as a sidewide tool in Moodle
+```
+https://docs.moodle.org/22/en/External_tool_settings
+```
+
+### Enable Fullscreen
+
+Add as HTML Description:
+```
+<script>setTimeout(function(){document.querySelector('iframe').setAttribute('allowFullScreen', 'true')},1500);</script>
+```
+Check 'Show description on start'
 
 ## Install Tools
 

@@ -1,0 +1,34 @@
+<link rel="import" href="../../../../../bower_components/paper-icon-button/paper-icon-button.html">
+<dom-module id="edit-button">
+    <template>
+        <style>
+        :host {
+            pointer-events: all;
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: white;
+            z-index: 1000;
+        }
+        a{
+            color: white;
+        }
+        paper-icon-button:hover {
+            color: var(--paper-blue-500);
+        }
+        </style>
+        <a href="/editor/#/{{unit._id}}" target="_blank">
+            <paper-icon-button icon="player-icons:mode-edit"></paper-icon-button>
+        </a>
+    </template>
+</dom-module>
+<script>
+'use strict';
+(function() {
+    Polymer({
+        is: 'edit-button'
+    });
+})();
+</script>

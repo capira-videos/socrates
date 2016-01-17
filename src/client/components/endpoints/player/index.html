@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="" manifest="/manifest.appcache">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Capira Video Quiz</title>
+    <!-- Place favicon.ico in the `app/` directory -->
+    <!-- Chrome for Android theme color -->
+    <meta name="theme-color" content="#303F9F">
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Tile color for Win8 -->
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="CAPIRA">
+    <link href="../../capira-theme/app.css" rel="stylesheet" type="text/css" inline>
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.min.js" inline></script>
+</head>
+
+<body>
+    <span id="browser-sync-binding"></span>
+    <div id="main">
+        <template is="dom-bind" id="app">
+            <edit-button unit="{{unit}}"></edit-button>
+            <route-manager unit-id="{{unitId}}"></route-manager>
+            <capira-service unit-id="{{unitId}}" unit="{{unit}}" loading="{{loading}}"></capira-service>
+            <video-player unit="[[unit]]"></video-player>
+            <overlays-manager overlays="{{unit.overlays}}"></overlays-manager>
+        </template>
+    </div>
+    <!-- endbuild-->
+    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+    <!-- endbuild -->
+    <!-- will be replaced with editor/editor.vulcanized.html -->
+    <link rel="import" href="elements/elements.html">
+    <script src="scripts/app.js" inline></script>
+    <!-- endreplace-->
+    <!-- Offline testing -->
+    <script type="text/javascript" src="../../../showcase/showcase5.js"></script>
+    <!-- -->
+</body>
+
+</html>

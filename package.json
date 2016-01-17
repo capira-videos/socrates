@@ -22,8 +22,9 @@
     "gulp-inline-source": "^2.1.0",
     "gulp-jshint": "^1.6.3",
     "gulp-load-plugins": "^0.10.0",
-    "gulp-minify-html": "^1.0.2",
+    "gulp-minify-html": "^1.0.4",
     "gulp-minify-inline": "^0.1.1",
+    "gulp-print": "^1.1.0",
     "gulp-rename": "^1.2.0",
     "gulp-replace": "^0.5.3",
     "gulp-size": "^1.0.0",
@@ -47,13 +48,19 @@
   },
   "scripts": {
     "test": "gulp test:local",
-    "start": "gulp serve"
+    "start": "nodemon src/server/index.js; gulp serve"
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "gulp-minify-html": "^1.0.4",
-    "gulp-print": "^1.1.0"
+    "body-parser": "^1.14.2",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.3",
+    "express-session": "^1.13.0",
+    "ims-lti": "^3.0.2",
+    "mongoose": "^4.3.5",
+    "passport": "^0.3.2",
+    "passport-lti": "0.0.5"
   }
 }

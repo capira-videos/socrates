@@ -1,0 +1,131 @@
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="video-selector">
+    <style>
+    #createUnitDialog {
+        width: 400px !important;
+        max-height: 1000px !important;
+        background-color: white;
+    }
+    </style>
+    <template>
+        <paper-dialog id="createUnitDialog" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+            <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
+            <h2>Create Unit</h2>
+            <div>
+                <paper-input label="Enter an URL of a Video." value="[[video.src]]" id="videoId" autofocus></paper-input>
+                <paper-input label="Enter lesson title" value="{{unit.title}}" hidden$="{{!valid}}"></paper-input>
+            </div>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button on-click="_confirm" disabled$="{{!valid}}">Create</paper-button>
+            </div>
+        </paper-dialog>
+        <iron-ajax id="youtubeApi" handle-as="json" verbose="true" on-response="_handleYoutubeTitle" loading="{{loading}}"></iron-ajax>
+    </template>
+</dom-module>
+<script>
+(function() {
+    'use strict';
+    Polymer({
+        is: 'video-selector',
+        properties: {
+            unit: {
+                type: Object,
+                notify: true
+            },
+            video: {
+                type: Object
+            }
+        },
+        open: function() {
+            this.set('valid', false);
+
+            this.video = {};
+            this.loading = false;
+            this.$.createUnitDialog.open();
+        },
+
+        ready: function() {
+            var that = this;
+            this.$.videoId.onkeyup = function() {
+                that._handleVideoUrl(this.value || '');
+            };
+        },
+
+        _parseYoutubeUrl: function(url) {
+            var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+            var match = url.match(regExp);
+            if (match && match[7] && match[7].length) {
+                return match[7];
+            } else {
+                return false;
+            }
+        },
+
+        _handleVideoUrl: function(youtubeUrl) {
+            this.set('valid', false);
+            var split = this._parseYoutubeUrl(youtubeUrl);
+            if (split) {
+                this.video.src = split;
+            } else {
+                this.video.src = youtubeUrl;
+            }
+
+            this.set('valid', false);
+            this._fetchYoutubeTitle(this.video.src);
+            this._checkVideoUrl(this.video.src);
+        },
+
+        _fetchYoutubeTitle: function(id) {
+            //timeout for to frequent changes in the video-id input
+            if (this.timer) {
+                clearTimeout(this.timer);
+            }
+            var service = this.$.youtubeApi;
+            service.url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyBtulzLnwRn3FfkfL-Lg-AhuO8eR8jfXSQ&fields=items(snippet(title))&part=snippet';
+            this.timer = setTimeout(function() {
+                service.generateRequest();
+            }, 100);
+        },
+
+        _handleYoutubeTitle: function() {
+            var resp = this.$.youtubeApi.lastResponse;
+
+            if (resp.items && resp.items.length) {
+                if (!this.unit.title) {
+                    this.set('unit.title', resp.items[0].snippet.title);
+                }
+                this.video.type = 'yt';
+
+                this.set('valid', true);
+            }
+        },
+
+        _checkVideoUrl: function(url) {
+            var video = document.createElement('video');
+            video.onloadstart = function() {
+                console.log('// ist eine video url');
+                this.video.type = 'html5';
+                this.set('valid', true);
+            }.bind(this);
+            video.onerror = function() {
+                console.log('// ist keine video url');
+            }.bind(this);
+            video.src = url;
+        },
+
+        _confirm: function() {
+            if (this.valid) {
+                this.$.createUnitDialog.close();
+                this.unit.notInitialized = false;
+                this.set('unit.video', this.video);
+            }
+        }
+
+    });
+})();
+</script>

@@ -56,9 +56,9 @@ gulp.task('elements', function() {
 // Lint JavaScript
 gulp.task('jshint', function() {
     return gulp.src([
-            'src/scripts/**/*.js',
-            'src/elements/**/*.js',
-            'src/elements/**/*.html'
+            'src/client/scripts/**/*.js',
+            'src/client/elements/**/*.js',
+            'src/client/elements/**/*.html'
         ])
         .pipe(reload({
             stream: true,
@@ -72,7 +72,7 @@ gulp.task('jshint', function() {
 
 // Optimize Images
 gulp.task('images', function() {
-    return gulp.src('src/images/**/*')
+    return gulp.src('src/client/images/**/*')
         .pipe($.cache($.imagemin({
             progressive: true,
             interlaced: true
@@ -86,9 +86,9 @@ gulp.task('images', function() {
 // Copy All Files At The Root Level (src)
 gulp.task('copy', function() {
     var src = gulp.src([
-        'src/*',
-        '!src/test',
-        '!src/precache.json'
+        'src/client/*',
+        '!src/client/test',
+        '!src/client/precache.json'
     ], {
         dot: true
     }).pipe(gulp.dest('dist'));
@@ -97,7 +97,7 @@ gulp.task('copy', function() {
         'bower_components/**/*'
     ]).pipe(gulp.dest('dist/bower_components'));
 
-    var elements = gulp.src(['src/elements/**/*.html'])
+    var elements = gulp.src(['src/client/elements/**/*.html'])
         .pipe(gulp.dest('dist/elements'));
 
     var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
@@ -106,7 +106,7 @@ gulp.task('copy', function() {
     var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
         .pipe(gulp.dest('dist/sw-toolbox'));
 
-    var vulcanized = gulp.src(['src/elements/elements.html'])
+    var vulcanized = gulp.src(['src/client/elements/elements.html'])
         .pipe($.rename('elements.vulcanized.html'))
         .pipe(gulp.dest('dist/elements'));
 
@@ -124,7 +124,7 @@ gulp.task('html', function() {
         searchPath: ['.tmp', 'src', 'dist']
     });
 
-    return gulp.src(['src/**/*.html', '!src/{elements,test}/**/*.html'])
+    return gulp.src(['src/client/**/*.html', '!src/client/{elements,test}/**/*.html'])
         // Replace path for vulcanized assets
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
         .pipe(assets)
@@ -205,29 +205,27 @@ gulp.task('serve', [], function() {
         // Note: this uses an unsigned certificate which on first access
         //       will present a certificate warning in the browser.
         // https: true,
+        // proxy: 'localhost:9898',
+        proxy:'localhost:9898',
+
+        /*
         server: {
             baseDir: 'src',
             directory: true,
-            proxy: {
-                target: 'http://capira.io',
-                middleware: function(req, res, next) {
-                    console.log(req.url);
-                    next();
-                }
-            },
             routes: {
                 '/bower_components': 'bower_components',
                 '/showcase': 'showcase',
                 '/static': 'static',
             }
         }
+        */
     });
 
-    gulp.watch(['src/**/*.html'], reload);
-    gulp.watch(['src/styles/**/*.css'], ['styles', reload]);
-    gulp.watch(['src/elements/**/*.css'], ['elements', reload]);
-    gulp.watch(['src/{scripts,elements}/**/*.js'], ['jshint']);
-    gulp.watch(['src/images/**/*'], reload);
+    gulp.watch(['src/client/**/*.html'], reload);
+    gulp.watch(['src/client/styles/**/*.css'], ['styles', reload]);
+    gulp.watch(['src/client/elements/**/*.css'], ['elements', reload]);
+    gulp.watch(['src/client/{scripts,elements}/**/*.js'], ['jshint']);
+    gulp.watch(['src/client/images/**/*'], reload);
 });
 
 // Build and serve the output from the dist build
@@ -286,8 +284,8 @@ var clean = require('gulp-clean');
  *
  */
 gulp.task('vulcan', function() {
-    var DEST_DIR = '../dist/player';
-    return gulp.src('src/endpoints/player/elements/elements.html')
+    var DEST_DIR = 'dist/player';
+    return gulp.src('src/client/endpoints/player/elements/elements.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
@@ -310,15 +308,15 @@ gulp.task('vulcan', function() {
 
 
 gulp.task('inline-scripts', function() {
-    return gulp.src('src/endpoints/player/index.html')
+    return gulp.src('src/client/endpoints/player/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
-        .pipe(gulp.dest('../dist/player/'));
+        .pipe(gulp.dest('dist/player/'));
 });
 
 
 gulp.task('clean-index', function() {
-    return gulp.src('../dist/player/index.html')
+    return gulp.src('dist/player/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -326,7 +324,7 @@ gulp.task('clean-index', function() {
             spare: true,
         })))
         .pipe(minifyInline())
-        .pipe(gulp.dest('../dist/player/'));
+        .pipe(gulp.dest('dist/player/'));
 });
 
 
@@ -366,8 +364,8 @@ gulp.task('todo', function() {
 
 
 gulp.task('editor-vulcan', function() {
-    var DEST_DIR = '../dist/editor';
-    return gulp.src('src/endpoints/editor/elements/elements.html')
+    var DEST_DIR = 'dist/editor';
+    return gulp.src('src/client/endpoints/editor/elements/elements.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
@@ -383,15 +381,15 @@ gulp.task('editor-vulcan', function() {
 
 
 gulp.task('editor-inline-scripts', function() {
-    return gulp.src('src/endpoints/editor/index.html')
+    return gulp.src('src/client/endpoints/editor/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
-        .pipe(gulp.dest('../dist/editor/'));
+        .pipe(gulp.dest('dist/editor/'));
 });
 
 
 gulp.task('editor-clean-index', function() {
-    return gulp.src('../dist/editor/index.html')
+    return gulp.src('dist/editor/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -404,7 +402,7 @@ gulp.task('editor-clean-index', function() {
 });
 
 gulp.task('editor-clean-vulcanized', function() {
-    return gulp.src('../dist/editor/elements.html')
+    return gulp.src('dist/editor/elements.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -416,7 +414,7 @@ gulp.task('editor-clean-vulcanized', function() {
                 advanced: false
             }
         }))
-        .pipe(gulp.dest('../dist/editor/'))
+        .pipe(gulp.dest('dist/editor/'))
         .pipe($.size({
             title: 'minified elements'
         }));
@@ -440,7 +438,7 @@ gulp.task('build', function(cb) {
 var polybuild = require('polybuild');
 
 gulp.task('build-1', function() {
-    return gulp.src('src/endpoints/editor/elements/elements.html')
+    return gulp.src('src/client/endpoints/editor/elements/elements.html')
         .pipe(polybuild({
             maximumCrush: true
         }))
@@ -473,45 +471,45 @@ gulp.task('copy-tests', function() {
             'bower_components/**/polymer.html',
             'bower_components/**/test-helpers.js',
         ])
-        .pipe(gulp.dest('../dist/bower_components/'));
+        .pipe(gulp.dest('dist/bower_components/'));
 
 
-    var demos = gulp.src(['src/**/demo/*.html'])
+    var demos = gulp.src(['src/client/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
         .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../overlay/demo/demo-init.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/editor-test/'));
+        .pipe(gulp.dest('dist/editor-test/'));
 
-    var demosPlayer = gulp.src(['src/**/demo/*.html', '!src/**/socratic-single-answer-quiz-editor/**/demo/*.html'])
+    var demosPlayer = gulp.src(['src/client/**/demo/*.html', '!src/client/**/socratic-single-answer-quiz-editor/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
         .pipe($.if('*.html', $.replace(/<link rel="import" href="..\/(.*)..\/overlays\/demo\/demo-init.html">/, '<link rel="import" href="../overlay/demo/demo-init.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/player-test/'));
-    var testsPlayer = gulp.src('src/**/test/*.html')
+        .pipe(gulp.dest('dist/player-test/'));
+    var testsPlayer = gulp.src('src/client/**/test/*.html')
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/player-test/'));
+        .pipe(gulp.dest('dist/player-test/'));
     var htaccess = gulp.src('static/tests/.htaccess')
-        .pipe(gulp.dest('../dist/editor-test/'))
-        .pipe(gulp.dest('../dist/player-test/'));
+        .pipe(gulp.dest('dist/editor-test/'))
+        .pipe(gulp.dest('dist/player-test/'));
 });
 
 
 gulp.task('fetch-tests', function() {
 
-    gulp.src('src/**/test/*.html')
+    gulp.src('src/client/**/test/*.html')
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/editor/elements.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('../dist/editor-test/'));
-    return gulp.src('src/**/test/index.html')
+        .pipe(gulp.dest('dist/editor-test/'));
+    return gulp.src('src/client/**/test/index.html')
         .pipe(flatten({
             includeParents: -2
         }))
@@ -520,7 +518,7 @@ gulp.task('fetch-tests', function() {
 gulp.task('print-tests', function() {
     gulp.src('static/tests/all.html')
         .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('testpaths')))))
-        .pipe(gulp.dest('../dist/editor-test/'));
+        .pipe(gulp.dest('dist/editor-test/'));
 });
 
 gulp.task('build-tests', function(cb) {
@@ -553,7 +551,7 @@ gulp.task('print-player-tests', function() {
     gulp.src('static/tests/all.html')
         .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('playerpaths')))))
         .pipe($.rename('_test-player.html'))
-    .pipe(gulp.dest('src/'));
+        .pipe(gulp.dest('src/client/'));
 });
 
 gulp.task('local-player-tests', function(cb) {
@@ -570,7 +568,7 @@ gulp.task('local-player-tests', function(cb) {
 
 
 gulp.task('fetch-editor-tests', function() {
-    return gulp.src('src/**/test/index.html')
+    return gulp.src('src/client/**/test/index.html')
         .pipe(filenames('editorpaths'));
 });
 
@@ -578,7 +576,7 @@ gulp.task('print-editor-tests', function() {
     gulp.src('static/tests/all.html')
         .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('editorpaths')))))
         .pipe($.rename('_test-editor.html'))
-    .pipe(gulp.dest('src/'));
+        .pipe(gulp.dest('src/client/'));
 });
 
 gulp.task('local-editor-tests', function(cb) {
@@ -596,36 +594,3 @@ gulp.task('local-tests', function(cb) {
         ['local-player-tests', 'local-editor-tests'],
         cb);
 });
-
-
-
-
-
-
-// Usage: gulp screenshots [--compareTo=branchOrCommit] [--pages=page1,page2,...]
-//                       [widths=width1,width2,...] [height=height]
-// The task performs a `git stash` prior to the checkout and then a `git stash pop` after the
-// completion, but on the off chance the task ends unexpectedly, you can manually switch back to
-// your current branch and run `git stash pop` to restore.
-gulp.task('screenshots', function(callback) {
-  var seleniumScreenshots = require('./gulp_scripts/selenium-screenshots');
-  
-  var callbackWrapper = function(error) {
-    callback(error);
-  };
-
-  var allPages = glob.sync('src' + '/**/test/index.html').map(function(templateFile) {
-    return path.basename(templateFile).replace('.html', '');
-  });
-
-  var branchOrCommit = argv.compareTo || 'master';
-  var pages = argv.pages ? argv.pages.split(',') : allPages;
-  var widths = argv.widths ?
-    // widths is coerced into a Number unless there's a comma, and only strings can be split().
-    (argv.widths.split ? argv.widths.split(',').map(Number) : [argv.widths]) :
-    [400, 900, 1200];
-  var height = argv.height || 9999;
-  seleniumScreenshots(branchOrCommit, 'src', 'http://localhost:3000/',
-    pages, widths, height, callbackWrapper);
-});
-
