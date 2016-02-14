@@ -1,3 +1,4 @@
+
 'use strict';
 
 Capira.OverlaysPalette = function() {
@@ -165,7 +166,7 @@ Capira.OverlaysPalette = function() {
             template: {
                 type: 'standard-annotation',
                 heading: 'Heading',
-                body: '<h3>Body</h3>...',
+                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             },
         }, {
             title: 'Short Annotation',

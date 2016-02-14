@@ -13,7 +13,7 @@
             <item-top-bar top states="item" item="{{selectedItem}}"></item-top-bar>
             <custom-quiz main states="default combination item mathslang" overlay="{{overlay}}" on-tap="_overlayState" id="quiz" combination="{{selectedCombination}}"></custom-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" states="default item" value-type="mathslang"></answers-selector>
-            <answer-editor right states="combination" combination="{{selectedCombination}}">
+            <answer-editor right states="combination" combination="{{selectedCombination}}" overlay="{{overlay}}">
                 <mathslang-value-selector value="{{selectedCombination.value}}" overlay="{{overlay}}" title="Click to edit"></mathslang-value-selector>
             </answer-editor>
             <mathslang-editor right states="mathslang" overlay="{{overlay}}" value="{{selectedCombination.value}}"></mathslang-editor>

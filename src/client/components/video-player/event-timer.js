@@ -11,6 +11,10 @@ window.EventTimer = function(videoPlayer, overlays, callback) {
         if (newTime === oldTime) { // the timerStep gets called quite often to be able to react to timer events asap.
             return; // However the player.getCurrentTime method does not update as often so we get newTime==oldTime
         } // fairly often. Obviously in this case we do not need to do any computations.
+        if (window.doNotTriggerEvents) {
+            oldTime = newTime;
+            return;
+        }
 
         if (newTime > oldTime + 1) {
             //seek occured

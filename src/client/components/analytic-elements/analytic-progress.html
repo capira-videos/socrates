@@ -8,9 +8,12 @@
         is: 'analytic-progress',
         get service() {
             return this.$.service;
+        },
+        happend:function(event){
+            
         }
     });
-    Capira.Progress = {
+    Capira.ProgressBehavior = {
         get progress() {
             var progress = document.querySelector('analytic-progress');
             if (!progress) {

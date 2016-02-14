@@ -4,7 +4,7 @@
             <overlay-top-bar top states="default" overlay="{{overlay}}"></overlay-top-bar>
             <short-answer-quiz main states="default combination" overlay="{{overlay}}"></short-answer-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
-            <answer-editor right states="combination" combination="{{selectedCombination}}">
+            <answer-editor right states="combination" combination="{{selectedCombination}}" overlay="{{overlay}}">
                 <langslang-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></langslang-value-selector>
             </answer-editor>
         </edit-page-layout>

@@ -1,4 +1,5 @@
 <link rel="import" href="../latex/edit/editable-latex.html">
+<link rel="import" href="linkify.html">
 <script>
 'use strict';
 
@@ -49,12 +50,14 @@ window.Capira.EditableMarkup = {
     },
     _done: function(e) {
         console.log(e);
-        if (!(e.relatedTarget && e.relatedTarget.nodeName === 'LATEX-EDITOR')) { 
-        //latex-editor opened - no render
+        if (!(e.relatedTarget && e.relatedTarget.nodeName === 'LATEX-EDITOR')) {
+            //latex-editor opened - no render
             if (this.el.innerHTML === '' || this.el.innerHTML === this.el.content) {
                 // prevent empty mark-up or rerender if nothing changed
-                this._renderContent(this.content);
+                var content = (!this.content || this.content === '') ? 'Type Something...' : this.content;
+                this._renderContent(content);
             } else {
+                window.linkifyElement(this.el, {}, document);
                 this.set('content', this.el.innerHTML);
             }
         }
@@ -86,7 +89,7 @@ window.Capira.EditableMarkup = {
             }.bind(this), false);
             this.addEventListener('keypress', function(e) {
                 e.stopPropagation();
-                if (e.keyCode === 13 || e.which === 13) {
+                if ((e.keyCode === 13 || e.which === 13) && !e.shiftKey) {
                     this.el.blur();
                     e.preventDefault();
                 }

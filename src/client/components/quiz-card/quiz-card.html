@@ -4,47 +4,60 @@
 <link rel="import" href="../quiz/quiz-theme.html">
 <dom-module id="quiz-card">
     <template>
-    <style>
-    :host {
-        display: block;
-        width: 100%;
-        height: 100%;
-        padding-top: 64px;
-        @apply(--layout-scroll);
-        padding-bottom: 32px;
-        box-sizing: border-box;
-    }
-
-    #quiz {
-        width: 512px;
-        margin: 0 auto 0;
-        background-color: white;
-        border-radius: 2px;
-        min-height: 400px;
-    }
-
-    #questionFeedback {
-        height: 192px;
-        width: 100%;
-    }
-    /* tablet-small */
-
-    @media all and (max-width: 600px) {
-        #quiz {
-            width: 100%;
-            min-height: 100vh;
-            margin: 0;
-        }
+        <style>
         :host {
-            padding: 0px;
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding-top: 32px;
+            @apply(--layout-scroll);
+            padding-bottom: 32px;
             box-sizing: border-box;
-            box-shadow: none;
         }
-        skip-button {
-            color: white;
+        
+        #quiz {
+            width: 512px;
+            margin: 0 auto 0;
+            background-color: white;
+            border-radius: 2px;
+            min-height: 400px;
         }
-    }
-     </style>
+        
+        #questionFeedback {
+            height: 192px;
+            width: 100%;
+        }
+        /* tablet-small */
+        
+        @media all and (max-width: 600px) {
+            #quiz {
+                width: 100%;
+                min-height: 100vh;
+                margin: 0;
+            }
+            :host {
+                padding: 0px !important;
+                box-sizing: border-box;
+                box-shadow: none;
+            }
+            skip-button {
+                color: white;
+            }
+        }
+        
+        @media all and (min-width: 1024px) {
+            :host {
+                padding-top: 64px;
+            }
+        }
+        
+        :host([scale]) {
+            width: 800px !important;
+            height: 450px !important;
+            transform-origin: 0 0 !important;
+            padding-top: 16px;
+        }
+        </style>
         <paper-material id="quiz" elevation="3">
             <quiz-question-card id="questionFeedback" question="{{question}}" combination="{{combination}}">
             </quiz-question-card>
@@ -76,12 +89,12 @@
                     return {
                         'incorrect-answer': {
                             name: 'was-incorrect-animation',
-                            node: this,
+                            node: this.$.quiz,
                             duration: 900
                         },
                         'correct-answer': {
                             name: 'was-correct-animation',
-                            node: this,
+                            node: this.$.quiz,
                             duration: 900
                         }
                     };
@@ -111,8 +124,35 @@
                 }
             }
         },
+        get parent() {
+            if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+                return this.parentNode.host;
+            }
+            return this.parentNode;
+        },
         attached: function() {
             this.ui = this.$.questionFeedback;
+
+            var that = this;
+
+            function resize() {
+                var parentWidth = window.innerWidth;
+                if (that.parent && that.parent.clientWidth) {
+                    parentWidth = that.parent.clientWidth;
+                }
+
+                if (parentWidth < 800) {
+                    var scalingFactor = parentWidth / 800;
+                    that.style.transform = 'scale(' + scalingFactor + ')';
+                    that.setAttribute('scale', true);
+                } else {
+                    that.removeAttribute('scale');
+                    that.style.transform = 'none';
+                }
+            }
+
+            window.addEventListener('resize', resize, false);
+            resize();
         }
     });
 })();

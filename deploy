@@ -1,0 +1,5 @@
+cd ../capira-dist/
+git add -A
+git commit -m $(uuidgen)
+git remote | xargs -L1 git push --all
+echo "Deployed to all Instances"

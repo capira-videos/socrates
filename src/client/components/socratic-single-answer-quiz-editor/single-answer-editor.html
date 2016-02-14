@@ -4,7 +4,6 @@
 <link rel="import" href="single-answer-quiz-value-preview.html">
 <link rel="import" href="../quiz-editor/quiz-editor.html">
 <link rel="import" href="../socratic-single-answer-quiz/single-answer-quiz.html">
-
 <dom-module id="single-answer-quiz-edit-page">
     <template>
         <edit-page-layout>
@@ -12,7 +11,7 @@
             <answer-top-bar top states="combination" combination="{{selectedCombination}}"></answer-top-bar>
             <single-answer-quiz id="quiz" main states="default combination" overlay="{{overlay}}" combination="{{selectedCombination}}"></single-answer-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}"></answers-selector>
-            <answer-editor right states="combination" combination="{{selectedCombination}}">
+            <answer-editor right states="combination" combination="{{selectedCombination}}" overlay="{{overlay}}">
                 <single-answer-value-selector overlay="{{overlay}}" selected="{{selectedCombination.value}}"></single-answer-value-selector>
             </answer-editor>
         </edit-page-layout>
@@ -24,13 +23,23 @@
     Polymer({
         is: 'single-answer-quiz-edit-page',
         behaviors: [Capira.QuizEditPage],
-        _createAnswer: function() {
+        _createCorrectAnswer: function() {
             return {
                 value: 0,
-                grade: 0
+                feedback: 'Richtig! Weiter so!',
+                grade: 0,
+                reaction: {
+                    type: 'play'
+                }
+            };
+        },
+        _createIncorrectAnswer: function() {
+            return {
+                value: 1,
+                feedback: 'Leider falsch... Probier\'s nochmal!',
+                grade: 2
             };
         }
-
     });
 })();
 </script>

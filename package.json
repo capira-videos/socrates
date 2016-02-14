@@ -48,16 +48,19 @@
   },
   "scripts": {
     "test": "gulp test:local",
-    "start": "nodemon src/server/index.js; gulp serve"
+    "start": "npm install --production; node server.js"
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "dependencies": {
+    "atob": "^2.0.0",
     "body-parser": "^1.14.2",
+    "btoa": "^1.1.2",
     "cookie-parser": "^1.4.1",
     "express": "^4.13.3",
     "express-session": "^1.13.0",
+    "forever": "^0.15.1",
     "ims-lti": "^3.0.2",
     "mongoose": "^4.3.5",
     "passport": "^0.3.2",

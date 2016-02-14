@@ -12,7 +12,7 @@
             <draw-quiz-editor main states="combination" combination="{{selectedCombination}}" id="editor"></draw-quiz-editor>
             <draw-quiz main states="default" overlay="[[overlay]]" id="quiz"></draw-quiz>
             <answers-selector right overlay="{{overlay}}" selected="{{selectedCombination}}" states="default"></answers-selector>
-            <answer-editor right states="combination" combination="{{selectedCombination}}">
+            <answer-editor right states="combination" combination="{{selectedCombination}}" overlay="{{overlay}}">
                 <draw-quiz-value-selector combination="{{selectedCombination}}"></draw-quiz-value-selector>
             </answer-editor>
         </edit-page-layout>

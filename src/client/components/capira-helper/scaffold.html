@@ -8,10 +8,6 @@ window.resizer = function(container, main) {
 
     width = width || window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     height = height || window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    if (height < 190) {
-        width = window.screen.width;
-        height = window.screen.height;
-    }
 
     if (height * 16.0 / 9 > width) {
         height = width * 9.0 / 16;

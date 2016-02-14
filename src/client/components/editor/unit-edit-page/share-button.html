@@ -1,0 +1,80 @@
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/paper-tooltip/paper-tooltip.html">
+<dom-module id="share-button">
+    <template>
+        <style>
+
+        </style>
+        <div style="display:inline-block">
+            <paper-icon-button id="share" icon="editor-icons:share" on-tap="_open"></paper-icon-button>
+            <paper-tooltip position="bottom" for="share">Embed this Lesson</paper-tooltip>
+        </div>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'share-button',
+        properties: {
+            unitId: {
+                type: String
+            }
+        },
+        get dialog() {
+            var dialog = document.querySelector('share-dialog');
+            if (!dialog) {
+                dialog = Polymer.Base.create('share-dialog');
+                document.body.appendChild(dialog);
+            }
+            dialog.set('unitId', this.unitId);
+            return dialog;
+        },
+        _open: function() {
+            this.dialog.open();
+        }
+    });
+    </script>
+</dom-module>
+<dom-module id="share-dialog">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        paper-dialog {
+            background-color: white;
+            width: 400px;
+        }
+        </style>
+        <paper-dialog with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop id="dialog">
+            <h2>Embed this Lesson</h2>
+            <p>
+                <paper-input label="Embed Link" value="{{embedLink}}"></paper-input>
+            </p>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Close</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'share-dialog',
+        properties: {
+            embedLink: {
+                computed: '_computeEmbedLink(unitId)'
+            },
+            unitId: {
+                notify: true
+            }
+        },
+        _computeEmbedLink: function(unitId) {
+            var url = location.protocol + '//' + location.host + '/player/#/' + unitId;
+            return '<iframe width="560" height="315" src="' + url + '" frameborder="0" allowfullscreen></iframe>';
+        },
+        open: function() {
+            this.$.dialog.open();
+        }
+    });
+    </script>
+</dom-module>

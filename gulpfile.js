@@ -38,7 +38,7 @@ var styleTask = function(stylesPath, srcs) {
         .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
         .pipe(gulp.dest('.tmp/' + stylesPath))
         .pipe($.if('*.css', $.cssmin()))
-        .pipe(gulp.dest('dist/' + stylesPath))
+        .pipe(gulp.dest('../capira-dist/dist/client/' + stylesPath))
         .pipe($.size({
             title: stylesPath
         }));
@@ -77,7 +77,7 @@ gulp.task('images', function() {
             progressive: true,
             interlaced: true
         })))
-        .pipe(gulp.dest('dist/images'))
+        .pipe(gulp.dest('../capira-dist/dist/client/images'))
         .pipe($.size({
             title: 'images'
         }));
@@ -85,35 +85,53 @@ gulp.task('images', function() {
 
 // Copy All Files At The Root Level (src)
 gulp.task('copy', function() {
-    var src = gulp.src([
-        'src/client/*',
+    gulp.src([
+        'src/client/static/**',
         '!src/client/test',
         '!src/client/precache.json'
-    ], {
-        dot: true
-    }).pipe(gulp.dest('dist'));
+    ]).pipe(gulp.dest('../capira-dist/dist/client/static'));
+    gulp.src([
+            'src/server/**',
+        ])
+    .pipe($.if('*.js', $.replace(/.\/src\/client/, './dist/client')))
+    .pipe($.if('*.js', $.replace(/\/components\/endpoints/g, '')))
+    .pipe(gulp.dest('../capira-dist/dist/server'));
+    gulp.src([
+        'package.json',
+        'README.md',
+    ]).pipe(gulp.dest('../capira-dist'));
+    gulp.src([
+        'src/client/components/endpoints/create/index.html', ,
+    ]).pipe(gulp.dest('../capira-dist/dist/client/create'));
+    gulp.src([
+        'src/client/bower_components/katex/dist/**', ,
+    ]).pipe(gulp.dest('../capira-dist/dist/client/bower_components/katex/dist'));   
+     gulp.src([
+        'src/client/static/app/favicon.ico', ,
+    ]).pipe(gulp.dest('../capira-dist/dist/client/'));
+    /*
+        var bower = gulp.src([
+            'bower_components/** /*'
+        ]).pipe(gulp.dest('../capira-dist/dist/client/bower_components'));
 
-    var bower = gulp.src([
-        'bower_components/**/*'
-    ]).pipe(gulp.dest('dist/bower_components'));
+        var elements = gulp.src(['src/client/elements/** /*.html'])
+            .pipe(gulp.dest('../capira-dist/dist/client/elements'));
 
-    var elements = gulp.src(['src/client/elements/**/*.html'])
-        .pipe(gulp.dest('dist/elements'));
+        var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
+            .pipe(gulp.dest('../capira-dist/dist/client/elements/bootstrap'));
 
-    var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
-        .pipe(gulp.dest('dist/elements/bootstrap'));
+        var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
+            .pipe(gulp.dest('../capira-dist/dist/client/sw-toolbox'));
 
-    var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
-        .pipe(gulp.dest('dist/sw-toolbox'));
+        var vulcanized = gulp.src(['src/client/elements/elements.html'])
+            .pipe($.rename('elements.vulcanized.html'))
+            .pipe(gulp.dest('../capira-dist/dist/client/elements'));
 
-    var vulcanized = gulp.src(['src/client/elements/elements.html'])
-        .pipe($.rename('elements.vulcanized.html'))
-        .pipe(gulp.dest('dist/elements'));
-
-    return merge(src, bower, elements, vulcanized, swBootstrap, swToolbox)
-        .pipe($.size({
-            title: 'copy'
-        }));
+        return merge(src, bower, elements, vulcanized, swBootstrap, swToolbox)
+            .pipe($.size({
+                title: 'copy'
+            }));
+    */
 });
 
 
@@ -121,7 +139,7 @@ gulp.task('copy', function() {
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function() {
     var assets = $.useref.assets({
-        searchPath: ['.tmp', 'src', 'dist']
+        searchPath: ['.tmp', 'src', '../capira-dist/dist']
     });
 
     return gulp.src(['src/client/**/*.html', '!src/client/{elements,test}/**/*.html'])
@@ -144,7 +162,7 @@ gulp.task('html', function() {
             spare: true
         })))
         // Output Files
-        .pipe(gulp.dest('dist'))
+        .pipe(gulp.dest('../capira-dist/dist'))
         .pipe($.size({
             title: 'html'
         }));
@@ -152,9 +170,9 @@ gulp.task('html', function() {
 
 // Vulcanize imports
 gulp.task('vulcanize', function() {
-    var DEST_DIR = 'dist/elements';
+    var DEST_DIR = '../capira-dist/dist/client/elements';
 
-    return gulp.src('dist/elements/elements.vulcanized.html')
+    return gulp.src('../capira-dist/dist/client/elements/elements.vulcanized.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
@@ -166,10 +184,10 @@ gulp.task('vulcanize', function() {
         }));
 });
 
-// Generate a list of files that should be precached when serving from 'dist'.
+// Generate a list of files that should be precached when serving from '../capira-dist/dist'.
 // The list will be consumed by the <platinum-sw-cache> element.
 gulp.task('precache', function(callback) {
-    var dir = 'dist';
+    var dir = '../capira-dist/dist';
 
     glob('{elements,scripts,styles}/**/*.*', {
         cwd: dir
@@ -185,7 +203,7 @@ gulp.task('precache', function(callback) {
 });
 
 // Clean Output Directory
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+gulp.task('clean', del.bind(null, ['.tmp', '../capira-dist/dist']));
 
 // Watch Files For Changes & Reload
 gulp.task('serve', [], function() {
@@ -206,7 +224,7 @@ gulp.task('serve', [], function() {
         //       will present a certificate warning in the browser.
         // https: true,
         // proxy: 'localhost:9898',
-        proxy:'localhost:9898',
+        proxy: 'localhost:9898',
 
         /*
         server: {
@@ -245,7 +263,7 @@ gulp.task('serve:dist', ['default'], function() {
         // Note: this uses an unsigned certificate which on first access
         //       will present a certificate warning in the browser.
         // https: true,
-        server: 'dist',
+        server: '../capira-dist/dist',
         middleware: [historyApiFallback()]
     });
 });
@@ -284,14 +302,14 @@ var clean = require('gulp-clean');
  *
  */
 gulp.task('vulcan', function() {
-    var DEST_DIR = 'dist/player';
-    return gulp.src('src/client/endpoints/player/elements/elements.html')
+    var DEST_DIR = '../capira-dist/dist/client/player';
+    return gulp.src('src/client/components/endpoints/player/elements/elements.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
-            excludes: ['/bower_components/katex/dist/katex.min.js'],
-            stripExcludes: ['/bower_components/iron-icons/iron-icons.html']
+            excludes: ['/src/client/bower_components/katex/dist/katex.min.js'],
+            stripExcludes: ['/src/client/bower_components/iron-icons/iron-icons.html']
         }))
         .pipe(minifyHTML())
         .pipe(minifyInline({
@@ -308,15 +326,15 @@ gulp.task('vulcan', function() {
 
 
 gulp.task('inline-scripts', function() {
-    return gulp.src('src/client/endpoints/player/index.html')
+    return gulp.src('src/client/components/endpoints/player/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
-        .pipe(gulp.dest('dist/player/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/player/'));
 });
 
 
 gulp.task('clean-index', function() {
-    return gulp.src('dist/player/index.html')
+    return gulp.src('../capira-dist/dist/client/player/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -324,7 +342,7 @@ gulp.task('clean-index', function() {
             spare: true,
         })))
         .pipe(minifyInline())
-        .pipe(gulp.dest('dist/player/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/player/'));
 });
 
 
@@ -364,14 +382,14 @@ gulp.task('todo', function() {
 
 
 gulp.task('editor-vulcan', function() {
-    var DEST_DIR = 'dist/editor';
-    return gulp.src('src/client/endpoints/editor/elements/elements.html')
+    var DEST_DIR = '../capira-dist/dist/client/editor';
+    return gulp.src('src/client/components/endpoints/editor/elements/elements.html')
         .pipe($.vulcanize({
             stripComments: true,
             inlineCss: true,
             inlineScripts: true,
-            excludes: ['/bower_components/katex/dist/katex.min.js'],
-            stripExcludes: ['/bower_components/iron-icons/iron-icons.html']
+            excludes: ['/src/client/bower_components/katex/dist/katex.min.js'],
+            stripExcludes: ['/src/client/bower_components/iron-icons/iron-icons.html']
         }))
         .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
@@ -381,15 +399,15 @@ gulp.task('editor-vulcan', function() {
 
 
 gulp.task('editor-inline-scripts', function() {
-    return gulp.src('src/client/endpoints/editor/index.html')
+    return gulp.src('src/client/components/endpoints/editor/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements.html')))
-        .pipe(gulp.dest('dist/editor/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/editor/'));
 });
 
 
 gulp.task('editor-clean-index', function() {
-    return gulp.src('dist/editor/index.html')
+    return gulp.src('../capira-dist/dist/client/editor/index.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -398,11 +416,11 @@ gulp.task('editor-clean-index', function() {
         })))
         .pipe(minifyInline())
         //.pipe($.if('*.html', $.replace('</body></html>', '<script>function bugfix(){setTimeout(function(){if(!document.getElementById("overlay1")){bugfix();}else{document.getElementById("overlay1").opened||app.openedOverlay=0;app.showOverlay(1)}},300)};bugfix();</script></body></html>')))
-        .pipe(gulp.dest('dist/editor/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/editor/'));
 });
 
 gulp.task('editor-clean-vulcanized', function() {
-    return gulp.src('dist/editor/elements.html')
+    return gulp.src('../capira-dist/dist/client/editor/elements.html')
         .pipe(inlinesource())
         .pipe($.if('*.html', $.minifyHtml({
             quotes: true,
@@ -414,7 +432,7 @@ gulp.task('editor-clean-vulcanized', function() {
                 advanced: false
             }
         }))
-        .pipe(gulp.dest('dist/editor/'))
+        .pipe(gulp.dest('../capira-dist/dist/client/editor/'))
         .pipe($.size({
             title: 'minified elements'
         }));
@@ -423,14 +441,14 @@ gulp.task('editor-clean-vulcanized', function() {
 
 gulp.task('build-editor', function(cb) {
     runSequence(
-        ['editor-vulcan', 'editor-inline-scripts'], ['editor-clean-vulcanized', 'copy-tests'],
+        ['editor-vulcan', 'editor-inline-scripts'], ['editor-clean-vulcanized'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
 
 gulp.task('build', function(cb) {
     runSequence(
-        ['build-editor', 'build-player'],
+        ['build-editor', 'build-player', 'copy'],
         cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
@@ -442,7 +460,7 @@ gulp.task('build-1', function() {
         .pipe(polybuild({
             maximumCrush: true
         }))
-        .pipe(gulp.dest('dist/editor/2'));
+        .pipe(gulp.dest('../capira-dist/dist/client/editor/2'));
 });
 
 var flatten = require('gulp-flatten');
@@ -471,7 +489,7 @@ gulp.task('copy-tests', function() {
             'bower_components/**/polymer.html',
             'bower_components/**/test-helpers.js',
         ])
-        .pipe(gulp.dest('dist/bower_components/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/bower_components/'));
 
 
     var demos = gulp.src(['src/client/**/demo/*.html'])
@@ -480,7 +498,7 @@ gulp.task('copy-tests', function() {
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('dist/editor-test/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/editor-test/'));
 
     var demosPlayer = gulp.src(['src/client/**/demo/*.html', '!src/client/**/socratic-single-answer-quiz-editor/**/demo/*.html'])
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
@@ -488,16 +506,16 @@ gulp.task('copy-tests', function() {
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('dist/player-test/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/player-test/'));
     var testsPlayer = gulp.src('src/client/**/test/*.html')
         .pipe($.if('*.html', $.replace(/<!-- build:js[^]* endbuild -->/, '<link rel="import" href="/player/elements.html">')))
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('dist/player-test/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/player-test/'));
     var htaccess = gulp.src('static/tests/.htaccess')
-        .pipe(gulp.dest('dist/editor-test/'))
-        .pipe(gulp.dest('dist/player-test/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/editor-test/'))
+        .pipe(gulp.dest('../capira-dist/dist/client/player-test/'));
 });
 
 
@@ -508,7 +526,7 @@ gulp.task('fetch-tests', function() {
         .pipe(flatten({
             includeParents: -2
         }))
-        .pipe(gulp.dest('dist/editor-test/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/editor-test/'));
     return gulp.src('src/client/**/test/index.html')
         .pipe(flatten({
             includeParents: -2
@@ -518,7 +536,7 @@ gulp.task('fetch-tests', function() {
 gulp.task('print-tests', function() {
     gulp.src('static/tests/all.html')
         .pipe($.if('*.html', $.replace('/* tests */', JSON.stringify(filenames.get('testpaths')))))
-        .pipe(gulp.dest('dist/editor-test/'));
+        .pipe(gulp.dest('../capira-dist/dist/client/editor-test/'));
 });
 
 gulp.task('build-tests', function(cb) {

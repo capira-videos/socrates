@@ -2,19 +2,20 @@
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var lti = require('./app-auth-lti');
 var config = require('./config');
 var Lesson = require('./models/lesson');
 
 /* passport lti */
 var passport = require('passport');
-passport.use(lti(passport));
+var lti = require('./app-auth-lti')(passport);
+passport.use(lti);
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/capira_socrates');
+mongoose.connect(config.mongoDB);
 
 var express = require('express');
 var app = express();
+app.enable('trust proxy');
 app.use(express.static(config.webRoot));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
@@ -22,7 +23,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(session({
-    secret: config.cookieSecret
+    secret: config.cookieSecret,
+    proxy: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -53,7 +55,8 @@ app.post('/', function(req, res, next) {
                 'resource.resourceId': requestedResource.resourceId,
                 'resource.instanceId': requestedResource.instanceId
             }, {
-                _id: 1
+                _id: 1,
+                notInitialized: 1
             }, function(err, results) {
                 //if lesson not exists yet
                 if (results.length === 0) {
@@ -72,7 +75,6 @@ app.post('/', function(req, res, next) {
                     });
                 } else {
                     var lesson = results[0];
-                    console.log(lesson);
                     if (lesson.notInitialized) {
                         if (!user.isAdmin) {
                             return res.send('unauthorized request');
@@ -87,6 +89,15 @@ app.post('/', function(req, res, next) {
         });
     })(req, res, next);
 });
+
+
+
+
+
+
+
+app.lti = lti;
+
 
 app.use('/api', router);
 module.exports = app;

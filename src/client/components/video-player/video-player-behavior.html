@@ -42,6 +42,13 @@ Capira.VideoPlayer = {
                 this.play();
             }.bind(this), 300);
         }
+    },
+    seekWithoutTrigger: function(time) {
+        window.doNotTriggerEvents = true;
+        this.seekTo(time);
+        setTimeout(function() {
+            window.doNotTriggerEvents = false;
+        }, 100);
     }
 };
 </script>

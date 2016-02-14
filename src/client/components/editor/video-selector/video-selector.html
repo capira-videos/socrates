@@ -20,7 +20,6 @@
                 <paper-input label="Enter lesson title" value="{{unit.title}}" hidden$="{{!valid}}"></paper-input>
             </div>
             <div class="buttons">
-                <paper-button dialog-dismiss>Cancel</paper-button>
                 <paper-button on-click="_confirm" disabled$="{{!valid}}">Create</paper-button>
             </div>
         </paper-dialog>

@@ -12,14 +12,16 @@
             color: white;
             z-index: 1000;
         }
-        a{
+        
+        a {
             color: white;
         }
+        
         paper-icon-button:hover {
             color: var(--paper-blue-500);
         }
         </style>
-        <a href="/editor/#/{{unit._id}}" target="_blank">
+        <a href="/editor/#/{{unit._id}}" target="capiraeditor" hidden$="{{!unit.isAdmin}}">
             <paper-icon-button icon="player-icons:mode-edit"></paper-icon-button>
         </a>
     </template>
@@ -28,7 +30,14 @@
 'use strict';
 (function() {
     Polymer({
-        is: 'edit-button'
+        is: 'edit-button',
+        properties: {
+            unit: {
+                value: {
+                    isAdmin: false
+                }
+            }
+        }
     });
 })();
 </script>

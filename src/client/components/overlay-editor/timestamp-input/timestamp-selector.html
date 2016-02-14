@@ -32,7 +32,7 @@ Polymer({
         }
     },
     _try: function() {
-        app.player.seekTo(this.value - 4);
+        app.player.seekWithoutTrigger(this.value - 4);
         app.player.play();
         this.fire('home-state');
     }

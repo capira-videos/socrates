@@ -1,77 +1,16 @@
-# capira
+# Installation 
+- Make sure you have installed `node`, `npm` and `mongodb`.
+- Save this folder anywhere on your system
+- Open `dist/server/config.js` in a Text Editor and set your `consumerKey` and your `consumerSecret`.
+- If you want to use SSL, add the path to your public key and certificate to `dist/server/config.js`
+- Run `npm start` from the root directory to install the dependencies and start the Capira Server
 
+# Integrate Capira into your Learning Management System
+Capira uses the [LTI Standard](https://www.imsglobal.org/activity/learning-tools-interoperability) to connect with your LMS.
 
-## Adding Capira as a sidewide tool in Moodle
-```
-https://docs.moodle.org/22/en/External_tool_settings
-```
+- Your Launch-URL is the root URL of your Capira Server (i.e. https://my-capira-server.com/)
+- LTI uses a Key and Secret for authentication of your LMS. You can configure them in your `config.js`
 
-### Enable Fullscreen
-
-Add as HTML Description:
-```
-<script>setTimeout(function(){document.querySelector('iframe').setAttribute('allowFullScreen', 'true')},1500);</script>
-```
-Check 'Show description on start'
-
-## Install Tools
-
-Install node.js (i.e. via homebrew).
-
-
-Then install gulp and bower
-```
-npm install -g gulp-cli bower
-```
-If you encounter an `EACCES` error, please consult this site: https://docs.npmjs.com/getting-started/fixing-npm-permissions
-
-
-## Clone Project:
-```
- mkdir capira && cd capira
- git clone https://github.com/capira12/capira.git
- cd capira
-```
-
-## Install Project:
-Install node dependencies and JS-Frameworks.
-```
- npm install
- bower update
-```
-
-## Dev Server
-Start development server:
-```
- gulp serve
-```
-Use this URLs for development: 
-```
- http://localhost:3000/player/index.html
- http://localhost:3000/plain-player/index.html
- http://localhost:3000/editor/index.html
-```
-
-# Further
-
-## Use Tools
-To let the tools take care of dependencies, install new npm/gulp packages like:
-```
-npm install awesome-gulp-plugin --save
-```
-This will automatically update your bower.json.
-
-To update your local dependencies-folder run
-```
- npm update
-```
-
-## Build Project:
-```
- gulp build:player or gulp build:editor
-```
-
-## Generator:
-```
- yo polymer:element my-element
-```
+### Moodle
+- [Moodle 3.0](https://docs.moodle.org/30/en/External_tool_settings)
+- [Moodle 2.2](https://docs.moodle.org/22/en/External_tool_settings)

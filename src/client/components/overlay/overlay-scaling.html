@@ -1,0 +1,39 @@
+<dom-module id="overlay-scaling">
+    <template>
+        <style>
+        :host([scale]) {
+            width: 800px !important;
+            height: 450px !important;
+            transform-origin: 0 0 !important;
+            padding-top: 16px;
+        }
+        </style>
+    </template>
+</dom-module>
+<script>
+Capira.OverlayScaling = {
+    attached: function() {
+
+        var that = this;
+
+        function resize() {
+            var parentWidth = window.innerWidth;
+            if (that.parent && that.parent.clientWidth) {
+                parentWidth = that.parent.clientWidth;
+            }
+
+            if (parentWidth < 800) {
+                var scalingFactor = parentWidth / 800;
+                that.style.transform = 'scale(' + scalingFactor + ')';
+                that.setAttribute('scale', true);
+            } else {
+                that.removeAttribute('scale');
+                that.style.transform = 'none';
+            }
+        }
+
+        window.addEventListener('resize', resize, false);
+        resize();
+    }
+}
+</script>
