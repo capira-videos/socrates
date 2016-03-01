@@ -1,5 +1,7 @@
 <link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="overlay-miniature-card.html">
 <script type="text/javascript" src="overlays-palette.js"></script>
 <dom-module id="overlays-wizard">
@@ -41,16 +43,30 @@
         paper-dialog-scrollable /deep/ #scrollable {
             max-height: calc(100vh - 200px) !important;
         }
+        
+        :root {
+            --paper-tabs-selection-bar-color: #26a69a;
+        }
+        
         </style>
         <paper-dialog id="wizard" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <div id="header">Select an Overlay to create</div>
             <paper-dialog-scrollable>
-                <template is="dom-repeat" items="{{overlaysPalette}}">
-                    <div class="category-title">{{item.category}}</div>
-                    <template is="dom-repeat" items="{{item.overlays}}" filter="_filter">
-                        <overlay-miniature-card overlay="{{item}}" on-tap="_selected"></overlay-miniature-card>
+                <paper-tabs selected="{{selectedTab}}">
+                    <template is="dom-repeat" items="{{overlaysPalette}}">
+                        <paper-tab>{{item.category}}</paper-tab>
                     </template>
-                </template>
+                </paper-tabs>
+                <iron-pages selected="{{selectedTab}}">
+                    <template is="dom-repeat" items="{{overlaysPalette}}">
+                        <section>
+                            <div class="category-title">{{item.category}}</div>
+                            <template is="dom-repeat" items="{{item.overlays}}" filter="_filter">
+                                <overlay-miniature-card overlay="{{item}}" on-tap="_selected"></overlay-miniature-card>
+                            </template>
+                        </section>
+                    </template>
+                </iron-pages>
             </paper-dialog-scrollable>
         </paper-dialog>
     </template>
@@ -63,6 +79,9 @@
         properties: {
             overlaysPalette: {
                 value: Capira.OverlaysPalette()
+            },
+            selectedTab: {
+                value: 0
             }
         },
         show: function() {
