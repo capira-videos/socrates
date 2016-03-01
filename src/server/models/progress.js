@@ -14,16 +14,21 @@ module.exports = function(app) {
 
                 var id = atob(req.params.id);
                 var score = Number(atob(req.params.score));
-                console.log(id, score);
-
-                var outcome = new lti.OutcomeService({
+                //console.log(id, score);
+                var outcomeConfig = {
                     consumer_key: config.lti.consumerKey,
                     consumer_secret: config.lti.consumerSecret,
                     service_url: provider.body.lis_outcome_service_url,
                     source_did: id,
                     result_data_types: [],
-                });
+                };
+                // console.log(outcomeConfig); 
+                var outcome = new lti.OutcomeService(outcomeConfig);
+
                 outcome.send_read_result(function(err, result) {
+                    if (err) {
+                        return console.log(err);
+                    }
                     if (!result || result < score) {
                         outcome.send_replace_result(score, function(err, result) {
                             res.send('grade', result)

@@ -1,3 +1,4 @@
+<link rel="import" href="../quiz-editor/focusable-quiz.html">
 <link rel="import" href="../overlay-editor/overlay-edit-page/overlay-edit-page.html">
 <link rel="import" href="answer-editor.html">
 <link rel="import" href="answers-selector.html">
@@ -55,9 +56,11 @@ window.Capira.QuizEditPageImpl = {
             setTimeout(function() {
                 this.$.quiz.fire('answer-changed');
                 this.selectedCombination = null;
+                Polymer.dom(this.root).querySelector('#quiz').focusQuestion();
             }.bind(this), 500);
         }
-    }
+    },
+
 };
 
 window.Capira.QuizEditPage = [Capira.OverlayEditPage, Capira.QuizEditPageImpl];

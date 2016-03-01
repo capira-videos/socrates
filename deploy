@@ -1,4 +1,6 @@
+gulp build
 cd ../capira-dist/
+date +"%c" > dist/client/version.html
 git add -A
 git commit -m $(uuidgen)
 git remote | xargs -L1 git push --all

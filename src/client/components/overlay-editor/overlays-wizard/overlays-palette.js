@@ -14,8 +14,8 @@ Capira.OverlaysPalette = function() {
             },
             template: {
                 type: 'single-answer-quiz',
-                question: 'Type a Question',
-                options: ['Option 1','Option 2'],
+                question: 'Type a Question here',
+                options: ['Type Option 1 here','Type Option 2 here'],
                 combinations: [{
                     feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
@@ -31,8 +31,8 @@ Capira.OverlaysPalette = function() {
             },
             template: {
                 type: 'multi-answer-quiz',
-                question: 'Type a Question',
-                options: ['Option 1','Option 2'],
+                question: 'Type a Question here',
+                options: ['Type Option 1 here','Type Option 2 here'],
                 combinations: [{
                     feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
@@ -47,7 +47,7 @@ Capira.OverlaysPalette = function() {
             },
             template: {
                 type: 'short-answer-quiz',
-                question: 'Type a Question',
+                question: 'Type a Question here',
                 combinations: [{
                     feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
@@ -62,7 +62,7 @@ Capira.OverlaysPalette = function() {
             },
             template: {
                 type: 'math-quiz',
-                question: 'Type a Question',
+                question: 'Type a Question here',
                 combinations: [{
                     feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
@@ -79,7 +79,7 @@ Capira.OverlaysPalette = function() {
             },
             template: {
                 type: 'hotspot-quiz',
-                question: 'Type a Question',
+                question: 'Type a Question here',
                 mask: [],
                 combinations: [{
                     feedback: 'Leider falsch... Probier\'s nochmal!',
@@ -97,7 +97,7 @@ Capira.OverlaysPalette = function() {
             },
             template: {
                 type: 'draw-quiz',
-                question: 'Type a Question',
+                question: 'Type a Question here',
                 combinations: [{
                     feedback: 'Leider falsch... Probier\'s nochmal!',
                     grade: 2
@@ -130,7 +130,7 @@ Capira.OverlaysPalette = function() {
             },
             template: {
                 type: 'custom-quiz',
-                question: 'Type a Question',
+                question: 'Type a Question here',
                 items: [],
                 combinations: [{
                     feedback: 'Leider falsch... Probier\'s nochmal!',

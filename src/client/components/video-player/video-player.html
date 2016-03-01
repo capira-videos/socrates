@@ -4,6 +4,7 @@
 <link rel="import" href="video-player-youtube/video-player-youtube.html">
 <link rel="import" href="video-controls/video-controls.html">
 <link rel="import" href="overlays-timeline/overlays-timeline.html">
+<link rel="import" href="../progress/progress-behavior.html">
 <dom-module id="video-player">
     <template>
         <style>
@@ -64,7 +65,8 @@
     Polymer({
         is: 'video-player',
         behaviors: Capira.selectBehaviors({
-            editor: Capira.CenterStage
+            editor: Capira.CenterStage,
+            player: Capira.ProgressBehavior
         }),
         properties: {
             unit: {
@@ -144,9 +146,17 @@
         _stateChanged: function(isPlaying) {
             if (isPlaying) {
                 this._showControls();
+                if (!this.videoStarted) {
+                    this._videoStarted();
+                }
             }
         },
-
+        _videoStarted: function() {
+            this.videoStarted = true;
+            if (this.service) {
+                this.service.makeRequest(0.001);
+            }
+        },
         _initMouseEvents: function() {
             var mouseevents = this.$.mouseevents;
             mouseevents.style.display = 'block';

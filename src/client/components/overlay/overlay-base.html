@@ -21,8 +21,15 @@ Capira.OverlayImpl = {
     },
 
     attached: function() {
-        this.skipButton = document.createElement('skip-button');
         this._setGeneralStyle();
+        this._createSkipButton();
+    },
+
+    _createSkipButton() {
+        //we don't want the skip-button in edit-mode
+        if (!window.isEditor) {
+            this.skipButton = document.createElement('skip-button');
+        }
     },
 
     _hide: function() {
@@ -80,12 +87,16 @@ Capira.OverlayImpl = {
         }
     },
 
-    _shown: function() {
-        console.log('shown!');
-        //TODO: shown get's called to often.
+    _showSkipButton: function() {
         if (this.skipButton && !this.skipButton.isAttached) {
             Polymer.dom(this.root).appendChild(this.skipButton);
         }
+    },
+
+    _shown: function() {
+        console.log('shown!');
+        //TODO: shown get's called to often.
+        this._showSkipButton();
     },
 
     enterPressed: function() {

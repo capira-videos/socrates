@@ -30,8 +30,18 @@ Simpler way to do this?
             top: 8px;
             z-index: 11;
         }
-        .option{
+        
+        .option {
             position: relative;
+        }
+        
+        paper-icon-button {
+            display: none;
+            color: #333;
+        }
+        
+        .option:hover paper-icon-button {
+            display: block;
         }
         </style>
         <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">

@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var config = require('./config');
 var Lesson = require('./models/lesson');
+var compression = require('compression');
 
 /* passport lti */
 var passport = require('passport');
@@ -15,8 +16,13 @@ mongoose.connect(config.mongoDB);
 
 var express = require('express');
 var app = express();
+var twoDays = 2*86400000;
+
 app.enable('trust proxy');
-app.use(express.static(config.webRoot));
+
+app.use(compression());
+
+app.use(express.static(config.webRoot, { maxAge: twoDays }));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -30,7 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-// Create our Express router
+// Create our Express router 
 var router = express.Router();
 var Lesson = Lesson(router);
 
@@ -47,8 +53,8 @@ app.post('/', function(req, res, next) {
             if (err) {
                 return next(err);
             }
-            console.log('user', user);
-            console.log('requestedResource', requestedResource);
+            //console.log('user', user);
+            //console.log('requestedResource', requestedResource);
 
             // Find requested resource in capira-db
             Lesson.find({

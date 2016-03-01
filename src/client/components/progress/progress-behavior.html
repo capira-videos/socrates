@@ -1,0 +1,13 @@
+<script>
+'use strict';
+Capira.ProgressBehavior = {
+    get service() {
+        var service = document.querySelector('progress-service');
+        if (!service) {
+            service = Polymer.Base.create('progress-service');
+            document.body.appendChild(service);
+        }
+        return service;
+    }
+}
+</script>

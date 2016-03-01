@@ -1,0 +1,30 @@
+<dom-module id="progress-service">
+    <template>
+        <iron-ajax id="service" auto handle-as="json"></iron-ajax>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'progress-service',
+        makeRequest: function(score) {
+            score = btoa(String(score).substr(0, 6));
+            this.$.service.url = '/progress/' + app.unit.sdid + '/' + score;
+        },
+        _computeTotalProgress: function() {
+            var totalQuizzes = app.unit.overlays.reduce(function(akku, overlay) {
+                return akku + (overlay.progress ? 1 : 0);
+            }, 0);
+
+            return app.unit.overlays.reduce(function(akku, overlay) {
+                var progress = overlay.progress;
+                progress = (progress && progress.attempts ? progress.highestScore / progress.attempts : 0);
+                return akku + progress;
+            }, 0) / totalQuizzes;
+        },
+        update: function() {
+            var totalScore = this._computeTotalProgress();
+            this.makeRequest(totalScore);
+        }
+    });
+    </script>
+</dom-module>

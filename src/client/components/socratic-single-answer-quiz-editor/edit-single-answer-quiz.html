@@ -20,7 +20,7 @@ window.Capira.EditSingleAnswer = {
         if (!this.overlay.options) {
             this.set('overlay.options', []);
         }
-        this.push('overlay.options', 'Type answer ' + (this.overlay.options.length + 1));
+        this.push('overlay.options', 'Type option ' + (this.overlay.options.length + 1)+' here');
     },
     _deleteItem: function(e) {
         var option = e.path[5].name;

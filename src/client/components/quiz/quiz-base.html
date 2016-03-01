@@ -1,6 +1,6 @@
 <link rel="import" href="../overlay/overlay.html">
 <link rel="import" href="../quiz-value/quiz-value.html">
-<link rel="import" href="quiz-progress.html">
+<link rel="import" href="../progress/quiz-progress.html">
 <link rel="import" href="quiz-grade.html">
 <link rel="import" href="../quiz-sounds/quiz-sounds-behavior.html">
 <script>
@@ -58,5 +58,8 @@ Capira.QuizImpl = {
         }
     }
 };
-Capira.Quiz = [Capira.Overlay, Capira.QuizSounds, Capira.QuizValue, Capira.QuizImpl, Capira.QuizProgress];
+Capira.Quiz = Capira.selectBehaviors({
+    core: [Capira.Overlay, Capira.QuizSounds, Capira.QuizValue, Capira.QuizImpl, Capira.QuizProgress],
+    editor: [Capira.FocusableQuiz]
+});
 </script>

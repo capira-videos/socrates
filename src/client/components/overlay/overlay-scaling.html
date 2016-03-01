@@ -1,4 +1,4 @@
-<dom-module id="overlay-scaling">
+<dom-module id="overlay-scaling-style">
     <template>
         <style>
         :host([scale]) {
@@ -6,12 +6,22 @@
             height: 450px !important;
             transform-origin: 0 0 !important;
             padding-top: 16px;
+            position: relative;
         }
         </style>
     </template>
 </dom-module>
 <script>
 Capira.OverlayScaling = {
+    get parent() {
+        if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+            return this.parentNode.host;
+        }
+        return this.parentNode;
+    },
+    get elementToScale(){
+        return this;
+    },
     attached: function() {
 
         var that = this;
@@ -24,11 +34,11 @@ Capira.OverlayScaling = {
 
             if (parentWidth < 800) {
                 var scalingFactor = parentWidth / 800;
-                that.style.transform = 'scale(' + scalingFactor + ')';
-                that.setAttribute('scale', true);
+                that.elementToScale.style.transform = 'scale(' + scalingFactor + ')';
+                that.elementToScale.setAttribute('scale', true);
             } else {
-                that.removeAttribute('scale');
-                that.style.transform = 'none';
+                that.elementToScale.removeAttribute('scale');
+                that.elementToScale.style.transform = 'none';
             }
         }
 

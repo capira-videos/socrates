@@ -1,0 +1,43 @@
+<link rel="import" href="progress-service.html">
+<link rel="import" href="progress-behavior.html">
+<script>
+'use strict';
+window.Capira.QuizProgressImpl = {
+    _overlayChanged: function() {
+        this.overlay.progress = {
+            attempts: 0,
+            highestScore: 0
+        };
+    },
+    _setScore: function() {
+        var score = 1 / this.overlay.progress.attempts;
+        if (score > this.overlay.progress.highestScore) {
+            this.overlay.progress.highestScore = score;
+            this.service.update();
+        }
+    },
+    progress: function(combination) {
+        if (combination) {
+            console.log(combination);
+            if (!combination.grade && combination.grade !== 0) {
+                return;
+            }
+            switch (combination.grade) {
+                case Capira.Grade.CORRECT:
+                    this.overlay.progress.attempts += 1;
+                    this._setScore();
+                    break;
+                case Capira.Grade.INCORRECT:
+                    this.overlay.progress.attempts += 1;
+                    break;
+                case Capira.Grade.NEUTRAL:
+                    break;
+                case Capira.Grade.SKIPPED:
+                    this.overlay.progress.attempts += 1;
+                    break;
+            }
+        }
+    }
+};
+Capira.QuizProgress = [Capira.QuizProgressImpl, Capira.ProgressBehavior];
+</script>

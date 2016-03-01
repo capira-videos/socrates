@@ -1,67 +1,69 @@
 <link rel="import" href="../overlay-elements/animatable-fab.html">
 <link rel="import" href="../mark-up/mark-up.html">
 <link rel="import" href="../capira-theme/theme.html">
+<link rel="import" href="../overlay/overlay-scaling.html">
 <dom-module id="annotation-card">
     <template>
-    <style>
-    :host {
-        display: block;
-        width: 100%;
-        height: 100%;
-        padding-top: 64px;
-        @apply(--layout-scroll);
-        padding-bottom: 32px;
-        box-sizing: border-box;
-    }
-
-    #annotation {
-        width: 512px;
-        margin: 0 auto 0;
-        background-color: white;
-        border-radius: 2px;
-        min-height: 400px;
-    }
-
-    #header {
-        height: 192px;
-        padding-left: 16px;
-        padding-right: 16px;
-        background-color: var(--annotation-primary-color);
-        color: white;
-        position: relative;
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--paper-font-headline);
-    }
-
-    #body {
-        @apply(--paper-font-subhead);
-        padding: 48px 0;
-    }
-
-    :host::content {
-        @apply(--paper-font-subhead);
-    }
-
-    #fab {
-        position: absolute;
-        right: 24px;
-        bottom: -32px;
-    }
-
-    @media all and (max-width: 600px) {
-        #annotation {
-            width: 100%;
-            min-height: 100vh;
-            margin: 0;
-        }
+        <style>
         :host {
-            padding: 0px;
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding-top: 64px;
+            @apply(--layout-scroll);
+            padding-bottom: 32px;
             box-sizing: border-box;
-            box-shadow: none;
         }
-    }
-     </style>
+        
+        #annotation {
+            width: 512px;
+            margin: 0 auto 0;
+            background-color: white;
+            border-radius: 2px;
+            min-height: 400px;
+        }
+        
+        #header {
+            height: 192px;
+            padding-left: 16px;
+            padding-right: 16px;
+            background-color: var(--annotation-primary-color);
+            color: white;
+            position: relative;
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+            @apply(--paper-font-headline);
+        }
+        
+        #body {
+            @apply(--paper-font-subhead);
+            padding: 48px 0;
+        }
+        
+        :host::content {
+            @apply(--paper-font-subhead);
+        }
+        
+        #fab {
+            position: absolute;
+            right: 24px;
+            bottom: -32px;
+        }
+        
+        @media all and (max-width: 600px) {
+            #annotation {
+                width: 100%;
+                min-height: 100vh;
+                margin: 0;
+            }
+            :host {
+                padding: 0px;
+                box-sizing: border-box;
+                box-shadow: none;
+            }
+        }
+        </style>
+        <style include="overlay-scaling-style"></style>
         <paper-material id="annotation" elevation="3">
             <div id="header">
                 <mark-up content="{{overlay.heading}}"></mark-up>
@@ -79,6 +81,7 @@
 (function() {
     Polymer({
         is: 'annotation-card',
+        behaviors: [Capira.OverlayScaling],
         properties: {
             overlay: {
                 type: Object,

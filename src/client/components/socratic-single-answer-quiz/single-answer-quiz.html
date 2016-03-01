@@ -47,6 +47,13 @@
         paper-item:focus:before {
             background: none;
         }
+        
+        paper-icon-button {
+            display: none;
+        }
+        paper-item:hover paper-icon-button {
+            display: block;
+        }
         </style>
         <quiz-card id="card" question="{{overlay.question}}" combination="{{combination}}">
             <div id="items">

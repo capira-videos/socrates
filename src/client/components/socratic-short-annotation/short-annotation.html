@@ -1,34 +1,45 @@
 <link rel="import" href="../capira-helper/behavior-context.html">
 <link rel="import" href="../overlay/overlay-base.html">
+<link rel="import" href="../overlay/overlay-scaling.html">
 <dom-module id="short-annotation">
     <template>
-    <style>
-    #card {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 72px;
-        padding-left: 16px;
-        padding-right: 64px;
-        background-color: var(--annotation-primary-color);
-        color: white;
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--paper-font-headline);
-        box-sizing: content-box;
-    }
-
-    #fab {
-        position: absolute;
-        right: 24px;
-        bottom: 42px;
-        z-index: 2;
-    }
-     </style>
-        <animatable-fab id="fab" icon="player-icons:play-arrow" on-mouseup="_done"></animatable-fab>
-        <div id="card">
-            <mark-up content="{{overlay.body}}"></mark-up>
+        <style>
+        #card {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 72px;
+            padding-left: 16px;
+            padding-right: 64px;
+            background-color: var(--annotation-primary-color);
+            color: white;
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+            @apply(--paper-font-headline);
+            box-sizing: content-box;
+        }
+        
+        #fab {
+            position: absolute;
+            right: 24px;
+            bottom: 42px;
+            z-index: 2;
+        }
+        
+        #content[scale] {
+            width: 800px !important;
+            height: 450px !important;
+            transform-origin: 0 0 !important;
+            position: relative;
+        }
+        </style>
+        <style include="overlay-scaling-style"></style>
+        <div id="content">
+            <animatable-fab id="fab" icon="player-icons:play-arrow" on-mouseup="_done"></animatable-fab>
+            <div id="card">
+                <mark-up content="{{overlay.body}}"></mark-up>
+            </div>
         </div>
     </template>
 </dom-module>
@@ -37,9 +48,15 @@
 (function() {
     Polymer({
         is: 'short-annotation',
-        behaviors: [Capira.Overlay],
+        behaviors: [Capira.Overlay, Capira.OverlayScaling],
         _show: function() {
             this.$.fab.show();
+        },
+        get elementToScale() {
+            return this.$.content;
+        },
+        get parent() {
+            return this;
         }
     });
 })();
