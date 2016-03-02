@@ -121,6 +121,9 @@
         },
         attached: function() {
             this.ui = this.$.questionFeedback;
+        },
+        reset: function(hideFab) {
+            this.$.questionFeedback.reset(hideFab);
         }
     });
 })();

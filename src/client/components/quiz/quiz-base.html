@@ -56,6 +56,11 @@ Capira.QuizImpl = {
         } else {
             this.$.card._nextAction();
         }
+    },
+    reset: function(hideFab) {
+        if (this.$.card) {
+            this.$.card.reset(hideFab);
+        }
     }
 };
 Capira.Quiz = Capira.selectBehaviors({
