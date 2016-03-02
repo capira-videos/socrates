@@ -1,0 +1,42 @@
+<dom-module id="video-src">
+    <template>
+        <style>
+        :host {
+            display: block;
+            margin-left: 24px;
+        }
+        
+        paper-input {
+            display: inline-block;
+        }
+        </style>
+        <paper-input value="{{video.src}}" label="Video URI" id="videoSrc"></paper-input>
+<!--         <paper-checkbox checked$="{{_isYT}}"></paper-checkbox>
+ -->    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'video-src',
+        properties: {
+            video: {
+                type: Object,
+                notify: true
+            },
+            _isYT: {
+                computed: '_computeIsYT(video)',
+                observer: '_isYTChanged'
+            }
+        },
+        _computeIsYT: function(video) {
+            return video && video.type === 'yt';
+        },
+        _isYTChanged: function(isYT) {
+            if (isYT) {
+                this.video.type = 'yt';
+            } else {
+                this.video.type = 'html5';
+            }
+        }
+    });
+    </script>
+</dom-module>

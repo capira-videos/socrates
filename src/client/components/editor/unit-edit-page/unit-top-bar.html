@@ -5,6 +5,7 @@
 <link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../../../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="share-button.html">
+<link rel="import" href="video-src.html">
 <dom-module id="unit-top-bar">
     <template>
         <style>
@@ -12,17 +13,12 @@
             width: 400px;
         }
         
-        #videoSrc {
-            width: 160px;
-            margin-left: 24px;
-        }
-        
         a {
             color: #212121;
         }
         </style>
-        <paper-input value="{{unit.title}}" label="Video Title"></paper-input>
-        <paper-input value="{{unit.video.src}}" label="Video URI" id="videoSrc"></paper-input>
+        <paper-input value="{{unit.title}}" label="Lesson Title"></paper-input>
+        <video-src video="{{unit.video}}"></video-src>
         <span class="flex"></span>
         <share-button unit-id="{{unit._id}}"></share-button>
         <a href="/player/{{hashedId}}" target="_blank" id="view">
