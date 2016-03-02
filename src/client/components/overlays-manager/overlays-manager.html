@@ -1,4 +1,3 @@
-<link rel="import" href="../overlay-elements/back-button.html">
 <link rel="import" href="../socratic-short-annotation/short-annotation.html">
 <link rel="import" href="../socratic-standard-annotation/standard-annotation.html">
 <link rel="import" href="../socratic-custom-quiz/custom-quiz.html">
@@ -28,7 +27,7 @@
         }
     }
      </style>
-        <back-button on-tap="back" id="back"></back-button>
+        <!-- <back-button on-tap="back" id="back"></back-button> -->
         <content></content>
     </template>
 </dom-module>
@@ -113,14 +112,14 @@
         handleNext: function() {
             if (this._openedOverlayId || this._openedOverlayId === 0) {
                 this._previousOverlays.push(this._openedOverlayId);
-                this.$.back.show();
+                //this.$.back.show();
             }
             console.log(this._previousOverlays);
         },
         back: function() {
             this.show(this._previousOverlays.pop(), true);
             if (!this._previousOverlays.length) {
-                this.$.back.hide();
+                //this.$.back.hide();
             }
             console.log(this._previousOverlays);
         },
