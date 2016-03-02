@@ -1,0 +1,29 @@
+<dom-module id="bread-crumb">
+    <template>
+        <style>
+        :host {
+            @apply(--paper-font-subhead);
+            display: block;
+            cursor: pointer;
+        }
+        </style>
+        Back to previous Overlay
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'bread-crumb',
+        properties: {
+            parentId: {
+                type: Number
+            }
+        },
+        listeners: {
+            tap: '_back'
+        },
+        _back: function() {
+            app.overlays.show(this.parentId);
+        }
+    });
+    </script>
+</dom-module>

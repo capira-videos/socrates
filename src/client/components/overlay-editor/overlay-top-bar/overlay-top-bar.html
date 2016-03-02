@@ -3,9 +3,11 @@
 <link rel="import" href="../../editor/top-bars/copy-button.html">
 <link rel="import" href="../../editor/top-bars/home-button.html">
 <link rel="import" href="../../editor/top-bars/delete-button.html">
+<link rel="import" href="../../editor/top-bars/bread-crumb.html">
 <dom-module id="overlay-top-bar">
     <template>
         <timestamp-selector value="{{overlay.event.start}}" hidden$="{{!overlay.event}}"></timestamp-selector>
+        <bread-crumb hidden$="{{overlay.event}}" parent-id="{{overlay.parentId}}"></bread-crumb>
         <span class="flex"></span>
         <copy-button overlay="{{overlay}}"></copy-button>
         <delete-button type="overlay"></delete-button>
