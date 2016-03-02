@@ -14,6 +14,13 @@ passport.use(lti);
 var mongoose = require('mongoose');
 mongoose.connect(config.mongoDB);
 
+process.on('SIGINT', function() {
+  mongoose.connection.close(function () {
+    console.log('Mongoose disconnected on app termination');
+    process.exit(0);
+  });
+});
+
 var express = require('express');
 var app = express();
 var twoDays = 2 * 86400000;
