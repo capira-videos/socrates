@@ -66,7 +66,7 @@
         <style include="overlay-scaling-style"></style>
         <paper-material id="annotation" elevation="3">
             <div id="header">
-                <mark-up content="{{overlay.heading}}"></mark-up>
+                <mark-up content="{{overlay.heading}}" id="heading"></mark-up>
                 <animatable-fab on-mouseup="_goOn" icon="player-icons:play-arrow" id="fab"></animatable-fab>
             </div>
             <div id="body">
@@ -96,6 +96,7 @@
         },
         show: function() {
             //document.body.style.backgroundColor = '#b388ff';
+            
         }
     });
 })();

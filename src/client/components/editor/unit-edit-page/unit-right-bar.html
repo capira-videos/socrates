@@ -5,35 +5,35 @@
 <link rel="import" href="../../overlay-editor/overlays-wizard/overlay-miniature.html">
 <dom-module id="unit-right-bar">
     <template>
-    <style>
-    :host {
-        display: block;
-    }
-
-    #list {
-        @apply(--layout-vertical);
-        @apply(--layout-scroll);
-        height: calc(100% - 88px);
-    }
-
-    .preview {
-        @apply(--layout);
-        @apply(--layout-center-center);
-        width: 100%;
-        box-sizing: border-box;
-        height: 216px;
-        min-height: 216px;
-        padding: 8px;
-        border-bottom: 1px solid var(--divider-color);
-        box-sizing: border-box;
-        padding-bottom: 16px;
-        position: relative;
-    }
-
-    .preview:hover {
-        background-color: white;
-    }
-     </style>
+        <style>
+        :host {
+            display: block;
+        }
+        
+        #list {
+            @apply(--layout-vertical);
+            @apply(--layout-scroll);
+            height: calc(100% - 88px);
+        }
+        
+        .preview {
+            @apply(--layout);
+            @apply(--layout-center-center);
+            width: 100%;
+            box-sizing: border-box;
+            height: 216px;
+            min-height: 216px;
+            padding: 8px;
+            border-bottom: 1px solid var(--divider-color);
+            box-sizing: border-box;
+            padding-bottom: 16px;
+            position: relative;
+        }
+        
+        .preview:hover {
+            background-color: white;
+        }
+        </style>
         <right-bar-header>Overlays in this Video
             <div class="flex"></div>
             <paper-fab icon="editor-icons:add" on-tap="_create"></paper-fab>
@@ -66,7 +66,7 @@
             if (app.player) {
                 app.player.pause();
                 if (overlay.event) {
-                    app.player.seekTo(overlay.event.start,true);
+                    app.player.seekTo(overlay.event.start, true);
                 }
 
             }
@@ -75,6 +75,16 @@
             return this._getOverlayStart(o1) - this._getOverlayStart(o2);
         },
         _getOverlayStart: function(o) {
+            if (o.parentId) {
+                //TODO: prevent infinite loop
+                return app.unit.overlays.reduce(function(a, e) {
+                    if (e.id === o.parentId) {
+                        return this._getOverlayStart(e) + 0.001;
+                    } else {
+                        return a;
+                    }
+                }.bind(this), -1);
+            }
             return (o.event && o.event.start) ? o.event.start : 1000;
         },
         _create: function() {

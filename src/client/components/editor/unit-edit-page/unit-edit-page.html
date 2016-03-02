@@ -40,7 +40,7 @@
             console.log('save!');
             app.service.updateUnit(app.unit).then(function(request) {
                 var response = request.response;
-                if(response.error){
+                if (response.error) {
                     alert('You are not authorized. Please log in.\n (Try staying on this page and reload the Moodle Page)');
                     return;
                 }
@@ -48,8 +48,8 @@
                 this.fire('unit-saved');
             }.bind(this));
         },
-        openWizard: function() {
-            this.$.wizard.show();
+        openWizard: function(parentOverlay, parentCombination) {
+            this.$.wizard.show(parentOverlay, parentCombination);
         },
         overlayCreated: function(e) {
             var overlay = e.detail;

@@ -16,7 +16,7 @@ mongoose.connect(config.mongoDB);
 
 var express = require('express');
 var app = express();
-var twoDays = 2*86400000;
+var twoDays = 2 * 86400000;
 
 app.enable('trust proxy');
 
@@ -27,7 +27,9 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    limit: '5mb'
+}));
 app.use(session({
     secret: config.cookieSecret,
     proxy: true
