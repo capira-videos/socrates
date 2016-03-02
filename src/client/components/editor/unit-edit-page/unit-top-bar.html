@@ -12,11 +12,17 @@
             width: 400px;
         }
         
+        #videoSrc {
+            width: 160px;
+            margin-left: 24px;
+        }
+        
         a {
             color: #212121;
         }
         </style>
         <paper-input value="{{unit.title}}" label="Video Title"></paper-input>
+        <paper-input value="{{unit.video.src}}" label="Video URI" id="videoSrc"></paper-input>
         <span class="flex"></span>
         <share-button unit-id="{{unit._id}}"></share-button>
         <a href="/player/{{hashedId}}" target="_blank" id="view">
