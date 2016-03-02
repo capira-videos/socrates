@@ -7,6 +7,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../overlay-editor/timestamp-input/timestamp-input.html">
+<link rel="import" href="show-overlay-editor.html">
 <dom-module id="answer-editor">
     <template>
         <style>
@@ -46,7 +47,7 @@
                 <paper-menu class="dropdown-content" selected="{{action}}" id="action">
                     <paper-item>Play video</paper-item>
                     <paper-item>Seek to</paper-item>
-                    <paper-item>Show overlay</paper-item>
+                    <paper-item>Next Overlay</paper-item>
                     <paper-item>Repeat Question</paper-item>
                 </paper-menu>
             </paper-dropdown-menu>
@@ -54,8 +55,7 @@
                 <timestamp-input id="timestamp" value="{{timestamp}}"></timestamp-input>
             </div>
             <div id="overlayContainer">
-                <label for="overlay">Overlay ID:</label>
-                <paper-input id="overlay" value="{{overlayId}}"></paper-input>
+                <show-overlay-editor overlay="{{overlay}}" combination="{{combination}}" overlayId="{{overlayId}}"></show-overlay-editor>
             </div>
             <br/>
             <paper-button raised on-tap="_save" id="save">Save</paper-button>
@@ -91,7 +91,9 @@ Polymer({
             type: Object
         }
     },
-
+    listeners: {
+        'save-answer': '_save'
+    },
     // set the reaction and correct fields manually
     // since the polymer editor require integer indices
     _loadCombination: function(c) {

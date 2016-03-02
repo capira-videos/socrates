@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<dom-module id="next-overlay-editor">
+    <template>
+        <style>
+        :host {
+            display: block;
+            padding-top: 24px;
+            padding-bottom: 24px;
+        }
+        
+        paper-button {
+            width: 98%;
+        }
+        </style>
+        <paper-button hidden="{{combination.reaction.target}}" raised on-tap="_create">Create next Overlay</paper-button>
+        <paper-button hidden="{{!combination.reaction.target}}" raised on-tap="_show">Show Overlay</paper-button>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'next-overlay-editor',
+        properties: {
+            overlayId: {
+                type: Number,
+                notify: true
+            },
+            overlay: {
+                type: Object
+            },
+            combination: {
+                type: Object
+            }
+        },
+        _create: function() {
+            document.querySelector('unit-edit-page').openWizard(this.overlay, this.combination);
+            this.fire('save-answer');
+        },
+        _show: function() {
+            app.overlays.show(this.combination.reaction.target);
+        }
+    });
+    </script>
+</dom-module>
