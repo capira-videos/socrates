@@ -44,10 +44,13 @@
             max-height: calc(100vh - 200px) !important;
         }
         
+        paper-tabs {
+            width: 240px !important;
+        }
+        
         :root {
             --paper-tabs-selection-bar-color: #26a69a;
         }
-        
         </style>
         <paper-dialog id="wizard" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
             <div id="header">Select an Overlay to create</div>
@@ -84,7 +87,13 @@
                 value: 0
             }
         },
-        show: function() {
+        show: function(parentOverlay, parentCombination) {
+            if (parentOverlay && parentOverlay.id && parentCombination && parentCombination.reaction) {
+                this.parentOverlay = parentOverlay;
+                this.parentCombination = parentCombination;
+            } else {
+                this.parentOverlay = undefined;
+            }
             this.$.wizard.open();
         },
         _selected: function(e) {
@@ -103,12 +112,22 @@
                     console.log('selected', overlay);
                     this.$.wizard.close();
                     var overlayTemplate = JSON.parse(JSON.stringify(overlay.template));
-                    var currentTime = app.player ? app.player.getCurrentTime() : 0;
+
                     overlayTemplate.id = Date.now() + '';
-                    overlayTemplate.event = {
-                        type: 'STOP',
-                        start: currentTime,
-                    };
+                    if (this.parentOverlay) {
+                        //this overlay is triggert by a reaction 
+                        overlayTemplate.parentId = this.parentOverlay.id;
+                        this.parentCombination.reaction.target = overlayTemplate.id;
+                    } else {
+                        //this overlay is triggert by the event-timer
+                        var currentTime = app.player ? app.player.getCurrentTime() : 0;
+                        overlayTemplate.event = {
+                            type: 'STOP',
+                            start: currentTime,
+                        };
+                    }
+
+
                     overlayTemplate.version = window.DATA_SCHEMA_VERSION;
                     this.fire('overlay-created', overlayTemplate);
                 }
