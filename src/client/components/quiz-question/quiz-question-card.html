@@ -132,10 +132,7 @@
 (function() {
     Polymer({
         is: 'quiz-question-card',
-        behaviors: {
-            core: [Polymer.NeonAnimationRunnerBehavior],
-            editor: [Capira.EditableQuestionCard]
-        },
+        behaviors: [Polymer.NeonAnimationRunnerBehavior],
         properties: {
             question: {
                 type: String,
@@ -211,30 +208,32 @@
                 this.$.container.classList.remove('neutral');
                 this.$.container.classList.remove('correct');
                 this.$.container.classList.remove('wrong');
-                switch (newState) {
-                    case 'correct':
-                        this.$.container.classList.add('correct');
-                        if (this.animateWrong) {
-                            this.cancelAnimation();
-                            this.playAnimation('correct-answer');
-                        }
-                        return;
-                    case 'wrong':
-                        this.$.container.classList.add('wrong');
-                        if (this.animateWrong) {
-                            this.cancelAnimation();
-                            this.playAnimation('incorrect-answer');
-                        }
-                        return;
-                    case 'neutral':
-                        this.$.container.classList.add('neutral');
-                        if (this.animateWrong) {
-                            this.cancelAnimation();
-                            this.playAnimation('correct-answer');
-                        }
-                        return;
-                    default:
-                        return;
+                if (this.cancelAnimation) {
+                    switch (newState) {
+                        case 'correct':
+                            this.$.container.classList.add('correct');
+                            if (this.animateWrong) {
+                                this.cancelAnimation();
+                                this.playAnimation('correct-answer');
+                            }
+                            return;
+                        case 'wrong':
+                            this.$.container.classList.add('wrong');
+                            if (this.animateWrong) {
+                                this.cancelAnimation();
+                                this.playAnimation('incorrect-answer');
+                            }
+                            return;
+                        case 'neutral':
+                            this.$.container.classList.add('neutral');
+                            if (this.animateWrong) {
+                                this.cancelAnimation();
+                                this.playAnimation('correct-answer');
+                            }
+                            return;
+                        default:
+                            return;
+                    }
                 }
             }
         },
@@ -243,9 +242,14 @@
             this.$.fab.show();
         },
         show: function() {
+            this.reset();
+        },
+        reset: function(hideFab) {
             this._opened = true;
             this._state = 'question';
-            this.$.fab.hide();
+            if (hideFab) {
+                this.$.fab.hide();
+            }
         },
         showFeedback: function() {
             if (this.combination) {
