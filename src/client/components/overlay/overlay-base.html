@@ -27,7 +27,7 @@ Capira.OverlayImpl = {
 
     _createSkipButton() {
         //we don't want the skip-button in edit-mode
-        if (!window.isEditor) {
+        if (!window.isEditor && !this.skipButton) {
             this.skipButton = document.createElement('skip-button');
         }
     },
