@@ -4,35 +4,14 @@ Capira.FocusableQuiz = {
     focusQuestion: function() {
         var elem = this.$.card;
         elem = elem.$.questionMarkup ? elem.$.questionMarkup : elem.$.questionFeedback.$.questionMarkup;
-        elem = elem.$.content;
-        this.selectElementText(elem);
-
+        elem.selectAllText();
     },
 
     focusFeedback: function() {
         var elem = this.$.card;
         elem = elem.$.feedback ? elem.$.feedback : elem.$.questionFeedback.$.feedback;
         elem = elem.$.content;
-        this.selectElementText(elem);
-    },
-
-    selectElementText: function(el, win) {
-        setTimeout(function() {
-            win = win || window;
-            var doc = win.document,
-                sel, range;
-            if (win.getSelection && doc.createRange) {
-                sel = win.getSelection();
-                range = doc.createRange();
-                range.selectNodeContents(el);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            } else if (doc.body.createTextRange) {
-                range = doc.body.createTextRange();
-                range.moveToElementText(el);
-                range.select();
-            }
-        }, 300);
+        elem.selectAllText();
     }
 }
 </script>
