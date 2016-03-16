@@ -1,60 +1,61 @@
 <link rel="import" href="overlay-miniature.html">
 <dom-module id="overlay-miniature-card">
     <template>
-    <style> 
-    :host {
-        display: inline-block;
-        margin: 8px;
-        cursor: pointer;
-    }
-    
-    overlay-miniature {
-        opacity: 0.8;
-    }
-    
-    :host:hover overlay-miniature {
-        opacity: 1;
-    }
-    
-    paper-material {
-        display: flex;
-        width: 424px;
-    }
-    
-    #caption {
-        background-color: var(--paper-teal-400);
-        height: 104px;
-        box-sizing: border-box;
-        padding: 8px;
-        color: white;
-        width: 240px;
-    }
-    
-    #title {
-        @apply(--paper-font-subhead);
-    }
-    
-    #description {
-        @apply(--paper-font-caption);
-        white-space: normal !important;
-    }
-    
-    iron-icon {
-        background-color: var(--paper-teal-400);
-        color: white;
-        position: absolute;
-        z-index: 1;
-        width: 48px;
-        height: 48px;
-        left: 60px;
-        top: 20px;
-        pointer-events: none;
-        border-radius: 50%;
-        border: 2px solid #26a69a;
-        padding: 4px;
-        background-color: rgba(255, 255, 255, 0.8);
-    }
-     </style>
+        <style>
+        :host {
+            display: inline-block;
+            margin: 8px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        overlay-miniature {
+            opacity: 0.8;
+        }
+        
+        :host:hover overlay-miniature {
+            opacity: 1;
+        }
+        
+        paper-material {
+            display: flex;
+            width: 424px;
+        }
+        
+        #caption {
+            background-color: var(--paper-teal-400);
+            height: 104px;
+            box-sizing: border-box;
+            padding: 8px;
+            color: white;
+            width: 240px;
+        }
+        
+        #title {
+            @apply(--paper-font-subhead);
+        }
+        
+        #description {
+            @apply(--paper-font-caption);
+            white-space: normal !important;
+        }
+        
+        iron-icon {
+            background-color: var(--paper-teal-400);
+            color: white;
+            position: absolute;
+            z-index: 1;
+            width: 48px;
+            height: 48px;
+            left: 60px;
+            top: 20px;
+            pointer-events: none;
+            border-radius: 50%;
+            border: 2px solid #26a69a;
+            padding: 4px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        </style>
         <paper-material elevation="2">
             <iron-icon icon="{{overlay.icon}}" hidden$="{{!overlay.icon}}"></iron-icon>
             <overlay-miniature overlay="{{overlay.preview}}" width="184"></overlay-miniature>
@@ -75,8 +76,8 @@
                 type: Object
             }
         },
-        attached:function(){
-            this.tabIndex=0;
+        attached: function() {
+            this.tabIndex = 0;
         }
 
     });
