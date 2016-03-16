@@ -63,7 +63,7 @@
                             <paper-ripple></paper-ripple>
                             <span class="letter">[[computeLetter(index)]]</span>
                             <mark-up content="{{item}}"></mark-up>
-                            <paper-icon-button icon="editor-icons:delete" hidden$="{{!editor}}" on-tap="_deleteItem"></paper-icon-button>
+                            <paper-icon-button icon="editor-icons:delete" hidden$="{{!editor}}" on-tap="_deleteItem" option="{{item}}"></paper-icon-button>
                         </paper-item>
                     </template>
                 </iron-selector>

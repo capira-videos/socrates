@@ -19,17 +19,20 @@ window.Capira.OverlayEditPageImpl = {
         if (changeRecord.path !== 'overlay.event') {
             console.log('timestamp-changed', changeRecord);
             if (window.app && app.player) {
+                var overlayContainer = this.layout.$.main;
+                if (overlayContainer) {
+                    overlayContainer.style.opacity = '0.4';
+                }
                 app.player.pause();
                 if (this.overlay.event && this.overlay.event.start) {
                     app.player.seekTo(this.overlay.event.start);
                 }
 
-                if (this.timestampTimeout) {
-                    clearTimeout(this.timestampTimeout);
-                }
-                this.timestampTimeout = setTimeout(function() {
-                    app.player.play();
-                }, 1000);
+
+                this.debounce('stopPlayer', function() {
+                    app.player.pause();
+                    overlayContainer.style.opacity = '1';
+                }, 400);
             }
         }
     }

@@ -64,7 +64,8 @@ window.Capira.QuizEditPageImpl = {
                 this.selectedCombination = null;
                 Polymer.dom(this.root).querySelector('#quiz').focusQuestion();
             }.bind(this), 500);
-        } else {
+        }
+        if (e.detail === 'combination') {
             Polymer.dom(this.root).querySelector('#quiz').focusFeedback();
         }
     },

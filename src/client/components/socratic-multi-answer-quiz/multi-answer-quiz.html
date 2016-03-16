@@ -51,7 +51,7 @@ Simpler way to do this?
                         <paper-checkbox on-tap="_selectionChanged" data-model="{{item}}">
                             <mark-up content="{{item}}" pointer-events="1">placeholder</mark-up>
                         </paper-checkbox>
-                        <paper-icon-button icon="editor-icons:delete" hidden$="{{!editor}}" on-tap="_deleteItem"></paper-icon-button>
+                        <paper-icon-button icon="editor-icons:delete" hidden$="{{!editor}}" on-tap="_deleteItem" option="{{item}}"></paper-icon-button>
                     </div>
                 </template>
             </div>

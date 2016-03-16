@@ -20,10 +20,15 @@ window.Capira.EditSingleAnswer = {
         if (!this.overlay.options) {
             this.set('overlay.options', []);
         }
-        this.push('overlay.options', 'Type option ' + (this.overlay.options.length + 1)+' here');
+        this.push('overlay.options', 'Type option ' + (this.overlay.options.length + 1) + ' here');
     },
     _deleteItem: function(e) {
-        var option = e.path[5].name;
+        var option = e.path.reduce(function(a, el) {
+            return el.option ? el.option : a
+        }, null);
+        if (option === null) {
+            return console.error('option is null');
+        }
         var index = this.overlay.options.indexOf(option);
         this.splice('overlay.options', index, 1);
     }

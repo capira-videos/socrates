@@ -19,21 +19,34 @@ Capira.OverlayScaling = {
         }
         return this.parentNode;
     },
-    get elementToScale(){
+    get elementToScale() {
         return this;
     },
     attached: function() {
 
+        this.resize();
+        window.addEventListener('resize', this.resize.bind(this), false);
+
+    },
+    resize: function() {
         var that = this;
 
-        function resize() {
+        function resizeMe() {
             var parentWidth = window.innerWidth;
+            var parentHeight = window.innerHeight;
             if (that.parent && that.parent.clientWidth) {
                 parentWidth = that.parent.clientWidth;
+                parentHeight = that.parent.clientHeight;
             }
+            console.log('scale', parentWidth, parentHeight)
 
-            if (parentWidth < 800) {
-                var scalingFactor = parentWidth / 800;
+            if (parentWidth < 800 || parentHeight < 550) {
+                var scalingFactor = 1;
+                if ((parentWidth * 9 / 16) > parentHeight) {
+                    scalingFactor = parentHeight / 450;
+                } else {
+                    scalingFactor = parentWidth / 800;
+                }
                 that.elementToScale.style.transform = 'scale(' + scalingFactor + ')';
                 that.elementToScale.setAttribute('scale', true);
             } else {
@@ -42,8 +55,9 @@ Capira.OverlayScaling = {
             }
         }
 
-        window.addEventListener('resize', resize, false);
-        resize();
+        this.debounce('resize',function() {
+            resizeMe();
+        }, 100);
     }
 }
 </script>

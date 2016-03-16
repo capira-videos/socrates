@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var LessonSchema = new mongoose.Schema({
     title: String,
     version: String,
-    resource: {
+    resource: { 
         resourceId: String,
         contextId: String,
         instanceId: String,

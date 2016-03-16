@@ -1,6 +1,6 @@
 var lti = require('ims-lti');
 var config = require('../config');
-var atob = require('atob');
+var atob = require('atob'); 
 module.exports = function(app) {
     app.get('/progress/:id/:score', function(req, res, next) {
         app.lti._createProvider(null, function(err, provider) {
