@@ -49,7 +49,8 @@ window.Capira.EditableMarkup = {
     listeners: {
         'edit-latex': '_openLatexEditor',
         'set-latex': '_insertLatex',
-        'latex-changed': '_latexChanged'
+        'latex-changed': '_latexChanged',
+        'focus':'selectAllText'
     },
     _done: function(e) {
         console.log(e);
