@@ -10,7 +10,6 @@ Capira.FocusableQuiz = {
     focusFeedback: function() {
         var elem = this.$.card;
         elem = elem.$.feedback ? elem.$.feedback : elem.$.questionFeedback.$.feedback;
-        elem = elem.$.content;
         elem.selectAllText();
     }
 }
