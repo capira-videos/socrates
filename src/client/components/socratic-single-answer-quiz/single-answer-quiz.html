@@ -59,11 +59,11 @@
             <div id="items">
                 <iron-selector selected="{{answer}}" attr-for-selected="name">
                     <template is="dom-repeat" items="{{overlay.options}}" sort="_shuffle">
-                        <paper-item name="{{item}}">
+                        <paper-item name="{{item}}" tabindex="-1">
                             <paper-ripple></paper-ripple>
                             <span class="letter">[[computeLetter(index)]]</span>
                             <mark-up content="{{item}}"></mark-up>
-                            <paper-icon-button icon="editor-icons:delete" hidden$="{{!editor}}" on-tap="_deleteItem" option="{{item}}"></paper-icon-button>
+                            <paper-icon-button icon="editor-icons:delete" hidden$="{{!editor}}" on-tap="_deleteItem" option="{{item}}" tabindex="-1"></paper-icon-button>
                         </paper-item>
                     </template>
                 </iron-selector>
