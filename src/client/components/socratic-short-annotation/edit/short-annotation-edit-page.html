@@ -15,7 +15,10 @@
 (function() {
     Polymer({
         is: 'short-annotation-edit-page',
-        behaviors: [Capira.OverlayEditPage]
+        behaviors: [Capira.OverlayEditPage],
+        _show:function(){
+            this.$$('short-annotation').$$('mark-up').focus();
+        }
     });
 })();
 </script>
