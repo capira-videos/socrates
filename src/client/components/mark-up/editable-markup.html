@@ -53,6 +53,7 @@ window.Capira.EditableMarkup = {
     },
     _done: function(e) {
         console.log(e);
+        this.blurSelection();
         if (!(e.relatedTarget && e.relatedTarget.nodeName === 'LATEX-EDITOR')) {
             //latex-editor opened - no render
             if (this.el.innerHTML === '' || this.el.innerHTML === this.el.content) {
@@ -97,9 +98,9 @@ window.Capira.EditableMarkup = {
                     e.preventDefault();
                 }
             }.bind(this));
-
-
         }
+
+
     },
     _openLatexEditor: function(e) {
         var editor = Capira.EditableLatex.editor;
@@ -158,6 +159,13 @@ window.Capira.EditableMarkup = {
                 range.select();
             }
         }, 100);
+    },
+    blurSelection: function() {
+        //it seems as if the blur event just blurs the focused element, but not the selection
+        //therefor we do that manually:
+        if (window.getSelection) {
+            window.getSelection().removeAllRanges()
+        }
     }
 };
 </script>

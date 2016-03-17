@@ -23,8 +23,8 @@ window.Capira.EditSingleAnswer = {
         this.push('overlay.options', 'Type option ' + (this.overlay.options.length + 1) + ' here');
         this.async(function() {
             var options = Polymer.dom(this.root).querySelectorAll('mark-up');
-            options[options.length-1].selectAllText();
-        })
+            options[options.length - 1].selectAllText();
+        });
     },
     _deleteItem: function(e) {
         var option = e.path.reduce(function(a, el) {
