@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Capira-API Showcase</title>
+	<style>
+		#iframe, #received_events {
+			display: table-cell;
+			width: 45%;
+		}
+		div, h1{
+			padding-left: 10px;
+		}
+	</style>
+
+	<!-- build:js capira-api.min.js -->
+	<script src="capira-api.min.js"></script>
+	<!-- /build -->
+
+	<script>
+		/*capiraAPI.onEventHappened(function (data) {
+		 console.log('Received Capira Event:', data);
+		 received_events.innerHTML = received_events.innerHTML + '<br><b>Event:</b> ' + JSON.stringify(data);
+		 });*/
+		capiraAPI.onQuizSuccess(function(unit,layer,time,score,total){
+			received_events.innerHTML += '<br><b>Success:</b> ' + 'unit:'+unit+" layer:"+layer+" time:"+time+" score:"+score+" total:"+total;
+		});
+		capiraAPI.onQuizFailure(function(unit,layer,time,total){
+			received_events.innerHTML += '<br><b>Failure:</b> ' + 'unit:'+unit+" layer:"+layer+" time:"+time+" total:"+total;
+		});
+		capiraAPI.onQuizSkipped(function(unit,layer,time,total){
+			received_events.innerHTML += '<br><b>Skipped:</b> ' + 'unit:'+unit+" layer:"+layer+" time:"+time+" total:"+total;
+		});
+		capiraAPI.onUnitFinished(function(unit){
+			received_events.innerHTML += '<br><b>Finished:</b> ' + 'unit:'+unit;
+		});
+	</script>
+
+</head>
+<body>
+<h1>Capira-API Showcase</h1>
+
+<div id="iframe">
+	<h2>This is an iFrame. </h2>
+	<iframe src="https://socrates.cloudno.de/player/#56e76b23ff1f31f73488ece5" width="650" height="360" allowfullscreen></iframe>
+
+</div>
+
+<div id="received_events">
+	<h2>Data received from iFrame:</h2>
+</div>
+<br><br><br>
+<div>
+	<h2>Usage:</h2>
+	<h3>Step 1: </h3>
+	Embedding Capira via iFrame. The API will be activated automatically.
+	<pre>
+		&lt;iframe src="https://&lt;&lt;your-capira-server&gt;&gt;/player/#56e76b23ff1f31f73488ece5" width="650" height="360" allowfullscreen&gt;&lt;/iframe&gt;
+	</pre>
+	<h3>Step 2:</h3>
+	Add the capira-api.js
+	<pre>
+		&lt;script src="https://&lt;&lt;your-capira-server&gt;&gt;/api/capira-api.min.js"&gt;&lt;/script&gt;
+	</pre>
+	<h3>Step 3:</h3>
+	Register your custom EventHandlers like this:
+	<pre>
+		&lt;script&gt;
+			capiraAPI.onQuizSuccess(function(unit,layer,time,score){
+				// do sth with the received data
+				console.log('Received onQuizSuccess: ', unit,layer,time,score);
+			});
+			capiraAPI.onQuizFailure(function(unit,layer,time){
+				// do sth with the received data
+				console.log('Received onQuizFailure: ', unit,layer,time);
+			});
+			capiraAPI.onQuizSkipped(function(unit,layer,time){
+				// do sth with the received data
+				console.log('Received onQuizSkipped: ', unit,layer,time);
+			});
+			capiraAPI.onUnitFinished(function(unit){
+				// do sth with the received data
+				console.log('Received onUnitFinished: ', unit);
+			});
+		&lt;/script&gt;
+	</pre>
+</div>
+
+
+</body>
+</html>

@@ -33,5 +33,11 @@ window.isPlayer = true;
         app.playerManager.addEventListener('hide-overlay', function(e) {
             app.overlays.hide(e.detail);
         }.bind(this));
+
+        app.playerManager.addEventListener('video-ended', function() {
+            if (window.iFrameAPI) {
+                iFrameAPI.sendJSON({ unit: app.unit._id });
+            };
+        })
     });
 })(document);

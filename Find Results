@@ -1,0 +1,261 @@
+Searching 296 files for " manifest="/manifest.appcache""
+
+/Users/linus/youGrow/capira/socrates/src/client/components/analytic-elements/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/capira-migrator/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/editor/edit-page/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/latex/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/latex/edit/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/mark-up/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/math-input/demo/demo-explanation.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/mathslang-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/mathslang-editor/ms-exp/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/mathslang-editor/ms-fun/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/mathslang-editor/ms-input-exp/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/mathslang/mathslang-value/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/overlay-editor/timestamp-input/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/quiz-sounds/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/scale-to-parent/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-custom-quiz-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-custom-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-custom-quiz/test/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-draw-quiz-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-draw-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-draw-quiz/test/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-hotspot-quiz-editor/demo/editor.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-hotspot-quiz-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-hotspot-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-live-hotspot-quiz/demo/editor.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-live-hotspot-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-math-quiz-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-math-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-multi-answer-quiz-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-multi-answer-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-number-range-quiz-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-number-range-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-short-annotation/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-short-answer-quiz/demo/editor.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-short-answer-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-single-answer-quiz-editor/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-single-answer-quiz-editor/single-answer-value-selector/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-single-answer-quiz/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-standard-annotation/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/socratic-switch-annotation/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/video-player/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/video-player/video-controls/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+/Users/linus/youGrow/capira/socrates/src/client/components/video-player/video-player-html5/demo/index.html:
+    1  <!DOCTYPE html>
+    2: <html manifest="/manifest.appcache">
+    3  
+    4  <head>
+
+43 matches across 43 files

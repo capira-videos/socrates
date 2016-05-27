@@ -1,6 +1,6 @@
 var lti = require('ims-lti');
 var config = require('../config');
-var atob = require('atob'); 
+var atob = require('atob');
 module.exports = function(app) {
     app.get('/progress/:id/:score', function(req, res, next) {
         app.lti._createProvider(null, function(err, provider) {
@@ -25,12 +25,16 @@ module.exports = function(app) {
                 // console.log(outcomeConfig); 
                 var outcome = new lti.OutcomeService(outcomeConfig);
 
+                console.log(outcomeConfig)
                 outcome.send_read_result(function(err, result) {
                     if (err) {
-                        return console.log(err);
+                        console.log('readError',err);
                     }
                     if (!result || result < score) {
                         outcome.send_replace_result(score, function(err, result) {
+                            if (err) {
+                                return console.log('writeError',err);
+                            }
                             res.send('grade', result)
                         });
                     } else {

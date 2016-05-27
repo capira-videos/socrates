@@ -1,6 +1,7 @@
 'use strict';
 (function(document) {
     window.isEditor = true;
+    window.name='capiraeditor';
     window.standardReaction = {
         type: 'play'
     };

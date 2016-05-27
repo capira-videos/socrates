@@ -13,14 +13,13 @@
     </style>
     <template>
         <paper-dialog id="createUnitDialog" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
-            <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys>
+<!--             <iron-a11y-keys target="{{}}" keys="enter" on-keys-pressed="_confirm"></iron-a11y-keys> -->
             <h2>Create Unit</h2>
             <div>
-                <paper-input label="Enter an URL of a Video." value="[[video.src]]" id="videoId" autofocus></paper-input>
-                <paper-input label="Enter lesson title" value="{{unit.title}}" hidden$="{{!valid}}"></paper-input>
+                <paper-input label="Enter an URL or YoutubeId of a Video." value="[[video.src]]" id="videoId" autofocus></paper-input>
             </div>
             <div class="buttons">
-                <paper-button on-click="_confirm" disabled$="{{!valid}}">Create</paper-button>
+                <paper-button on-click="_confirm" disabled$="{{!valid}}" id="confirm">Create</paper-button>
             </div>
         </paper-dialog>
         <iron-ajax id="youtubeApi" handle-as="json" verbose="true" on-response="_handleYoutubeTitle" loading="{{loading}}"></iron-ajax>
@@ -50,9 +49,10 @@
 
         ready: function() {
             var that = this;
-            this.$.videoId.onkeyup = function() {
+            var input = this.$.videoId;
+            input.addEventListener('keyup', function() {
                 that._handleVideoUrl(this.value || '');
-            };
+            });
         },
 
         _parseYoutubeUrl: function(url) {
@@ -80,13 +80,9 @@
         },
 
         _fetchYoutubeTitle: function(id) {
-            //timeout for to frequent changes in the video-id input
-            if (this.timer) {
-                clearTimeout(this.timer);
-            }
-            var service = this.$.youtubeApi;
-            service.url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyBtulzLnwRn3FfkfL-Lg-AhuO8eR8jfXSQ&fields=items(snippet(title))&part=snippet';
-            this.timer = setTimeout(function() {
+            this.debounce('youtube', function() {
+                var service = this.$.youtubeApi;
+                service.url = 'https://www.googleapis.com/youtube/v3/videos?id=' + id + '&key=AIzaSyBtulzLnwRn3FfkfL-Lg-AhuO8eR8jfXSQ&fields=items(snippet(title))&part=snippet';
                 service.generateRequest();
             }, 100);
         },
@@ -101,6 +97,7 @@
                 this.video.type = 'yt';
 
                 this.set('valid', true);
+                this.$.confirm.focus();
             }
         },
 
@@ -110,6 +107,7 @@
                 console.log('// ist eine video url');
                 this.video.type = 'html5';
                 this.set('valid', true);
+                this.$.confirm.focus();
             }.bind(this);
             video.onerror = function() {
                 console.log('// ist keine video url');

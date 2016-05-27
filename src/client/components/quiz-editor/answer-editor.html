@@ -168,7 +168,7 @@ Polymer({
         }.bind(this), false);
     },
     _timestampChanged: function(timestamp) {
-        if (app.player) {
+        if (window.app && app.player) {
             app.player.seekWithoutTrigger(timestamp);
         }
     }

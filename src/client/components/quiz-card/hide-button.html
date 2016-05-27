@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../capira-icons/icons.html">
+<dom-module id="hide-button">
+    <template>
+        <style>
+        :host {
+            display: block;
+            color: white;
+            position: absolute;
+            top: 16px !important;
+            right: 64px !important;
+            z-index: 2;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        </style>
+        <paper-icon-button icon="player-icons:visibility-off" hidden$="{{!visible}}"></paper-icon-button>
+        <paper-icon-button icon="player-icons:visibility" hidden$="{{visible}}"></paper-icon-button>
+    </template>
+    <script>
+    'use strict';
+    Polymer({
+        is: 'hide-button',
+        properties: {
+            visible: {
+                value: true
+            }
+        },
+        listeners: {
+            tap: '_tapped'
+        },
+        _tapped: function() {
+            if (this.visible) {
+                this.fire('hide-card');
+            } else {
+                this.fire('show-card');
+            }
+            this.visible = !this.visible;
+        }
+    });
+    </script>
+</dom-module>

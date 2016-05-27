@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html manifest="/manifest.appcache">
+<html>
 
 <head>
     <!-- Web Components -->
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- build:js ../elements.html -->
-    <link rel="import" href="/capira-helper/scaffold.html">
+    <link rel="import" href="../../capira-helper/scaffold.html">
     <link rel="import" href="../../../bower_components/polymer/polymer.html">
     <link rel="import" href="../short-answer-quiz.html">
     <!-- endbuild -->
@@ -24,7 +24,7 @@
     <span id="browser-sync-binding"></span>
     <short-answer-quiz></short-answer-quiz>
     <link rel="import" href="demo-data.html">
-    <link rel="import" href="../../../overlay/demo/demo-init.html">
+    <link rel="import" href="../../overlay/demo/demo-init.html">
     <script>
     window.addEventListener('HTMLImportsLoaded', function(e) {
         window.initDemo('short-answer-quiz');

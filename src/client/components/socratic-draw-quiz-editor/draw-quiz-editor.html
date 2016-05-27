@@ -4,22 +4,22 @@
 <link rel="import" href="../overlay/overlay-base.html">
 <dom-module id="draw-quiz-editor">
     <template>
-    <style>
-    :host {
-        display: block;
-        width: 100%;
-        height: 100%;
-        pointer-events: all;
-    }
-
-    #card {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 64px;
-    }
-     </style>
+        <style>
+        :host {
+            display: block;
+            width: 100%;
+            height: 100%;
+            pointer-events: all;
+        }
+        
+        #card {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 64px;
+        }
+        </style>
         <draw-canvas id="mask"></draw-canvas>
         <quiz-question-card id="card" question="{{overlay.question}}" is-top="true" animate-wrong icon="player-icons:brush" combination="{{combination}}"></quiz-question-card>
     </template>
@@ -41,6 +41,7 @@
             if (this.combination) {
                 this.$.mask.paths = [];
                 this.$.mask.points = [];
+                this.$.card.$.feedback.selectAllText();
                 if (this.combination.value) {
                     this.$.mask.style.pointerEvents = 'all';
                     this.$.mask.paintDataUrl(this.combination.value.src);

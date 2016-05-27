@@ -83,13 +83,27 @@ Capira.OverlayImpl = {
     },
     _removeSkipButton: function() {
         if (this.skipButton && this.skipButton.isAttached) {
-            Polymer.dom(this.root).removeChild(this.skipButton);
+            //add to quiz-card if exists 
+            var card = this.$$('quiz-card');
+            if (card) {
+                card.removeChild(this.skipButton);
+            } else {
+                Polymer.dom(this.root).removeChild(this.skipButton);
+            }
+
         }
     },
 
     _showSkipButton: function() {
         if (this.skipButton && !this.skipButton.isAttached) {
-            Polymer.dom(this.root).appendChild(this.skipButton);
+            var card = Polymer.dom(this.root).querySelector('quiz-card');
+            if (card) {
+                card.appendChild(this.skipButton);
+            } else {
+                Polymer.dom(this.root).appendChild(this.skipButton);
+            }
+
+
         }
     },
 

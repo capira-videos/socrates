@@ -93,9 +93,9 @@ gulp.task('copy', function() {
     gulp.src([
             'src/server/**',
         ])
-    .pipe($.if('*.js', $.replace(/.\/src\/client/, './dist/client')))
-    .pipe($.if('*.js', $.replace(/\/components\/endpoints/g, '')))
-    .pipe(gulp.dest('../capira-dist/dist/server'));
+        .pipe($.if('*.js', $.replace(/.\/src\/client/, './dist/client')))
+        .pipe($.if('*.js', $.replace(/\/components\/endpoints/g, '')))
+        .pipe(gulp.dest('../capira-dist/dist/server'));
     gulp.src([
         'package.json',
         'README.md',
@@ -105,10 +105,14 @@ gulp.task('copy', function() {
     ]).pipe(gulp.dest('../capira-dist/dist/client/create'));
     gulp.src([
         'src/client/bower_components/katex/dist/**', ,
-    ]).pipe(gulp.dest('../capira-dist/dist/client/bower_components/katex/dist'));   
-     gulp.src([
+    ]).pipe(gulp.dest('../capira-dist/dist/client/bower_components/katex/dist'));
+    gulp.src([
         'src/client/static/app/favicon.ico', ,
     ]).pipe(gulp.dest('../capira-dist/dist/client/'));
+
+    gulp.src([
+        'src/client/components/api/*', ,
+    ]).pipe(gulp.dest('../capira-dist/dist/client/api'));
     /*
         var bower = gulp.src([
             'bower_components/** /*'
@@ -224,9 +228,9 @@ gulp.task('serve', [], function() {
         //       will present a certificate warning in the browser.
         // https: true,
         // proxy: 'localhost:9898',
-        proxy: 'localhost:9898',
+       // proxy: 'localhost:9898',
 
-        /*
+     
         server: {
             baseDir: 'src',
             directory: true,
@@ -236,7 +240,7 @@ gulp.task('serve', [], function() {
                 '/static': 'static',
             }
         }
-        */
+        
     });
 
     gulp.watch(['src/client/**/*.html'], reload);
@@ -312,11 +316,11 @@ gulp.task('vulcan', function() {
             stripExcludes: ['/src/client/bower_components/iron-icons/iron-icons.html']
         }))
         .pipe(minifyHTML())
-        .pipe(minifyInline({
-            css: {
-                advanced: false
-            }
-        }))
+ //       .pipe(minifyInline({
+   //         css: {
+     //           advanced: false
+       //     }
+        //}))
         .pipe(gulp.dest(DEST_DIR))
         .pipe($.size({
             title: 'vulcanize'
@@ -341,7 +345,7 @@ gulp.task('clean-index', function() {
             empty: true,
             spare: true,
         })))
-        .pipe(minifyInline())
+       // .pipe(minifyInline())
         .pipe(gulp.dest('../capira-dist/dist/client/player/'));
 });
 
@@ -414,7 +418,7 @@ gulp.task('editor-clean-index', function() {
             empty: true,
             spare: true,
         })))
-        .pipe(minifyInline())
+       // .pipe(minifyInline())
         //.pipe($.if('*.html', $.replace('</body></html>', '<script>function bugfix(){setTimeout(function(){if(!document.getElementById("overlay1")){bugfix();}else{document.getElementById("overlay1").opened||app.openedOverlay=0;app.showOverlay(1)}},300)};bugfix();</script></body></html>')))
         .pipe(gulp.dest('../capira-dist/dist/client/editor/'));
 });
@@ -427,11 +431,11 @@ gulp.task('editor-clean-vulcanized', function() {
             empty: true,
             spare: true,
         })))
-        .pipe(minifyInline({
-            css: {
-                advanced: false
-            }
-        }))
+   //     .pipe(minifyInline({
+   //         css: {
+   //             advanced: false
+   //         }
+   //     }))
         .pipe(gulp.dest('../capira-dist/dist/client/editor/'))
         .pipe($.size({
             title: 'minified elements'

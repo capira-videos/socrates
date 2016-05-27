@@ -1,0 +1,15 @@
+<script>
+console.log('intern capira-api loaded');
+
+window.iFrameAPI = new (function() {
+    this.sendJSON = function(json) {
+        var copy = JSON.parse(JSON.stringify(json));
+        if (copy.unit) {
+            copy.finished = 1;
+        }
+        //copy.totalQuizzes=window.AMOUNT_OF_QUIZZES;
+        copy.unit = window.app.unit._id;
+        window.parent.postMessage(JSON.stringify(copy), '*');
+    }
+});
+</script>

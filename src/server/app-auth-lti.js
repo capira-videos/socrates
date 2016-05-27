@@ -23,8 +23,11 @@ module.exports = function(passport) {
 
     return new LTIStrategy(config, function(lti, done) {
         this._createProvider(null, function(a, provider) {
-            // console.log(lti);
+            var lessonId =  (lti.custom_id && lti.custom_id !== '') ? lti.custom_id : null;
+            console.log(lessonId);
+            lti.custom_id=null;
             var resource = {
+                lessonId:lessonId,
                 resourceId: lti.resource_link_id,
                 contextId: lti.context_id,
                 instanceId: lti.tool_consumer_instance_guid,
@@ -32,12 +35,12 @@ module.exports = function(passport) {
             };
 
             var _sdid = lti.lis_result_sourcedid ? btoa(lti.lis_result_sourcedid) : '';
-  
+
             var user = {
                 id: lti.user_id,
                 contextId: lti.context_id,
                 instanceId: lti.tool_consumer_instance_guid,
-                isAdmin: (lti.roles.indexOf('Instructor') > -1),
+                isAdmin: (lti.roles.indexOf('Instructor') > -1 || lti.roles.indexOf('Administrator') > -1),
                 sdid: _sdid
             };
             //console.log(provider)

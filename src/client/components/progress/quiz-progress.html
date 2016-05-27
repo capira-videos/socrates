@@ -1,5 +1,6 @@
 <link rel="import" href="progress-service.html">
 <link rel="import" href="progress-behavior.html">
+<link rel="import" href="../api/capira-api-intern.html">
 <script>
 'use strict';
 window.Capira.QuizProgressImpl = {
@@ -15,6 +16,7 @@ window.Capira.QuizProgressImpl = {
             this.overlay.progress.highestScore = score;
             this.service.update();
         }
+
     },
     progress: function(combination) {
         if (combination) {
@@ -26,16 +28,37 @@ window.Capira.QuizProgressImpl = {
                 case Capira.Grade.CORRECT:
                     this.overlay.progress.attempts += 1;
                     this._setScore();
+                    this._sendToAPI(this.overlay.progress.highestScore);
                     break;
                 case Capira.Grade.INCORRECT:
                     this.overlay.progress.attempts += 1;
+                    this._sendToAPI(0);
                     break;
                 case Capira.Grade.NEUTRAL:
+                    this._sendToAPI(0.000001);
                     break;
                 case Capira.Grade.SKIPPED:
                     this.overlay.progress.attempts += 1;
+                    this._sendToAPI(-1);
                     break;
             }
+        }
+    },
+    _sendToAPI: function(score) {
+        if (window.iFrameAPI) {
+            var totalQuizzes;
+            if (app.unit.overlays) {
+                totalQuizzes = app.unit.overlays.reduce(function(a, e) {
+                    return a + (e.type ? 1 : 0)
+                }, 0);
+            }
+
+            iFrameAPI.sendJSON({
+                layer: this.overlay.id,
+                score: score,
+                time: 15,
+                totalQuizzes: totalQuizzes
+            })
         }
     }
 };

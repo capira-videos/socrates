@@ -4,13 +4,13 @@ Capira.FocusableQuiz = {
     focusQuestion: function() {
         var elem = this.$.card;
         elem = elem.$.questionMarkup ? elem.$.questionMarkup : elem.$.questionFeedback.$.questionMarkup;
-        elem.selectAllText();
+        elem.focus();
     },
 
     focusFeedback: function() {
         var elem = this.$.card;
         elem = elem.$.feedback ? elem.$.feedback : elem.$.questionFeedback.$.feedback;
-        elem.selectAllText();
+        elem.focus();
     }
 }
 </script>

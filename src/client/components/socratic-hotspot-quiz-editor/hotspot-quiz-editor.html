@@ -4,23 +4,23 @@
 <link rel="import" href="../draw/draw-canvas/has-tools.html">
 <dom-module id="hotspot-quiz-editor">
     <template>
-    <style>
-    #mask {
-        border: 1px solid black;
-    }
-
-    #mask {
-        opacity: 0.5;
-    }
-
-    #card {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 64px;
-    }
-     </style>
+        <style>
+        #mask {
+            border: 1px solid black;
+        }
+        
+        #mask {
+            opacity: 0.5;
+        }
+        
+        #card {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 64px;
+        }
+        </style>
         <draw-canvas id="mask" color="[[color]]" pen-size="20" smoothing="0"></draw-canvas>
         <quiz-question-card id="card" question="{{overlay.question}}" is-top="true" animate-wrong icon="player-icons:my-location" combination="{{combination}}"></quiz-question-card>
     </template>
@@ -110,6 +110,7 @@
         _combinationChanged: function() {
             this.$.mask.history = [];
             if (this.combination) {
+                this.$.card.$.feedback.selectAllText();
                 if (this.combination.value) {
                     this.$.mask.style.pointerEvents = 'all';
                 } else {
@@ -118,7 +119,7 @@
                 }
             }
         }
-
+        
     });
 })();
 </script>
