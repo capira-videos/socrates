@@ -28,12 +28,14 @@ module.exports = function(app) {
                 console.log(outcomeConfig)
                 outcome.send_read_result(function(err, result) {
                     if (err) {
-                        console.log('readError',err);
+                        console.log('readError', err);
+                        res.send('error');
                     }
                     if (!result || result < score) {
                         outcome.send_replace_result(score, function(err, result) {
                             if (err) {
-                                return console.log('writeError',err);
+                                res.send('error1');
+                                return console.log('writeError', err);
                             }
                             res.send('grade', result)
                         });
